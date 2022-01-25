@@ -2,7 +2,7 @@
 #include <QCoreApplication>
 #include <QAbstractEventDispatcher>
 #include "common/logger/log.h"
-#include "appworker.h"
+//#include "appworker.h"
 #include "common/helper/signalhelper/signalhelper.h"
 #include "common/helper/CommandLineParserHelper/commandlineparserhelper.h"
 //#include "common/coreappworker/coreappworker.h"
@@ -58,7 +58,7 @@ auto main(int argc, char *argv[]) -> int
 
     zInfo(a.ToString());
 
-    if(w1->result.state==Work1::Result::State::NotCalculated &&
+    if(w1->_result.state==Work1::Result::State::NotCalculated &&
         !isEventLoopNeeded) zInfo(QStringLiteral("NoEventLoop"));
 
     if(!e) zInfo(QStringLiteral("Everything went ok."));

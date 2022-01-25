@@ -32,7 +32,7 @@ public:
 
     bool init(Params p);
     Result doWork();
-    Result result;
+    Result _result{};
 
 private:
     bool _isInited = false;

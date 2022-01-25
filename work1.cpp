@@ -11,6 +11,8 @@ Work1::Work1(bool isEventLoopNeeded)
     _isEventLoopNeeded = isEventLoopNeeded;
     //connect(this, &Work1::finished, this, &QObject::deleteLater);
     if(isEventLoopNeeded) QObject::connect(this, &Work1::finished, QCoreApplication::instance(), QCoreApplication::quit, Qt::QueuedConnection);
+
+    this->_result = {};
     //else {
     //connect(this, &Work1::resultReady, this, &Work1::handleResults);
 
@@ -23,7 +25,7 @@ auto Work1::init(Work1::Params p) -> bool
     _isInited = false;
     if(!p.IsValid()) return false;
     params = p;
-    result = { Result::State::NotCalculated, -1};
+    _result = { Result::State::NotCalculated, -1};
     _isInited = true;
     return true;
 }
@@ -62,7 +64,7 @@ auto Work1::doWork() -> Result
 void Work1::run() {
     if(!_isInited) return;
     if(!_isEventLoopNeeded) return;
-    result = doWork2();
+    _result = doWork2();
     if(_isEventLoopNeeded) emit finished();
 }
 
@@ -76,15 +78,20 @@ auto Work1::doWork2() -> Result
 
     if(geomLines.isEmpty()) return {Result::State::NoResult, 56};
 
-    QStringList gcodes = GenerateGcode::Generate(geomLines);
+    GenerateGcode g;
+    QStringList gcodes = g.Generate(geomLines);
 
-    auto headLines = com::helper::TextFileHelper::loadLines(d.filePath("head.gcode"));
+    auto headLines = com::helper::TextFileHelper::loadLines(d.filePath(
+        QStringLiteral("head.gcode")));
 
     QStringList outLines;
 
     for(auto&l:headLines){
-        if(l==QStringLiteral("(***)")) for(auto&l2:gcodes) outLines.append(l2);
-        else outLines.append(l);
+        if(l==QStringLiteral("(***)")){
+            for(auto&l2:gcodes) outLines.append(l2);
+        } else {
+            outLines.append(l);
+        }
     }
 
     com::helper::TextFileHelper::save(outLines.join('\n'), d.filePath(params.outFile));

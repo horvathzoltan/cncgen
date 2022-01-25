@@ -2,7 +2,9 @@
 #include "common/logger/log.h"
 #include "common/helper/textfilehelper/textfilehelper.h"
 #include <QCoreApplication>
+#include <QDir>
 #include <QThread>
+#include "generategcode.h"
 
 Work1::Work1(bool isEventLoopNeeded)
 {
@@ -66,9 +68,26 @@ void Work1::run() {
 
 auto Work1::doWork2() -> Result
 {
-    zInfo(QStringLiteral("params: %1, %2, %3").arg(params.inFile).arg(params.outFile).arg(params.isBackup));
+    zInfo(QStringLiteral("params: %1, %2, %3").arg(params.inFile).arg(params.outFile).arg(params.isBackup));    
 
-    auto lines = com::helper::TextFileHelper::loadLines(params.inFile);
+    auto d = QDir(qApp->applicationDirPath());
+
+    auto geomLines = com::helper::TextFileHelper::loadLines(d.filePath(params.inFile));
+
+    if(geomLines.isEmpty()) return {Result::State::NoResult, 56};
+
+    QStringList gcodes = GenerateGcode::Generate(geomLines);
+
+    auto headLines = com::helper::TextFileHelper::loadLines(d.filePath("head.gcode"));
+
+    QStringList outLines;
+
+    for(auto&l:headLines){
+        if(l==QStringLiteral("(***)")) for(auto&l2:gcodes) outLines.append(l2);
+        else outLines.append(l);
+    }
+
+    com::helper::TextFileHelper::save(outLines.join('\n'), d.filePath(params.outFile));
 
     return {Result::State::Ok, 55};
 }

@@ -67,7 +67,7 @@ LIBS += -L$$COMMON_LIBS_FULLPATH/ -lsignalhelper
 LIBS += -L$$COMMON_LIBS_FULLPATH/ -lCommandLineParserHelper
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -lcoreappworker
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -lstringhelper
-#LIBS += -L$$COMMON_LIBS_FULLPATH/ -ltextfilehelper
+LIBS += -L$$COMMON_LIBS_FULLPATH/ -ltextfilehelper
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -lfilehelper
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -ldownloadhelper
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -lprocesshelper
@@ -91,10 +91,12 @@ INCLUDEPATH += $$HOME/common
 DEPENDPATH += $$HOME/common
 
 SOURCES += \
+        generategcode.cpp \
         main.cpp \
         work1.cpp
 
 HEADERS += \
+    generategcode.h \
     work1.h
 
 message(includepath = $$INCLUDEPATH)

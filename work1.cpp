@@ -68,7 +68,7 @@ auto Work1::doWork2() -> Result
 {
     zInfo(QStringLiteral("params: %1, %2, %3").arg(params.inFile).arg(params.outFile).arg(params.isBackup));
 
-    var com::helper::TextFileHelper::loadLines(params.inFile);
+    auto lines = com::helper::TextFileHelper::loadLines(params.inFile);
 
     return {Result::State::Ok, 55};
 }

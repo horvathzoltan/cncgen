@@ -4,14 +4,16 @@
 #include <QStringList>
 #include <QVariant>
 
+#include "geometry/line.h"
+#include "geometry/box.h"
+
+
 class GenerateGcode
 {
 public:
     QStringList Generate(const QStringList& g);
-private:
-    enum XYMode:int{XY=0,YX};
+private:    
 
-    enum GMode:int{Rapid=0,Linear=1,Circular=2,Circular_ccw=3};
 
     XYMode _XYMode = XY;
     QStringList gcodes;
@@ -44,34 +46,8 @@ private:
 
     QString GenerateComment(const QString& txt);        
 
-    struct Point{
-        qreal x;
-        qreal y;
-        qreal z;
 
-        static Point Parse(const QString&, XYMode m);
-        QString ToString();
-        //QString ToGcode();
-        QString GoToZ(GMode i);
-        QString GoToXY(GMode i);
-        QString GoToXYZ(GMode i);
 
-        //QString LiftDown();
-        //QString LiftUp(qreal mov_z);
-
-    };
-
-    struct Line{
-        Point p0;
-        Point p1;
-        qreal z;
-        qreal s;
-        qreal sp=-1;
-        qreal f=-1;
-
-        static Line Parse(const QString&, XYMode m);
-        QString ToString();
-    };
 
     struct Hole{
         Point p;
@@ -81,12 +57,16 @@ private:
         qreal sp=-1;
         qreal f=-1;
 
-        static Hole Parse(const QString&, XYMode m);
+        static Hole Parse(const QString& txt, XYMode mode);
         QString ToString();
-    };
+    };   
 
+
+    /*Geomerty*/
     QString GenerateLineHorizontal(const QString& txt);
     QString GenerateHole(const QString& txt);
+    QString GenerateBox(const QString& txt);
+    /*G Command*/
     QString SetTool(const QString& txt);
     QString SetFeedRate(const QString& txt);
     QString SetSpindleSpeed(const QString& txt);
@@ -95,11 +75,12 @@ private:
     QString SpindleStart();
     QString SpindleStop();
     QString SetFeed();
+    /*Parse*/
     Point ParsePoint(const QString&txt);
     Line ParseLine(const QString&txt);
     Hole ParseHole(const QString&txt);
-    static QString rToGcode(qreal);
-    static QString Gcode(GMode i);
+    Box ParseBox(const QString&txt);
+    /*ToGcode*/
     QString LiftDown(qreal z);
     QString LiftUp(const QVariant& z);
     //QString LiftUp(Point p);

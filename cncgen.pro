@@ -92,11 +92,24 @@ DEPENDPATH += $$HOME/common
 
 SOURCES += \
         generategcode.cpp \
+        geometry/box.cpp \
+        geometry/gap.cpp \
+        geometry/gcode.cpp \
+        geometry/gmode.cpp \
+        geometry/line.cpp \
+        geometry/point.cpp \
         main.cpp \
         work1.cpp
 
 HEADERS += \
     generategcode.h \
+    geometry/box.h \
+    geometry/gap.h \
+    geometry/gcode.h \
+    geometry/gmode.h \
+    geometry/line.h \
+    geometry/point.h \
+    geometry/xymode.h \
     work1.h
 
 message(includepath = $$INCLUDEPATH)

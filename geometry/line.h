@@ -3,6 +3,8 @@
 
 #include <QString>
 #include "point.h"
+#include "gap.h"
+#include <QList>
 
 struct Line{
     Point p0;
@@ -13,7 +15,8 @@ struct Line{
     qreal f=-1;
 
     static Line Parse(const QString& txt, XYMode mode);
-    QString ToString();
+    QString ToString() const;
+    QList<Line> Divide(const Gap& g, qreal tool_d);
 };
 
 

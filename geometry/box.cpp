@@ -1,5 +1,5 @@
 #include "box.h"
-#include "gcode.h"
+#include "gcode/gcode.h"
 
 auto Box::Parse(const QString &txt, XYMode mode) -> Box
 {
@@ -37,10 +37,10 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
             }
             p_ix++;
         }
-        else if(p=="out"){
+        else if(p==QStringLiteral("out")){
             m.isOut = true;
         }
-        else if(p=="in"){
+        else if(p==QStringLiteral("in")){
             m.isOut = false;
         }
         else if(p.startsWith('g')&&p.length()>1&&p[1].isDigit()){
@@ -54,7 +54,7 @@ auto Box::ToString() -> QString
 {
     return QStringLiteral("b")+
             (isOut?" out":" in")+' '+
-            p0.ToString()+' '+p0.ToString()+
+            p0.ToString()+' '+p1.ToString()+
             " z"+GCode::r(z)+
             " s"+GCode::r(s)+
             ' '+g.ToString();

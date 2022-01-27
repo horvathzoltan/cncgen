@@ -11,7 +11,7 @@ struct Point{
     qreal z;
 
     static Point Parse(const QString&, XYMode m);
-    QString ToString();
+    QString ToString() const;
     //QString ToGcode();
     QString GoToZ(GMode::Mode i);
     QString GoToXY(GMode::Mode i);

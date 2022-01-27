@@ -1,7 +1,7 @@
 #include "gap.h"
 
 #include <QStringList>
-#include "gcode.h"
+#include "gcode/gcode.h"
 
 auto Gap::Parse(const QString &txt) -> Gap
 {

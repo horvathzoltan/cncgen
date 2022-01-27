@@ -6,31 +6,20 @@
 
 #include "geometry/line.h"
 #include "geometry/box.h"
+#include "geometry/hole.h"
 
+#include "gcode/tool.h"
 
 class GenerateGcode
 {
 public:
     QStringList Generate(const QStringList& g);
-private:    
-
-
+private:
+    bool _verbose = true;
     XYMode _XYMode = XY;
     QStringList gcodes;
     qreal _movZ=10;
     qreal _maxZ=15;
-
-    enum ToolType:int{None,Milling,Drilling};
-
-    struct Tool{
-        ToolType type=None;
-        int ix=-1;
-        qreal d;
-        qreal h;
-
-        static Tool Parse(const QString&);
-        QString ToString();
-    };
 
     QMap<int, Tool> _tools;
     int _selected_tool_ix;
@@ -44,26 +33,11 @@ private:
     bool AppendGcode(const QString &g);
     bool setXYMode(const QString &txt);
 
-    QString GenerateComment(const QString& txt);        
-
-
-
-
-    struct Hole{
-        Point p;
-        qreal d;
-        qreal z;
-        qreal s;
-        qreal sp=-1;
-        qreal f=-1;
-
-        static Hole Parse(const QString& txt, XYMode mode);
-        QString ToString();
-    };   
-
+    QString GenerateComment(const QString& txt);
 
     /*Geomerty*/
     QString GenerateLineHorizontal(const QString& txt);
+    QString GenerateLineHorizontal(const Line& txt);
     QString GenerateHole(const QString& txt);
     QString GenerateBox(const QString& txt);
     /*G Command*/
@@ -85,8 +59,7 @@ private:
     QString LiftUp(const QVariant& z);
     //QString LiftUp(Point p);
     QString TravelXY(Point p);
-    static QChar ToolTypeToGCode(ToolType t);
-    static QString ToolTypeToString(ToolType t);
+
 };
 
 #endif // GENERATEGCODE_H

@@ -2,7 +2,7 @@
 #include "generategcode.h"
 #include <QtMath>
 #include <QString>
-#include "geometry/gcode.h"
+#include "gcode/gcode.h"
 
 auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 {
@@ -55,54 +55,15 @@ auto GenerateGcode::ParseLine(const QString &txt) -> Line
     return Line::Parse(txt, _XYMode);
 }
 
-auto GenerateGcode::ParseHole(const QString &txt) -> GenerateGcode::Hole
-{
-    return Hole::Parse(txt, _XYMode);
-}
 
 auto GenerateGcode::ParseBox(const QString &txt) -> Box
 {
     return Box::Parse(txt, _XYMode);
 }
 
-
-auto GenerateGcode::Hole::ToString() -> QString
+auto GenerateGcode::ParseHole(const QString &txt) -> Hole
 {
-    return
-        "h "+p.ToString()+
-        " d"+ GCode::r(d)+
-        " z"+ GCode::r(z)+
-        " s"+GCode::r(s);
-}
-
-auto GenerateGcode::Tool::ToString() -> QString
-{
-    QString msg = "t"+QString::number(ix);
-    if(type!=None){
-        msg += ' '+
-            ToolTypeToGCode(type)+' '+
-            " d"+GCode::r(d)+
-            " h"+GCode::r(h);
-    }
-    return msg;
-}
-
-auto GenerateGcode::ToolTypeToGCode(ToolType t) -> QChar
-{
-    switch(t){
-    case ToolType::Milling: return 'm';
-    case ToolType::Drilling: return 'd';
-    default: return QChar();
-    }
-}
-
-auto GenerateGcode::ToolTypeToString(ToolType t) -> QString
-{
-    switch(t){
-    case ToolType::Milling: return nameof(ToolType::Milling);
-    case ToolType::Drilling: return nameof(ToolType::Drilling);
-    default: return QString();
-    }
+    return Hole::Parse(txt, _XYMode);
 }
 
 /**/
@@ -169,6 +130,64 @@ auto GenerateGcode::GenerateLineHorizontal(const QString &txt) -> QString
     }
 
     Line m = ParseLine(txt);
+    return GenerateLineHorizontal(m);
+//    auto msg = "G:"+m.ToString();
+
+//    QStringList g;
+//    Point p = m.p0;
+
+//    g.append(QStringLiteral("(line)"));
+
+//    g.append(TravelXY(p));
+
+//    if(m.sp!=-1) _selected_spindle_speed = m.sp;
+//    if(m.f!=-1)_selected_feed_rate=m.f;
+//    auto sp = SpindleStart();
+//    if(!sp.isEmpty()) g.append(sp);
+//    auto f = SetFeed();
+//    if(!f.isEmpty()) g.append(f);
+
+//    g.append(LiftDown(m.p0.z));
+
+//    int steps = qCeil(m.z/m.s)+1;
+//    QString msg2 = " (steps="+QString::number(steps)+')';
+
+//    for(int i=0;i<steps;i++){
+//        if(!(i%2))
+//        {
+//            p=m.p1;
+//        }
+//        else
+//        {
+//            p=m.p0;
+//        }
+//        qreal z = p.z-(i+1)*m.s;
+
+//        if(z<p.z-m.z) p.z = p.z-m.z; else p.z = z;
+
+//        g.append(p.GoToXYZ(GMode::Linear));
+//    }
+
+//    g.append(LiftUp(m.p1.z));
+
+//    zInfo(msg +' ' + msg2);
+//    //zInfo(g);
+//    return g.join('\n');
+}
+
+auto GenerateGcode::GenerateLineHorizontal(const Line& m) -> QString
+{
+//    if(!txt.startsWith('l')) return QString();
+//    if(_selected_tool_ix==-1){
+//        zInfo(QStringLiteral("no tool selected"));
+//        return QString();
+//    }
+//    if(!_tools.contains(_selected_tool_ix)) {
+//        zInfo("tool not found: "+QString::number(_selected_tool_ix));
+//        return QString();
+//    }
+
+//    Line m = ParseLine(txt);
     auto msg = "G:"+m.ToString();
 
     QStringList g;
@@ -278,126 +297,77 @@ auto GenerateGcode::GenerateBox(const QString &txt) -> QString
         zInfo("tool not found: "+QString::number(_selected_tool_ix));
         return QString();
     }
+    Tool t = _tools[_selected_tool_ix];
 
-    Box m = ParseBox(txt);
-    auto msg = "G:"+m.ToString();
+    Box m = ParseBox(txt);    
+    auto msg = "G:"+m.ToString();    
+    int steps = qCeil(m.z/m.s)+1;
+    QString msg2 = " (steps="+QString::number(steps)+')';
+    zInfo(msg +' ' + msg2);
 
-    QStringList g;
+    QStringList g(QStringLiteral("(box with gaps)"));
+
     Point ba = {qMin(m.p0.x, m.p1.x), qMin(m.p0.y, m.p1.y), m.p0.z};
     Point jf = {qMax(m.p0.x, m.p1.x), qMax(m.p0.y, m.p1.y), m.p0.z};
+    qreal tool_r = t.d/2;
+    if(m.isOut){
+        ba.y-=tool_r;
+        jf.y+=tool_r;
+        ba.x-=tool_r;
+        jf.x+=tool_r;
+    } else{
+        ba.y+=tool_r;
+        jf.y-=tool_r;
+        ba.x+=tool_r;
+        jf.x+=tool_r;
+    }
+
     Point ja = {jf.x,ba.y,ba.z};
     Point bf = {ba.x,jf.y,ba.z};
 
-    Line bottom = {ba,ja, m.z, m.s, m.sp, m.f};
+    // lemegy egyben a gapig
+    qreal z2 = m.z-m.g.h;
+    QVarLengthArray<Line> lines0 = {{ba,ja, z2, m.s, m.sp, m.f},
+                    {ja,jf, z2, m.s, m.sp, m.f},
+                    {jf,bf, z2, m.s, m.sp, m.f},
+                    {bf,ba, z2, m.s, m.sp, m.f}};
+    //gap layer
 
-    List<Line> bottomLines = bottom.Divide(m.g);
-//    Point p = m.p0;
+    ba.z-=z2;
+    bf.z-=z2;
+    ja.z-=z2;
+    jf.z-=z2;
+    QVarLengthArray<Line> lines = {{ba,ja, m.g.h, m.s, m.sp, m.f},
+                    {ja,jf, m.g.h, m.s, m.sp, m.f},
+                    {jf,bf, m.g.h, m.s, m.sp, m.f},
+                    {bf,ba, m.g.h, m.s, m.sp, m.f}};
 
-//    g.append(QStringLiteral("(line)"));
+    QList<Line> segments;
 
-//    g.append(TravelXY(p));
+    for(int i=0;i<4;i++){
+        auto&l=lines[i];
+        auto&l0=lines0[i];
+        segments.append(l0);
+        auto s = l.Divide(m.g, t.d);
+        if(s.isEmpty()){
+            zInfo(QStringLiteral("cannot divide line"));
+            segments.append(l);
+        }else{
+            segments.append(s);
+        }
+    }
 
-//    if(m.sp!=-1) _selected_spindle_speed = m.sp;
-//    if(m.f!=-1)_selected_feed_rate=m.f;
-//    auto sp = SpindleStart();
-//    if(!sp.isEmpty()) g.append(sp);
-//    auto f = SetFeed();
-//    if(!f.isEmpty()) g.append(f);
 
-//    g.append(LiftDown(m.p0.z));
+    for(auto&bl:segments){
+        if(_verbose) g.append('('+bl.ToString()+')');
+        zInfo("bl:"+bl.ToString());
+    }
+    for(auto&bl:segments){
+        auto ls = GenerateLineHorizontal(bl);
+        g.append(ls);
+    }
 
-    int steps = qCeil(m.z/m.s)+1;
-    QString msg2 = " (steps="+QString::number(steps)+')';
-
-//    for(int i=0;i<steps;i++){
-//        if(!(i%2))
-//        {
-//            p=m.p1;
-//        }
-//        else
-//        {
-//            p=m.p0;
-//        }
-//        qreal z = p.z-(i+1)*m.s;
-
-//        if(z<p.z-m.z) p.z = p.z-m.z; else p.z = z;
-
-//        g.append(p.GoToXYZ(GMode::Linear));
-//    }
-
-//    g.append(LiftUp(m.p1.z));
-
-    zInfo(msg +' ' + msg2);
-    //zInfo(g);
     return g.join('\n');
-}
-
-// h 0,0,0 d5 z3 s0.15
-auto GenerateGcode::Hole::Parse(const QString &txt, XYMode mode) ->GenerateGcode::Hole
-{
-    Hole m={};
-    auto params=txt.split(' ');
-    //int p_ix = 0;
-    for(auto&p:params){
-        if(p.startsWith('z')){
-            bool isok;
-            auto z = p.midRef(1).toDouble(&isok);
-            if(isok) m.z = z;
-        }
-        else if(p.startsWith('s')&&p.length()>1&&p[1].isDigit()){
-            bool isok;
-            auto s = p.midRef(1).toDouble(&isok);
-            if(isok) m.s = s;
-        }
-        else if(p.startsWith('d')){
-            bool isok;
-            auto d = p.midRef(1).toDouble(&isok);
-            if(isok) m.d = d;
-        }
-        else if(p.startsWith(QStringLiteral("sp"))){
-            bool isok;
-            auto sp = p.midRef(2).toDouble(&isok);
-            if(isok) m.sp = sp;
-        }
-        else if(p.startsWith('f')){
-            bool isok;
-            auto f = p.midRef(1).toDouble(&isok);
-            if(isok) m.f = f;
-        }
-        else if(p[0].isDigit()){
-            m.p=Point::Parse(p, mode);
-        }
-    }
-    return m;
-}
-
-
-auto GenerateGcode::Tool::Parse(const QString &txt) -> GenerateGcode::Tool
-{
-    Tool m={};
-    auto params=txt.split(' ');
-    bool isok;
-    auto ix = params[0].midRef(1).toInt(&isok);
-    if(isok && ix>=0 && ix<=6) m.ix = ix;
-
-    for(int i=1;i<params.length();i++){
-        auto&p = params[i];
-        if(p.startsWith('d')&&p.length()>1){
-            bool isok;
-            auto d = p.midRef(1).toDouble(&isok);
-            if(isok) m.d = d;
-        } else if(p.startsWith('h')){
-            bool isok;
-            auto h = p.midRef(1).toDouble(&isok);
-            if(isok) m.h = h;
-        } else if(p==u'd'){
-            m.type = Drilling;
-        }
-        else if(p==u'm'){
-            m.type = Milling;
-        }
-    }
-    return m;
 }
 
 auto GenerateGcode::SetTool(const QString &txt) -> QString
@@ -408,13 +378,13 @@ auto GenerateGcode::SetTool(const QString &txt) -> QString
     QString g;
 
     if(_tools.contains(m.ix)){ // ha van már ilyen tool
-        if(m.type==None){ //selectelni akarjuk
+        if(m.type==Tool::None){ //selectelni akarjuk
             _selected_tool_ix = m.ix;
             //g = 't'+QString::number(_selected_tool_ix)+"(change tool)";
             g=ChangeTool();
         }
     }else{
-        if(m.type!=None){ // beállítani akarjuk
+        if(m.type!=Tool::None){ // beállítani akarjuk
             _tools.insert(m.ix, m); // ha nincs még ilyen tool
             //_selected_tool_ix = m.ix;
             g = "(set tool "+QString::number(m.ix)+" to "+m.ToString()+')';
@@ -449,7 +419,7 @@ auto GenerateGcode::ChangeTool() ->QString
     g.append(QStringLiteral("g0 z")+GCode::r(_maxZ));
     g.append('t'+QString::number(t.ix)+" (tool select)");
     g.append(QStringLiteral("m6 (tool change)"));
-    g.append(QStringLiteral("(msg, change tool to ")+ToolTypeToString(t.type)+
+    g.append(QStringLiteral("(msg, change tool to ")+Tool::TypeToString(t.type)+
              ", diameter="+GCode::r(t.d));
     g.append(QStringLiteral("m0 (machine stop)"));
     g.append(QStringLiteral("g0 z")+GCode::r(_maxZ));

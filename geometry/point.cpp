@@ -1,6 +1,6 @@
 #include "point.h"
 #include <QStringList>
-#include "gcode.h"
+#include "gcode/gcode.h"
 
 auto Point::Parse(const QString &txt, XYMode mode) -> Point
 {
@@ -18,7 +18,7 @@ auto Point::Parse(const QString &txt, XYMode mode) -> Point
     return {0,0,0};
 }
 
-auto Point::ToString() -> QString
+auto Point::ToString() const -> QString
 {
     return QString::number(x)+','+QString::number(y)+','+QString::number(z);
 }

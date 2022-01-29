@@ -7,45 +7,28 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
 {
     Hole m={};
     auto params=txt.split(' ');
-    //int p_ix = 0;
+    Point point;
     for(auto&p:params){
-        if(p.startsWith('z')){
-            bool isok;
-            auto z = p.midRef(1).toDouble(&isok);
-            if(isok) m.z = z;
-        }
-        else if(p.startsWith('s')&&p.length()>1&&p[1].isDigit()){
-            bool isok;
-            auto s = p.midRef(1).toDouble(&isok);
-            if(isok) m.s = s;
-        }
-        else if(p.startsWith('d')){
-            bool isok;
-            auto d = p.midRef(1).toDouble(&isok);
-            if(isok) m.d = d;
-        }
-        else if(p.startsWith(QStringLiteral("sp"))){
-            bool isok;
-            auto sp = p.midRef(2).toDouble(&isok);
-            if(isok) m.sp = sp;
-        }
-        else if(p.startsWith('f')){
-            bool isok;
-            auto f = p.midRef(1).toDouble(&isok);
-            if(isok) m.f = f;
-        }
-        else if(p[0].isDigit()){
-            m.p=Point::Parse(p, mode);
+        if(GCode::ParseValue(p, QStringLiteral("z"), &m.cutZ)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("c"), &m.cutZ0)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("d"), &m.diameter)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("s"), &m.spindleSpeed)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("f"), &m.feed)) continue;
+        if((point=Point::Parse(p, mode)).isValid()){
+            m.p=point;
+            continue; //point
         }
     }
     return m;
 }
 
-auto Hole::ToString() -> QString
+auto Hole::ToString() const -> QString
 {
-    return
-        "h "+p.ToString()+
-        " d"+ GCode::r(d)+
-        " z"+ GCode::r(z)+
-        " s"+ GCode::r(s);
+    return QStringLiteral("h ")+
+        p.ToString()+
+        " d"+ GCode::r(diameter)+
+        " z"+ GCode::r(cutZ)+
+        " c"+ GCode::r(cutZ0)+
+        " s"+GCode::r(spindleSpeed)+
+        " f"+GCode::r(feed);
 }

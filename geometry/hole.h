@@ -7,14 +7,14 @@
 
 struct Hole{
     Point p;
-    qreal d;
-    qreal z;
-    qreal s;
-    qreal sp=-1;
-    qreal f=-1;
+    qreal diameter=-1;
+    qreal cutZ=-1;
+    qreal cutZ0=-1;
+    qreal spindleSpeed=-1;
+    qreal feed=-1;
 
     static Hole Parse(const QString& txt, XYMode mode);
-    QString ToString();
+    QString ToString() const;
 };
 
 #endif // HOLE_H

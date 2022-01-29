@@ -57,15 +57,15 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
 {
     if(g.n<1) return QList<Line>();
     qreal length = GeoMath::Distance(p0, p1);
-    if(length<=g.n*g.l) return {};
+    if(length<=g.n*g.length) return {};
     int slices = g.n+1;
-    if((length-g.n*g.l)/slices<tool_d) return {}; // ha a gapek közti részben nem fér el a szerszám
+    if((length-g.n*g.length)/slices<tool_d) return {}; // ha a gapek közti részben nem fér el a szerszám
 
     QList<Line> m;
 
     Point kp= p0;
     Point kp2= p0;
-    qreal offset = (g.l+tool_d)/2;
+    qreal offset = (g.length+tool_d)/2;
     qreal l = length/slices;
     qreal o1 = (l-offset)/l;
     qreal o2 = (l+offset)/l;

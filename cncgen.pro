@@ -8,6 +8,8 @@ CONFIG -= app_bundle
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += SOURCE_PATH=$$PWD
+DEFINES += TARGI=$$TARGET
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -95,12 +97,14 @@ SOURCES += \
         gcode/tool.cpp \
         generategcode.cpp \
         geometry/box.cpp \
+        geometry/boxtype.cpp \
         geometry/gap.cpp \
         geometry/geomath.cpp \
         geometry/gmode.cpp \
         geometry/hole.cpp \
         geometry/line.cpp \
         geometry/point.cpp \
+        helpers/filenamehelper.cpp \
         main.cpp \
         work1.cpp
 
@@ -109,6 +113,7 @@ HEADERS += \
     gcode/tool.h \
     generategcode.h \
     geometry/box.h \
+    geometry/boxtype.h \
     geometry/gap.h \
     geometry/geomath.h \
     geometry/gmode.h \
@@ -116,6 +121,7 @@ HEADERS += \
     geometry/line.h \
     geometry/point.h \
     geometry/xymode.h \
+    helpers/filenamehelper.h \
     work1.h
 
 message(includepath = $$INCLUDEPATH)
@@ -128,3 +134,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 #\
 #    signalhelper.h
+
+DISTFILES += \
+    testdata/geom1.txt \
+    testdata/head.gcode

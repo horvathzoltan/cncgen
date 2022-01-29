@@ -5,57 +5,49 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
 {
     Box m={};
     auto params=txt.split(' ');
-    int p_ix = 0;
+    int p_ix = 0;    
+    BoxType::Type type;
+    Point point;
+    Gap gap;
     for(int i=1;i<params.length();i++){
         auto&p =params[i];
-        if(p.startsWith('z')){
-            bool isok;
-            auto z = p.midRef(1).toDouble(&isok);
-            if(isok) m.z = z;
-        }
-        else if(p.startsWith('s')&&p.length()>1&&p[1].isDigit()){
-            bool isok;
-            auto s = p.midRef(1).toDouble(&isok);
-            if(isok) m.s = s;
-        }
-        else if(p.startsWith(QStringLiteral("sp"))){
-            bool isok;
-            auto sp = p.midRef(2).toDouble(&isok);
-            if(isok) m.sp = sp;
-        }
-        else if(p.startsWith('f')){
-            bool isok;
-            auto f = p.midRef(1).toDouble(&isok);
-            if(isok) m.f = f;
-        }
-        else if(p[0].isDigit()){
+        if(GCode::ParseValue(p, QStringLiteral("z"), &m.cutZ)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("c"), &m.cutZ0)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("s"), &m.spindleSpeed)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("f"), &m.feed)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("d"), &m.corner_diameter)) continue;
+        if((point=Point::Parse(p, mode)).isValid()){
             if(p_ix==0){
-                m.p0=Point::Parse(p, mode);
+                m.p0=point;
             }
             else if(p_ix==1){
-                m.p1=Point::Parse(p, mode);
+                m.p1=point;
             }
             p_ix++;
+            continue; //point
         }
-        else if(p==QStringLiteral("out")){
-            m.isOut = true;
+        if((type = BoxType::Parse(p)) != BoxType::Undefined){
+            m.type = type;
+            continue;
         }
-        else if(p==QStringLiteral("in")){
-            m.isOut = false;
-        }
-        else if(p.startsWith('g')&&p.length()>1&&p[1].isDigit()){
-            m.g = Gap::Parse(p);
+        if((gap = Gap::Parse(p)).isValid()){
+            m.gap = gap;
         }
     }
     return m;
 }
 
-auto Box::ToString() -> QString
+auto Box::ToString() const -> QString
 {
-    return QStringLiteral("b")+
-            (isOut?" out":" in")+' '+
-            p0.ToString()+' '+p1.ToString()+
-            " z"+GCode::r(z)+
-            " s"+GCode::r(s)+
-            ' '+g.ToString();
+    return QStringLiteral("b ")+
+        BoxType::ToString(type)+' '+
+        p0.ToString()+' '+p1.ToString()+
+        " z"+GCode::r(cutZ)+
+        " c"+GCode::r(cutZ0)+
+        " s"+GCode::r(spindleSpeed)+
+        " f"+GCode::r(feed)+
+        ((type==BoxType::Corners)?(" d"+GCode::r(corner_diameter)):QString())+
+        ' '+gap.ToString();
 }
+
+

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QThread>
+#include <QCoreApplication>
 
 class Work1 : public QThread
 {
@@ -12,14 +13,16 @@ class Work1 : public QThread
 public:
     Work1(bool isEventLoopNeeded);
 
-    struct Params
-    {
+    struct Params{
     public:
         QString inFile;
         QString outFile;
         bool isBackup;
+        bool isTest = false;
 
         bool IsValid();
+
+        static Params Parse(const QCoreApplication& app);
     };
 
     struct Result{

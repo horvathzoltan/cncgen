@@ -2,25 +2,31 @@
 #include <QStringList>
 #include "gcode/gcode.h"
 
+Point::Point()
+{
+    x=y=z=0;
+    _isValid = false;
+}
+
+Point::Point(qreal _x, qreal _y, qreal _z)
+{
+    x=_x;
+    y=_y;
+    z=_z;
+    _isValid=true;
+}
+
 auto Point::Parse(const QString &txt, XYMode mode) -> Point
 {
-    if(txt.isEmpty()) return {0,0,0};
-    QStringList ns = txt.split(',');
-    if(ns.length()>=2){
-        bool isok_a, isok_b, isok_c=false;
-        auto a = ns[0].toDouble(&isok_a);
-        auto b = ns[1].toDouble(&isok_b);
-        bool has_c = (ns.length()>=3);
-        auto c = has_c?ns[2].toDouble(&isok_c):0;
-        if(mode==YX) return {b,a,c};
-        return {a,b,c};
-    }
-    return {0,0,0};
+    if(txt.isEmpty()) return {};
+    double x, y, z;
+    if(!GCode::ParseValueXYZ(txt, &x, &y, &z, mode)) return {};
+    return {x,y,z};
 }
 
 auto Point::ToString() const -> QString
 {
-    return QString::number(x)+','+QString::number(y)+','+QString::number(z);
+    return GCode::r(x)+','+GCode::r(y)+','+GCode::r(z);
 }
 
 auto Point::GoToZ(GMode::Mode i) -> QString

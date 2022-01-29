@@ -5,12 +5,17 @@
 #include "geometry/xymode.h"
 
 struct Gap{
-    int n;
-    qreal l;
-    qreal h;
+    Gap();
+    Gap(int, qreal, qreal);
+    int n; // gapek száma
+    qreal length; // hossz
+    qreal height; // magasság
 
     static Gap Parse(const QString& txt);
-    QString ToString();
+    QString ToString() const;
+    bool isValid(){return _isValid;}
+private:
+    bool _isValid;
 };
 
 #endif // GAP_H

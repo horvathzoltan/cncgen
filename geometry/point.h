@@ -10,6 +10,9 @@ struct Point{
     qreal y;
     qreal z;
 
+    Point();
+    Point(qreal, qreal, qreal);
+
     static Point Parse(const QString&, XYMode m);
     QString ToString() const;
     //QString ToGcode();
@@ -19,7 +22,9 @@ struct Point{
 
     //QString LiftDown();
     //QString LiftUp(qreal mov_z);
-
+    bool isValid(){return _isValid;}
+private:
+    bool _isValid;
 };
 
 #endif // POINT_H

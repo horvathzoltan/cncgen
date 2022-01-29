@@ -18,6 +18,11 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
         l = l.trimmed().toLower();
         if(l.isEmpty()) continue;
         // todo 5 ha tartalmaz =-t akkor bal oldalon van a kulcs, a jobb oldalon az érték
+        // ha az =-től balra van " akkor szar, nem jó nem értékadás az a sor akkor
+        // baloldalon a trimmelt stringben nem lehet szóköz, írásjel
+        // jobb oldalon ha "val kezdődik, és " val végződik, közte ami van az string
+        // ha number, akkor szám
+
         switch(l[0].unicode()){
             case u'#':break;
             case u'(':AppendGcode(GenerateComment(l));break;

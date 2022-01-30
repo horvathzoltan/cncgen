@@ -5,52 +5,74 @@
 #include "geometry/geomath.h"
 #include "common/logger/log.h"
 
+Line::Line()
+{
+    _isValid=false;
+
+}
+
+Line::Line(const Point &_p0,
+           const Point &_p1,
+           qreal _cutZ,
+           qreal _cutZ0,
+           qreal _spindleSpeed,
+           qreal _feed)
+{
+    p0 = _p0;
+    p1 = _p1;
+    cutZ= _cutZ;
+    cutZ0 = _cutZ0;
+    spindleSpeed=_spindleSpeed;
+    feed=_feed;
+    _isValid = true;
+}
+
 auto Line::Parse(const QString &txt, XYMode mode) -> Line
 {
-    Line m={};
+    //Line m={};
+    QVarLengthArray<Point> points;
     auto params=txt.split(' ');
-    int p_ix = 0;
+    //int p_ix = 0;
+    qreal cutZ;
+    qreal cutZ0;
+    qreal spindleSpeed=-1;
+    qreal feed=-1;
     for(int i=1;i<params.length();i++){
         auto&p =params[i];
         if(p.startsWith('z')){
             bool isok;
             auto z = p.midRef(1).toDouble(&isok);
-            if(isok) m.z = z;
+            if(isok) cutZ = z;
         }
         else if(p.startsWith('s')&&p.length()>1&&p[1].isDigit()){
             bool isok;
             auto s = p.midRef(1).toDouble(&isok);
-            if(isok) m.s = s;
+            if(isok) cutZ0 = s;
         }
         else if(p.startsWith(QStringLiteral("sp"))){
             bool isok;
             auto sp = p.midRef(2).toDouble(&isok);
-            if(isok) m.sp = sp;
+            if(isok) spindleSpeed = sp;
         }
         else if(p.startsWith('f')){
             bool isok;
             auto f = p.midRef(1).toDouble(&isok);
-            if(isok) m.f = f;
+            if(isok) feed = f;
         }
         else if(p[0].isDigit()){
-            if(p_ix==0){
-                m.p0=Point::Parse(p, mode);
-            }
-            else if(p_ix==1){
-                m.p1=Point::Parse(p, mode);
-            }
-            p_ix++;
+            points.append(Point::Parse(p, mode));
         }
     }
-    return m;
+    if(points.length()<2) return {};
+    return {points[0], points[1], cutZ, cutZ0, spindleSpeed, feed};
 }
 
 auto Line::ToString() const -> QString
 {
     return
         "l "+p0.ToString()+' '+ p1.ToString()+
-        " z"+ GCode::r(z)+
-        " s"+GCode::r(s);
+        " z"+ GCode::r(cutZ)+
+        " s"+GCode::r(cutZ0);
 }
 
 auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
@@ -70,17 +92,17 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
     qreal o1 = (l-offset)/l;
     qreal o2 = (l+offset)/l;
 
-    zInfo("slices:"+GCode::r(slices));
-    zInfo("offset:"+GCode::r(offset));
-    zInfo("length:"+GCode::r(length));
-    zInfo("l:"+GCode::r(l));
-    zInfo("o1:"+GCode::r(o1));
-    zInfo("o2:"+GCode::r(o2));
+    zInfo("gaps:"+GCode::r(slices));
+//    zInfo("offset:"+GCode::r(offset));
+//    zInfo("length:"+GCode::r(length));
+//    zInfo("l:"+GCode::r(l));
+//    zInfo("o1:"+GCode::r(o1));
+//    zInfo("o2:"+GCode::r(o2));
 
     for(int i=1;i<slices;i++){
-        zInfo("i:"+GCode::r(i));
+        //zInfo("i:"+GCode::r(i));
         auto o = static_cast<qreal>(i)/(slices);
-        zInfo("o:"+GCode::r(o));
+        //zInfo("o:"+GCode::r(o));
         Point op ={};
         bool isok = GeoMath::Divider(p0,p1,o,&op);
         if(!isok) continue;
@@ -89,7 +111,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
         bool isok2 = GeoMath::Divider(kp,op,o1,&op1);
         if(!isok2) continue;
         // line:kp2->op1
-        Line l = {kp2, op1, z, s, sp, f};
+        Line l = {kp2, op1, cutZ, cutZ0, spindleSpeed, feed};
         m.append(l);
         Point op2 ={};
         bool isok3 = GeoMath::Divider(kp,op,o2,&op2);
@@ -100,7 +122,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
 //        Line gap = {op1, op2, z-g.h, s, sp, f};
 //        m.append(gap);
     }
-    Line lx = {kp2, p1, z, s, sp, f};
+    Line lx = {kp2, p1, cutZ, cutZ0, spindleSpeed, feed};
     m.append(lx);
 
     return m;

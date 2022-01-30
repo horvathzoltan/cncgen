@@ -7,16 +7,29 @@
 #include <QList>
 
 struct Line{
+    Line();
+    Line(const Point& _p0,
+         const Point& _p1,
+         qreal _cutZ,
+         qreal _cutZ0,
+         //qreal _diameter,
+         // todo 4 struct ToolSpeed
+         qreal _spindleSpeed,
+         qreal _feed
+         );
     Point p0;
     Point p1;
-    qreal z;
-    qreal s;
-    qreal sp=-1;
-    qreal f=-1;
+    qreal cutZ;
+    qreal cutZ0;
+    qreal spindleSpeed=-1;
+    qreal feed=-1;
 
     static Line Parse(const QString& txt, XYMode mode);
     QString ToString() const;
     QList<Line> Divide(const Gap& g, qreal tool_d);
+    bool isValid(){return _isValid;}
+private:
+    bool _isValid;
 };
 
 

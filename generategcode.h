@@ -9,6 +9,8 @@
 #include "geometry/hole.h"
 
 #include "gcode/tool.h"
+#include "gcode/variable.h"
+#include "gcode/string.h"
 
 class GenerateGcode
 {
@@ -19,7 +21,7 @@ private:
     XYMode _XYMode = XY;
     QStringList gcodes;
     qreal _movZ=10;
-    qreal _maxZ=15;
+    qreal _maxZ=15;        
 
     QMap<int, Tool> _tools;
     int _selected_tool_ix;
@@ -33,6 +35,7 @@ private:
     qreal _last_cutZ;
     qreal _last_cutZ0;
 
+    VariableRepository _variables;
     bool AppendGcode(const QString &g);
     bool setXYMode(const QString &txt);
 
@@ -46,6 +49,9 @@ private:
     QString GenerateHole(const Hole& m);
     QString GenerateBox(const QString& txt);
     QString GenerateBox(const Box& m);
+    QString GeneratePrintString(const QString& txt);
+    QString GeneratePrintString(const String& m);
+
     /*G Command*/
     QString SetTool(const QString& txt);
     QString SetFeedRate(const QString& txt);

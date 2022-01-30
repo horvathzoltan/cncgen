@@ -93,8 +93,12 @@ INCLUDEPATH += $$HOME/common
 DEPENDPATH += $$HOME/common
 
 SOURCES += \
+        gcode/expression.cpp \
         gcode/gcode.cpp \
+        gcode/keyword.cpp \
+        gcode/string.cpp \
         gcode/tool.cpp \
+        gcode/variable.cpp \
         generategcode.cpp \
         geometry/box.cpp \
         geometry/boxtype.cpp \
@@ -104,13 +108,17 @@ SOURCES += \
         geometry/hole.cpp \
         geometry/line.cpp \
         geometry/point.cpp \
-        helpers/filenamehelper.cpp \
         main.cpp \
         work1.cpp
 
 HEADERS += \
+    gcode/expression.h \
+    gcode/function.h \
     gcode/gcode.h \
+    gcode/keyword.h \
+    gcode/string.h \
     gcode/tool.h \
+    gcode/variable.h \
     generategcode.h \
     geometry/box.h \
     geometry/boxtype.h \
@@ -122,6 +130,7 @@ HEADERS += \
     geometry/point.h \
     geometry/xymode.h \
     helpers/filenamehelper.h \
+    helpers/stringhelper.h \
     work1.h
 
 message(includepath = $$INCLUDEPATH)

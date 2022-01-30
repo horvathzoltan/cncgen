@@ -1,14 +1,15 @@
 #ifndef FILENAMEHELPER_H
 #define FILENAMEHELPER_H
 
-#include <QString>
+#include "common/macrofactory/macro.h"
+#include <QDir>
 
-class FileNameHelper
-{
+class FileNameHelper{
 public:
-    FileNameHelper();
-
-    static QString GetTestFolderPath();
+    static auto GetTestFolderPath()-> QString
+    {
+        return QDir(STRING(SOURCE_PATH)).filePath("testdata");
+    }
 };
 
 #endif // FILENAMEHELPER_H

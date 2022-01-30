@@ -3,23 +3,51 @@
 #include <QStringList>
 #include "gcode/gcode.h"
 
-auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
+Hole::Hole()
 {
-    Hole m={};
+    _isValid=false;
+}
+
+Hole::Hole(
+    const Point &_p,
+    qreal _cutZ,
+    qreal _cutZ0,
+    qreal _diameter,
+    qreal _spindleSpeed,
+    qreal _feed)
+{
+    p = _p;
+    cutZ= _cutZ;
+    cutZ0 = _cutZ0;
+    diameter=_diameter;
+    spindleSpeed=_spindleSpeed;
+    feed=_feed;
+    _isValid = true;
+}
+
+auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
+{    
     auto params=txt.split(' ');
     Point point;
-    for(auto&p:params){
-        if(GCode::ParseValue(p, QStringLiteral("z"), &m.cutZ)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("c"), &m.cutZ0)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("d"), &m.diameter)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("s"), &m.spindleSpeed)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("f"), &m.feed)) continue;
-        if((point=Point::Parse(p, mode)).isValid()){
-            m.p=point;
-            continue; //point
-        }
+    qreal cutZ=0;
+    qreal cutZ0=0;
+    qreal diameter=-1;
+    qreal spindleSpeed=-1;
+    qreal feed=-1;
+
+    for(int i=1;i<params.length();i++){
+        auto&p =params[i];
+        if(GCode::ParseValue(p, QStringLiteral("z"), &cutZ)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("c"), &cutZ0)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("d"), &diameter)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("s"), &spindleSpeed)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("f"), &feed)) continue;
+        if((point=Point::Parse(p, mode)).isValid()) continue;
     }
-    return m;
+    return {point,
+            cutZ, cutZ0,
+            diameter,
+            spindleSpeed, feed };
 }
 
 auto Hole::ToString() const -> QString

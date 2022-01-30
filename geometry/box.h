@@ -6,7 +6,20 @@
 #include "line.h"
 #include "boxtype.h"
 
-struct Box{    
+struct Box{
+    Box();
+    Box(const Point& _p0,
+        const Point& _p1,
+        const Gap& _gap,
+        BoxType::Type type,
+        qreal _cutZ,
+        qreal _cutZ0,
+        qreal corner_diameter,
+        // todo 4 struct ToolSpeed
+        qreal spindleSpeed,
+        qreal feed
+        );
+
     QList<Line> lines;
     Point p0;
     Point p1;

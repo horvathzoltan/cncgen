@@ -1,40 +1,72 @@
 #include "box.h"
 #include "gcode/gcode.h"
 
-auto Box::Parse(const QString &txt, XYMode mode) -> Box
+#include <QVarLengthArray>
+
+Box::Box()
 {
-    Box m={};
+    cutZ=cutZ0=0;
+    _isValid=false;
+}
+
+Box::Box(const Point &_p0,
+         const Point &_p1,
+         const Gap &_gap,
+         BoxType::Type _type,
+         qreal _cutZ,
+         qreal _cutZ0,
+         qreal _corner_diameter,
+         qreal _spindleSpeed,
+         qreal _feed)
+{
+    p0=_p0;
+    p1=_p1;
+    gap= _gap;
+    type = _type;
+    cutZ= _cutZ;
+    cutZ0 = _cutZ0;
+    corner_diameter=_corner_diameter;
+    spindleSpeed=_spindleSpeed;
+    feed=_feed;
+    _isValid = true;
+}
+
+
+auto Box::Parse(const QString &txt, XYMode mode) -> Box
+{    
     auto params=txt.split(' ');
-    int p_ix = 0;    
-    BoxType::Type type;
+    BoxType::Type type = BoxType::Undefined;
     Point point;
-    Gap gap;
+    QVarLengthArray<Point> points;
+    Gap gap={};
+    qreal cutZ=0;
+    qreal cutZ0=0;
+    qreal corner_diameter=-1;
+    qreal spindleSpeed=-1;
+    qreal feed=-1;
+
     for(int i=1;i<params.length();i++){
         auto&p =params[i];
-        if(GCode::ParseValue(p, QStringLiteral("z"), &m.cutZ)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("c"), &m.cutZ0)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("s"), &m.spindleSpeed)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("f"), &m.feed)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("d"), &m.corner_diameter)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("z"), &cutZ)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("c"), &cutZ0)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("s"), &spindleSpeed)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("f"), &feed)) continue;
+        if(GCode::ParseValue(p, QStringLiteral("d"), &corner_diameter)) continue;
         if((point=Point::Parse(p, mode)).isValid()){
-            if(p_ix==0){
-                m.p0=point;
-            }
-            else if(p_ix==1){
-                m.p1=point;
-            }
-            p_ix++;
-            continue; //point
-        }
-        if((type = BoxType::Parse(p)) != BoxType::Undefined){
-            m.type = type;
+            points.append(point);
             continue;
         }
-        if((gap = Gap::Parse(p)).isValid()){
-            m.gap = gap;
-        }
+        if((type = BoxType::Parse(p)) != BoxType::Undefined)continue;
+        if((gap = Gap::Parse(p)).isValid()) continue;
     }
-    return m;
+    if(points.length()<2) return {};
+    return {points[0],
+            points[1],
+            gap,
+            type,
+            cutZ, cutZ0,
+            corner_diameter,
+            spindleSpeed, feed };
 }
 
 auto Box::ToString() const -> QString

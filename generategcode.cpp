@@ -3,6 +3,8 @@
 #include <QtMath>
 #include <QString>
 #include "gcode/gcode.h"
+#include "gcode/variable.h"
+#include "gcode/string.h"
 
 auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 {
@@ -13,18 +15,15 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
     _last_hole_diameter =-1;
     _last_cutZ = -1;
     _last_cutZ0 = -1;
+    _variables.Clear();
 
     for(auto l:g){
         l = l.trimmed().toLower();
         if(l.isEmpty()) continue;
-        // todo 5 ha tartalmaz =-t akkor bal oldalon van a kulcs, a jobb oldalon az érték
-        // ha az =-től balra van " akkor szar, nem jó nem értékadás az a sor akkor
-        // baloldalon a trimmelt stringben nem lehet szóköz, írásjel
-        // jobb oldalon ha "val kezdődik, és " val végződik, közte ami van az string
-        // ha number, akkor szám
-
-        switch(l[0].unicode()){
-            case u'#':break;
+        if(l.startsWith('#')) continue;
+        if(_variables.Parse(l)) continue;
+        if(AppendGcode(GeneratePrintString(l))) continue;
+        switch(l[0].unicode()){            
             case u'(':AppendGcode(GenerateComment(l));break;
             case u'y':
             case u'x':setXYMode(l);break;
@@ -162,8 +161,8 @@ auto GenerateGcode::GenerateLineHorizontal(const Line& m) -> QString
 
     g.append(TravelXY(p));
 
-    if(m.sp!=-1) _selected_spindle_speed = m.sp;
-    if(m.f!=-1)_selected_feed_rate=m.f;
+    if(m.spindleSpeed!=-1) _selected_spindle_speed = m.spindleSpeed;
+    if(m.feed!=-1)_selected_feed_rate=m.feed;
     auto sp = SpindleStart();
     if(!sp.isEmpty()) g.append(sp);
     auto f = SetFeed();
@@ -171,7 +170,7 @@ auto GenerateGcode::GenerateLineHorizontal(const Line& m) -> QString
 
     g.append(LiftDown(m.p0.z));
 
-    int steps = qCeil(m.z/m.s)+1;
+    int steps = qCeil(m.cutZ/m.cutZ0)+1;
     QString msg2 = " (steps="+QString::number(steps)+')';
 
     for(int i=0;i<steps;i++){
@@ -183,9 +182,9 @@ auto GenerateGcode::GenerateLineHorizontal(const Line& m) -> QString
         {
             p=m.p0;
         }
-        qreal z = p.z-(i+1)*m.s;
+        qreal z = p.z-(i+1)*m.cutZ0;
 
-        if(z<p.z-m.z) p.z = p.z-m.z; else p.z = z;
+        if(z<p.z-m.cutZ) p.z = p.z-m.cutZ; else p.z = z;
 
         g.append(p.GoToXYZ(GMode::Linear));
     }
@@ -474,5 +473,19 @@ auto GenerateGcode::SetSpindleSpeed(const QString &txt) -> QString
 }
 
 
+auto GenerateGcode::GeneratePrintString(const QString &txt) -> QString
+{
+    if(!txt.startsWith(QStringLiteral("print"))) return QString();
 
+    String m = String::Parse(txt);
+    return GeneratePrintString(m);
+}
+
+auto GenerateGcode::GeneratePrintString(const String &m) -> QString
+{
+    auto g = m.ToString(_variables);
+    auto msg = QStringLiteral("G:")+g;
+    zInfo(msg);
+    return g;
+}
 

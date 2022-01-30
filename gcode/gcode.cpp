@@ -13,12 +13,50 @@ auto GCode::i(int x) -> QString{
 auto GCode::ParseValue(const QString &p, const QString &key, qreal *v) -> bool
 {
     bool isok = false;
-    if(v && p.startsWith(key)){
-        auto a = p.midRef(key.length());
+    auto hasKey = !key.isEmpty();
+    if(v && (!hasKey || p.startsWith(key))){
+        auto a = hasKey?p.midRef(key.length()):&p;
         if(!a.isEmpty() && a[0].isNumber()){
             auto sp = a.toDouble(&isok);
             if(isok) *v = sp;
         }
+    }
+    return isok;
+}
+
+auto GCode::ParseValue(const QString &p, const QString &key, int *v) -> bool
+{
+    bool isok = false;
+    auto hasKey = !key.isEmpty();
+    if(v && (!hasKey || p.startsWith(key))){
+        auto a = hasKey?p.midRef(key.length()):&p;
+        if(!a.isEmpty() && a[0].isNumber()){
+            auto sp = a.toInt(&isok);
+            if(isok) *v = sp;
+        }
+    }
+    return isok;
+}
+
+auto GCode::ParseValue(const QString &p, const QString &key, QString *v) -> bool
+{
+    bool isok = false;
+    auto hasKey = !key.isEmpty();
+    if(v && (!hasKey || p.startsWith(key))){
+        auto a = hasKey?p.midRef(key.length()):&p;
+        if(a.isEmpty()){
+            *v=a.toString();
+            isok=true;
+        } else {
+            if(a.startsWith('\"')&&a.endsWith('\"')){
+                a = a.mid(1, a.length()-2);
+                if(!a.contains('\"')){
+                    *v = a.toString();
+                    isok=true;
+                }
+            }
+        }
+
     }
     return isok;
 }
@@ -55,4 +93,6 @@ auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode 
     }
     return isok;
 }
+
+
 

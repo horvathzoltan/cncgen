@@ -18,13 +18,17 @@ h 149,81
 h 149,6
 (tápegység furatok)
 h 26,46
-m1= avg(52.5,57.7)
-m2 = 55
-m3 "=44"
-m4 "=44"
+m1=   avg(52.5,57.7)
+m2 = a1vg ( 52.5,57.7)
+m3 = "33"
+m4 = 44.3
 h y+m1
 
-
+print "m1: $ $m1 $m1kanál$m144"
+print "m2: $m2"
+print "m3: $m3"
+print "m4: $m4 macskaszar"
+print "makimajom mak mak mak"
 
 (körvonal)
 b out 0,0 154,112 z3 c0.15 g3,2,0.5

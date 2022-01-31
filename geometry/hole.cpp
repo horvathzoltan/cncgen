@@ -68,7 +68,7 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
     // todo b ha ugyanoda fúrunk egy másikat, ami
     // kisebb vagy rövidebb, mint a másik az felesleges
     // de amúgy simán lehet koordináta nélkül fúrni, ekkor ugyanoda kerül
-
+    // todo b0 ha a furat átmérő nagyobb, mint
     return {point, diameter, cut, feed, rpoint};
 }
 

@@ -13,8 +13,6 @@ void VariableRepository::Clear()
     //_expressions.clear();
 }
 
-// todo 6 - a key nem lehet klcsszó, pl sum, avg
-
 //01234
 //maki=majom
 auto VariableRepository::Parse(const QString &p) -> bool
@@ -26,6 +24,7 @@ auto VariableRepository::Parse(const QString &p) -> bool
     if(ix1!=-1 && ix1<ix0) return false;
     auto key = p.left(ix0).trimmed();
     if(!StringHelper::isLetterOrNumber(key)) return false;
+    if(KeyWord::Parse(key)!=KeyWord::Undefined) return false;
     auto value = p.mid(ix0+1).trimmed();
     QString str;
     QString function_str;

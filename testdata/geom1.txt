@@ -6,29 +6,42 @@ t1
 s50
 f150
 
-(vonalproba)
-l 10,10,0 30,30,0 z3 c0.15
-l r2,5
-l r2,5
+(furatproba)
+h 10,10 d3 z3 c0.15 s70 f180
+h 10,20 d6 z3 c0.15 s70 f180
+h 10,30 d8 z3 c0.15 s70 f180
+h 10,40 d12 z3 c0.15 s70 f180
 
-(rögzítő furatok)
+#(vonalproba)
+#l 20,20,0 25,25,0 z3 c0.15
+
+#(vonalproba2)
+#b outline 10,10,0 30,30,10 z3 c0.15
+#b outline 30,30,10 50,10,0  z3 c0.15
+#b inline 50,30,10 30,10,0 z3 c0.15
+#l r2,5
+#l r2,5
+#b r1,2
+#b r1,2
+
+#(rögzítő furatok)
 h 5,6 d3 z3 c0.15 s70 f180
 h 5,81
 h 27,106
 h 127,106
 h 149,81
 h 149,6
-(tápegység furatok)
+#(tápegység furatok)
 h 26,46
 m1 = avg(52.5,57.7)
 print "m1: $m1"
 h r0,$m1
-
-#print "m2: $m2"
-#print "m3: $m3"
-#print "m4: $m4 macskaszar"
-#print "makimajom mak mak mak"
-
+#
+##print "m2: $m2"
+##print "m3: $m3"
+##print "m4: $m4 macskaszar"
+##print "makimajom mak mak mak"
+#
 (körvonal)
 b outline 0,0 154,112 z3 c0.15 g3,2,0.5
 (pi3b furatok)

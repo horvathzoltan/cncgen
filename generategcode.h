@@ -16,6 +16,7 @@ class GenerateGcode
 {
 public:
     QStringList Generate(const QStringList& g);
+    bool CheckCut(QString*err);
 private:
     bool _verbose = true;
     XYMode _XYMode = XY;
@@ -41,21 +42,22 @@ private:
 
     Point _lastBoxP0;
     Point _lastBoxP1;
+    BoxType::Type _lastBoxType;
 
     //VariableRepository _variables;
-    bool AppendGcode(const QString &g);
+    bool AppendGcode(const QString &g, const QString& err);
     bool setXYMode(const QString &txt);
 
     QString GenerateComment(const QString& txt);
 
     /*Geomerty*/
     bool ValidateTool();
-    QString GenerateLineHorizontal(const QString& txt);
-    QString GenerateLineHorizontal(const Line& m);
-    QString GenerateHole(const QString& txt);
-    QString GenerateHole(const Hole& m);
-    QString GenerateBox(const QString& txt);
-    QString GenerateBox(const Box& m);
+    QString GenerateLineHorizontal(const QString& txt,QString *err);
+    QString GenerateLineHorizontal(const Line& m,QString *err);
+    QString GenerateHole(const QString& txt,QString*err);
+    QString GenerateHole(const Hole& m,QString*err);
+    QString GenerateBox(const QString& txt,QString*err);
+    QString GenerateBox(const Box& m,QString*err);
     QString GeneratePrintString(const QString& txt);
     QString GeneratePrintString(const String& m);
 
@@ -79,9 +81,9 @@ private:
     QString LiftUp(const QVariant& z);
     //QString LiftUp(Point p);
     QString TravelXY(Point p);
-    QString lasterr(){return _lasterr;};
+    //QString lasterr(){return _lasterr;};
 private:
-    QString _lasterr;
+    //QString _lasterr;
 };
 
 #endif // GENERATEGCODE_H

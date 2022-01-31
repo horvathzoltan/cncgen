@@ -17,16 +17,17 @@ Box::Box(const Point &_p0,
          BoxType::Type _type,
          Cut _cut,
          qreal _corner_diameter,
-         Feed _feed)
+         Feed _feed,
+         const Point& _rp)
 {
     p0=_p0;
     p1=_p1;
     gap= _gap;
     type = _type;
-
     corner_diameter=_corner_diameter;
     cut=_cut;
     feed=_feed;
+    rp=_rp;
     _isValid = true;
 }
 
@@ -41,11 +42,14 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
     Cut cut;
     qreal corner_diameter=-1;
     Feed feed;
+    Point rpoint;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
-        if(i==1){
-            type = BoxType::Parse(p);
+        //if(i==1){
+        auto type_temp = BoxType::Parse(p);
+        if(type_temp!=type && type_temp!=BoxType::Undefined){ // az utolsó számít
+            type = type_temp;
             continue;
             }
 
@@ -53,6 +57,9 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
             point=Point::Parse(p, mode);
             if(point.isValid()) points.append(point);
             continue;
+        }
+        if(p.startsWith('r')) {
+            rpoint=Point::Parse(p, mode, L("r")); continue;
         }
         if(p.startsWith('d')){
             GCode::ParseValue(p, L("d"), &corner_diameter);
@@ -78,30 +85,35 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
             gap = Gap::Parse(p); continue;
         }
     }
-
-    bool positionErr = points.length()<2;
+    bool hasPoints = points.length()>=2;
+    bool positionErr = !hasPoints&&!rpoint.isValid();
     bool isCornerErr = type==BoxType::Corners&&corner_diameter<=0;
 
     if(positionErr){ _lasterr=L("nincsenek pontok"); return {};}
     if(isCornerErr){ _lasterr=L("no corner diameter"); return {};}
-    return {points[0],
-            points[1],
+
+    return {hasPoints?points[0]:Point(),
+            hasPoints?points[1]:Point(),
             gap,
             type,
             cut,
             corner_diameter,
-            feed };
+            feed,
+            rpoint
+    };
 }
 
 auto Box::ToString() const -> QString
 {
-    return L("b ")+
-        BoxType::ToString(type)+' '+
-        p0.ToString()+' '+p1.ToString()+
-        cut.ToString()+
-        feed.ToString()+
-        ((type==BoxType::Corners)?(" d"+GCode::r(corner_diameter)):QString())+
-        ' '+gap.ToString();
+    auto msg = L("b ")+BoxType::ToString(type);
+    if (p0.isValid()) msg+=' '+p0.ToString();
+    if (p1.isValid()) msg+=' '+p1.ToString();
+    if (rp.isValid()) msg+=" r"+rp.ToString();
+    msg+=cut.ToString();
+    msg+=feed.ToString();
+    if (type==BoxType::Corners) msg+=" d"+GCode::r(corner_diameter);
+    if(gap.isValid()) msg+=+' '+gap.ToString();
+    return msg;
 }
 
 

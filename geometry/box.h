@@ -14,7 +14,8 @@ struct Box{
         BoxType::Type _type,
         Cut _cut,
         qreal _corner_diameter,
-        Feed _feed
+        Feed _feed,
+        const Point& _rp
         );
 
     QList<Line> lines;
@@ -24,9 +25,8 @@ struct Box{
     BoxType::Type type = BoxType::Outline;
     Cut cut;
     qreal corner_diameter=-1;
-    // todo 4 struct ToolSpeed
     Feed feed;
-
+    Point rp;
     static Box Parse(const QString& txt, XYMode mode);
     QString ToString() const;
 

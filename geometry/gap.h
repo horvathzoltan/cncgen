@@ -16,7 +16,7 @@ struct Gap{
 
 /*ISVALID*/
 public:
-    bool isValid(){return _isValid;}
+    bool isValid() const {return _isValid;}
 private:
     bool _isValid;
 };

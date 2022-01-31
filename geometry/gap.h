@@ -13,6 +13,9 @@ struct Gap{
 
     static Gap Parse(const QString& txt);
     QString ToString() const;
+
+/*ISVALID*/
+public:
     bool isValid(){return _isValid;}
 private:
     bool _isValid;

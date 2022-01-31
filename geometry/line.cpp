@@ -5,10 +5,12 @@
 #include "geometry/geomath.h"
 #include "common/logger/log.h"
 
+QString Line::_lasterr;
+
 Line::Line()
 {
+    cutZ=cutZ0=0;
     _isValid=false;
-
 }
 
 Line::Line(const Point &_p0,
@@ -29,41 +31,35 @@ Line::Line(const Point &_p0,
 
 auto Line::Parse(const QString &txt, XYMode mode) -> Line
 {
-    //Line m={};
+    _lasterr.clear();
     QVarLengthArray<Point> points;
-    auto params=txt.split(' ');
-    //int p_ix = 0;
-    qreal cutZ;
-    qreal cutZ0;
+    auto params=txt.split(' ');    
+    qreal cutZ=-1;
+    qreal cutZ0=-1;
     qreal spindleSpeed=-1;
     qreal feed=-1;
+
     for(int i=1;i<params.length();i++){
-        auto&p =params[i];
+        auto&p = params[i];
+        if(p[0].isNumber()){
+            points.append(Point::Parse(p, mode)); continue;
+        }
         if(p.startsWith('z')){
-            bool isok;
-            auto z = p.midRef(1).toDouble(&isok);
-            if(isok) cutZ = z;
+            GCode::ParseValue(p, L("z"), &cutZ); continue;
         }
-        else if(p.startsWith('s')&&p.length()>1&&p[1].isDigit()){
-            bool isok;
-            auto s = p.midRef(1).toDouble(&isok);
-            if(isok) cutZ0 = s;
+        if(p.startsWith('c')){
+            GCode::ParseValue(p, L("c"), &cutZ0); continue;
         }
-        else if(p.startsWith(QStringLiteral("sp"))){
-            bool isok;
-            auto sp = p.midRef(2).toDouble(&isok);
-            if(isok) spindleSpeed = sp;
+        if(p.startsWith('s')){
+            GCode::ParseValue(p, L("s"), &spindleSpeed); continue;
         }
-        else if(p.startsWith('f')){
-            bool isok;
-            auto f = p.midRef(1).toDouble(&isok);
-            if(isok) feed = f;
-        }
-        else if(p[0].isDigit()){
-            points.append(Point::Parse(p, mode));
+        if(p.startsWith('f')){
+            GCode::ParseValue(p, L("f"), &feed); continue;
         }
     }
-    if(points.length()<2) return {};
+    bool positionErr = points.length()<2;
+
+    if(positionErr){ _lasterr=L("nincsenek pontok"); return {};}
     return {points[0], points[1], cutZ, cutZ0, spindleSpeed, feed};
 }
 

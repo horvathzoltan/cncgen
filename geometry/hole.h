@@ -13,7 +13,8 @@ struct Hole{
         qreal _diameter,
         // todo 4 struct ToolSpeed
         qreal _spindleSpeed,
-        qreal _feed
+        qreal _feed,
+        const Point& _rp={}
         );
     Point p;
     qreal diameter=-1;
@@ -21,12 +22,23 @@ struct Hole{
     qreal cutZ0=-1;
     qreal spindleSpeed=-1;
     qreal feed=-1;
-
+    Point rp={};
+//todo 7 name - kell mindennek név
     static Hole Parse(const QString& txt, XYMode mode);
     QString ToString() const;
-    bool isValid(){return _isValid;}
+
+    /*ISVALID*/
+public:
+    bool isValid() const {return _isValid;}
 private:
     bool _isValid;
+
+    /*LASTERR*/
+public:
+    static QString lasterr(){return _lasterr;}
+private:
+    static QString _lasterr;
+
 };
 
 #endif // HOLE_H

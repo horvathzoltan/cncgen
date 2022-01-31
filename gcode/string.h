@@ -13,11 +13,14 @@ public:
 
     QString _value;
     static String Parse(const QString& txt);
-    QString ToString(const VariableRepository& variables) const;
+    QString ToString() const;
 
+/*ISVALID*/
+public:
     bool isValid(){return _isValid;}
 private:
     bool _isValid;
+
 };
 
 #endif // STRING_H

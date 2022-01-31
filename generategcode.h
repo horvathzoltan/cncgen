@@ -35,7 +35,9 @@ private:
     qreal _last_cutZ;
     qreal _last_cutZ0;
 
-    VariableRepository _variables;
+    Point _lastXYZ;
+
+    //VariableRepository _variables;
     bool AppendGcode(const QString &g);
     bool setXYMode(const QString &txt);
 
@@ -72,7 +74,9 @@ private:
     QString LiftUp(const QVariant& z);
     //QString LiftUp(Point p);
     QString TravelXY(Point p);
-
+    QString lasterr(){return _lasterr;};
+private:
+    QString _lasterr;
 };
 
 #endif // GENERATEGCODE_H

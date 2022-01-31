@@ -2,6 +2,8 @@
 #include "helpers/stringhelper.h"
 #include "gcode/gcode.h"
 #include "gcode/expression.h"
+#include "common/macrofactory/macro.h"
+
 VariableRepository::VariableRepository()
 = default;
 
@@ -12,7 +14,6 @@ void VariableRepository::Clear()
 }
 
 // todo 6 - a key nem lehet klcsszó, pl sum, avg
-// todo 7 - ha a kulcs már van, akkor nem insert, hanem update
 
 //01234
 //maki=majom
@@ -59,4 +60,11 @@ auto VariableRepository::contains(const QString &key) const -> bool
     return _values.contains(key);
 }
 
-
+QString VariableRepository::ToString(const QString& key)
+{
+    QVariant variable;
+    if((variable = GCode::_variables.value(key)).isValid()){
+        return variable.toString();
+    }
+    return L("=???");
+}

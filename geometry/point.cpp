@@ -1,6 +1,9 @@
 #include "point.h"
 #include <QStringList>
 #include "gcode/gcode.h"
+#include "common/logger/log.h"
+
+QString Point::_lasterr;
 
 Point::Point()
 {
@@ -16,12 +19,25 @@ Point::Point(qreal _x, qreal _y, qreal _z)
     _isValid=true;
 }
 
-auto Point::Parse(const QString &txt, XYMode mode) -> Point
+auto Point::Parse(const QString &txt,
+                  XYMode mode,
+                  const QString& key) -> Point
 {
+    _lasterr.clear();
     if(txt.isEmpty()) return {};
-    double x, y, z;
-    if(!GCode::ParseValueXYZ(txt, &x, &y, &z, mode)) return {};
-    return {x,y,z};
+    auto hasKey = !key.isEmpty();
+
+    if(!hasKey || txt.startsWith(key)){
+        auto a = hasKey?txt.mid(key.length()):txt;
+        double x, y, z;
+//        if(txt.startsWith('r')&&txt.contains("$m1")){
+//            zInfo(L("rxyz:")+txt);
+//        }
+        if(!GCode::ParseValueXYZ(a, &x, &y, &z, mode)) return {};
+        return {x,y,z};
+    }
+    _lasterr=L("nincs pozíció adat");
+    return {};
 }
 
 auto Point::ToString() const -> QString

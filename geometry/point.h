@@ -13,18 +13,24 @@ struct Point{
     Point();
     Point(qreal, qreal, qreal);
 
-    static Point Parse(const QString&, XYMode m);
+    static Point Parse(const QString&, XYMode m, const QString& key={});
     QString ToString() const;
     //QString ToGcode();
     QString GoToZ(GMode::Mode i);
     QString GoToXY(GMode::Mode i);
     QString GoToXYZ(GMode::Mode i);
 
-    //QString LiftDown();
-    //QString LiftUp(qreal mov_z);
-    bool isValid(){return _isValid;}
+    /*ISVALID*/
+public:
+    bool isValid() const {return _isValid;}
 private:
     bool _isValid;
+
+    /*LASTERR*/
+public:
+    static QString lasterr(){return _lasterr;}
+private:
+    static QString _lasterr;
 };
 
 #endif // POINT_H

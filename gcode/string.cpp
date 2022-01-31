@@ -29,7 +29,7 @@ auto String::Parse(const QString &txt) -> String
 //p     0 2  0 2
 //0123456789abcd
 //m1: $ $m1  $m2
-auto String::ToString(const VariableRepository& variablerepo) const -> QString
+auto String::ToString() const -> QString
 {
     QMap<QString, QString> tokens;
 
@@ -50,10 +50,11 @@ auto String::ToString(const VariableRepository& variablerepo) const -> QString
                 isToken=false;
                 if(c!=' ') token+=c;
                 if(!token.isEmpty()){
-                    QVariant variable;
-                    if((variable = variablerepo.value(token)).isValid()){
-                         v+=variable.toString();
-                    } else v+=token+"=???";//variable.toString();
+                    v+=GCode::_variables.ToString(token);
+//                    QVariant variable;
+//                    if((variable = GCode::_variables.value(token)).isValid()){
+//                         v+=variable.toString();
+//                    } else v+=token+"=???";//variable.toString();
                 }else{
                     v+='$'; // kiköptük a dollárt
                 }

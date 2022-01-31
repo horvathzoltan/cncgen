@@ -14,6 +14,7 @@ public:
     QVariant value(const QString& key) const;
     bool contains(const QString& key) const;
     QVariant expression(const QString& key) const;
+    QString ToString(const QString& key);
 private:
     QMap<QString,QVariant> _values;
     //QMap<QString,Expression> _expressions;

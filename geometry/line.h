@@ -27,9 +27,18 @@ struct Line{
     static Line Parse(const QString& txt, XYMode mode);
     QString ToString() const;
     QList<Line> Divide(const Gap& g, qreal tool_d);
-    bool isValid(){return _isValid;}
+
+    /*ISVALID*/
+public:
+    bool isValid() const {return _isValid;}
 private:
     bool _isValid;
+
+    /*LASTERR*/
+public:
+    static QString lasterr(){return _lasterr;}
+private:
+    static QString _lasterr;
 };
 
 

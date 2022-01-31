@@ -1,7 +1,9 @@
 #include "box.h"
 #include "gcode/gcode.h"
-
+#include "common/macrofactory/macro.h"
 #include <QVarLengthArray>
+
+QString Box::_lasterr;
 
 Box::Box()
 {
@@ -31,35 +33,62 @@ Box::Box(const Point &_p0,
     _isValid = true;
 }
 
-
 auto Box::Parse(const QString &txt, XYMode mode) -> Box
-{    
+{
+    _lasterr.clear();
     auto params=txt.split(' ');
     BoxType::Type type = BoxType::Undefined;
     Point point;
     QVarLengthArray<Point> points;
     Gap gap={};
-    qreal cutZ=0;
-    qreal cutZ0=0;
+    qreal cutZ=-1;
+    qreal cutZ0=-1;
     qreal corner_diameter=-1;
     qreal spindleSpeed=-1;
     qreal feed=-1;
 
     for(int i=1;i<params.length();i++){
-        auto&p =params[i];
-        if(GCode::ParseValue(p, QStringLiteral("z"), &cutZ)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("c"), &cutZ0)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("s"), &spindleSpeed)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("f"), &feed)) continue;
-        if(GCode::ParseValue(p, QStringLiteral("d"), &corner_diameter)) continue;
-        if((point=Point::Parse(p, mode)).isValid()){
-            points.append(point);
+        auto&p = params[i];
+        if(i==1){
+            type = BoxType::Parse(p);
+            continue;
+            }
+
+        if(p[0].isNumber()) {
+            point=Point::Parse(p, mode);
+            if(point.isValid()) points.append(point);
             continue;
         }
-        if((type = BoxType::Parse(p)) != BoxType::Undefined)continue;
-        if((gap = Gap::Parse(p)).isValid()) continue;
+        if(p.startsWith('d')){
+            GCode::ParseValue(p, L("d"), &corner_diameter);
+            continue;
+        }
+        if(p.startsWith('z')){
+            GCode::ParseValue(p, L("z"), &cutZ);
+            continue;
+        }
+        if(p.startsWith('c')){ //corners
+            GCode::ParseValue(p, L("c"), &cutZ0);
+            continue;
+        }
+        if(p.startsWith('s')){
+            GCode::ParseValue(p, L("s"), &spindleSpeed);
+            continue;
+        }
+        if(p.startsWith('f')){
+            GCode::ParseValue(p, L("f"), &feed);
+            continue;
+        }
+        if(p.startsWith('g')){
+            gap = Gap::Parse(p); continue;
+        }
     }
-    if(points.length()<2) return {};
+
+    bool positionErr = points.length()<2;
+    bool isCornerErr = type==BoxType::Corners&&corner_diameter<=0;
+
+    if(positionErr){ _lasterr=L("nincsenek pontok"); return {};}
+    if(isCornerErr){ _lasterr=L("no corner diameter"); return {};}
     return {points[0],
             points[1],
             gap,
@@ -71,7 +100,7 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
 
 auto Box::ToString() const -> QString
 {
-    return QStringLiteral("b ")+
+    return L("b ")+
         BoxType::ToString(type)+' '+
         p0.ToString()+' '+p1.ToString()+
         " z"+GCode::r(cutZ)+

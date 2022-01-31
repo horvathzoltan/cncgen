@@ -35,9 +35,17 @@ struct Box{
     static Box Parse(const QString& txt, XYMode mode);
     QString ToString() const;
 
-    bool isValid(){return _isValid;}
+    /*ISVALID*/
+public:
+    bool isValid() const {return _isValid;}
 private:
     bool _isValid;
+
+    /*LASTERR*/
+public:
+    static QString lasterr(){return _lasterr;}
+private:
+    static QString _lasterr;
 };
 
 

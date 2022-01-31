@@ -7,7 +7,7 @@ QString Box::_lasterr;
 
 Box::Box()
 {
-    cutZ=cutZ0=0;
+    //cut={};
     _isValid=false;
 }
 
@@ -15,20 +15,17 @@ Box::Box(const Point &_p0,
          const Point &_p1,
          const Gap &_gap,
          BoxType::Type _type,
-         qreal _cutZ,
-         qreal _cutZ0,
+         Cut _cut,
          qreal _corner_diameter,
-         qreal _spindleSpeed,
-         qreal _feed)
+         Feed _feed)
 {
     p0=_p0;
     p1=_p1;
     gap= _gap;
     type = _type;
-    cutZ= _cutZ;
-    cutZ0 = _cutZ0;
+
     corner_diameter=_corner_diameter;
-    spindleSpeed=_spindleSpeed;
+    cut=_cut;
     feed=_feed;
     _isValid = true;
 }
@@ -41,11 +38,9 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
     Point point;
     QVarLengthArray<Point> points;
     Gap gap={};
-    qreal cutZ=-1;
-    qreal cutZ0=-1;
+    Cut cut;
     qreal corner_diameter=-1;
-    qreal spindleSpeed=-1;
-    qreal feed=-1;
+    Feed feed;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -64,19 +59,19 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
             continue;
         }
         if(p.startsWith('z')){
-            GCode::ParseValue(p, L("z"), &cutZ);
+            GCode::ParseValue(p, L("z"), &cut.z);
             continue;
         }
         if(p.startsWith('c')){ //corners
-            GCode::ParseValue(p, L("c"), &cutZ0);
+            GCode::ParseValue(p, L("c"), &cut.z0);
             continue;
         }
         if(p.startsWith('s')){
-            GCode::ParseValue(p, L("s"), &spindleSpeed);
+            GCode::ParseValue(p, L("s"), &feed.spindleSpeed);
             continue;
         }
         if(p.startsWith('f')){
-            GCode::ParseValue(p, L("f"), &feed);
+            GCode::ParseValue(p, L("f"), &feed.f);
             continue;
         }
         if(p.startsWith('g')){
@@ -93,9 +88,9 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
             points[1],
             gap,
             type,
-            cutZ, cutZ0,
+            cut,
             corner_diameter,
-            spindleSpeed, feed };
+            feed };
 }
 
 auto Box::ToString() const -> QString
@@ -103,10 +98,8 @@ auto Box::ToString() const -> QString
     return L("b ")+
         BoxType::ToString(type)+' '+
         p0.ToString()+' '+p1.ToString()+
-        " z"+GCode::r(cutZ)+
-        " c"+GCode::r(cutZ0)+
-        " s"+GCode::r(spindleSpeed)+
-        " f"+GCode::r(feed)+
+        cut.ToString()+
+        feed.ToString()+
         ((type==BoxType::Corners)?(" d"+GCode::r(corner_diameter)):QString())+
         ' '+gap.ToString();
 }

@@ -13,18 +13,14 @@ Hole::Hole()
 Hole::Hole(
     const Point &_p,
     qreal _diameter,
-    qreal _cutZ,
-    qreal _cutZ0,
-    qreal _spindleSpeed,
-    qreal _feed,
+    Cut _cut,
+    Feed _feed,
     const Point &_rp)
 {
     p = _p;
     diameter=_diameter;
-    cutZ= _cutZ;
-    cutZ0 = _cutZ0;
-    spindleSpeed=_spindleSpeed;
-    feed=_feed;
+    cut = _cut;
+    feed = _feed;
     rp=_rp;
     _isValid = true;
 }
@@ -34,11 +30,9 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
     _lasterr.clear();
     auto params=txt.split(' ');
     Point point;
-    qreal cutZ=-1;
-    qreal cutZ0=-1;
     qreal diameter=-1;
-    qreal spindleSpeed=-1;
-    qreal feed=-1;
+    Cut cut;
+    Feed feed;
     QString rpointTxt;
     Point rpoint;
 
@@ -55,16 +49,16 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
             GCode::ParseValue(p, L("d"), &diameter); continue;
         }
         if(p.startsWith('z')){
-            GCode::ParseValue(p, L("z"), &cutZ); continue;
+            GCode::ParseValue(p, L("z"), &cut.z); continue;
         }
         if(p.startsWith('c')){
-            GCode::ParseValue(p, L("c"), &cutZ0); continue;
+            GCode::ParseValue(p, L("c"), &cut.z0); continue;
         }
         if(p.startsWith('s')){
-            GCode::ParseValue(p, L("s"), &spindleSpeed); continue;
+            GCode::ParseValue(p, L("s"), &feed.spindleSpeed); continue;
         }
         if(p.startsWith('f')){
-            GCode::ParseValue(p, L("f"), &feed); continue;
+            GCode::ParseValue(p, L("f"), &feed.f); continue;
         }
     }
 
@@ -75,22 +69,17 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
     // kisebb vagy rövidebb, mint a másik az felesleges
     // de amúgy simán lehet koordináta nélkül fúrni, ekkor ugyanoda kerül
 
-    return {point,
-            diameter,
-            cutZ, cutZ0,
-            spindleSpeed, feed,
-            rpoint};
+    return {point, diameter, cut, feed, rpoint};
 }
 
 auto Hole::ToString() const -> QString
 {
     auto msg = L("h");
     if (p.isValid()) msg+=' '+p.ToString();
-    if (diameter>0) msg+=" d"+ GCode::r(diameter);
-    if (cutZ>0) msg+=" z"+ GCode::r(cutZ);
-    if (cutZ0>0) msg+=" c"+ GCode::r(cutZ0);
-    if (spindleSpeed>0) msg+=" s"+GCode::r(spindleSpeed);
-    if (feed>0) msg+=" f"+GCode::r(feed);
     if (rp.isValid()) msg+=" r"+rp.ToString();
+    if (diameter>0) msg+=" d"+ GCode::r(diameter);
+    msg+= cut.ToString();
+    msg+= feed.ToString();
+
     return msg;
 }

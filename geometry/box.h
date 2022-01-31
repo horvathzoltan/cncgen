@@ -11,13 +11,10 @@ struct Box{
     Box(const Point& _p0,
         const Point& _p1,
         const Gap& _gap,
-        BoxType::Type type,
-        qreal _cutZ,
-        qreal _cutZ0,
-        qreal corner_diameter,
-        // todo 4 struct ToolSpeed
-        qreal spindleSpeed,
-        qreal feed
+        BoxType::Type _type,
+        Cut _cut,
+        qreal _corner_diameter,
+        Feed _feed
         );
 
     QList<Line> lines;
@@ -25,12 +22,10 @@ struct Box{
     Point p1;
     Gap gap;
     BoxType::Type type = BoxType::Outline;
-    qreal cutZ;
-    qreal cutZ0;
+    Cut cut;
     qreal corner_diameter=-1;
     // todo 4 struct ToolSpeed
-    qreal spindleSpeed=-1;
-    qreal feed=-1;
+    Feed feed;
 
     static Box Parse(const QString& txt, XYMode mode);
     QString ToString() const;

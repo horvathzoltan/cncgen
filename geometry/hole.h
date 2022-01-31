@@ -4,24 +4,22 @@
 #include <QString>
 #include "xymode.h"
 #include "point.h"
+#include "gcode/cut.h"
+#include "gcode/feed.h"
 
 struct Hole{
     Hole();
     Hole(const Point& _p,
-        qreal _cutZ,
-        qreal _cutZ0,
-        qreal _diameter,
-        // todo 4 struct ToolSpeed
-        qreal _spindleSpeed,
-        qreal _feed,
+         qreal _diameter,
+         Cut _cut,
+         Feed _feed,
         const Point& _rp={}
         );
     Point p;
     qreal diameter=-1;
-    qreal cutZ=-1;
-    qreal cutZ0=-1;
-    qreal spindleSpeed=-1;
-    qreal feed=-1;
+
+    Cut cut={};
+    Feed feed={};
     Point rp={};
 //todo 7 name - kell mindennek név
     static Hole Parse(const QString& txt, XYMode mode);

@@ -5,24 +5,22 @@
 #include "point.h"
 #include "gap.h"
 #include <QList>
+#include "gcode/cut.h"
+#include "gcode/feed.h"
 
 struct Line{
     Line();
     Line(const Point& _p0,
          const Point& _p1,
-         qreal _cutZ,
-         qreal _cutZ0,
-         //qreal _diameter,
-         // todo 4 struct ToolSpeed
-         qreal _spindleSpeed,
-         qreal _feed
+         Cut _cut,
+         Feed _feed,
+         const Point& _rp = {}
          );
     Point p0;
     Point p1;
-    qreal cutZ;
-    qreal cutZ0;
-    qreal spindleSpeed=-1;
-    qreal feed=-1;
+    Cut cut;
+    Feed feed;
+    Point rp;
 
     static Line Parse(const QString& txt, XYMode mode);
     QString ToString() const;

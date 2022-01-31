@@ -9,23 +9,22 @@ QString Line::_lasterr;
 
 Line::Line()
 {
-    cutZ=cutZ0=0;
+        //_cut;
     _isValid=false;
 }
 
 Line::Line(const Point &_p0,
            const Point &_p1,
-           qreal _cutZ,
-           qreal _cutZ0,
-           qreal _spindleSpeed,
-           qreal _feed)
+           Cut _cut,
+           Feed _feed,
+           const Point& _rp
+           )
 {
     p0 = _p0;
     p1 = _p1;
-    cutZ= _cutZ;
-    cutZ0 = _cutZ0;
-    spindleSpeed=_spindleSpeed;
-    feed=_feed;
+    cut = _cut;
+    feed = _feed;
+    rp=_rp;
     _isValid = true;
 }
 
@@ -33,42 +32,52 @@ auto Line::Parse(const QString &txt, XYMode mode) -> Line
 {
     _lasterr.clear();
     QVarLengthArray<Point> points;
-    auto params=txt.split(' ');    
-    qreal cutZ=-1;
-    qreal cutZ0=-1;
-    qreal spindleSpeed=-1;
-    qreal feed=-1;
+    auto params=txt.split(' ');
+    Cut cut;
+    Feed feed;
+    QString rpointTxt;
+    Point rpoint;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
         if(p[0].isNumber()){
             points.append(Point::Parse(p, mode)); continue;
         }
+        if(p.startsWith('r')) {
+            rpoint=Point::Parse(p, mode, L("r")); continue;
+        }
         if(p.startsWith('z')){
-            GCode::ParseValue(p, L("z"), &cutZ); continue;
+            GCode::ParseValue(p, L("z"), &cut.z); continue;
         }
         if(p.startsWith('c')){
-            GCode::ParseValue(p, L("c"), &cutZ0); continue;
+            GCode::ParseValue(p, L("c"), &cut.z0); continue;
         }
         if(p.startsWith('s')){
-            GCode::ParseValue(p, L("s"), &spindleSpeed); continue;
+            GCode::ParseValue(p, L("s"), &feed.spindleSpeed); continue;
         }
         if(p.startsWith('f')){
-            GCode::ParseValue(p, L("f"), &feed); continue;
+            GCode::ParseValue(p, L("f"), &feed.f); continue;
         }
     }
-    bool positionErr = points.length()<2;
-
+    bool hasPoints = points.length()>=2;
+    bool positionErr = !hasPoints&&!rpoint.isValid();
     if(positionErr){ _lasterr=L("nincsenek pontok"); return {};}
-    return {points[0], points[1], cutZ, cutZ0, spindleSpeed, feed};
+
+    return {
+        hasPoints?points[0]:Point(),
+        hasPoints?points[1]:Point(),
+        cut, feed, rpoint};
 }
 
 auto Line::ToString() const -> QString
 {
-    return
-        "l "+p0.ToString()+' '+ p1.ToString()+
-        " z"+ GCode::r(cutZ)+
-        " s"+GCode::r(cutZ0);
+    QString msg = L("l");
+    if (p0.isValid()) msg+=' '+p0.ToString();
+    if (p1.isValid()) msg+=' '+p1.ToString();
+    if (rp.isValid()) msg+=" r"+rp.ToString();
+    msg+=cut.ToString();
+    msg+=feed.ToString();
+    return msg;
 }
 
 auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
@@ -99,17 +108,17 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
         //zInfo("i:"+GCode::r(i));
         auto o = static_cast<qreal>(i)/(slices);
         //zInfo("o:"+GCode::r(o));
-        Point op ={};
+        Point op ={0,0,0};
         bool isok = GeoMath::Divider(p0,p1,o,&op);
         if(!isok) continue;
         //Line l = {kp, op, z, s, sp, f};
-        Point op1 ={};
+        Point op1 ={0,0,0};
         bool isok2 = GeoMath::Divider(kp,op,o1,&op1);
         if(!isok2) continue;
         // line:kp2->op1
-        Line l = {kp2, op1, cutZ, cutZ0, spindleSpeed, feed};
+        Line l = {kp2, op1, cut, feed};
         m.append(l);
-        Point op2 ={};
+        Point op2 ={0,0,0};
         bool isok3 = GeoMath::Divider(kp,op,o2,&op2);
         if(!isok3) continue;
         kp = op;
@@ -118,9 +127,12 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
 //        Line gap = {op1, op2, z-g.h, s, sp, f};
 //        m.append(gap);
     }
-    Line lx = {kp2, p1, cutZ, cutZ0, spindleSpeed, feed};
+    Line lx = {kp2, p1, cut, feed};
     m.append(lx);
-
+    zInfo(L("gap_")+": " + ToString());
+    for(int i=0;i<m.length();i++){
+        zInfo(L("gap")+QString::number(i)+": " + m[i].ToString());
+    }
     return m;
 }
 

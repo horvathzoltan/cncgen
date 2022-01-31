@@ -93,7 +93,9 @@ INCLUDEPATH += $$HOME/common
 DEPENDPATH += $$HOME/common
 
 SOURCES += \
+        gcode/cut.cpp \
         gcode/expression.cpp \
+        gcode/feed.cpp \
         gcode/gcode.cpp \
         gcode/keyword.cpp \
         gcode/string.cpp \
@@ -112,7 +114,9 @@ SOURCES += \
         work1.cpp
 
 HEADERS += \
+    gcode/cut.h \
     gcode/expression.h \
+    gcode/feed.h \
     gcode/function.h \
     gcode/gcode.h \
     gcode/keyword.h \

@@ -25,17 +25,22 @@ private:
 
     QMap<int, Tool> _tools;
     int _selected_tool_ix;
-    int _selected_feed_rate;
-    int _selected_spindle_speed;
+    Feed _selected_feed;
+    Cut _selected_cut;
 
     int _last_tool_ix = -1;
-    qreal _last_feed_rate = -1;
-    qreal _last_spindle_speed = -1;
+    Feed _last_feed;
     qreal _last_hole_diameter;
-    qreal _last_cutZ;
-    qreal _last_cutZ0;
+    Cut _last_cut;
 
-    Point _lastXYZ;
+
+    Point _lastHoleP;
+
+    Point _lastLineP0;
+    Point _lastLineP1;
+
+    Point _lastBoxP0;
+    Point _lastBoxP1;
 
     //VariableRepository _variables;
     bool AppendGcode(const QString &g);

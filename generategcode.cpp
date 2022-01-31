@@ -329,6 +329,7 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
     bool isGap = _last_hole_diameter>5*t.d; //
     bool pre_drill = isGap?false:_last_hole_diameter>2*t.d; //d=0
     bool pre_mill = isGap?false:_last_hole_diameter>3*t.d; //d=2*t.d
+    // todo c0 ha az átmérő akkora, mint a szerszám, akkkor csak fúrunk
 
     if(m.p.isValid()){
         _lastHoleP=m.p;
@@ -405,10 +406,10 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
 
     g.append(TravelXY(p));
 
-//    auto sp = SpindleStart();
-//    if(!sp.isEmpty()) g.append(sp);
-//    auto f = SetFeed();
-//    if(!f.isEmpty()) g.append(f);
+    auto sp = SpindleStart();
+    if(!sp.isEmpty()) g.append(sp);
+    auto f = SetFeed();
+    if(!f.isEmpty()) g.append(f);
 
     //g.append(LiftDown(m.p.z));
     g.append(LiftDown(p.z));
@@ -759,10 +760,10 @@ auto GenerateGcode::ChangeTool() ->QString
 
 auto GenerateGcode::SpindleStart() ->QString
 {
-    auto const T = QStringLiteral("m3");
+    auto const M3 = QStringLiteral("m3");
     if(_selected_feed.spindleSpeed<=0) return QString();
     auto sp = SetSpindleSpeed();
-    return (sp.isEmpty()?T:T+' '+sp)+"(spindle start)";
+    return (sp.isEmpty()?M3:M3+' '+sp)+"(spindle start)";
 }
 
 auto GenerateGcode::SetSpindleSpeed() ->QString
@@ -778,7 +779,8 @@ auto GenerateGcode::SetSpindleSpeed() ->QString
 
 auto GenerateGcode::SpindleStop() ->QString
 {
-    return QStringLiteral("m5 (spindle stop)");
+    //_selected_feed.spindleSpeed=0;
+    return QStringLiteral("m5 (spindle stop)");    
 }
 
 auto GenerateGcode::SetFeed() ->QString

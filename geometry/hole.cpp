@@ -65,11 +65,11 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
     bool positionErr = !point.isValid()&&!rpoint.isValid();
 
     if(positionErr) { _lasterr=L("nincs kezdőpont");return{};}
-    // todo b ha ugyanoda fúrunk egy másikat, ami
+    // todo b0 ha ugyanoda fúrunk egy másikat, ami
     // kisebb vagy rövidebb, mint a másik az felesleges
     // de amúgy simán lehet koordináta nélkül fúrni, ekkor ugyanoda kerül
-    // todo b0 ha egy furat oda kerül, ahol már lett fúrva, és
-    // sem az átmérő, sem a mélység nem nagyobb mint az előző, akkor semmi
+    // !!! ha egy furat oda kerül, ahol már lett fúrva, és
+    // sem az átmérő, sem a mélység nem nagyobb mint az előző, akkor semmit nem kell csinálni
 
     return {point, diameter, cut, feed, rpoint};
 }

@@ -10,18 +10,19 @@ Hole::Hole()
     _isValid=false;
 }
 
-Hole::Hole(
-    const Point &_p,
-    qreal _diameter,
-    Cut _cut,
-    Feed _feed,
-    const Point &_rp)
+Hole::Hole(const Point &_p,
+           qreal _diameter,
+           Cut _cut,
+           Feed _feed,
+           const Gap &_gap,
+           const Point &_rp)
 {
     p = _p;
-    diameter=_diameter;
+    diameter =_diameter;
     cut = _cut;
     feed = _feed;
-    rp=_rp;
+    rp = _rp;
+    gap = _gap;
     _isValid = true;
 }
 
@@ -31,6 +32,7 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
     auto params=txt.split(' ');
     Point point;
     qreal diameter=-1;
+    Gap gap;
     Cut cut;
     Feed feed;
     QString rpointTxt;
@@ -60,6 +62,12 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
         if(p.startsWith('f')){
             GCode::ParseValue(p, L("f"), &feed.f); continue;
         }
+        // todo e0 szerencsésebb lenne ha 2 boolal térne vissza,
+        // egyik a hasGap, ha egyáltalán gap a szintaxis szerint
+        // az isOk prdig a sikeres parseolás
+        if(p.startsWith('g')){
+            gap = Gap::Parse(p); continue;
+        }
     }
 
     bool positionErr = !point.isValid()&&!rpoint.isValid();
@@ -71,7 +79,7 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
     // !!! ha egy furat oda kerül, ahol már lett fúrva, és
     // sem az átmérő, sem a mélység nem nagyobb mint az előző, akkor semmit nem kell csinálni
 
-    return {point, diameter, cut, feed, rpoint};
+    return {point, diameter, cut, feed, gap, rpoint};
 }
 
 auto Hole::ToString() const -> QString
@@ -82,6 +90,6 @@ auto Hole::ToString() const -> QString
     if (diameter>0) msg+=" d"+ GCode::r(diameter);
     msg+= cut.ToString();
     msg+= feed.ToString();
-
+    if(gap.isValid()) msg+=+' '+gap.ToString();
     return msg;
 }

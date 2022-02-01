@@ -6,6 +6,7 @@
 #include "point.h"
 #include "gcode/cut.h"
 #include "gcode/feed.h"
+#include "gap.h"
 
 struct Hole{
     Hole();
@@ -13,7 +14,8 @@ struct Hole{
          qreal _diameter,
          Cut _cut,
          Feed _feed,
-        const Point& _rp={}
+         const Gap& _gap,
+         const Point& _rp={}
         );
     Point p;
     qreal diameter=-1;
@@ -21,9 +23,10 @@ struct Hole{
     Cut cut={};
     Feed feed={};
     Point rp={};
-//todo 7 name - kell mindennek név
+//todo 70 name - kell mindennek név
     static Hole Parse(const QString& txt, XYMode mode);
     QString ToString() const;
+    Gap gap;
 
     /*ISVALID*/
 public:

@@ -46,6 +46,10 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
     return gcodes;
 }
 
+// todo 10 arc: a p0,p1,po
+// todo 11 circle: c - mint a hole, csak nincs belül kimarva - a gaps eset
+// todo 12 o: forgatás minden elemre - o középpont, és szög
+
 auto GenerateGcode::AppendGcode(const QString &g, const QString& err) -> bool
 {
     if(!g.isEmpty())gcodes.append(g);
@@ -273,7 +277,8 @@ auto GenerateGcode::GenerateLineHorizontal(const Line& m,QString *err) -> QStrin
 
 auto GenerateGcode::GenerateHole(const QString &txt,QString*err) -> QString
 {
-    if(!txt.startsWith('h')) return QString();    
+    zInfo("T: "+txt);
+    if(!txt.startsWith('h')) return QString();
     Hole m = ParseHole(txt);
     if(m.isValid()) {
         return GenerateHole(m,err);
@@ -309,7 +314,9 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
         return {};
     }
     /*CUT*/
-    if(_last_cut.z==-1 && m.cut.z==-1){if(err)*err=L("no total cut depth"); return {};}
+    if(_last_cut.z==-1 && m.cut.z==-1){
+        if(err)*err=L("no total cut depth"); return {};
+    }
     if(_last_cut.z0==-1 && m.cut.z0==-1){if(err)*err=L("no cut depth"); return {};}
     if(m.cut.z!=-1) _last_cut.z = m.cut.z;
     if(m.cut.z0!=-1) _last_cut.z0 = m.cut.z0;
@@ -327,13 +334,30 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
         return {};
     }
 
-    bool hasGaps = _last_hole_diameter>5*t.d; //
-    bool pre_drill = hasGaps?false:_last_hole_diameter>2*t.d; //d=0
-    bool pre_mill = hasGaps?false:_last_hole_diameter>3*t.d; //d=2*t.d
-    // todo c0 ha az átmérő akkora, mint a szerszám, akkkor csak fúrunk
+    double path_r = (_last_hole_diameter-t.d)/2; // a furat belső szélét érintő pályapont
+    Gap mgap;
 
-    // todo c1 ha kell gap, akkor a boxhoz hasonlóan kell eljárni,
-    // ki kell számolni, hány gap kell,
+    bool pre_drill, pre_mill,hasGaps, drillOnly=m.diameter==t.d;
+    if(drillOnly){
+        pre_drill=true;
+        pre_mill=false;
+        hasGaps = false;
+    } else{
+        hasGaps = _last_hole_diameter>5*t.d; //
+        if(hasGaps){
+            int gapn = (2*path_r*M_PI)/(2*t.d+m.gap.length); // hány gap fér ki
+            if(gapn<1) {if(err)*err="cannot any create gaps"; return{};}
+            if(m.gap.n>gapn) { gapn=m.gap.n;}
+            mgap = {(m.gap.n>gapn)?gapn:m.gap.n,// ha többet kért, mint ami kifér
+                    m.gap.length,m.gap.height};
+            pre_drill=true;
+            pre_mill=false;
+        } else {
+            pre_drill = _last_hole_diameter>2*t.d; //d=0
+            pre_mill = _last_hole_diameter>3*t.d; //d=2*t.d
+        }
+    }
+
     if(m.p.isValid()){
         _lastHoleP=m.p;
     }
@@ -348,7 +372,7 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
 
     QStringList g(QStringLiteral("(hole - helical interpolation)"));
 
-    Point p = _lastHoleP; // középpont , a szerszámpálya kezdőpontja
+    Point p = _lastHoleP; // _lastHoleP középpont , p a szerszámpálya kezdőpontja lesz
 
     msg=L("->")+ p.ToString();
     msg+=' '+_last_cut.ToString();
@@ -359,7 +383,6 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
     if(hasGaps) msg+=L(" gap");
     int steps = qCeil(_last_cut.z/_last_cut.z0)+1;
     msg+= " steps:"+QString::number(steps);
-
 
     if(pre_drill){
         // 81: depth<3-5*t.d;
@@ -378,116 +401,107 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
        //g.append(LiftDown(p.z));
        g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
     }
-    if(pre_mill){
-        Point pm = p;
-        pm.x -= t.d;
-        g.append(L("(premill)"));
-        g.append(TravelXY(pm));
-        g.append(LiftDown(pm.z));
+    if(!drillOnly){
+        if(pre_mill){
+            Point pm = p;
+            pm.x -= t.d;
+            g.append(L("(premill)"));
+            g.append(TravelXY(pm));
+            g.append(LiftDown(pm.z));
 
-        auto sp = SpindleStart();
-        if(!sp.isEmpty()) g.append(sp);
-        auto f = SetFeed();
-        if(!f.isEmpty()) g.append(f);
+            auto sp = SpindleStart();
+            if(!sp.isEmpty()) g.append(sp);
+            auto f = SetFeed();
+            if(!f.isEmpty()) g.append(f);
 
-        for(int i=0;i<steps;i++){
-            qreal z = _lastHoleP.z-(i+1)*_last_cut.z0;//kiszámol
-            qreal zz = _lastHoleP.z-_last_cut.z;
-            if(z<zz){    //beállítjuk a p-t
-                pm.z = zz;
-            } else {
-                pm.z = z;
+            for(int i=0;i<steps;i++){
+                qreal z = _lastHoleP.z-(i+1)*_last_cut.z0;//kiszámol
+                qreal zz = _lastHoleP.z-_last_cut.z;
+                if(z<zz){    //beállítjuk a p-t
+                    pm.z = zz;
+                } else {
+                    pm.z = z;
+                }
+
+                g.append(pm.GoToZ(GMode::Circular)+" i"+GCode::r(t.d));
             }
-
-            g.append(pm.GoToZ(GMode::Circular)+" i"+GCode::r(t.d));
-        }
-        //g.append(LiftUp(p.z));
-    }
-
-    double path_r = (_last_hole_diameter-t.d)/2; // a furat belső szélét érintő pályapont
-
-    p.x -= path_r; //szerszámpálya kezdő pontja
-
-    g.append(TravelXY(p));
-
-    auto sp = SpindleStart();
-    if(!sp.isEmpty()) g.append(sp);
-    auto f = SetFeed();
-    if(!f.isEmpty()) g.append(f);
-
-    //g.append(LiftDown(m.p.z));
-    g.append(LiftDown(p.z));
-
-    Gap mgap{4,4,0.5};
-    qreal z2 = hasGaps?_last_cut.z-mgap.height:_last_cut.z;
-    Cut cut_border{z2, _last_cut.z0};
-
-    for(int i=0;i<steps;i++){
-        qreal z = _lastHoleP.z-(i+1)*_last_cut.z0;//kiszámol
-        qreal zz = _lastHoleP.z-z2;//_last_cut.z;
-        if(z<zz){    //beállítjuk a p-t
-            p.z = zz;
-        } else {
-            p.z = z;
+            //g.append(LiftUp(p.z));
         }
 
-        g.append(p.GoToZ(GMode::Circular)+" i"+GCode::r(path_r));
+        p.x -= path_r; //szerszámpálya kezdő pontja
+        qreal z2 = hasGaps?_last_cut.z-mgap.height:_last_cut.z;
+
+        if(z2>0){
+            g.append(TravelXY(p));
+            auto sp = SpindleStart();
+            if(!sp.isEmpty()) g.append(sp);
+            auto f = SetFeed();
+            if(!f.isEmpty()) g.append(f);
+            g.append(LiftDown(p.z));
+
+            steps = qCeil(z2/_last_cut.z0)+1;
+            for(int i=0;i<steps;i++){
+                qreal z = _lastHoleP.z-(i+1)*_last_cut.z0;//kiszámol
+                qreal zz = _lastHoleP.z-z2;//_last_cut.z;
+                if(z<zz){    //beállítjuk a p-t
+                    p.z = zz;
+                } else {
+                    p.z = z;
+                }
+
+                g.append(p.GoToZ(GMode::Circular)+" i"+GCode::r(path_r));
+            }
+            g.append(LiftUp(_lastHoleP.z));  //ahol bement, ott ki is jön
+        }
+
+
+        if(hasGaps){
+            qreal b = (mgap.length+t.d)/(4*path_r);
+            qreal ab = (2*M_PI)/mgap.n;
+
+            Point p0,p1;
+            //qreal r = path_r;
+            qreal aa=0;
+            for(int i=0;i<mgap.n;i++){
+
+                Point k01,k11;
+                GeoMath::Polar(_lastHoleP, p, aa+b, path_r, &k01);
+                GeoMath::Polar(_lastHoleP, p, aa+ab, path_r, &k11);
+                k01.z=p.z;
+                k11.z=p.z;
+                QString err2;
+                g.append(GenerateArc(k01, k11, _lastHoleP, mgap.height, &err2));
+                aa+=ab;
+            }
+        }
     }
-
-    g.append(LiftUp(_lastHoleP.z));  //ahol bement, ott is jön ki
-
-    if(hasGaps){
-        qreal b = qDegreesToRadians(45.0);//QtMath.qDegreesToRadians(30);//mgap.length/(2*path_r);
-        //for(int i=0;i<mgap.n;i++){
-
-        //}
-//        Point k0 = {5,40,-2.5};
-//        Point k1 = {10,45,-2.5};
-//        Point ko = {10,40,0};
-        Point k0 = {-5,0,-2.5};
-        Point k1 = {0,5,-2.5};
-        Point ko = {0,0,0};
-
-        Point k01;
-        qreal r = GeoMath::Distance(k0,ko);
-        auto isA = GeoMath::Polar(ko, k0, b, r, &k01);
-        k01.z=k0.z;
-        QString err2;
-        g.append(GenerateArc(k01, k1, ko, .5, &err2));
-        //g.append(GenerateArc({10,45,-2.5},{5,40,-2.5}, {10,40,0}, .5, &err2));
-        //g.append(GenerateArc(k0,k1,ko, .5, &err2));
-    }
-
-    //g.append(LiftUp(p.z));  //ahol bement, ott is jön ki
-//g.append(LiftUp(m.p.z));  //ahol bement, ott is jön ki
     zInfo(msg);
-    //zInfo(g);
     return g.join('\n');
 }
-/*
-(arc begin)
-G0 z10.000 (lift up)
-G0 x-3.535y3.535 (travel)
-G0 z-1.500 (lift down)
-G1 z-2.500 (push)
-G2 x0.000y5.000z-2.650 i3.553 j-3.553
-G3 x-3.553y3.55z-2.800 i0.000 j-5.000
-G2 x0.000y5.000z-2.950 i3.553 j-3.553
-G3 x-3.535y3.535z-3.000 i0.000 j-5.000
-G2 x0.000y5.000z-3.000 i3.553 j-3.553
-G1 z-2.500 (pull)
-G0 z10.000 (lift up)
-*/
+// todo ha már fent van a szerszám a travelZ-n akkor felesleges liftelni
+// ha a pozíció már az xy akkor nem kell travelezni
+// ha már le van engedve, nem kell leengedni
 
+/* todo safety lines
+G90/G91 – Absolute/Incremental positioning
+G54 – Workshift datum
+G90.1/G91.1 – Absolute/incremental distance mode for I, J, and K offsets G40 – Cancel cutter compensation
+G17 – XY plane selection
+G18 – ZX plane selection
+G19 – YZ plane selection
+G20/G21 – Imperial/metric units
+G80 – Cancel any active cycle
+*/
 /*ARC*/
-auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o, qreal h ,QString*err) -> QString
+
+
+auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o, qreal h ,QString* err) -> QString
 {
     QString msg = "G: a"+o.ToString();
     zInfo(msg);
 
     msg=L("->")+ p0.ToString()+' '+p1.ToString()+' '+o.ToString();
-//    msg+=' '+_last_cut.ToString();
-//    msg+=' '+_last_feed.ToString();
+
     msg+= " h:"+GCode::r(h);
     int steps = qCeil(h/_last_cut.z0)+1;
     msg+= " steps:"+QString::number(steps);
@@ -510,23 +524,18 @@ auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o,
         if(!(step%2))
         {
             p=p1;
-            mode = GMode::Circular;
-            ij="i5j0";
+            mode = GMode::Circular;            
             i=i1;
             j=j1;
         }
         else
         {
             p=p0;
-            mode = GMode::Circular_ccw;
-            ij="i0j-5";
+            mode = GMode::Circular_ccw;            
             i=i0;
             j=j0;
         }
         QString ij2 = "i"+GCode::r(i)+" j"+GCode::r(j);
-        //        qreal z = p.z-(i+1)*m.cut.z0;
-        //        if(z<p.z-m.cut.z) p.z = p.z-m.cut.z; else p.z = z;
-
         qreal z = p.z-(step+1)*_last_cut.z0;
         qreal zz = p.z-h;
         if(z<zz){
@@ -702,10 +711,10 @@ auto GenerateGcode::GenerateBox(const Box &m,QString*err) -> QString
     if(_lastBoxType == BoxType::Corners){
         msg+=" d"+GCode::r(_last_hole_diameter);
         QVarLengthArray<Hole> holes = {
-            {ba, _last_hole_diameter, _last_cut, _last_feed},
-            {ja, _last_hole_diameter, _last_cut, _last_feed},
-            {jf, _last_hole_diameter, _last_cut, _last_feed},
-            {bf, _last_hole_diameter, _last_cut, _last_feed}
+            {ba, _last_hole_diameter, _last_cut, _last_feed, {}},
+            {ja, _last_hole_diameter, _last_cut, _last_feed, {}},
+            {jf, _last_hole_diameter, _last_cut, _last_feed,{}},
+            {bf, _last_hole_diameter, _last_cut, _last_feed, {}}
         };
         if(_verbose){
             for(int i=0;i<holes.length();i++){
@@ -729,13 +738,16 @@ auto GenerateGcode::GenerateBox(const Box &m,QString*err) -> QString
 //        Cut cut_border{z2, m.cut.z0};
         bool hasGaps = m.gap.isValid() && m.gap.n>0;
         qreal z2 = hasGaps?_last_cut.z-m.gap.height:_last_cut.z;
-        Cut cut_border{z2, _last_cut.z0};
-
-        QVarLengthArray<Line> lines_border = {
-            {ba,ja, cut_border, _last_feed},
-            {ja,jf, cut_border, _last_feed},
-            {jf,bf, cut_border, _last_feed},
-            {bf,ba, cut_border, _last_feed}};
+        QVarLengthArray<Line> lines_border;
+        Cut cut_border;//{z2, _last_cut.z0};
+        if(z2>0){
+            cut_border = {z2, _last_cut.z0};
+            lines_border= {
+                {ba,ja, cut_border, _last_feed},
+                {ja,jf, cut_border, _last_feed},
+                {jf,bf, cut_border, _last_feed},
+                {bf,ba, cut_border, _last_feed}};
+            }
         QVarLengthArray<Line> lines_gap;
         if(hasGaps){
             msg+=' '+m.gap.ToString();
@@ -758,8 +770,11 @@ auto GenerateGcode::GenerateBox(const Box &m,QString*err) -> QString
         QList<Line> segments;
 
         for(int i=0;i<4;i++){
-            auto&l_border=lines_border[i];
-            segments.append(l_border);
+            if(lines_border.length()>i){
+                auto&l_border=lines_border[i];
+                //if(cut_border.z>0){ segments.append(l_border);}
+                segments.append(l_border);
+            }
             if(hasGaps){
                 auto&l_gap=lines_gap[i];
                 auto s = l_gap.Divide(m.gap, t.d);

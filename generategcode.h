@@ -24,18 +24,23 @@ private:
     qreal _movZ=10;
     qreal _maxZ=15;        
 
-    QMap<int, Tool> _tools;
+    QMap<int, Tool> _tools;    
     int _selected_tool_ix;
+
+// todo f1 Machine osztály ami az utolsó előtolás, fogás és a szerszám pozíciót tudja
+// innen lehet tudni, hogy fel kell-e emelni vagy le kell e süllyeszteni amikor azt kérik
+
     Feed _selected_feed;
     Cut _selected_cut;
 
     int _last_tool_ix = -1;
-    Feed _last_feed;
-    qreal _last_hole_diameter;
+    Feed _last_feed;    
     Cut _last_cut;
 
-
+// todo f0 PositionRepo osztály, amiben vannak pozíció listák és a last(type) adja az utolsó aktuális elemet
+// innen lehet tudni, hogy egy furatot elkészítettünk, oda másik ugyanolyat már nem kell kifúrni
     Point _lastHoleP;
+    qreal _last_hole_diameter;
 
     Point _lastLineP0;
     Point _lastLineP1;
@@ -46,7 +51,7 @@ private:
 
     //VariableRepository _variables;
     bool AppendGcode(const QString &g, const QString& err);
-    bool setXYMode(const QString &txt);
+    auto setXYMode(const QString &txt) -> bool;
 
     QString GenerateComment(const QString& txt);
 

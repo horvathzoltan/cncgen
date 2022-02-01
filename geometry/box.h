@@ -32,7 +32,7 @@ struct Box{
 
     /*ISVALID*/
 public:
-    bool isValid() const {return _isValid;}
+    [[nodiscard]] auto isValid() const -> bool {return _isValid;}
 private:
     bool _isValid;
 

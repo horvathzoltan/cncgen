@@ -38,7 +38,7 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
     BoxType::Type type = BoxType::Undefined;
     Point point;
     QVarLengthArray<Point> points;
-    Gap gap={};
+    Gap gap;
     Cut cut;
     qreal corner_diameter=-1;
     Feed feed;

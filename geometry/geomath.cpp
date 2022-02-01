@@ -47,7 +47,6 @@ auto GeoMath::uSzog(qreal A1, qreal B1) -> qreal
 auto GeoMath::Polar(const Point &p0, const Point& p1, qreal szog, qreal tavolsag, Point *p3) ->bool
 {
     if(p3==nullptr) return false;
-    //return uPolarisSZXY(p0.x, p0.y, p1.x, p1.y, szog, tavolsag, &p3->x, &p3->y);
     return uPolarisSZXY(p0.y, p0.x, p1.y, p1.x, szog, tavolsag, &p3->y, &p3->x);
 }
 

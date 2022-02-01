@@ -60,7 +60,7 @@ private:
     QString GenerateBox(const Box& m,QString*err);
     QString GeneratePrintString(const QString& txt);
     QString GeneratePrintString(const String& m);
-
+    QString GenerateArc(const Point &p0, const Point& p1, const Point&o, qreal h ,QString*err);
     /*G Command*/
     QString SetTool(const QString& txt);
     QString SetFeedRate(const QString& txt);

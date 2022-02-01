@@ -32,3 +32,34 @@ auto GeoMath::uTavolsagXYZ(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y
     qreal c = p1z-p0z;
     return qSqrt(a*a+b*b+c*c);
 }
+
+auto GeoMath::uSzog(qreal A1, qreal B1) -> qreal
+{
+    if(A1==0 && B1>0) {return 0;}
+    if(A1>0 && B1==0) {return M_PI_2;}
+    if(A1==0 && B1<0){return M_PI;}
+    if(A1<0 && B1==0){return 1.5*M_PI;}
+    if(A1>0 && B1>0){return atan(A1/B1);}
+    if(B1<0 && A1!=0){return M_PI+atan(A1/B1);}
+    return 2*M_PI+atan(A1/B1);
+}
+
+auto GeoMath::Polar(const Point &p0, const Point& p1, qreal szog, qreal tavolsag, Point *p3) ->bool
+{
+    if(p3==nullptr) return false;
+    //return uPolarisSZXY(p0.x, p0.y, p1.x, p1.y, szog, tavolsag, &p3->x, &p3->y);
+    return uPolarisSZXY(p0.y, p0.x, p1.y, p1.x, szog, tavolsag, &p3->y, &p3->x);
+}
+
+auto GeoMath::uPolarisSZXY(qreal p0x, qreal p0y, qreal p1x, qreal p1y, qreal szog, qreal tavolsag, qreal *x, qreal *y)-> bool
+{
+    double A, B, alpha;
+
+    A=p1y-p0y; // ez most irányvektor!!!
+    B=p1x-p0x;
+    alpha=uSzog(A,B); // irányszög
+    *x=p0x+tavolsag*cos(alpha+szog);
+    *y=p0y+tavolsag*sin(alpha+szog);
+    return true;
+}
+

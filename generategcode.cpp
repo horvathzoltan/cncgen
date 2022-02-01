@@ -330,7 +330,8 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
     bool pre_drill = isGap?false:_last_hole_diameter>2*t.d; //d=0
     bool pre_mill = isGap?false:_last_hole_diameter>3*t.d; //d=2*t.d
     // todo c0 ha az átmérő akkora, mint a szerszám, akkkor csak fúrunk
-
+    // todo c1 ha kell gap, akkor a boxhoz hasonlóan kell eljárni,
+    // ki kell számolni, hány gap kell,
     if(m.p.isValid()){
         _lastHoleP=m.p;
     }

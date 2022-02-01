@@ -13,8 +13,12 @@ auto main(int argc, char *argv[]) -> int
     com::helper::SignalHelper::setShutDownSignal(com::helper::SignalHelper::SIGINT_); // shut down on ctrl-c
     com::helper::SignalHelper::setShutDownSignal(com::helper::SignalHelper::SIGTERM_); // shut down on killall
 
+#if defined (STRING) && defined (TARGI)
     auto poj = STRING(TARGI);
     zInfo(QStringLiteral("started ")+poj);
+#else
+    auto poj=L("manymany");
+#endif
 
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(poj);

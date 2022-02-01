@@ -8,7 +8,11 @@ class FileNameHelper{
 public:
     static auto GetTestFolderPath()-> QString
     {
+#if defined (STRING) && defined (TARGI)
         return QDir(STRING(SOURCE_PATH)).filePath("testdata");
+#else
+        return ("/home/zoli/cncgen/testdata");
+#endif
     }
 };
 

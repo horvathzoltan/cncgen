@@ -465,18 +465,20 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
     return g.join('\n');
 }
 /*
+(arc begin)
 G0 z10.000 (lift up)
-G0 x5.000y40.000 (travel)
-G0 z-1 (lift down)
-G1 z-2 (push)
-
-g2 x10.000y45.000Z-2.5 i5j0
-g3 x5,y40.000Z-2.75 i0j-5
-g2 x10.000y45.000Z-3 i5j0
-g3 x5,y40.000Z-3 i0j-5
-
-uPolarisSZXY
+G0 x-3.535y3.535 (travel)
+G0 z-1.500 (lift down)
+G1 z-2.500 (push)
+G2 x0.000y5.000z-2.650 i3.553 j-3.553
+G3 x-3.553y3.55z-2.800 i0.000 j-5.000
+G2 x0.000y5.000z-2.950 i3.553 j-3.553
+G3 x-3.535y3.535z-3.000 i0.000 j-5.000
+G2 x0.000y5.000z-3.000 i3.553 j-3.553
+G1 z-2.500 (pull)
+G0 z10.000 (lift up)
 */
+
 /*ARC*/
 auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o, qreal h ,QString*err) -> QString
 {
@@ -497,11 +499,13 @@ auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o,
     Point p;
     GMode::Mode mode;
     QString ij;
-    int i,j,i1,j1,i0,j0;
+    qreal i,j,i1,j1,i0,j0;
     i1=o.x-p0.x;
     j1=o.y-p0.y;
+
     i0=o.x-p1.x;
     j0=o.y-p1.y;
+
     for(int step=0;step<steps;step++){
         if(!(step%2))
         {

@@ -9,11 +9,13 @@ public:
     static bool Divider(const Point &p0, const Point& p1, qreal o, Point *p3);
     static qreal Distance(const Point &p0, const Point& p1);
     static bool Polar(const Point &p0, const Point& p1, qreal szog, qreal tavolsag, Point *p3);
+    static qreal ArcLength(const Point &p0, const Point &p1, const Point &o);
 private:
     static qreal uSzog(qreal A1, qreal B1);
     static bool uOsztopontXY(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y, qreal p1z, qreal o, qreal *x, qreal *y, qreal *z);
     static qreal uTavolsagXYZ(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y, qreal p1z);
     static bool uPolarisSZXY(qreal p0x, qreal p0y, qreal p1x, qreal p1y, qreal szog, qreal tavolsag, qreal *x, qreal *y);
+    static bool uIvhossz(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y, qreal p1z, qreal ox, qreal oy, qreal oz, qreal *l);
 };
 
 

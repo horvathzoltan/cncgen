@@ -4,6 +4,7 @@
 #include "gcode/gcode.h"
 #include "geometry/geomath.h"
 #include "common/logger/log.h"
+#include "helpers/stringhelper.h"
 
 QString Line::_lasterr;
 
@@ -56,10 +57,18 @@ auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
             GCode::ParseValue(p, L("c"), &cut.z0); continue;
         }
         if(p.startsWith('s')){
-            GCode::ParseValue(p, L("s"), &feed.spindleSpeed); continue;
+            qreal x;
+            if(GCode::ParseValue(p, L("s"), &x)){
+                feed.setSpindleSpeed(x);
+                continue;
+            }
         }
         if(p.startsWith('f')){
-            GCode::ParseValue(p, L("f"), &feed.f); continue;
+            qreal x;
+            if(GCode::ParseValue(p, L("f"), &x)){
+                feed.setFeed(x);
+                continue;
+            }
         }
     }
     bool hasPoints = points.length()>=2;
@@ -68,18 +77,20 @@ auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
     *m= {
         hasPoints?points[0]:Point(),
         hasPoints?points[1]:Point(),
-        cut, feed, rpoint};
+        cut,
+        feed,
+        rpoint};
     return ParseState::Parsed;
 }
 
 auto Line::ToString() const -> QString
 {
-    QString msg = L("l");
-    if (p0.isValid()) msg+=' '+p0.ToString();
-    if (p1.isValid()) msg+=' '+p1.ToString();
-    if (rp.isValid()) msg+=" r"+rp.ToString();
-    msg+=cut.ToString();
-    msg+=feed.ToString();
+    auto msg = QString(key);
+    if (p0.isValid()){StringHelper::Append(&msg,p0.ToString());}
+    if (p1.isValid()){StringHelper::Append(&msg,p1.ToString());}
+    if (rp.isValid()){StringHelper::Append(&msg,"r"+rp.ToString());}
+    StringHelper::Append(&msg,cut.ToString());
+    StringHelper::Append(&msg,feed.ToString());
     return msg;
 }
 

@@ -42,20 +42,21 @@ auto Point::Parse(const QString &txt,
 
 auto Point::ToString() const -> QString
 {
-    return GCode::r(x)+','+GCode::r(y)+','+GCode::r(z);
+    return GCode::r(y)+','+GCode::r(y)+','+GCode::r(z);
 }
 
-auto Point::GoToZ(GMode::Mode i) -> QString
+
+auto Point::ToStringZ() const -> QString
 {
-    return GMode::ToGCcode(i)+" z"+GCode::r(z);
+    return "z"+GCode::r(z);
 }
 
-auto  Point::GoToXY(GMode::Mode i) -> QString
+auto  Point::ToStringXY() const -> QString
 {
-    return GMode::ToGCcode(i)+" x"+GCode::r(x)+'y'+GCode::r(y);
+    return "x"+GCode::r(x)+'y'+GCode::r(y);
 }
 
-auto Point::GoToXYZ(GMode::Mode i) -> QString
+auto Point::ToStringXYZ() const -> QString
 {
-    return GMode::ToGCcode(i)+" x"+GCode::r(x)+'y'+GCode::r(y)+'z'+GCode::r(z);
+    return ToStringXY()+ToStringZ();
 }

@@ -2,6 +2,7 @@
 #include "common/macrofactory/macro.h"
 #include <QStringList>
 #include "gcode/gcode.h"
+#include "helpers/stringhelper.h"
 
 QString Hole::_lasterr;
 
@@ -60,10 +61,18 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
             GCode::ParseValue(p, L("c"), &cut.z0); continue;
         }
         if(p.startsWith('s')){
-            GCode::ParseValue(p, L("s"), &feed.spindleSpeed); continue;
+            qreal x;
+            if(GCode::ParseValue(p, L("s"), &x)){
+                feed.setSpindleSpeed(x);
+                continue;
+            }
         }
         if(p.startsWith('f')){
-            GCode::ParseValue(p, L("f"), &feed.f); continue;
+            qreal x;
+            if(GCode::ParseValue(p, L("f"), &x)){
+                feed.setFeed(x);
+                continue;
+            }
         }
         // todo e0 szerencsésebb lenne ha 2 boolal térne vissza,
         // egyik a hasGap, ha egyáltalán gap a szintaxis szerint
@@ -88,12 +97,12 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
 
 auto Hole::ToString() const -> QString
 {
-    auto msg = L("h");
-    if (p.isValid()) msg+=' '+p.ToString();
-    if (rp.isValid()) msg+=" r"+rp.ToString();
-    if (diameter>0) msg+=" d"+ GCode::r(diameter);
-    msg+= cut.ToString();
-    msg+= feed.ToString();
-    if(gap.isValid()) msg+=+' '+gap.ToString();
+    auto msg = QString(key);
+    if (p.isValid()){StringHelper::Append(&msg,p.ToString());}
+    if (rp.isValid()){StringHelper::Append(&msg,"r"+rp.ToString());};
+    if (diameter>0){StringHelper::Append(&msg,"d"+ GCode::r(diameter));}
+    StringHelper::Append(&msg,cut.ToString());
+    StringHelper::Append(&msg,feed.ToString());
+    if(gap.isValid()){StringHelper::Append(&msg,gap.ToString());}
     return msg;
 }

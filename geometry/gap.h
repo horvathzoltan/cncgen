@@ -5,6 +5,9 @@
 #include "geometry/xymode.h"
 
 struct Gap{
+    static constexpr QChar key = 'g';
+    static constexpr ushort keyUniCode= key.unicode();
+
     Gap();
     Gap(int, qreal, qreal);
     int n; // gapek száma

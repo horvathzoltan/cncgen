@@ -4,50 +4,66 @@
 
 QString Feed::_lasterr;
 
+auto Feed::isValid() const -> bool
+{
+    return _feed>=0 && _spindleSpeed>=0;
+}
+
 Feed::Feed()
 {
-    _isValid=false;
+    _spindleSpeed = -1;
+    _feed = -1;
+    //_isValid=false;
 }
 
-Feed::Feed(qreal _spindleSpeed, qreal _f)
+Feed::Feed(qreal spindleSpeed, qreal f)
 {
-    spindleSpeed = _spindleSpeed;
-    f= _f;
-    _isValid=true;
-}
-
-auto Feed::ToString() const -> QString
-{
-    QString msg;
-    if (spindleSpeed>0) msg+=" s"+GCode::r(spindleSpeed);
-    if (f>0) msg+=" f"+GCode::r(f);
-    return msg;
+    _spindleSpeed = spindleSpeed;
+    _feed= f;
+    //_isValid=true;
 }
 
 
-auto Feed::ParseFeed(const QString &txt, Feed* m) -> ParseState
+auto Feed::ParseIntoFeed(const QString &txt) -> ParseState
 {
     _lasterr.clear();
-    if(!m) return ParseState::NoData;
-    if(!txt.startsWith(key_feed)) return ParseState::NoData;
+    if(!txt.startsWith(key_feed)) return NoData;
 
     bool isok;
     auto x = txt.midRef(1).toDouble(&isok);
     if(!isok || x<=0) return ParseState::NotParsed;
-    m->f=x;
+    _feed=x;
     return ParseState::Parsed;
 }
 
-auto Feed::ParseSpindleSpeed(const QString &txt, Feed* m) -> ParseState
+auto Feed::ParseIntoSpindleSpeed(const QString &txt) -> ParseState
 {
     _lasterr.clear();
-    if(!m) return ParseState::NoData;
     if(!txt.startsWith(key_spindleSpeed)) return ParseState::NoData;
 
     bool isok;
     auto x = txt.midRef(1).toDouble(&isok);
     if(!isok || x<=0) return ParseState::NotParsed;
 
-    m->spindleSpeed=x;
+    _spindleSpeed=x;
     return ParseState::Parsed;
+}
+
+
+auto Feed::ToString() const -> QString
+{
+    QString msg;
+    if (_spindleSpeed>0) msg+=" s"+GCode::r(_spindleSpeed);
+    if (_feed>0) msg+=" f"+GCode::r(_feed);
+    return msg;
+}
+
+auto Feed::ToStringFeed() const -> QString
+{
+    return "f"+GCode::r(_feed);
+}
+
+auto Feed::ToStringSpindleSpeed() const -> QString
+{
+    return "s"+GCode::r(_spindleSpeed);
 }

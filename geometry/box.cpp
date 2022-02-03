@@ -2,6 +2,8 @@
 #include "gcode/gcode.h"
 #include "common/macrofactory/macro.h"
 #include <QVarLengthArray>
+#include "helpers/stringhelper.h"
+
 
 QString Box::_lasterr;
 
@@ -77,12 +79,18 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
             continue;
         }
         if(p.startsWith('s')){
-            GCode::ParseValue(p, L("s"), &feed.spindleSpeed);
-            continue;
+            qreal x;
+            if(GCode::ParseValue(p, L("s"), &x)){
+                feed.setSpindleSpeed(x);
+                continue;
+            }
         }
         if(p.startsWith('f')){
-            GCode::ParseValue(p, L("f"), &feed.f);
-            continue;
+            qreal x;
+            if(GCode::ParseValue(p, L("f"), &x)){
+                feed.setFeed(x);
+                continue;
+            }
         }
         if(p.startsWith('g')){
             gap = Gap::Parse(p); continue;
@@ -109,14 +117,15 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
 
 auto Box::ToString() const -> QString
 {
-    auto msg = L("b ")+BoxType::ToString(type);
-    if (p0.isValid()) msg+=' '+p0.ToString();
-    if (p1.isValid()) msg+=' '+p1.ToString();
-    if (rp.isValid()) msg+=" r"+rp.ToString();
-    msg+=cut.ToString();
-    msg+=feed.ToString();
-    if (type==BoxType::Corners) msg+=" d"+GCode::r(corner_diameter);
-    if(gap.isValid()) msg+=+' '+gap.ToString();
+    QString msg(key);
+    StringHelper::Append(&msg,BoxType::ToString(type));
+    if (p0.isValid()){StringHelper::Append(&msg,p0.ToString());}
+    if (p1.isValid()){StringHelper::Append(&msg,p1.ToString());}
+    if (rp.isValid()){StringHelper::Append(&msg,"r"+rp.ToString());}
+    StringHelper::Append(&msg,cut.ToString());
+    StringHelper::Append(&msg,feed.ToString());
+    if (type==BoxType::Corners){StringHelper::Append(&msg,"d"+GCode::r(corner_diameter));}
+    if(gap.isValid()){StringHelper::Append(&msg,gap.ToString());}
     return msg;
 }
 

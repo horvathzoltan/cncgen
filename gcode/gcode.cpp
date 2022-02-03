@@ -88,13 +88,13 @@ auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode 
         //double c = has_c?ns[2].toDouble(&isok_c):0;
         bool isok_c=has_c?GCode::ToDouble(ns[2], &c):false;
         isok = isok_a && isok_b && (has_c?isok_c:true);
-        if(isok){            
-            switch(mode){
-            case XY:
+        if(isok){
+            switch(mode.mode){
+            case XYMode::XY:
                 if(isok_a) *x=a;
                 if(isok_b) *y=b;
                 break;
-            case YX:
+            case XYMode::YX:
                 if(isok_a) *y=a;
                 if(isok_b) *x=b;
                 break;

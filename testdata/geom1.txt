@@ -7,20 +7,20 @@ s50
 f150
 
 (furatproba)
-h 10,10 d3 z3 c0.15 s70 f180
-h 10,20 d6 z3 c0.15 s70 f180
-h 10,30 d8 z3 c0.15 s70 f180
-h 10,40 d12 z3 c0.15 s70 f180
-h 10,52 d12 z3 c0.15 s70 f180 g4,2,0.5
+#h 10,10 d3 z3 c0.15 s70 f180
+#h 10,20 d6 z3 c0.15 s70 f180
+#h 10,30 d8 z3 c0.15 s70 f180
+#h 10,40 d12 z3 c0.15 s70 f180
+#h 10,52 d12 z3 c0.15 s70 f180 g4,2,0.5
 h 10,64 d12 z3 c0.15 s70 f180 g6,2,0.5
-h r5.5
+#h r5.5
 
 #h 10,76 d12 z3 c0.15 s70 f180 g6,2,3
 #h 10,76 d8 z3 c0.15 s70 f180 g6,2,3
 #h 10,76 d4 z3 c0.15 s70 f180 g6,2,3
 (ív)
-a 5,88, 10,93 10,88 z3 c0.15 s70 f180 g6,2,3
-a r5,5
+#a 5,88, 10,93 10,88 z3 c0.15 s70 f180 g6,2,3
+#a r5,5
 
 #(vonalproba)
 #l 20,20,0 25,25,0 z3 c0.15
@@ -35,24 +35,24 @@ a r5,5
 #b r1,2
 
 #(rögzítő furatok)
-h 5,6 d3 z3 c0.15 s70 f180
-h 5,81
-h 27,106
-h 127,106
-h 149,81
-h 149,6
-#(tápegység furatok)
-h 26,46
-m1 = avg(52.5,57.7)
-print "m1: $m1"
-h r0,$m1
-#
-##print "m2: $m2"
-##print "m3: $m3"
-##print "m4: $m4 macskaszar"
-##print "makimajom mak mak mak"
-#
-(körvonal)
-b outline 0,0 154,112 z3 c0.15 g3,2,0.5
-(pi3b furatok)
-b corners 50,50 80,90 z3 c0.15 d2.5
+#h 5,6 d3 z3 c0.15 s70 f180
+#h 5,81
+#h 27,106
+#h 127,106
+#h 149,81
+#h 149,6
+##(tápegység furatok)
+#h 26,46
+#m1 = avg(52.5,57.7)
+#print "m1: $m1"
+#h r0,$m1
+##
+###print "m2: $m2"
+###print "m3: $m3"
+###print "m4: $m4 macskaszar"
+###print "makimajom mak mak mak"
+##
+#(körvonal)
+#b outline 0,0 154,112 z3 c0.15 g3,2,0.5
+#(pi3b furatok)
+#b corners 50,50 80,90 z3 c0.15 d2.5

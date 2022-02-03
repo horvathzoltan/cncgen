@@ -13,18 +13,25 @@
 #include "gcode/variable.h"
 #include "gcode/string.h"
 #include "parsestate.h"
+#include "geometry/gmode.h"
 
 class GenerateGcode
 {
 public:
-    QStringList Generate(const QStringList& g);
-    bool AppendGCode(const QString &g, const QString& err);
+    static const QString G1;
+    static const QString G2;
+    static const QString T1;
+    auto Generate(const QStringList& g) -> QStringList;
+    auto AppendGCode(QStringList* gs, const QString &g, const QString& err) -> bool;
+    qreal _total_time;
+    qreal _total_length;
+    qreal _total_cut;
 private:
     bool _verbose = true;
-    XYMode _XYMode = XY;
+    XYMode _XYMode;
     QStringList gcodes;
     qreal _movZ=10;
-    qreal _maxZ=15;        
+    qreal _maxZ=15;
 
     QMap<int, Tool> _tools;    
     int _selected_tool_ix;
@@ -51,12 +58,16 @@ private:
     Point _lastBoxP1;
     BoxType::Type _lastBoxType;
 
+    Point _last_position;
+    GMode::Mode _last_gmode;
+
     auto setXYMode(const QString &txt) -> bool;
 
+    /*SetSelected*/
+    void SetSelectedFeed(const Feed& feed);
     /*Validators*/
     auto ValidateTool() -> bool;
     auto CheckCut(QString*err) -> bool;
-
     /*Geomerty*/
     auto LineToGCode(const Line& m,QString *err) -> QString;
     auto HoleToGCode(const Hole& m,QString*err) -> QString;
@@ -71,7 +82,11 @@ private:
     auto SpindleStopToGCode() -> QString;
     auto LiftDownToGCode(qreal z) -> QString;
     auto LiftUpToGCode(const QVariant& z) -> QString;
-    auto TravelXYToGCode(Point p) -> QString;
+    auto TravelXYToGCode(const Point& p) -> QString;
+    auto SetXYModeToGCode() -> QString;
+    auto GoToXY(GMode::Mode, const Point& p, qreal length) -> QString;
+    auto GoToZ(GMode::Mode, const Point& p, qreal length) -> QString;
+    auto GoToXYZ(GMode::Mode, const Point& p, qreal length) -> QString;
     /*Parse*/
     auto ParseCommentToGCode(const QString &str, QString *gcode, QString *err) -> bool;
     auto ParseArcToGCode(const QString& str, QString *gcode, QString *err) -> bool;
@@ -82,6 +97,8 @@ private:
     auto ParseSetToolToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseSetXYModeToGcode(const QString& str, QString *gcode, QString *err) -> bool;
+
 };
 
 #endif // GENERATEGCODE_H

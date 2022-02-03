@@ -6,36 +6,44 @@
 
 struct Feed
 {
-public:
+public:    
     static constexpr QChar key_feed = 'f';
     static constexpr ushort keyUniCode_feed= key_feed.unicode();
     static constexpr QChar key_spindleSpeed = 's';
     static constexpr ushort keyUniCode_spindleSpeed= key_spindleSpeed.unicode();
+
+private:
+    qreal _spindleSpeed;
+    qreal _feed;
+    //bool _isValid;
+    static QString _lasterr;
+public:
+    /*_spindleSpeed*/
+    [[nodiscard]] auto spindleSpeed() const -> qreal {return _spindleSpeed;}
+    void setSpindleSpeed(qreal s) {_spindleSpeed=s; }
+    /*_feed*/
+    [[nodiscard]] auto feed() const -> qreal {return _feed;}
+    void setFeed(qreal f) { _feed=f;}
+    /*_isValid*/
+    [[nodiscard]] auto isValid() const -> bool;
+    /*_lasterr*/
+    static auto lasterr() -> QString{return _lasterr;}
+
+//public:
     Feed();
     Feed(
-        qreal _spindleSpeed,
-        qreal _f
+        qreal spindleSpeed,
+        qreal f
         );
 
-    qreal spindleSpeed=-1;
-    qreal f=-1;
+    auto ParseIntoFeed(const QString &txt) -> ParseState;
+    auto ParseIntoSpindleSpeed(const QString &txt) -> ParseState;
 
-    static auto ParseFeed(const QString &txt, Feed* tool) -> ParseState;
-    static auto ParseSpindleSpeed(const QString &txt, Feed* tool) -> ParseState;
+    [[nodiscard]] auto ToString() const -> QString;
 
-    QString ToString() const;
+    auto ToStringFeed() const -> QString;
+    auto ToStringSpindleSpeed() const -> QString;
 
-    /*ISVALID*/
-public:
-    bool isValid() const {return _isValid;}
-private:
-    bool _isValid;
-
-    /*LASTERR*/
-public:
-    static QString lasterr(){return _lasterr;}
-private:
-    static QString _lasterr;
 };
 
 #endif // FEED_H

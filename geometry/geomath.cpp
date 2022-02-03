@@ -25,6 +25,13 @@ auto GeoMath::Distance(const Point &p0, const Point& p1) -> qreal
     return uTavolsagXYZ(p0.x, p0.y, p0.z, p1.x, p1.y, p1.z);
 }
 
+auto GeoMath::ArcLength(const Point &p0, const Point& p1, const Point& o) -> qreal
+{
+    qreal d;
+    uIvhossz(p0.x, p0.y, p0.z, p1.x, p1.y, p1.z, o.x, o.y, o.z, &d);
+    return d;
+}
+
 auto GeoMath::uTavolsagXYZ(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y, qreal p1z)-> qreal
 {
     qreal a = p1x-p0x;
@@ -61,4 +68,23 @@ auto GeoMath::uPolarisSZXY(qreal p0x, qreal p0y, qreal p1x, qreal p1y, qreal szo
     *y=p0y+tavolsag*sin(alpha+szog);
     return true;
 }
+
+auto GeoMath::uIvhossz(qreal p0x, qreal p0y, qreal p0z,
+                       qreal p1x, qreal p1y, qreal p1z,
+                       qreal ox,  qreal oy,  qreal oz,
+                       qreal *l)-> bool
+{
+    double A, B, alpha;
+
+    A=p1y-p0y; // ez most irányvektor!!!
+    B=p1x-p0x;
+    alpha=uSzog(A,B); // irányszög
+
+    auto r = uTavolsagXYZ(p0x, p0x, p0z, ox, oy, oz);
+
+    *l = alpha*r;
+
+    return true;
+}
+
 

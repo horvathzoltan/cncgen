@@ -2,6 +2,7 @@
 
 #include <QStringList>
 #include "gcode/gcode.h"
+#include "helpers/stringhelper.h"
 
 Gap::Gap()
 {
@@ -36,5 +37,9 @@ auto Gap::Parse(const QString &txt) -> Gap
 
 auto Gap::ToString() const -> QString
 {
-    return 'g'+GCode::i(n)+','+GCode::r(length)+','+GCode::r(height);
+    auto msg = QString(key);
+    StringHelper::Append(&msg, GCode::i(n));
+    StringHelper::Append(&msg, GCode::r(length),',');
+    StringHelper::Append(&msg, GCode::r(height), ',');
+    return msg;
 }

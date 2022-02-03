@@ -42,6 +42,7 @@ struct Arc
 
     static auto Parse(const QString& txt, XYMode mode, Arc*) -> ParseState;
     QString ToString() const;
+    //auto ToGCode(QString* err) -> QString;
     // todo e7 Arc::Divide
     //QList<Arc> Divide(const Gap& g, qreal tool_d);
 

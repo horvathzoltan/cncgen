@@ -112,6 +112,7 @@ SOURCES += \
         geometry/hole.cpp \
         geometry/line.cpp \
         geometry/point.cpp \
+        geometry/xymode.cpp \
         main.cpp \
         work1.cpp
 
@@ -155,4 +156,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     testdata/geom1.txt \
+    testdata/geom2.txt \
     testdata/head.gcode

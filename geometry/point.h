@@ -3,7 +3,7 @@
 
 #include <QString>
 #include "xymode.h"
-#include "gmode.h"
+//#include "gmode.h"
 
 struct Point{
     qreal x;
@@ -13,12 +13,12 @@ struct Point{
     Point();
     Point(qreal, qreal, qreal);
 
-    static Point Parse(const QString&, XYMode m, const QString& key={});
-    QString ToString() const;
-    //QString ToGcode();
-    QString GoToZ(GMode::Mode i);
-    QString GoToXY(GMode::Mode i);
-    QString GoToXYZ(GMode::Mode i);
+    static auto Parse(const QString&, XYMode m, const QString& key={}) -> Point;
+
+    [[nodiscard]] auto ToString() const -> QString;
+    [[nodiscard]] auto ToStringZ() const -> QString;
+    [[nodiscard]] auto ToStringXY() const -> QString;
+    [[nodiscard]] auto ToStringXYZ() const -> QString;
 
     auto operator ==(const Point& p) const -> bool {
         return x==p.x&&y==p.y&&z==p.z;
@@ -26,13 +26,13 @@ struct Point{
 
     /*ISVALID*/
 public:
-    bool isValid() const {return _isValid;}
+    [[nodiscard]] auto isValid() const -> bool {return _isValid;}
 private:
     bool _isValid;
 
     /*LASTERR*/
 public:
-    static QString lasterr(){return _lasterr;}
+    static auto lasterr() -> QString {return _lasterr;}
 private:
     static QString _lasterr;
 };

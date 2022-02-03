@@ -26,9 +26,12 @@ Hole::Hole(const Point &_p,
     _isValid = true;
 }
 
-auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
+auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
 {
     _lasterr.clear();
+    if(!m) return ParseState::NoData;
+    if(!txt.startsWith(key)) return ParseState::NoData;
+
     auto params=txt.split(' ');
     Point point;
     qreal diameter=-1;
@@ -72,14 +75,15 @@ auto Hole::Parse(const QString &txt, XYMode mode) -> Hole
 
     bool positionErr = !point.isValid()&&!rpoint.isValid();
 
-    if(positionErr) { _lasterr=L("nincs kezdőpont");return{};}
+    if(positionErr) { _lasterr=L("nincs kezdőpont");return ParseState::NotParsed;}
     // todo b0 ha ugyanoda fúrunk egy másikat, ami
     // kisebb vagy rövidebb, mint a másik az felesleges
     // de amúgy simán lehet koordináta nélkül fúrni, ekkor ugyanoda kerül
     // !!! ha egy furat oda kerül, ahol már lett fúrva, és
     // sem az átmérő, sem a mélység nem nagyobb mint az előző, akkor semmit nem kell csinálni
 
-    return {point, diameter, cut, feed, gap, rpoint};
+    *m= {point, diameter, cut, feed, gap, rpoint};
+    return ParseState::Parsed;
 }
 
 auto Hole::ToString() const -> QString

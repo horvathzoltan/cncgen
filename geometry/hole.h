@@ -7,8 +7,12 @@
 #include "gcode/cut.h"
 #include "gcode/feed.h"
 #include "gap.h"
+#include "parsestate.h"
 
 struct Hole{
+    static constexpr QChar key = 'h';
+    static constexpr ushort keyUniCode= key.unicode();
+
     Hole();
     Hole(const Point& _p,
          qreal _diameter,
@@ -24,7 +28,7 @@ struct Hole{
     Feed feed={};
     Point rp={};
 //todo 70 name - kell mindennek név
-    static Hole Parse(const QString& txt, XYMode mode);
+    static ParseState Parse(const QString& txt, XYMode mode, Hole*);
     QString ToString() const;
     Gap gap;
 

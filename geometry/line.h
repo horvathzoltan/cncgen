@@ -7,8 +7,12 @@
 #include <QList>
 #include "gcode/cut.h"
 #include "gcode/feed.h"
+#include "parsestate.h"
 
 struct Line{
+    static constexpr QChar key = 'l';
+    static constexpr ushort keyUniCode= key.unicode();
+
     Line();
     Line(const Point& _p0,
          const Point& _p1,
@@ -22,7 +26,7 @@ struct Line{
     Feed feed;
     Point rp;
 
-    static Line Parse(const QString& txt, XYMode mode);
+    static ParseState Parse(const QString& txt, XYMode mode, Line *l);
     QString ToString() const;
     QList<Line> Divide(const Gap& g, qreal tool_d);
 

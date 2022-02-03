@@ -3,6 +3,10 @@
 
 #include <QMap>
 #include <QStringList>
+#include "parsestate.h"
+
+QString String::_lasterr;
+const QString String::key = QStringLiteral("print");
 
 String::String()
 {
@@ -15,16 +19,22 @@ String::String(const QString &str)
     _isValid=true;
 }
 
-auto String::Parse(const QString &txt) -> String
+auto String::Parse(const QString &txt, String*m) -> ParseState
 {
+    _lasterr.clear();
+    if(!m) return ParseState::NoData;
+    if(!txt.startsWith(key)) return ParseState::NoData;
+
     int ix = txt.indexOf(' ');
-    if(ix==-1) return {};
+    if(ix==-1) return ParseState::NotParsed;
 
     auto p=txt.mid(ix).trimmed();
 
     QString str;
-    if(!GCode::ParseValue(p, QString(), &str)) return {};
-    return {str};
+    if(!GCode::ParseValue(p, QString(), &str)) return ParseState::NotParsed;
+
+    *m={str};
+    return ParseState::Parsed;
 }
 //p     0 2  0 2
 //0123456789abcd

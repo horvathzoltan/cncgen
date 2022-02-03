@@ -5,8 +5,9 @@
 #include "gcode/gcode.h"
 #include "gcode/variable.h"
 #include "gcode/string.h"
-#include <geometry/geomath.h>
-
+#include "gcode/comment.h"
+#include "geometry/geomath.h"
+#include "gcode/feed.h"
 
 auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 {
@@ -22,35 +23,191 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 
     for(auto l:g){
         QString err;
+        QString gcode;
+
         l = l.trimmed().toLower();
         if(l.isEmpty()) continue;
         if(l.startsWith('#')) continue;
         if(GCode::_variables.Parse(l)) continue;
-        if(l.startsWith(L("print"))){
-            auto a = GeneratePrintString(l);
-            AppendGcode(a, err);
-            continue;
+        if(l.startsWith(String::key)){
+            if(ParseStringToGCode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
             }
+        }
         switch(l[0].unicode()){
-        case u'(':AppendGcode(GenerateComment(l), err);break;
-        case u'y':
-        case u'x':setXYMode(l);break;
-        case u'l':AppendGcode(GenerateLineHorizontal(l, &err), err);break;
-        case u'h':AppendGcode(GenerateHole(l, &err), err);break;
-        case u't':AppendGcode(SetTool(l), err);break;
-        case u'f':AppendGcode(SetFeedRate(l), err);break;
-        case u's':AppendGcode(SetSpindleSpeed(l), err);break;
-        case u'b':AppendGcode(GenerateBox(l, &err), err);break;
+        case Comment::keyUniCode:
+            if(ParseCommentToGCode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
+            }
+            break;
+        case XYModeKeys::keyUniCode1:
+        case XYModeKeys::keyUniCode2:setXYMode(l);break;
+        case Hole::keyUniCode:
+            if(ParseHoleToGCode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
+            }
+            break;
+        case Line::keyUniCode:
+            if(ParseLineToGCode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
+            }
+            break;
+        case Arc::keyUniCode:
+            if(ParseArcToGCode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
+            }
+            break;
+        case Tool::keyUniCode:
+            if(ParseSetToolToGCode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
+            }
+            break;
+        case Feed::keyUniCode_feed:
+            if(ParseSetFeedToGCode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
+            }
+            break;
+        case Feed::keyUniCode_spindleSpeed:
+            if(ParseSetSpindleSpeedToGCode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
+            }
+            break;
+        case Box::keyUniCode:
+            if(ParseBoxToGcode(l, &gcode, &err)){
+                AppendGCode(gcode, err);
+                continue;
+            }
+            break;
         }
     }
     return gcodes;
+}
+
+auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    Arc m;
+    auto state = Arc::Parse(str, _XYMode, &m);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed ) // ha Arc típusú sor
+    {
+        if(gcode)*gcode=ArcToGCode(m,err);
+    }
+    return true;
+}
+
+auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    Line m;
+    auto state = Line::Parse(str, _XYMode, &m);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed ) // ha Arc típusú sor
+    {
+        if(gcode)*gcode=LineToGCode(m,err);
+    }
+    return true;
+}
+
+auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    Hole m;
+    auto state = Hole::Parse(str, _XYMode, &m);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed ) // ha Arc típusú sor
+    {
+        if(gcode)*gcode=HoleToGCode(m,err);
+    }
+    return true;
+}
+
+auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    Box m;
+    auto state = Box::Parse(str, _XYMode, &m);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed ) // ha Arc típusú sor
+    {
+        if(gcode)*gcode=BoxToGCode(m,err);
+    }
+    return true;
+}
+
+auto GenerateGcode::ParseCommentToGCode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    Q_UNUSED(err)
+    Comment m;
+    auto state = Comment::Parse(str, &m);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed )
+    {
+        if(gcode)*gcode=m.text;
+    }
+    return true;
+}
+
+auto GenerateGcode::ParseStringToGCode(const QString& str, QString *gcode, QString *err)-> bool
+{
+    Q_UNUSED(err)
+    String m;
+    auto state = String::Parse(str, &m);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed )
+    {
+        if(gcode)*gcode=m.ToString();
+    }
+    return true;
+}
+
+auto GenerateGcode::ParseSetToolToGCode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    Tool m;
+    auto state = Tool::Parse(str, &m);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed )
+    {
+        if(gcode)*gcode=SetToolToGCode(m, err);
+    }
+    return true;
+}
+
+auto GenerateGcode::ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    //Feed m;
+    auto state = Feed::ParseFeed(str, &_selected_feed);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed )
+    {
+        //_selected_feed.f=m.f;
+        if(gcode)*gcode=SetFeedToGCode(err);
+    }
+    return true;
+}
+
+auto GenerateGcode::ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    //Feed m;
+    auto state = Feed::ParseSpindleSpeed(str, &_selected_feed);
+    if(state==ParseState::NoData) return false;
+    if(state == ParseState::Parsed )
+    {
+        //_selected_feed.spindleSpeed=m.spindleSpeed;
+        if(gcode)*gcode=SetSpindleSpeedToGCode(err);
+    }
+    return true;
 }
 
 // todo 10 arc: a p0,p1,po
 // todo 11 circle: c - mint a hole, csak nincs belül kimarva - a gaps eset
 // todo 12 o: forgatás minden elemre - o középpont, és szög
 
-auto GenerateGcode::AppendGcode(const QString &g, const QString& err) -> bool
+auto GenerateGcode::AppendGCode(const QString &g, const QString& err) -> bool
 {
     if(!g.isEmpty())gcodes.append(g);
     if(!err.isEmpty()){
@@ -60,6 +217,7 @@ auto GenerateGcode::AppendGcode(const QString &g, const QString& err) -> bool
     return true;
 }
 
+// todo 01 parse XYMode
 auto GenerateGcode::setXYMode(const QString &txt) -> bool
 {
     //_lasterr.clear();
@@ -69,39 +227,7 @@ auto GenerateGcode::setXYMode(const QString &txt) -> bool
 }
 
 
-
-auto GenerateGcode::ParsePoint(const QString &txt) -> Point
-{
-    return Point::Parse(txt, _XYMode);
-}
-
-auto GenerateGcode::ParseLine(const QString &txt) -> Line
-{
-    return Line::Parse(txt, _XYMode);
-}
-
-
-auto GenerateGcode::ParseBox(const QString &txt) -> Box
-{
-    return Box::Parse(txt, _XYMode);
-}
-
-auto GenerateGcode::ParseHole(const QString &txt) -> Hole
-{
-    return Hole::Parse(txt, _XYMode);
-}
-
-/**/
-
-auto GenerateGcode::GenerateComment(const QString &txt) -> QString
-{
-    if(!txt.startsWith('(')) return QString();
-    zInfo("G:"+txt);
-    if(!txt.endsWith(')')) return txt+')';
-    return txt;
-}
-
-auto GenerateGcode::LiftUp(const QVariant& z=QVariant()) -> QString
+auto GenerateGcode::LiftUpToGCode(const QVariant& z=QVariant()) -> QString
 {
     QStringList g;
 
@@ -111,17 +237,7 @@ auto GenerateGcode::LiftUp(const QVariant& z=QVariant()) -> QString
     return g.join('\n');
 }
 
-//auto GenerateGcode::LiftUp(Point p)-> QString
-//{
-//    QStringList g;
-
-//    g.append(p.GoToXYZ(Rapid)+" (pull)");
-//    g.append(Gcode(Rapid)+ " z"+rToGcode(_movZ)+" (lift up)");
-
-//    return g.join('\n');
-//}
-
-auto GenerateGcode::LiftDown(qreal z)-> QString
+auto GenerateGcode::LiftDownToGCode(qreal z)-> QString
 {
     QStringList g;
 
@@ -131,11 +247,11 @@ auto GenerateGcode::LiftDown(qreal z)-> QString
     return g.join('\n');
 }
 
-auto GenerateGcode::TravelXY(Point p) -> QString
+auto GenerateGcode::TravelXYToGCode(Point p) -> QString
 {
     QStringList g;
 
-    g.append(LiftUp());
+    g.append(LiftUpToGCode());
     g.append(p.GoToXY(GMode::Rapid)+" (travel)");
 
     return g.join('\n');
@@ -155,24 +271,11 @@ auto GenerateGcode::ValidateTool()->bool
     return true;
 }
 
+
 /*LINE*/
-
-auto GenerateGcode::GenerateLineHorizontal(const QString &txt,QString *err) -> QString
+auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
 {
-    if(!txt.startsWith('l')) return QString();
-    Line m = ParseLine(txt);
-    if(m.isValid()){        
-        auto a = GenerateLineHorizontal(m,err);
-        return a;
-    }
-
-    zInfo("Line: "+m.lasterr());
-    return {};
-}
-
-auto GenerateGcode::GenerateLineHorizontal(const Line& m,QString *err) -> QString
-{
-    //_lasterr.clear();
+    //_lasterr.clear();/*LINE*/
     QString msg = "G:"+m.ToString();
     zInfo(msg);
 
@@ -233,14 +336,15 @@ auto GenerateGcode::GenerateLineHorizontal(const Line& m,QString *err) -> QStrin
     int steps = qCeil(_last_cut.z/_last_cut.z0)+1;
     msg+= " steps:"+QString::number(steps);
 
-    g.append(TravelXY(p));
+    g.append(TravelXYToGCode(p));
 
-    auto sp = SpindleStart();
+    auto sp = SpindleStartToGCode();
     if(!sp.isEmpty()) g.append(sp);
-    auto f = SetFeed();
+    //_selected_feed
+    auto f = SetFeedToGCode();
     if(!f.isEmpty()) g.append(f);
 
-    g.append(LiftDown(p.z));
+    g.append(LiftDownToGCode(p.z));
 
     //int steps = qCeil(m.cut.z/m.cut.z0)+1;
     //QString msg2 = " (steps="+QString::number(steps)+')';
@@ -268,23 +372,9 @@ auto GenerateGcode::GenerateLineHorizontal(const Line& m,QString *err) -> QStrin
         g.append(p.GoToXYZ(GMode::Linear));
     }
 
-    g.append(LiftUp(p.z));
+    g.append(LiftUpToGCode(p.z));
     zInfo(msg);
     return g.join('\n');
-}
-
-/*HOLE*/
-
-auto GenerateGcode::GenerateHole(const QString &txt,QString*err) -> QString
-{
-    zInfo("T: "+txt);
-    if(!txt.startsWith('h')) return QString();
-    Hole m = ParseHole(txt);
-    if(m.isValid()) {
-        return GenerateHole(m,err);
-    }
-    zInfo("Hole: "+m.lasterr());
-    return {};
 }
 
 auto GenerateGcode::CheckCut(QString *err) -> bool
@@ -300,7 +390,9 @@ auto GenerateGcode::CheckCut(QString *err) -> bool
     return true;
 }
 
-auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
+/*HOLE*/
+// todo 11 a line két pont nem lehet azonos, box, arc
+auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 {
     //_lasterr.clear();
     auto msg = "G:"+m.ToString();
@@ -315,7 +407,7 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
     }
     /*CUT*/
     if(_last_cut.z==-1 && m.cut.z==-1){
-        if(err)*err=L("no total cut depth"); return {};
+        if(err){*err=L("no total cut depth");} return {};
     }
     if(_last_cut.z0==-1 && m.cut.z0==-1){if(err)*err=L("no cut depth"); return {};}
     if(m.cut.z!=-1) _last_cut.z = m.cut.z;
@@ -346,7 +438,7 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
         hasGaps = _last_hole_diameter>5*t.d; //
         if(hasGaps){
             int gapn = (2*path_r*M_PI)/(2*t.d+m.gap.length); // hány gap fér ki
-            if(gapn<1) {if(err)*err="cannot any create gaps"; return{};}
+            if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
             if(m.gap.n>gapn) { gapn=m.gap.n;}
             mgap = {(m.gap.n>gapn)?gapn:m.gap.n,// ha többet kért, mint ami kifér
                     m.gap.length,m.gap.height};
@@ -393,10 +485,10 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
         qreal zz = _lastHoleP.z-_last_cut.z;
 
        g.append(L("(predrill)"));
-       g.append(TravelXY(p)); //TRAVEL
-       auto sp = SpindleStart();
+       g.append(TravelXYToGCode(p)); //TRAVEL
+       auto sp = SpindleStartToGCode();
        if(!sp.isEmpty()) g.append(sp);
-       auto f = SetFeed();
+       auto f = SetFeedToGCode();
        if(!f.isEmpty()) g.append(f);
        //g.append(LiftDown(p.z));
        g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
@@ -406,12 +498,12 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
             Point pm = p;
             pm.x -= t.d;
             g.append(L("(premill)"));
-            g.append(TravelXY(pm));
-            g.append(LiftDown(pm.z));
+            g.append(TravelXYToGCode(pm));
+            g.append(LiftDownToGCode(pm.z));
 
-            auto sp = SpindleStart();
+            auto sp = SpindleStartToGCode();
             if(!sp.isEmpty()) g.append(sp);
-            auto f = SetFeed();
+            auto f = SetFeedToGCode();
             if(!f.isEmpty()) g.append(f);
 
             for(int i=0;i<steps;i++){
@@ -432,12 +524,12 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
         qreal z2 = hasGaps?_last_cut.z-mgap.height:_last_cut.z;
 
         if(z2>0){
-            g.append(TravelXY(p));
-            auto sp = SpindleStart();
+            g.append(TravelXYToGCode(p));
+            auto sp = SpindleStartToGCode();
             if(!sp.isEmpty()) g.append(sp);
-            auto f = SetFeed();
+            auto f = SetFeedToGCode();
             if(!f.isEmpty()) g.append(f);
-            g.append(LiftDown(p.z));
+            g.append(LiftDownToGCode(p.z));
 
             steps = qCeil(z2/_last_cut.z0)+1;
             for(int i=0;i<steps;i++){
@@ -451,7 +543,7 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
 
                 g.append(p.GoToZ(GMode::Circular)+" i"+GCode::r(path_r));
             }
-            g.append(LiftUp(_lastHoleP.z));  //ahol bement, ott ki is jön
+            g.append(LiftUpToGCode(_lastHoleP.z));  //ahol bement, ott ki is jön
         }
 
 
@@ -470,7 +562,12 @@ auto GenerateGcode::GenerateHole(const Hole &m, QString*err) -> QString
                 k01.z=p.z;
                 k11.z=p.z;
                 QString err2;
-                g.append(GenerateArc(k01, k11, _lastHoleP, mgap.height, &err2));
+
+                g.append(ArcToGCode(
+                    {k01, k11, _lastHoleP,
+                     {mgap.height,_last_cut.z0},//cut
+                     _last_feed//feed
+                    }, &err2));
                 aa+=ab;
             }
         }
@@ -495,49 +592,82 @@ G80 – Cancel any active cycle
 /*ARC*/
 
 
-auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o, qreal h ,QString* err) -> QString
+
+auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
+//auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o, qreal h ,QString* err) -> QString
 {
-    QString msg = "G: a"+o.ToString();
+    QString msg = "G: "+m.ToString();
     zInfo(msg);
 
-    msg=L("->")+ p0.ToString()+' '+p1.ToString()+' '+o.ToString();
+    /*POSITION*/
+    if(m.p1==m.p0){
+        if(err){*err=L("start and end points are equal");} return {};
+    }
+    if(m.p0==m.o){
+        if(err){*err=L("start and origo are equal");} return {};
+    }
+    if(m.p1==m.o){
+        if(err){*err=L("end pouint and origo are equal");} return {};
+    }
+    auto d01 = GeoMath::Distance(m.p0,m.p1);
+    /*CUT*/
+    if(_last_cut.z==-1 && m.cut.z==-1){
+        if(err){*err=L("no total cut depth");} return {};
+    }
+    if(_last_cut.z0==-1 && m.cut.z0==-1){if(err)*err=L("no cut depth"); return {};}
+    if(m.cut.z!=-1) _last_cut.z = m.cut.z;
+    if(m.cut.z0!=-1) _last_cut.z0 = m.cut.z0;
+    if(!CheckCut(err)) return{};
+    /*FEED*/
+    if(m.feed.spindleSpeed!=-1) _selected_feed.spindleSpeed = m.feed.spindleSpeed;
+    if(m.feed.f!=-1)_selected_feed.f=m.feed.f;
+    /*TOOL*/
+    if(!ValidateTool()) {if(err)*err=L("no tool"); return {};}
+    Tool t = _tools[_selected_tool_ix];
+    if(d01<t.d){
+        if(err){*err=L("wrong length: ")+GCode::r(d01)+
+                " tool: "+t.ToString();
+        }
+    }
 
-    msg+= " h:"+GCode::r(h);
-    int steps = qCeil(h/_last_cut.z0)+1;
+    msg=L("->")+ m.p0.ToString()+' '+m.p1.ToString()+' '+m.o.ToString();
+
+    msg+= " h:"+GCode::r(m.cut.z);
+    int steps = qCeil(m.cut.z/_last_cut.z0)+1;
     msg+= " steps:"+QString::number(steps);
 
     QStringList g(L("(arc begin)"));
 
-    g.append(TravelXY(p0));
-    g.append(LiftDown(p0.z));
+    g.append(TravelXYToGCode(m.p0));
+    g.append(LiftDownToGCode(m.p0.z));
     Point p;
     GMode::Mode mode;
     QString ij;
     qreal i,j,i1,j1,i0,j0;
-    i1=o.x-p0.x;
-    j1=o.y-p0.y;
+    i1=m.o.x-m.p0.x;
+    j1=m.o.y-m.p0.y;
 
-    i0=o.x-p1.x;
-    j0=o.y-p1.y;
+    i0=m.o.x-m.p1.x;
+    j0=m.o.y-m.p1.y;
 
     for(int step=0;step<steps;step++){
         if(!(step%2))
         {
-            p=p1;
+            p=m.p1;
             mode = GMode::Circular;            
             i=i1;
             j=j1;
         }
         else
         {
-            p=p0;
+            p=m.p0;
             mode = GMode::Circular_ccw;            
             i=i0;
             j=j0;
         }
         QString ij2 = "i"+GCode::r(i)+" j"+GCode::r(j);
         qreal z = p.z-(step+1)*_last_cut.z0;
-        qreal zz = p.z-h;
+        qreal zz = p.z-m.cut.z;
         if(z<zz){
             p.z = zz;
         } else {
@@ -545,7 +675,7 @@ auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o,
         }
         g.append(p.GoToXYZ(mode)+' '+ij2);
     }
-    g.append(LiftUp(p0.z));
+    g.append(LiftUpToGCode(m.p0.z));
 
     zInfo(msg);
     return g.join('\n');
@@ -554,18 +684,7 @@ auto GenerateGcode::GenerateArc(const Point &p0, const Point& p1, const Point&o,
 
 /*BOX*/
 
-auto GenerateGcode::GenerateBox(const QString &txt,QString*err) -> QString
-{
-    if(!txt.startsWith('b')) return QString();    
-    Box m = ParseBox(txt);
-    if(m.isValid()) {
-        return GenerateBox(m,err);
-    }
-    zInfo(L("Box: ")+m.lasterr());
-    return {};
-}
-
-auto GenerateGcode::GenerateBox(const Box &m,QString*err) -> QString
+auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 {
     //_lasterr.clear();
     auto msg = "G:"+m.ToString();
@@ -574,12 +693,12 @@ auto GenerateGcode::GenerateBox(const Box &m,QString*err) -> QString
     /*BOXTYPE*/
     if(_lastBoxType==BoxType::Undefined && m.type==BoxType::Undefined){
         if(err)*err=L("no box type");
-        return QString();
+        return {};
     }
     if(m.type!=BoxType::Undefined) _lastBoxType = m.type;
     if(_lastBoxType==BoxType::Undefined) {
         if(err)*err=L("undefined box type");
-        return QString();
+        return {};
     }
     /*CORNER_DIAMETER*/
     if(_lastBoxType==BoxType::Corners){
@@ -724,7 +843,7 @@ auto GenerateGcode::GenerateBox(const Box &m,QString*err) -> QString
             }
         }
         for(auto&h:holes){
-            auto gl = GenerateHole(h,err);
+            auto gl = HoleToGCode(h,err);
             if(!gl.isEmpty()){
                 g.append(gl);
             } else{
@@ -798,7 +917,7 @@ auto GenerateGcode::GenerateBox(const Box &m,QString*err) -> QString
         for(auto&bl:segments){
             auto px0 = _lastLineP0;
             auto px1 = _lastLineP1;
-            g.append(GenerateLineHorizontal(bl,err));
+            g.append(LineToGCode(bl,err));
             _lastLineP0 = px0; // azonnal vissza is állítjuk
             _lastLineP1 = px1;
         }
@@ -808,19 +927,21 @@ auto GenerateGcode::GenerateBox(const Box &m,QString*err) -> QString
     return g.join('\n');
 }
 
-auto GenerateGcode::SetTool(const QString &txt) -> QString
+auto GenerateGcode::SetToolToGCode(Tool m, QString *err) -> QString
 {
+    Q_UNUSED(err)
     //_lasterr.clear();
-    if(!txt.startsWith('t')) return QString();
-    auto m = Tool::Parse(txt);
-    if(m.ix==-1) return QString();
+    //if(!txt.startsWith(Tool::key)) return QString();
+    //Tool m;
+    //auto state = Tool::Parse(txt, &m);
+    if(m.ix==-1) return {};
     QString g;
 
     if(_tools.contains(m.ix)){ // ha van már ilyen tool
         if(m.type==Tool::None){ //selectelni akarjuk
             _selected_tool_ix = m.ix;
             //g = 't'+QString::number(_selected_tool_ix)+"(change tool)";
-            g=ChangeTool();
+            g=ChangeToolToGCode();
         }
     }else{
         if(m.type!=Tool::None){ // beállítani akarjuk
@@ -833,19 +954,43 @@ auto GenerateGcode::SetTool(const QString &txt) -> QString
     return g;
 }
 
-auto GenerateGcode::ChangeTool() ->QString
+
+auto GenerateGcode::SetFeedToGCode(QString* err) ->QString
+{
+    Q_UNUSED(err)
+    if(_selected_feed.f<=0) return {};
+    if(_last_feed.f == _selected_feed.f){
+        return {};
+    }
+    _last_feed.f = _selected_feed.f;
+    return QStringLiteral("f")+GCode::r(_selected_feed.f)+" (set feed)";
+}
+
+auto GenerateGcode::SetSpindleSpeedToGCode(QString* err) ->QString
+{
+    Q_UNUSED(err)
+    if(_selected_feed.spindleSpeed<=0) return {};
+    if(_last_feed.spindleSpeed == _selected_feed.spindleSpeed){
+        return {};
+    }
+    _last_feed.spindleSpeed = _selected_feed.spindleSpeed;
+    return QStringLiteral("s")+GCode::r(_selected_feed.spindleSpeed)+" (set spindle speed)";
+}
+
+
+auto GenerateGcode::ChangeToolToGCode() ->QString
 {
     if(_selected_tool_ix==-1){
         zInfo(QStringLiteral("no tool selected"));
-        return QString();
+        return {};
     }
     if(!_tools.contains(_selected_tool_ix)) {
         zInfo(QStringLiteral("tool not found: ")+QString::number(_selected_tool_ix));
-        return QString();
+        return {};
     }
     if(_last_tool_ix == _selected_tool_ix){
         zInfo(QStringLiteral("tool not changed"));
-        return QString();
+        return {};
     }
 
     Tool t = _tools[_selected_tool_ix];
@@ -853,8 +998,8 @@ auto GenerateGcode::ChangeTool() ->QString
     QStringList g;
 
     g.append(QStringLiteral("(change tool)"));
-    g.append(SpindleStop());
-    g.append(TravelXY({0,0,0}));
+    g.append(SpindleStopToGCode());
+    g.append(TravelXYToGCode({0,0,0}));
     g.append(QStringLiteral("g0 z")+GCode::r(_maxZ));
     g.append('t'+QString::number(t.ix)+" (tool select)");
     g.append(QStringLiteral("m6 (tool change)"));
@@ -867,82 +1012,19 @@ auto GenerateGcode::ChangeTool() ->QString
     return g.join('\n');
 }
 
-auto GenerateGcode::SpindleStart() ->QString
+auto GenerateGcode::SpindleStartToGCode() ->QString
 {
     auto const M3 = QStringLiteral("m3");
-    if(_selected_feed.spindleSpeed<=0) return QString();
-    auto sp = SetSpindleSpeed();
+    if(_selected_feed.spindleSpeed<=0) return {};
+    auto sp = SetSpindleSpeedToGCode();
     return (sp.isEmpty()?M3:M3+' '+sp)+"(spindle start)";
 }
 
-auto GenerateGcode::SetSpindleSpeed() ->QString
-{
-    if(_selected_feed.spindleSpeed<=0) return QString();
-    if(_last_feed.spindleSpeed == _selected_feed.spindleSpeed){
-        //zInfo(QStringLiteral("spindle speed not changed"));
-        return QString();
-    }
-    _last_feed.spindleSpeed = _selected_feed.spindleSpeed;
-    return QStringLiteral("s")+GCode::r(_selected_feed.spindleSpeed)+" (set spindle speed)";
-}
-
-auto GenerateGcode::SpindleStop() ->QString
+auto GenerateGcode::SpindleStopToGCode() ->QString
 {
     //_selected_feed.spindleSpeed=0;
     return QStringLiteral("m5 (spindle stop)");    
 }
 
-auto GenerateGcode::SetFeed() ->QString
-{
-    if(_selected_feed.f<=0) return QString();
 
-    if(_last_feed.f == _selected_feed.f){
-        //zInfo(QStringLiteral("feed rate not changed"));
-        return QString();
-    }
-    _last_feed.f = _selected_feed.f;
-    return QStringLiteral("f")+GCode::r(_selected_feed.f)+" (set feed)";
-}
-
-
-
-auto GenerateGcode::SetFeedRate(const QString &txt) -> QString
-{
-    //_lasterr.clear();
-    if(!txt.startsWith('f')) return QString();
-    bool isok;
-    auto f = txt.midRef(1).toDouble(&isok);
-    if(isok && f>0) _selected_feed.f=f;
-    return SetFeed();
-    //return 'f'+rToGcode(f)+" (set feed rate)";
-}
-
-auto GenerateGcode::SetSpindleSpeed(const QString &txt) -> QString
-{
-    //_lasterr.clear();
-    if(!txt.startsWith('s')) return QString();
-    bool isok;
-    auto f = txt.midRef(1).toDouble(&isok);
-    if(isok && f>0) _selected_feed.spindleSpeed=f;
-    //return 's'+rToGcode(f)+" (set spindle speed)";
-    return SetSpindleSpeed();
-}
-
-
-auto GenerateGcode::GeneratePrintString(const QString &txt) -> QString
-{
-    if(!txt.startsWith(QStringLiteral("print"))) return QString();
-
-    String m = String::Parse(txt);
-    return GeneratePrintString(m);
-}
-
-auto GenerateGcode::GeneratePrintString(const String &m) -> QString
-{
-    //_lasterr.clear();
-    auto g = m.ToString();
-    auto msg = QStringLiteral("G:")+g;
-    zInfo(msg);
-    return g;
-}
 

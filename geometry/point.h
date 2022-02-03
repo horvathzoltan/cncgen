@@ -20,6 +20,10 @@ struct Point{
     QString GoToXY(GMode::Mode i);
     QString GoToXYZ(GMode::Mode i);
 
+    auto operator ==(const Point& p) const -> bool {
+        return x==p.x&&y==p.y&&z==p.z;
+    }
+
     /*ISVALID*/
 public:
     bool isValid() const {return _isValid;}

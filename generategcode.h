@@ -7,16 +7,18 @@
 #include "geometry/line.h"
 #include "geometry/box.h"
 #include "geometry/hole.h"
+#include "geometry/arc.h"
 
 #include "gcode/tool.h"
 #include "gcode/variable.h"
 #include "gcode/string.h"
+#include "parsestate.h"
 
 class GenerateGcode
 {
 public:
     QStringList Generate(const QStringList& g);
-    bool CheckCut(QString*err);
+    bool AppendGCode(const QString &g, const QString& err);
 private:
     bool _verbose = true;
     XYMode _XYMode = XY;
@@ -49,46 +51,37 @@ private:
     Point _lastBoxP1;
     BoxType::Type _lastBoxType;
 
-    //VariableRepository _variables;
-    bool AppendGcode(const QString &g, const QString& err);
     auto setXYMode(const QString &txt) -> bool;
 
-    QString GenerateComment(const QString& txt);
+    /*Validators*/
+    auto ValidateTool() -> bool;
+    auto CheckCut(QString*err) -> bool;
 
     /*Geomerty*/
-    bool ValidateTool();
-    QString GenerateLineHorizontal(const QString& txt,QString *err);
-    QString GenerateLineHorizontal(const Line& m,QString *err);
-    QString GenerateHole(const QString& txt,QString*err);
-    QString GenerateHole(const Hole& m,QString*err);
-    QString GenerateBox(const QString& txt,QString*err);
-    QString GenerateBox(const Box& m,QString*err);
-    QString GeneratePrintString(const QString& txt);
-    QString GeneratePrintString(const String& m);
-    QString GenerateArc(const Point &p0, const Point& p1, const Point&o, qreal h ,QString*err);
+    auto LineToGCode(const Line& m,QString *err) -> QString;
+    auto HoleToGCode(const Hole& m,QString*err) -> QString;
+    auto BoxToGCode(const Box& m,QString*err) -> QString;
+    auto ArcToGCode(const Arc& m,QString*err) -> QString;
+    auto SetToolToGCode(Tool m, QString *err) -> QString;
+    auto SetFeedToGCode(QString *err = nullptr) -> QString;
+    auto SetSpindleSpeedToGCode(QString *err = nullptr) -> QString;
     /*G Command*/
-    QString SetTool(const QString& txt);
-    QString SetFeedRate(const QString& txt);
-    QString SetSpindleSpeed(const QString& txt);
-    QString SetSpindleSpeed();
-    QString ChangeTool();
-    QString SpindleStart();
-    QString SpindleStop();
-    QString SetFeed();
+    auto ChangeToolToGCode() -> QString;
+    auto SpindleStartToGCode() -> QString;
+    auto SpindleStopToGCode() -> QString;
+    auto LiftDownToGCode(qreal z) -> QString;
+    auto LiftUpToGCode(const QVariant& z) -> QString;
+    auto TravelXYToGCode(Point p) -> QString;
     /*Parse*/
-
-    Point ParsePoint(const QString&txt);
-    Line ParseLine(const QString&txt);
-    Hole ParseHole(const QString&txt);
-    Box ParseBox(const QString&txt);
-    /*ToGcode*/
-    QString LiftDown(qreal z);
-    QString LiftUp(const QVariant& z);
-    //QString LiftUp(Point p);
-    QString TravelXY(Point p);
-    //QString lasterr(){return _lasterr;};
-private:
-    //QString _lasterr;
+    auto ParseCommentToGCode(const QString &str, QString *gcode, QString *err) -> bool;
+    auto ParseArcToGCode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseLineToGCode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseBoxToGcode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseHoleToGCode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseStringToGCode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseSetToolToGCode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
 };
 
 #endif // GENERATEGCODE_H

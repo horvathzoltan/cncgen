@@ -31,9 +31,12 @@ Box::Box(const Point &_p0,
     _isValid = true;
 }
 
-auto Box::Parse(const QString &txt, XYMode mode) -> Box
+auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
 {
     _lasterr.clear();
+    if(!m) return ParseState::NoData;
+    if(!txt.startsWith(key)) return ParseState::NoData;
+
     auto params=txt.split(' ');
     BoxType::Type type = BoxType::Undefined;
     Point point;
@@ -89,10 +92,10 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
     bool positionErr = !hasPoints&&!rpoint.isValid();
     bool isCornerErr = type==BoxType::Corners&&corner_diameter<=0;
 
-    if(positionErr){ _lasterr=L("nincsenek pontok"); return {};}
-    if(isCornerErr){ _lasterr=L("no corner diameter"); return {};}
+    if(positionErr){ _lasterr=L("nincsenek pontok"); return ParseState::NotParsed;}
+    if(isCornerErr){ _lasterr=L("no corner diameter"); return ParseState::NotParsed;}
 
-    return {hasPoints?points[0]:Point(),
+    *m= {hasPoints?points[0]:Point(),
             hasPoints?points[1]:Point(),
             gap,
             type,
@@ -101,6 +104,7 @@ auto Box::Parse(const QString &txt, XYMode mode) -> Box
             feed,
             rpoint
     };
+    return ParseState::Parsed;
 }
 
 auto Box::ToString() const -> QString

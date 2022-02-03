@@ -16,7 +16,7 @@ public:
     qreal z0=-1;
 
     //static Cut Parse(const QString& txt);
-    QString ToString() const;
+    [[nodiscard]] auto ToString() const -> QString;
 
 //    /*ISVALID*/
 //public:

@@ -5,8 +5,12 @@
 #include "gap.h"
 #include "line.h"
 #include "boxtype.h"
+#include "parsestate.h"
 
 struct Box{
+    static constexpr QChar key = 'b';
+    static constexpr ushort keyUniCode= key.unicode();
+
     Box();
     Box(const Point& _p0,
         const Point& _p1,
@@ -27,7 +31,7 @@ struct Box{
     qreal corner_diameter=-1;
     Feed feed;
     Point rp;
-    static Box Parse(const QString& txt, XYMode mode);
+    static ParseState Parse(const QString& txt, XYMode mode, Box *l);
     QString ToString() const;
 
     /*ISVALID*/

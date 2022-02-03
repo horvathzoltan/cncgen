@@ -28,9 +28,12 @@ Line::Line(const Point &_p0,
     _isValid = true;
 }
 
-auto Line::Parse(const QString &txt, XYMode mode) -> Line
+auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
 {
     _lasterr.clear();
+    if(!m) return ParseState::NoData;
+    if(!txt.startsWith(key)) return ParseState::NoData;
+
     QVarLengthArray<Point> points;
     auto params=txt.split(' ');
     Cut cut;
@@ -61,12 +64,12 @@ auto Line::Parse(const QString &txt, XYMode mode) -> Line
     }
     bool hasPoints = points.length()>=2;
     bool positionErr = !hasPoints&&!rpoint.isValid();
-    if(positionErr){ _lasterr=L("nincsenek pontok"); return {};}
-
-    return {
+    if(positionErr){ _lasterr=L("nincsenek pontok"); return ParseState::NotParsed;}
+    *m= {
         hasPoints?points[0]:Point(),
         hasPoints?points[1]:Point(),
         cut, feed, rpoint};
+    return ParseState::Parsed;
 }
 
 auto Line::ToString() const -> QString

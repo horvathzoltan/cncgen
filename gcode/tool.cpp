@@ -2,8 +2,15 @@
 #include "tool.h"
 #include "gcode.h"
 
-auto Tool::Parse(const QString &txt) -> Tool
+QString Tool::_lasterr;
+
+auto Tool::Parse(const QString &txt, Tool* tool) -> ParseState
 {
+
+    //_lasterr.clear();
+    if(!tool) return ParseState::NoData;
+    if(!txt.startsWith(key)) return ParseState::NoData;
+
     Tool m={};
     auto params=txt.split(' ');
     bool isok;
@@ -27,7 +34,8 @@ auto Tool::Parse(const QString &txt) -> Tool
             m.type = Milling;
         }
     }
-    return m;
+    *tool = m;
+    return Parsed;
 }
 
 auto Tool::ToString() -> QString

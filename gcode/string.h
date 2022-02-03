@@ -4,15 +4,19 @@
 #include "variable.h"
 
 #include <QString>
+#include "parsestate.h"
 
 class String
 {
 public:
+    static const QString key;// = QStringLiteral("print");
+
     String();
     String(const QString& str);
 
     QString _value;
-    static String Parse(const QString& txt);
+    static auto Parse(const QString &txt, String*m) -> ParseState;
+
     QString ToString() const;
 
 /*ISVALID*/
@@ -21,6 +25,11 @@ public:
 private:
     bool _isValid;
 
+    /*LASTERR*/
+public:
+    static QString lasterr(){return _lasterr;}
+private:
+    static QString _lasterr;
 };
 
 #endif // STRING_H

@@ -600,10 +600,9 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                 }
 
                 qreal l = path_r*2*M_PI;
-               // qreal l0 = GeoMath::Distance(pm,m.p)*2*M_PI;
-                //qreal k2 = GeoMath::Distance(p,pp);
-                //qreal l = qSqrt(k1*k1+k2*k2);
-                g.append(GoToZ(GMode::Circular, pm, l)+" i"+GCode::r(t.d));
+                qreal lz = pp.z-p.z;
+                qreal l1 = qSqrt(l*l+lz*lz);
+                g.append(GoToZ(GMode::Circular, pm, l1)+" i"+GCode::r(t.d));
             }
             //g.append(LiftUp(p.z));
         }
@@ -630,11 +629,10 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                     p.z = z;
                 }
 
-               // qreal l0 = GeoMath::Distance(p,m.p)*2*M_PI;
-               // qreal k2 = GeoMath::Distance(p,pp);
-                //qreal l = qSqrt(k1*k1+k2*k2);
                 qreal l = path_r*2*M_PI;
-                g.append(GoToZ(GMode::Circular,p, l)+" i"+GCode::r(path_r));
+                qreal lz = pp.z-p.z;
+                qreal l1 = qSqrt(l*l+lz*lz);
+                g.append(GoToZ(GMode::Circular,p, l1)+" i"+GCode::r(path_r));
             }
             g.append(LiftUpToGCode(_lastHoleP.z));  //ahol bement, ott ki is jön
         }

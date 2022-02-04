@@ -1092,7 +1092,7 @@ auto GenerateGcode::SetSpindleSpeedToGCode(QString* err) ->QString
 
 auto GenerateGcode::SetXYModeToGCode() ->QString
 {
-    return L("set mode to ")+" "+_XYMode.ToString();
+    return L("(set mode to ")+_XYMode.ToString()+')';
 }
 
 auto GenerateGcode::ChangeToolToGCode() ->QString

@@ -3,6 +3,7 @@
 t1 m d2 h19
 t2 m d3 h19
 t3 m d4 h19
+yxz
 t1
 s50
 f150
@@ -19,7 +20,9 @@ h 149,81
 h 149,6
 
 (tápegység furatok)
-h 26,46
+m0 = sub(154,26)
+print "m0: $m0"
+h $m0,46
 m1 = avg(52.5,57.7)
 print "m1: $m1"
 h r0,$m1

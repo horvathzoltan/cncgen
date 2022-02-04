@@ -5,7 +5,7 @@
 
 class KeyWord{
 public:
-    enum Word{Undefined=-1,avg=0,sum};
+    enum Word{Undefined=-1,avg=0,sum,sub,add, mul, div};
 
     static QString ToString(Word type);
     static Word Parse(const QString &p);

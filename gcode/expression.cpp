@@ -54,6 +54,10 @@ auto Expression::Calculate() -> QVariant
     switch(_keyword){
     case KeyWord::avg: return(Function::avg(_params));
     case KeyWord::sum: return(Function::sum(_params));
+    case KeyWord::sub: return(Function::sub(_params));
+    case KeyWord::add: return(Function::add(_params));
+    case KeyWord::mul: return(Function::mul(_params));
+    case KeyWord::div: return(Function::div(_params));
     default: return {};
     }
     return "?";

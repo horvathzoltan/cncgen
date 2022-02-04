@@ -599,7 +599,10 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                     pm.z = z;
                 }
 
-                qreal l = GeoMath::Distance(pp,p)*2*M_PI;
+                qreal l = path_r*2*M_PI;
+               // qreal l0 = GeoMath::Distance(pm,m.p)*2*M_PI;
+                //qreal k2 = GeoMath::Distance(p,pp);
+                //qreal l = qSqrt(k1*k1+k2*k2);
                 g.append(GoToZ(GMode::Circular, pm, l)+" i"+GCode::r(t.d));
             }
             //g.append(LiftUp(p.z));
@@ -627,7 +630,10 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                     p.z = z;
                 }
 
-                qreal l = GeoMath::Distance(pp,p)*2*M_PI;
+               // qreal l0 = GeoMath::Distance(p,m.p)*2*M_PI;
+               // qreal k2 = GeoMath::Distance(p,pp);
+                //qreal l = qSqrt(k1*k1+k2*k2);
+                qreal l = path_r*2*M_PI;
                 g.append(GoToZ(GMode::Circular,p, l)+" i"+GCode::r(path_r));
             }
             g.append(LiftUpToGCode(_lastHoleP.z));  //ahol bement, ott ki is jön
@@ -724,7 +730,7 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
     j0=m.o.y-m.p1.y;
 
     for(int step=0;step<steps;step++){
-        Point pd = p;
+        Point pp = p;
         if(!(step%2))
         {
             p=m.p1;
@@ -748,7 +754,10 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
             p.z = z;
         }
 
-        qreal d=GeoMath::ArcLength(pd,p, m.o);
+        qreal d=GeoMath::ArcLength(pp,p, m.o);
+        //qreal k1 = GeoMath::Distance(p,m.p)*2*M_PI;
+        //qreal k2 = GeoMath::Distance(p,pp);
+        //qreal l = qSqrt(d*d+k2*k2);
         g.append(GoToXYZ(mode, p, d)+' '+ij2);
     }
     g.append(LiftUpToGCode(m.p0.z));

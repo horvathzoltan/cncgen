@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "parsestate.h"
+#include "xymode.h"
 
 class Size
 {
@@ -15,7 +16,7 @@ public:
     Size();
     Size(qreal _w, qreal _h);
 public:
-    static auto Parse(const QString& txt, Size *s = nullptr) -> ParseState;
+    static auto Parse(const QString& txt, XYMode mode=XYMode::Unknown, Size *s = nullptr) -> ParseState;
     auto isValid() const -> bool { return w>0&&h>0;}
 
     auto width() const ->qreal { return w;}

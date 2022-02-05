@@ -17,21 +17,29 @@ Size::Size(qreal _w, qreal _h)
     h=_h;
 }
 
-auto Size::Parse(const QString &txt, Size *s) -> ParseState
+auto Size::Parse(const QString &txt, XYMode mode, Size *s) -> ParseState
 {
     ParseState st(ParseState::NoData);
     if(!txt.startsWith(key)) return st;
     st.setState(ParseState::NotParsed);
-    if(!s) return st;
+    if(!s) return st;    
+    if(mode.mode==XYMode::Unknown) return st;
 
     auto a = txt.mid(key.length());
     qreal _w, _h;
     if(!GCode::ParseValueXYZ(a, &_w, &_h, nullptr, XYMode::XY)){
-        st.addError(L("nincsenek pontok"));
+        st.addError(L("nincs méret adat"));
     }
-
     if(st.state()== ParseState::ParseError) return st;
-    *s = {_w,_h};
+    switch(mode.mode){
+    case XYMode::XY:
+        *s = {_w,_h};
+        break;
+    case XYMode::YX:
+        *s = {_h,_w};
+        break;
+    default:break;
+    }
     st.setState(ParseState::Parsed);
     return st;
 }

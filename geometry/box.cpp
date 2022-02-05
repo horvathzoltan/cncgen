@@ -78,14 +78,14 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
         }
         if(Size::Parse(p).state()!=ParseState::NoData) {
             Size s0;
-            if(Size::Parse(p, &s0).state()==ParseState::Parsed){
+            if(Size::Parse(p, mode, &s0).state()==ParseState::Parsed){
                 if(s0.isValid()) size=s0;
             }
             continue;
         }
-        if(Size::Parse(p,&size).state()!=ParseState::NoData) {
-            continue;
-        }
+//        if(Size::Parse(p,&size).state()!=ParseState::NoData) {
+//            continue;
+//        }
         if(p.startsWith('d')){
             GCode::ParseValue(p, L("d"), &corner_diameter);
             continue;

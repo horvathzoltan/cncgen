@@ -72,10 +72,11 @@ auto GCode::ParseValue(const QString &p, const QString &key, QString *v) -> bool
 
 auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode mode) -> bool
 {
-    bool isok = false;
+    if(mode.mode==XYMode::Unknown) return false;
     QStringList ns = p.split(',');
 
-    if(x && y && z && ns.length()>=2){
+    bool isok = false;
+    if(x && y && ns.length()>=2){
         //bool isok_a, isok_b, isok_c=false;
         //double a = ns[0].toDouble(&isok_a);
         double a,b,c;
@@ -87,22 +88,25 @@ auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode 
         //bool has_c = (ns.length()>=3);
         //double c = has_c?ns[2].toDouble(&isok_c):0;
         bool isok_c=has_c?GCode::ToDouble(ns[2], &c):false;
+
         isok = isok_a && isok_b && (has_c?isok_c:true);
         if(isok){
             switch(mode.mode){
             case XYMode::XY:
-                if(isok_a) *x=a;
-                if(isok_b) *y=b;
+                if(isok_a) if(x)*x=a;
+                if(isok_b) if(y)*y=b;
                 break;
             case XYMode::YX:
-                if(isok_a) *y=a;
-                if(isok_b) *x=b;
+                if(isok_a) if(y)*y=a;
+                if(isok_b) if(x)*x=b;
                 break;
+            default:break;
             }
-            if(!has_c) { *z=0;
+            if(!has_c) {
+                //*z=0;
             }
             else if(isok_c){
-                *z=c;
+                if(z)*z=c;
             }
         }
     }

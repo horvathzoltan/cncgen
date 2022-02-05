@@ -84,7 +84,15 @@ auto GeoMath::uIvhossz(qreal p0x, qreal p0y, qreal p0z,
 
     *l = alpha*r;
 
-    return true;
+    return true;        
 }
 
+auto GeoMath::Translation(const Point&p, qreal x, qreal y, qreal z)->Point
+{
+    return {p.x+x, p.y+y, p.z+z};
+}
 
+auto GeoMath::Translation(const Point&p, const Point&q)->Point
+{
+    return Translation(p, q.x, q.y, q.z);
+}

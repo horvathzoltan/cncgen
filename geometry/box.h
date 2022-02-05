@@ -6,11 +6,13 @@
 #include "line.h"
 #include "boxtype.h"
 #include "parsestate.h"
+#include "size.h"
 
 struct Box{
+private:
     static constexpr QChar key = 'b';
     static constexpr ushort keyUniCode= key.unicode();
-
+public:
     Box();
     Box(const Point& _p0,
         const Point& _p1,
@@ -19,7 +21,8 @@ struct Box{
         Cut _cut,
         qreal _corner_diameter,
         Feed _feed,
-        const Point& _rp
+        const Point& _rp,
+        const Size& _size
         );
 
     QList<Line> lines;
@@ -31,7 +34,8 @@ struct Box{
     qreal corner_diameter=-1;
     Feed feed;
     Point rp;
-    static ParseState Parse(const QString& txt, XYMode mode, Box *l);
+    Size size;
+    static auto Parse(const QString& txt, XYMode mode=XYMode::Unknown, Box *m=nullptr) -> ParseState;
     QString ToString() const;
 
     /*ISVALID*/
@@ -40,11 +44,11 @@ public:
 private:
     bool _isValid;
 
-    /*LASTERR*/
-public:
-    static QString lasterr(){return _lasterr;}
-private:
-    static QString _lasterr;
+//    /*LASTERR*/
+//public:
+//    static QString lasterr(){return _lasterr;}
+//private:
+//    static QString _lasterr;
 };
 
 

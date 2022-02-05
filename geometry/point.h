@@ -13,7 +13,8 @@ struct Point{
     Point();
     Point(qreal, qreal, qreal);
 
-    static auto Parse(const QString&, XYMode m, const QString& key={}) -> Point;
+    //static auto isParseable(const QString& p) ->bool;
+    static auto Parse(const QString&, XYMode m, const QString& key, Point *) -> ParseState;
 
     [[nodiscard]] auto ToString() const -> QString;
     [[nodiscard]] auto ToStringZ() const -> QString;
@@ -31,10 +32,10 @@ private:
     bool _isValid;
 
     /*LASTERR*/
-public:
-    static auto lasterr() -> QString {return _lasterr;}
-private:
-    static QString _lasterr;
+//public:
+//    static auto lasterr() -> QString {return _lasterr;}
+//private:
+//    static QString _lasterr;
 };
 
 #endif // POINT_H

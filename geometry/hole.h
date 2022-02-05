@@ -33,16 +33,16 @@ struct Hole{
     Gap gap;
 
     /*ISVALID*/
-public:
-    bool isValid() const {return _isValid;}
-private:
-    bool _isValid;
+//public:
+//    bool isValid() const {return _isValid;}
+//private:
+//    bool _isValid;
 
     /*LASTERR*/
-public:
-    static QString lasterr(){return _lasterr;}
-private:
-    static QString _lasterr;
+//public:
+//    static QString lasterr(){return _lasterr;}
+//private:
+//    static QString _lasterr;
 
 };
 

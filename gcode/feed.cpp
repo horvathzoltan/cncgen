@@ -2,32 +2,32 @@
 
 #include "gcode/gcode.h"
 
-QString Feed::_lasterr;
+//QString Feed::_lasterr;
 
 auto Feed::isValid() const -> bool
 {
     return _feed>=0 && _spindleSpeed>=0;
 }
 
-Feed::Feed()
-{
-    _spindleSpeed = -1;
-    _feed = -1;
-    //_isValid=false;
-}
+//Feed::Feed()
+//{
+//    _spindleSpeed = -1;
+//    _feed = -1;
+//    //_isValid=false;
+//}
 
-Feed::Feed(qreal spindleSpeed, qreal f)
-{
-    _spindleSpeed = spindleSpeed;
-    _feed= f;
-    //_isValid=true;
-}
+//Feed::Feed(qreal spindleSpeed, qreal f)
+//{
+//    _spindleSpeed = spindleSpeed;
+//    _feed= f;
+//    //_isValid=true;
+//}
 
 
 auto Feed::ParseIntoFeed(const QString &txt) -> ParseState
 {
-    _lasterr.clear();
-    if(!txt.startsWith(key_feed)) return NoData;
+//    _lasterr.clear();
+    if(!txt.startsWith(key_feed)) return ParseState::NoData;
 
     bool isok;
     auto x = txt.midRef(1).toDouble(&isok);
@@ -38,7 +38,7 @@ auto Feed::ParseIntoFeed(const QString &txt) -> ParseState
 
 auto Feed::ParseIntoSpindleSpeed(const QString &txt) -> ParseState
 {
-    _lasterr.clear();
+    //_lasterr.clear();
     if(!txt.startsWith(key_spindleSpeed)) return ParseState::NoData;
 
     bool isok;

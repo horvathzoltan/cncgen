@@ -21,6 +21,8 @@ public:
     static const QString G1;
     static const QString G2;
     static const QString T1;
+    static const QString T_ERR;
+
     auto Generate(const QStringList& g) -> QStringList;
     auto AppendGCode(QStringList* gs, const QString &g, const QString& err) -> bool;
     qreal _total_time;
@@ -64,7 +66,7 @@ private:
     auto setXYMode(const QString &txt) -> bool;
 
     /*SetSelected*/
-    void SetSelectedFeed(const Feed& feed);
+    void SetSelectedFeed(Feed feed);
     /*Validators*/
     auto ValidateTool() -> bool;
     auto CheckCut(QString*err) -> bool;
@@ -98,7 +100,14 @@ private:
     auto ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetXYModeToGcode(const QString& str, QString *gcode, QString *err) -> bool;
-
+public:
+    struct Messages{
+        const QString invalid_point = QStringLiteral("invalid point");
+        const QString zero_feed = QStringLiteral("cutting movement with zero feed");
+        const QString zero_spindleSpeed = QStringLiteral("cutting movement with zero spindleSpeed");
+        const QString no_feed = QStringLiteral("no_feed");
+        const QString no_calc_length = QStringLiteral("not calculated movement length");
+    } _messages;
 };
 
 #endif // GENERATEGCODE_H

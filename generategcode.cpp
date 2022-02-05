@@ -14,6 +14,7 @@
 const QString GenerateGcode::G1 = L("G:");
 const QString GenerateGcode::G2 = L("    ->");
 const QString GenerateGcode::T1 = L("T:");
+const QString GenerateGcode::T_ERR = L("E:");
 
 auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 {
@@ -69,6 +70,14 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
                 continue;
             }
         }
+
+        if(Box::Parse(l).state()!=ParseState::NoData){
+            if(ParseBoxToGcode(l, &gcode, &err)){
+                AppendGCode(&gcodes, gcode, err);
+            }
+            continue;
+        }
+
         switch(l[0].unicode()){
         case Comment::keyUniCode:
             if(ParseCommentToGCode(l, &gcode, &err)){
@@ -114,12 +123,12 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
                 continue;
             }
             break;
-        case Box::keyUniCode:
-            if(ParseBoxToGcode(l, &gcode, &err)){
-                AppendGCode(&gcodes, gcode, err);
-                continue;
-            }
-            break;
+//        case Box::keyUniCode:
+//            if(ParseBoxToGcode(l, &gcode, &err)){
+//                AppendGCode(&gcodes, gcode, err);
+//                continue;
+//            }
+//            break;
         }
     }
 
@@ -130,12 +139,14 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Arc m;
-    auto state = Arc::Parse(str, _XYMode, &m);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed ) // ha Arc típusú sor
+    auto s = Arc::Parse(str, _XYMode, &m);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed ) // ha Arc típusú sor
     {
         zInfo(T1+str)
         if(gcode)*gcode=ArcToGCode(m,err);
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -143,12 +154,14 @@ auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString 
 auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Line m;
-    auto state = Line::Parse(str, _XYMode, &m);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed ) // ha Arc típusú sor
+    auto s = Line::Parse(str, _XYMode, &m);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed ) // ha Arc típusú sor
     {
         zInfo(T1+str)
         if(gcode)*gcode=LineToGCode(m,err);
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -156,12 +169,14 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
 auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Hole m;
-    auto state = Hole::Parse(str, _XYMode, &m);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed ) // ha Arc típusú sor
+    auto s = Hole::Parse(str, _XYMode, &m);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed ) // ha Box típusú sor
     {
         zInfo(T1+str);
         if(gcode)*gcode=HoleToGCode(m,err);
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -169,12 +184,14 @@ auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString
 auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Box m;
-    auto state = Box::Parse(str, _XYMode, &m);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed ) // ha Arc típusú sor
+    auto s = Box::Parse(str, _XYMode, &m);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed ) // ha Box típusú sor
     {
         zInfo(T1+str)
         if(gcode)*gcode=BoxToGCode(m,err);
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -183,12 +200,14 @@ auto GenerateGcode::ParseCommentToGCode(const QString& str, QString *gcode, QStr
 {
     Q_UNUSED(err)
     Comment m;
-    auto state = Comment::Parse(str, &m);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed )
+    auto s = Comment::Parse(str, &m);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed )
     {
         zInfo(T1+str)
         if(gcode)*gcode=m.text;
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -197,12 +216,14 @@ auto GenerateGcode::ParseStringToGCode(const QString& str, QString *gcode, QStri
 {
     Q_UNUSED(err)
     String m;
-    auto state = String::Parse(str, &m);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed )
+    auto s = String::Parse(str, &m);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed )
     {
         zInfo(T1+str)
         if(gcode)*gcode=m.ToString();
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -210,12 +231,14 @@ auto GenerateGcode::ParseStringToGCode(const QString& str, QString *gcode, QStri
 auto GenerateGcode::ParseSetToolToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Tool m;
-    auto state = Tool::Parse(str, &m);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed )
+    auto s = Tool::Parse(str, &m);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed )
     {
         zInfo(T1+str)
         if(gcode)*gcode=SetToolToGCode(m, err);
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -223,13 +246,15 @@ auto GenerateGcode::ParseSetToolToGCode(const QString& str, QString *gcode, QStr
 auto GenerateGcode::ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     //Feed m;
-    auto state = _selected_feed.ParseIntoFeed(str);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed )
+    auto s = _selected_feed.ParseIntoFeed(str);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed )
     {
         zInfo(T1+str)
         //_selected_feed.f=m.f;
         if(gcode)*gcode=SetFeedToGCode(err);
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -237,13 +262,15 @@ auto GenerateGcode::ParseSetFeedToGCode(const QString& str, QString *gcode, QStr
 auto GenerateGcode::ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     //Feed m;
-    auto state = _selected_feed.ParseIntoSpindleSpeed(str);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed )
+    auto s = _selected_feed.ParseIntoSpindleSpeed(str);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed )
     {
         zInfo(T1+str)
         //_selected_feed.spindleSpeed=m.spindleSpeed;
         if(gcode)*gcode=SetSpindleSpeedToGCode(err);
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -252,13 +279,15 @@ auto GenerateGcode::ParseSetXYModeToGcode(const QString& str, QString *gcode, QS
 {
     Q_UNUSED(err)
     //Feed m;
-    auto state = XYMode::Parse(str, &_XYMode);
-    if(state==ParseState::NoData) return false;
-    if(state == ParseState::Parsed )
+    auto s = XYMode::Parse(str, &_XYMode);
+    if(s.state()==ParseState::NoData) return false;
+    if(s.state() == ParseState::Parsed )
     {
         zInfo(T1+str)
         //_selected_feed.f=m.f;
         if(gcode)*gcode=SetXYModeToGCode();
+    }else{
+        zInfo(T_ERR+str+'\n'+s.err().join('\n'));
     }
     return true;
 }
@@ -339,7 +368,7 @@ auto GenerateGcode::ValidateTool()->bool
     return true;
 }
 
-void GenerateGcode::SetSelectedFeed(const Feed& feed){
+void GenerateGcode::SetSelectedFeed(Feed feed){
     if(feed.spindleSpeed()!=-1) _selected_feed.setSpindleSpeed(feed.spindleSpeed());
     if(feed.feed()!=-1)_selected_feed.setFeed(feed.feed());
 }
@@ -815,20 +844,17 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             if(err)*err=L("p0 not valid");
             return {};
         }
-    }
-    if(m.p1.isValid()){
+    }    
+    if(m.p1.isValid()){        
         _lastBoxP1=m.p1;
-    }
-    if(m.rp.isValid()){
-        if(_lastBoxP1.isValid()){
-            _lastBoxP1.x+=m.rp.x;
-            _lastBoxP1.y+=m.rp.y;
-            _lastBoxP1.z+=m.rp.z;
-        } else{
-            if(err)*err=L("p1 not valid");
-            return {};
+    } else{
+        if(m.size.isValid()){ // ha van méret megadva az az elsődleges
+            _lastBoxP1=GeoMath::Translation(_lastBoxP0,m.size.width(), m.size.height());
+        } else if(m.rp.isValid() && _lastBoxP1.isValid()){
+            _lastBoxP1=GeoMath::Translation(_lastBoxP1,m.rp);
         }
     }
+
 
     if(GeoMath::Distance(_lastBoxP0, _lastBoxP1)<(t.d/1.4)) {
         if(err)*err=L("line too short");
@@ -1147,7 +1173,7 @@ auto GenerateGcode::SpindleStopToGCode() ->QString
 auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QString
 {
     if(!p.isValid()){
-        zInfo("invalid point");
+        zInfo(_messages.invalid_point);
         return {};
     }
     if(i==GMode::Undefined){ return {};}
@@ -1163,7 +1189,7 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
          i==GMode::Mode::Circular||
          i==GMode::Mode::Circular_ccw)){
         if(_last_feed.feed()<=0){
-            zInfo("cutting movement with zero feed");
+            zInfo(_messages.zero_feed);
             //return {};
         }
         else{
@@ -1171,7 +1197,7 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
             _total_cut+=length;
         }
         if(_last_feed.spindleSpeed()<=0){
-            zInfo("cutting movement with zero spindleSpeed");
+            zInfo(_messages.zero_spindleSpeed);
             // return {};
         }
     }
@@ -1184,13 +1210,13 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
 
     if(length>0){
         if(_last_feed.feed()<=0){
-            zInfo("no feed")
+            zInfo(_messages.no_feed)
         } else{
             _total_length+=length;
             _total_time+=length/v;
         }
     } else {
-        zInfo("no calculated movement length")
+        zInfo(_messages.zero_spindleSpeed)
     }
 
     return GMode::ToGCcode(i)+' '+p.ToStringZ();
@@ -1199,7 +1225,7 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
 auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QString
 {
     if(!p.isValid()){
-        zInfo("invalid point");
+        zInfo(_messages.invalid_point);
         return {};
     }
     if(i==GMode::Undefined){ return {};}
@@ -1215,7 +1241,7 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
          i==GMode::Mode::Circular||
          i==GMode::Mode::Circular_ccw)){
         if(_last_feed.feed()<=0){
-            zInfo("cutting movement with zero feed");
+            zInfo(_messages.zero_feed);
             //return {};
         }
         else{
@@ -1223,7 +1249,7 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
             _total_cut+=length;
         }
         if(_last_feed.spindleSpeed()<=0){
-            zInfo("cutting movement with zero spindleSpeed");
+            zInfo(_messages.zero_spindleSpeed);
            // return {};
         }
     }
@@ -1237,13 +1263,13 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
 
     if(length>0){
         if(_last_feed.feed()<=0){
-            zInfo("no feed")
+            zInfo(_messages.no_feed)
         } else{
             _total_length+=length;
             _total_time+=length/v;
         }
     } else {
-        zInfo("no calculated movement length")
+        zInfo(_messages.no_calc_length)
     }
 
     return GMode::ToGCcode(i)+' '+p.ToStringXY();
@@ -1252,7 +1278,7 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
 auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QString
 {
     if(!p.isValid()){
-        zInfo("invalid point");
+        zInfo(_messages.invalid_point);
         return {};
     }
     if(i==GMode::Undefined){ return {};}
@@ -1265,14 +1291,14 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QStr
          i==GMode::Mode::Circular_ccw)){
 
         if(_last_feed.feed()<=0){
-            zInfo("cutting movement with zero feed");
+            zInfo(_messages.zero_feed);
             //return {};
         } else{
             v = _last_feed.feed();
             _total_cut+=length;
         }
         if(_last_feed.spindleSpeed()<=0){
-            zInfo("cutting movement with zero spindleSpeed");
+            zInfo(_messages.zero_spindleSpeed);
             // return {};
         }
     } else if(i==GMode::Rapid){
@@ -1284,13 +1310,13 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QStr
 
     if(length>0){
         if(_last_feed.feed()<=0){
-            zInfo("no feed")
+            zInfo(_messages.no_feed)
         } else{
             _total_length+=length;
             _total_time+=length/v;
         }
     } else {
-        zInfo("no calculated movement length")
+        zInfo(_messages.no_calc_length)
     }
 
     return GMode::ToGCcode(i)+' '+p.ToStringXYZ();

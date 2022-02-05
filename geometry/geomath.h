@@ -10,6 +10,8 @@ public:
     static qreal Distance(const Point &p0, const Point& p1);
     static bool Polar(const Point &p0, const Point& p1, qreal szog, qreal tavolsag, Point *p3);
     static qreal ArcLength(const Point &p0, const Point &p1, const Point &o);
+    static Point Translation(const Point &p, const Point& p2);
+    static Point Translation(const Point &p, qreal x, qreal y, qreal z=0);
 private:
     static qreal uSzog(qreal A1, qreal B1);
     static bool uOsztopontXY(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y, qreal p1z, qreal o, qreal *x, qreal *y, qreal *z);

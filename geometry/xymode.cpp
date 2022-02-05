@@ -6,7 +6,7 @@ const QString XYMode::key_yxz = QStringLiteral("yxz");
 
 XYMode::XYMode()
 {
-    mode=XY;
+    mode=Unknown;
 }
 
 XYMode::XYMode(Mode m)
@@ -16,13 +16,19 @@ XYMode::XYMode(Mode m)
 
 auto XYMode::Parse(const QString &txt, XYMode* m) -> ParseState
 {
-    //_lasterr.clear();
-    if(!m) return ParseState::NoData;
-    if(!ValidateLineType(txt)) return ParseState::NoData;
+    ParseState st(ParseState::NoData);
+    if(!ValidateLineType(txt)) return st;
+    st.setState(ParseState::NotParsed);
+    if(!m) return st;
 
-    if(txt==key_xyz){ m->mode=XY; return ParseState::Parsed;}
-    if(txt==key_yxz){ m->mode=YX; return ParseState::Parsed;}
-    return ParseState::NoData;
+    if(txt==key_xyz){
+        m->mode=XY;
+        st.setState(ParseState::Parsed);
+    }else if(txt==key_yxz){
+        m->mode=YX;
+        st.setState(ParseState::Parsed);
+    }
+    return st;
 }
 
 auto XYMode::ValidateLineType(const QString &txt) -> bool
@@ -32,5 +38,7 @@ auto XYMode::ValidateLineType(const QString &txt) -> bool
 
 auto XYMode::ToString() -> QString
 {
-    return mode==XY?QStringLiteral("XYZ"):QStringLiteral("YXZ");
+    if(mode==XY) return QStringLiteral("XYZ");
+    if(mode==YX) return QStringLiteral("YXZ");
+    return {};
 }

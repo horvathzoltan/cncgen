@@ -6,7 +6,7 @@
 #include "common/logger/log.h"
 #include "helpers/stringhelper.h"
 
-QString Line::_lasterr;
+//QString Line::_lasterr;
 
 Line::Line()
 {
@@ -31,9 +31,11 @@ Line::Line(const Point &_p0,
 
 auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
 {
-    _lasterr.clear();
-    if(!m) return ParseState::NoData;
-    if(!txt.startsWith(key)) return ParseState::NoData;
+    ParseState st(ParseState::NoData);
+    st.setState(ParseState::NotParsed);
+    if(!txt.startsWith(key)) return st;
+    st.setState(ParseState::NotParsed);
+    if(!m) return st;
 
     QVarLengthArray<Point> points;
     auto params=txt.split(' ');
@@ -44,11 +46,20 @@ auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
-        if(p[0].isNumber()){
-            points.append(Point::Parse(p, mode)); continue;
+        if(Point::Parse(p, mode, {}, nullptr).state()!=ParseState::NoData) {
+            Point p0;
+            if(Point::Parse(p, mode, {}, &p0).state()==ParseState::Parsed){
+                if(p0.isValid()) points.append(p0);
+            }
+            continue;
         }
         if(p.startsWith('r')) {
-            rpoint=Point::Parse(p, mode, L("r")); continue;
+            Point rp;
+            if(Point::Parse(p, mode, L("r"), &rp).state()==ParseState::Parsed)
+            {
+                rpoint = rp;
+            };
+            continue;
         }
         if(p.startsWith('z')){
             GCode::ParseValue(p, L("z"), &cut.z); continue;
@@ -73,14 +84,18 @@ auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
     }
     bool hasPoints = points.length()>=2;
     bool positionErr = !hasPoints&&!rpoint.isValid();
-    if(positionErr){ _lasterr=L("nincsenek pontok"); return ParseState::NotParsed;}
+    if(positionErr){st.addError(L("no position data"));}
+    if(st.state()== ParseState::ParseError) return st;
+
     *m= {
         hasPoints?points[0]:Point(),
         hasPoints?points[1]:Point(),
         cut,
         feed,
         rpoint};
-    return ParseState::Parsed;
+
+    st.setState(ParseState::Parsed);
+    return st;
 }
 
 auto Line::ToString() const -> QString

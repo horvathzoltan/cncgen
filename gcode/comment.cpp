@@ -1,27 +1,27 @@
 #include "comment.h"
 
-QString Comment::_lasterr;
 
 Comment::Comment()
-{
-    _isValid=false;
+{    
 }
 
 
 Comment::Comment(const QString &_txt)
 {
     text=_txt;
-    _isValid=true;
 }
 
 
-ParseState Comment::Parse(const QString &txt, Comment *m)
+auto Comment::Parse(const QString &txt, Comment *m) -> ParseState
 {
-    _lasterr.clear();
-    if(!m) return ParseState::NoData;
-    if(!txt.startsWith(key)) return ParseState::NoData;
+    ParseState st(ParseState::NoData);
+    if(!txt.startsWith(key)) return st;
+    st.setState(ParseState::NotParsed);
+    if(!m) return st;
 
     if(!txt.endsWith(')')){*m={txt+')'};}
     else{*m={txt};}
-    return ParseState::Parsed;
+
+    st.setState(ParseState::Parsed);
+    return st;
 }

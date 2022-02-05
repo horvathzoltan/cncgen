@@ -3,9 +3,9 @@
 #include "common/macrofactory/macro.h"
 #include <QVarLengthArray>
 #include "helpers/stringhelper.h"
+#include "geometry/size.h"
 
-
-QString Box::_lasterr;
+//QString Box::_lasterr;
 
 Box::Box()
 {
@@ -20,7 +20,8 @@ Box::Box(const Point &_p0,
          Cut _cut,
          qreal _corner_diameter,
          Feed _feed,
-         const Point& _rp)
+         const Point& _rp,
+         const Size& _size)
 {
     p0=_p0;
     p1=_p1;
@@ -30,24 +31,26 @@ Box::Box(const Point &_p0,
     cut=_cut;
     feed=_feed;
     rp=_rp;
+    size=_size;
     _isValid = true;
 }
 
 auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
 {
-    _lasterr.clear();
-    if(!m) return ParseState::NoData;
-    if(!txt.startsWith(key)) return ParseState::NoData;
+    ParseState st(ParseState::NoData);
+    if(!txt.startsWith(key)) return st;
+    st.setState(ParseState::NotParsed);
+    if(!m) return st;
 
     auto params=txt.split(' ');
     BoxType::Type type = BoxType::Undefined;
-    Point point;
     QVarLengthArray<Point> points;
     Gap gap;
     Cut cut;
     qreal corner_diameter=-1;
     Feed feed;
     Point rpoint;
+    Size size;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -58,13 +61,30 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
             continue;
             }
 
-        if(p[0].isNumber()) {
-            point=Point::Parse(p, mode);
-            if(point.isValid()) points.append(point);
+        if(Point::Parse(p, mode, {}, nullptr).state()!=ParseState::NoData) {
+            Point p0;
+            if(Point::Parse(p, mode, {}, &p0).state()==ParseState::Parsed){
+                if(p0.isValid()) points.append(p0);
+            }
             continue;
         }
         if(p.startsWith('r')) {
-            rpoint=Point::Parse(p, mode, L("r")); continue;
+            Point rp;
+            if(Point::Parse(p, mode, L("r"), &rp).state()==ParseState::Parsed)
+            {
+                rpoint = rp;
+            };
+            continue;
+        }
+        if(Size::Parse(p).state()!=ParseState::NoData) {
+            Size s0;
+            if(Size::Parse(p, &s0).state()==ParseState::Parsed){
+                if(s0.isValid()) size=s0;
+            }
+            continue;
+        }
+        if(Size::Parse(p,&size).state()!=ParseState::NoData) {
+            continue;
         }
         if(p.startsWith('d')){
             GCode::ParseValue(p, L("d"), &corner_diameter);
@@ -74,7 +94,7 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
             GCode::ParseValue(p, L("z"), &cut.z);
             continue;
         }
-        if(p.startsWith('c')){ //corners
+        if(p.startsWith('c')){ //corners -
             GCode::ParseValue(p, L("c"), &cut.z0);
             continue;
         }
@@ -92,27 +112,38 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
                 continue;
             }
         }
-        if(p.startsWith('g')){
-            gap = Gap::Parse(p); continue;
+        if(Gap::Parse(p, nullptr).state()!=ParseState::NoData){
+            Gap gp;
+            if(Gap::Parse(p, &gp).state()==ParseState::Parsed){
+                gap=gp;
+            }
+            continue;
         }
+
     }
-    bool hasPoints = points.length()>=2;
+    bool hasPoints = points.length()>=2||(points.length()==1&&size.isValid());
     bool positionErr = !hasPoints&&!rpoint.isValid();
     bool isCornerErr = type==BoxType::Corners&&corner_diameter<=0;
 
-    if(positionErr){ _lasterr=L("nincsenek pontok"); return ParseState::NotParsed;}
-    if(isCornerErr){ _lasterr=L("no corner diameter"); return ParseState::NotParsed;}
+    if(positionErr){st.addError(L("no position data"));}
+    if(isCornerErr){st.addError(L("no corner diameter"));}
 
-    *m= {hasPoints?points[0]:Point(),
-            hasPoints?points[1]:Point(),
-            gap,
-            type,
-            cut,
-            corner_diameter,
-            feed,
-            rpoint
+    if(st.state()== ParseState::ParseError) return st;
+
+    *m= {
+        points.length()>0?points[0]:Point(),
+        points.length()>1?points[1]:Point(),
+        gap,
+        type,
+        cut,
+        corner_diameter,
+        feed,
+        rpoint,
+        size
     };
-    return ParseState::Parsed;
+
+    st.setState(ParseState::Parsed);
+    return st;
 }
 
 auto Box::ToString() const -> QString

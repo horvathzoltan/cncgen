@@ -3,7 +3,7 @@
 #include "gcode/gcode.h"
 #include "common/logger/log.h"
 
-QString Point::_lasterr;
+//QString Point::_lasterr;
 
 Point::Point()
 {
@@ -21,28 +21,29 @@ Point::Point(qreal _x, qreal _y, qreal _z)
 
 auto Point::Parse(const QString &txt,
                   XYMode mode,
-                  const QString& key) -> Point
+                  const QString& key,
+                  Point*p) -> ParseState
 {
-    _lasterr.clear();
-    if(txt.isEmpty()) return {};
-    auto hasKey = !key.isEmpty();
+    ParseState st(ParseState::NoData);
+    if(!key.isEmpty() && !txt.startsWith(key)) return st;
+    auto a = txt.mid(key.length());
+    if(!(a[0].isNumber()||a[0]=='$')) return st;
+    st.setState(ParseState::NotParsed);
+    if(!p) return st;
 
-    if(!hasKey || txt.startsWith(key)){
-        auto a = hasKey?txt.mid(key.length()):txt;
-        double x, y, z;
-//        if(txt.startsWith('r')&&txt.contains("$m1")){
-//            zInfo(L("rxyz:")+txt);
-//        }
-        if(!GCode::ParseValueXYZ(a, &x, &y, &z, mode)) return {};
-        return {x,y,z};
-    }
-    _lasterr=L("nincs pozíció adat");
-    return {};
+    double _x, _y, _z;
+    if(!GCode::ParseValueXYZ(a, &_x, &_y, &_z, mode)){
+         st.addError(L("nincs pozíció adat"));
+    };
+    if(st.state()== ParseState::ParseError) return st;
+    *p={_x,_y, _z};
+    st.setState(ParseState::Parsed);
+    return st;
 }
 
 auto Point::ToString() const -> QString
 {
-    return GCode::r(y)+','+GCode::r(y)+','+GCode::r(z);
+    return GCode::r(x)+','+GCode::r(y)+','+GCode::r(z);
 }
 
 

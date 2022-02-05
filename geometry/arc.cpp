@@ -6,13 +6,13 @@
 #include "common/logger/log.h"
 #include "helpers/stringhelper.h"
 
-QString Arc::_lasterr;
+//QString Arc::_lasterr;
 
 
 Arc::Arc()
 {
   //_cut;
-    _isValid=false;
+    //_isValid=false;
 }
 
 Arc::Arc(const Point &_p0,
@@ -29,14 +29,16 @@ Arc::Arc(const Point &_p0,
     cut = _cut;
     feed = _feed;
     rp=_rp;
-    _isValid = true;
+    //_isValid = true;
 }
 
 auto Arc::Parse(const QString &txt, XYMode mode, Arc *a) -> ParseState
 {
-    _lasterr.clear();
-    if(!a) return ParseState::NoData;
-    if(!txt.startsWith(key)) return ParseState::NoData;
+    //_lasterr.clear();
+    ParseState st(ParseState::NoData);
+    if(!txt.startsWith(key)) return st;
+    st.setState(ParseState::NotParsed);
+    if(!a) return st;
 
     QVarLengthArray<Point> points;
     auto params=txt.split(' ');
@@ -47,11 +49,20 @@ auto Arc::Parse(const QString &txt, XYMode mode, Arc *a) -> ParseState
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
-        if(p[0].isNumber()){
-            points.append(Point::Parse(p, mode)); continue;
+        if(Point::Parse(p, mode, {}, nullptr).state()!=ParseState::NoData) {
+            Point p0;
+            if(Point::Parse(p, mode, {}, &p0).state()==ParseState::Parsed){
+                if(p0.isValid()) points.append(p0);
+            }
+            continue;
         }
         if(p.startsWith('r')) {
-            rpoint=Point::Parse(p, mode, L("r")); continue;
+            Point rp;
+            if(Point::Parse(p, mode, L("r"), &rp).state()==ParseState::Parsed)
+            {
+                rpoint = rp;
+            };
+            continue;
         }
         if(p.startsWith('z')){
             GCode::ParseValue(p, L("z"), &cut.z); continue;
@@ -76,20 +87,17 @@ auto Arc::Parse(const QString &txt, XYMode mode, Arc *a) -> ParseState
     }
     bool hasPoints = points.length()>=3;
     bool positionErr = !hasPoints&&!rpoint.isValid();
-    if(positionErr){ _lasterr=L("nincsenek pontok"); return ParseState::NotParsed;}
-
-//    m.setData({
-//            hasPoints?points[0]:Point(),
-//            hasPoints?points[1]:Point(),
-//            hasPoints?points[2]:Point(),
-//            cut, feed, rpoint});
+    if(positionErr){ st.addError(L("nincsenek pontok"));}
+    if(st.state()== ParseState::ParseError) return st;
 
     *a={
         hasPoints?points[0]:Point(),
         hasPoints?points[1]:Point(),
         hasPoints?points[2]:Point(),
         cut, feed, rpoint};
-    return ParseState::Parsed;
+
+    st.setState(ParseState::Parsed);
+    return st;
 }
 
 auto Arc::ToString() const -> QString

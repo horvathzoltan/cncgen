@@ -112,6 +112,7 @@ SOURCES += \
         geometry/hole.cpp \
         geometry/line.cpp \
         geometry/point.cpp \
+        geometry/size.cpp \
         geometry/xymode.cpp \
         main.cpp \
         work1.cpp
@@ -137,6 +138,7 @@ HEADERS += \
     geometry/hole.h \
     geometry/line.h \
     geometry/point.h \
+    geometry/size.h \
     geometry/xymode.h \
     helpers/filenamehelper.h \
     helpers/stringhelper.h \

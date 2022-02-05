@@ -46,17 +46,18 @@ struct Arc
     // todo e7 Arc::Divide
     //QList<Arc> Divide(const Gap& g, qreal tool_d);
 
+    bool isValid() const {return (p0.isValid()&&p1.isValid()&&o.isValid())||rp.isValid();}
     /*ISVALID*/
-public:
-    bool isValid() const {return _isValid;}
-private:
-    bool _isValid;
+//public:
+//    bool isValid() const {return _isValid;}
+//private:
+//    bool _isValid;
 
     /*LASTERR*/
-public:
-    static QString lasterr(){return _lasterr;}
-private:
-    static QString _lasterr;
+//public:
+//    static QString lasterr(){return _lasterr;}
+//private:
+//    static QString _lasterr;
 };
 
 #endif // ARC_H

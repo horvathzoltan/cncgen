@@ -13,10 +13,8 @@ public:
     static constexpr ushort keyUniCode_spindleSpeed= key_spindleSpeed.unicode();
 
 private:
-    qreal _spindleSpeed;
-    qreal _feed;
-    //bool _isValid;
-    static QString _lasterr;
+    qreal _spindleSpeed=-1;
+    qreal _feed=-1;
 public:
     /*_spindleSpeed*/
     [[nodiscard]] auto spindleSpeed() const -> qreal {return _spindleSpeed;}
@@ -27,14 +25,12 @@ public:
     /*_isValid*/
     [[nodiscard]] auto isValid() const -> bool;
     /*_lasterr*/
-    static auto lasterr() -> QString{return _lasterr;}
-
 //public:
-    Feed();
-    Feed(
-        qreal spindleSpeed,
-        qreal f
-        );
+//    Feed();
+//    Feed(
+//        qreal spindleSpeed,
+//        qreal f
+//        );
 
     auto ParseIntoFeed(const QString &txt) -> ParseState;
     auto ParseIntoSpindleSpeed(const QString &txt) -> ParseState;

@@ -13,7 +13,7 @@ public:
     static const QString key_xyz;
     static const QString key_yxz;
 
-    enum Mode:int{XY=0,YX};
+    enum Mode:int{Unknown=-1,XY=0,YX};
 
     XYMode();
     XYMode(Mode m);

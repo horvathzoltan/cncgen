@@ -4,11 +4,11 @@
 #include "gcode/gcode.h"
 #include "helpers/stringhelper.h"
 
-QString Hole::_lasterr;
+//QString Hole::_lasterr;
 
 Hole::Hole()
 {
-    _isValid=false;
+   // _isValid=false;
 }
 
 Hole::Hole(const Point &_p,
@@ -24,14 +24,15 @@ Hole::Hole(const Point &_p,
     feed = _feed;
     rp = _rp;
     gap = _gap;
-    _isValid = true;
+   // _isValid = true;
 }
 
 auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
 {
-    _lasterr.clear();
-    if(!m) return ParseState::NoData;
-    if(!txt.startsWith(key)) return ParseState::NoData;
+    ParseState st(ParseState::NoData);
+    if(!txt.startsWith(key)) return st;
+    st.setState(ParseState::NotParsed);
+    if(!m) return st;
 
     auto params=txt.split(' ');
     Point point;
@@ -45,11 +46,20 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
 
-        if(p[0].isNumber()) {
-            point=Point::Parse(p, mode); continue;
+        if(Point::Parse(p, mode, {}, nullptr).state()!=ParseState::NoData) {
+            Point p0;
+            if(Point::Parse(p, mode, {}, &p0).state()==ParseState::Parsed){
+                if(p0.isValid()) point=p0;
+            }
+            continue;
         }
         if(p.startsWith('r')) {
-            rpoint=Point::Parse(p, mode, L("r")); continue;
+            Point rp;
+            if(Point::Parse(p, mode, L("r"), &rp).state()==ParseState::Parsed)
+            {
+                rpoint = rp;
+            };
+            continue;
         }
         if(p.startsWith('d')){
             GCode::ParseValue(p, L("d"), &diameter); continue;
@@ -74,17 +84,20 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
                 continue;
             }
         }
-        // todo e0 szerencsésebb lenne ha 2 boolal térne vissza,
-        // egyik a hasGap, ha egyáltalán gap a szintaxis szerint
-        // az isOk prdig a sikeres parseolás
-        if(p.startsWith('g')){
-            gap = Gap::Parse(p); continue;
+        if(Gap::Parse(p, nullptr).state()!=ParseState::NoData){
+            Gap gp;
+            if(Gap::Parse(p, &gp).state()==ParseState::Parsed){
+                gap=gp;
+            }
+            continue;
         }
     }
 
     bool positionErr = !point.isValid()&&!rpoint.isValid();
 
-    if(positionErr) { _lasterr=L("nincs kezdőpont");return ParseState::NotParsed;}
+    if(positionErr){st.addError(L("no position data"));}
+    if(st.state()== ParseState::ParseError) return st;
+
     // todo b0 ha ugyanoda fúrunk egy másikat, ami
     // kisebb vagy rövidebb, mint a másik az felesleges
     // de amúgy simán lehet koordináta nélkül fúrni, ekkor ugyanoda kerül
@@ -92,7 +105,8 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
     // sem az átmérő, sem a mélység nem nagyobb mint az előző, akkor semmit nem kell csinálni
 
     *m= {point, diameter, cut, feed, gap, rpoint};
-    return ParseState::Parsed;
+    st.setState(ParseState::Parsed);
+    return st;
 }
 
 auto Hole::ToString() const -> QString

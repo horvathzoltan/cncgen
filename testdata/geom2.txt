@@ -28,4 +28,6 @@ print "m1: $m1"
 h r0,$m1
 
 (pi3b furatok)
-b corners 50,50 80,90 z3 c0.15 d2.5
+m2 = sum(95,-3.5,-58)
+print "m2: $m2"
+b corners 5,$m2 size49,58 z3 c0.15 d2.5

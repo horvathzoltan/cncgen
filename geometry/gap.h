@@ -14,14 +14,14 @@ struct Gap{
     qreal length; // hossz
     qreal height; // magasság
 
-    static Gap Parse(const QString& txt);
+    static auto Parse(const QString &txt, Gap*) -> ParseState;
     QString ToString() const;
 
 /*ISVALID*/
-public:
-    bool isValid() const {return _isValid;}
-private:
-    bool _isValid;
+//public:
+    auto isValid() const ->bool;
+//private:
+//    bool _isValid;
 };
 
 #endif // GAP_H

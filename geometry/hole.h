@@ -27,7 +27,7 @@ struct Hole{
     Cut cut={};
     Feed feed={};
     Point rp={};
-//todo 70 name - kell mindennek név
+
     static ParseState Parse(const QString& txt, XYMode mode, Hole*);
     QString ToString() const;
     Gap gap;

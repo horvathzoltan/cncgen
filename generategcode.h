@@ -14,6 +14,7 @@
 #include "gcode/string.h"
 #include "parsestate.h"
 #include "geometry/gmode.h"
+#include "common/macrofactory/macro.h"
 
 class GenerateGcode
 {
@@ -22,9 +23,10 @@ public:
     static const QString G2;
     static const QString T1;
     static const QString T_ERR;
+    static const QString T_W;
 
     auto Generate(const QStringList& g) -> QStringList;
-    auto AppendGCode(QStringList* gs, const QString &g, const QString& err) -> bool;
+    auto AppendGCode(QStringList* gs, const QString &g, const QString& err={},const QString& comment={}) -> bool;
     qreal _total_time;
     qreal _total_length;
     qreal _total_cut;
@@ -38,7 +40,7 @@ private:
     QMap<int, Tool> _tools;    
     int _selected_tool_ix;
 
-// todo f1 Machine osztály ami az utolsó előtolás, fogás és a szerszám pozíciót tudja
+// todo f0 Machine osztály ami az utolsó előtolás, fogás és a szerszám pozíciót tudja
 // innen lehet tudni, hogy fel kell-e emelni vagy le kell e süllyeszteni amikor azt kérik
 
     Feed _selected_feed;
@@ -48,7 +50,7 @@ private:
     Feed _last_feed;    
     Cut _last_cut;
 
-// todo f0 PositionRepo osztály, amiben vannak pozíció listák és a last(type) adja az utolsó aktuális elemet
+// todo f1 PositionRepo osztály, amiben vannak pozíció listák és a last(type) adja az utolsó aktuális elemet
 // innen lehet tudni, hogy egy furatot elkészítettünk, oda másik ugyanolyat már nem kell kifúrni
     Point _lastHoleP;
     qreal _last_hole_diameter;
@@ -59,6 +61,10 @@ private:
     Point _lastBoxP0;
     Point _lastBoxP1;
     BoxType::Type _lastBoxType;
+
+    Point _lastArcP0;
+    Point _lastArcP1;
+    Point _lastArcO;
 
     Point _last_position;
     GMode::Mode _last_gmode;
@@ -105,9 +111,17 @@ public:
         const QString invalid_point = QStringLiteral("invalid point");
         const QString zero_feed = QStringLiteral("cutting movement with zero feed");
         const QString zero_spindleSpeed = QStringLiteral("cutting movement with zero spindleSpeed");
-        const QString no_feed = QStringLiteral("no_feed");
+        const QString no_feed = nameof(no_feed);
+        const QString no_speed = nameof(no_speed);
+        const QString cannot_calculate = nameof(cannot_calculate);
+        const QString movement_time = nameof(movement_time);
         const QString no_calc_length = QStringLiteral("not calculated movement length");
     } _messages;
+    /*CUTS*/
+    auto LinearCut(qreal z2)-> QStringList;
+    void GoToCutposition(QStringList *g, const Point& p);
+    auto HelicalCut(qreal total_depth, qreal path_r) -> QStringList;
+    auto CircularArcCut(qreal total_depth) -> QStringList;
 };
 
 #endif // GENERATEGCODE_H

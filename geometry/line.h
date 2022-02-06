@@ -18,13 +18,15 @@ struct Line{
          const Point& _p1,
          Cut _cut,
          Feed _feed,
-         const Point& _rp = {}
+         const Gap& _gap,
+         const Point& _rp = {}         
          );
     Point p0;
     Point p1;
     Cut cut;
     Feed feed;
     Point rp;
+    Gap gap;
 
     static ParseState Parse(const QString& txt, XYMode mode, Line *l);
     QString ToString() const;

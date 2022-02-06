@@ -18,7 +18,6 @@
 //    Point rp;
 //};
 
-// todo 13 bele kell teni az arcba a keyt 'a'
 struct Arc
 {
     constexpr static const QChar key = 'a';

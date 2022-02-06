@@ -19,7 +19,8 @@ public:
 
     static void Append(QString *s1, const QString& s2, QChar u=' '){
         if(!s1) return;
-        if(!s1->endsWith(u)) s1->append(u);
+        if(s2.isEmpty()) return;
+        if(!u.isNull()&& !s1->endsWith(u) && !s1->isEmpty()) s1->append(u);
         s1->append(s2);
     }
 
@@ -32,6 +33,12 @@ public:
         auto n = s2.length()-ix-1;
         auto a = QString().fill(c, n);
         if(n>0) s1->insert(ix,a);
+    }
+
+    static QString Tabulate2(const QString& s){
+        auto l = s.length();
+        auto a= QString().fill(' ', l);
+        return a;
     }
 
 };

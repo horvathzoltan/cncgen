@@ -106,6 +106,11 @@ auto Work1::doWork2() -> Result
 {
     QString workingFolder = params.isTest?FileNameHelper::GetTestFolderPath():qApp->applicationDirPath();
 
+    if(params.outFile.isEmpty()){
+        QFileInfo fi(params.inFile);
+        QString bn = fi.baseName();
+        params.outFile=bn + ".gcode";
+    }
     zInfo("workingFolder: "+workingFolder);
     zInfo(QStringLiteral("params: %1, %2, %3, %4")
               .arg(params.inFile)

@@ -1,0 +1,15 @@
+(szerszám beállítás)
+t1 m d2 h19
+t2 m d3 h19
+t3 m d4 h19
+t1
+s50
+f150
+
+#(vonalproba)
+l 20,20,0 50,50,0 z3 c0.15 g3,2,0.5
+l r2,5
+l r2,5
+
+
+

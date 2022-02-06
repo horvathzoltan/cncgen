@@ -18,6 +18,7 @@ Line::Line(const Point &_p0,
            const Point &_p1,
            Cut _cut,
            Feed _feed,
+           const Gap& _gap,
            const Point& _rp
            )
 {
@@ -26,6 +27,7 @@ Line::Line(const Point &_p0,
     cut = _cut;
     feed = _feed;
     rp=_rp;
+    gap=_gap;
     _isValid = true;
 }
 
@@ -43,6 +45,7 @@ auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
     Feed feed;
     QString rpointTxt;
     Point rpoint;
+    Gap gap;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -61,11 +64,19 @@ auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
             };
             continue;
         }
+        // todo 20 kiszervezni a z,c, s,f párokat függvénybe
+        // todo 21 mindenhol megírni a releváns hibaüzenetet
         if(p.startsWith('z')){
-            GCode::ParseValue(p, L("z"), &cut.z); continue;
+            if(!GCode::ParseValue(p, L("z"), &cut.z)){
+                st.addWarn(L("cannot read full_cutting_depth:'")+p+'\'');
+            }
+            continue;
         }
         if(p.startsWith('c')){
-            GCode::ParseValue(p, L("c"), &cut.z0); continue;
+            if(!GCode::ParseValue(p, L("c"), &cut.z0)){
+                st.addWarn(L("cannot read cutting_depth:'")+p+'\'');
+            }
+            continue;
         }
         if(p.startsWith('s')){
             qreal x;
@@ -81,6 +92,13 @@ auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
                 continue;
             }
         }
+        if(Gap::Parse(p, nullptr).state()!=ParseState::NoData){
+            Gap gp;
+            if(Gap::Parse(p, &gp).state()==ParseState::Parsed){
+                gap=gp;
+            }
+            continue;
+        }
     }
     bool hasPoints = points.length()>=2;
     bool positionErr = !hasPoints&&!rpoint.isValid();
@@ -91,7 +109,7 @@ auto Line::Parse(const QString &txt, XYMode mode, Line *m) -> ParseState
         hasPoints?points[0]:Point(),
         hasPoints?points[1]:Point(),
         cut,
-        feed,
+        feed, gap,
         rpoint};
 
     st.setState(ParseState::Parsed);
@@ -106,6 +124,7 @@ auto Line::ToString() const -> QString
     if (rp.isValid()){StringHelper::Append(&msg,"r"+rp.ToString());}
     StringHelper::Append(&msg,cut.ToString());
     StringHelper::Append(&msg,feed.ToString());
+    if(gap.isValid()){StringHelper::Append(&msg,gap.ToString());}
     return msg;
 }
 
@@ -145,7 +164,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
         bool isok2 = GeoMath::Divider(kp,op,o1,&op1);
         if(!isok2) continue;
         // line:kp2->op1
-        Line l = {kp2, op1, cut, feed};
+        Line l = {kp2, op1, cut, feed,{}};
         m.append(l);
         Point op2 ={0,0,0};
         bool isok3 = GeoMath::Divider(kp,op,o2,&op2);
@@ -156,7 +175,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
 //        Line gap = {op1, op2, z-g.h, s, sp, f};
 //        m.append(gap);
     }
-    Line lx = {kp2, p1, cut, feed};
+    Line lx = {kp2, p1, cut, feed,{}};
     m.append(lx);
     zInfo(L("gap_")+": " + ToString());
     for(int i=0;i<m.length();i++){

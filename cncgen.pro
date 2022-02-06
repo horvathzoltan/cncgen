@@ -115,6 +115,7 @@ SOURCES += \
         geometry/size.cpp \
         geometry/xymode.cpp \
         main.cpp \
+        parsestate.cpp \
         work1.cpp
 
 HEADERS += \
@@ -159,4 +160,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     testdata/geom1.txt \
     testdata/geom2.txt \
-    testdata/head.gcode
+    testdata/head.gcode \
+    testdata/holetest.txt \
+    testdata/linetest.txt

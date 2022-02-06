@@ -98,7 +98,7 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
     if(positionErr){st.addError(L("no position data"));}
     if(st.state()== ParseState::ParseError) return st;
 
-    // todo b0 ha ugyanoda fúrunk egy másikat, ami
+    // todo f1 ha ugyanoda fúrunk egy másikat, ami
     // kisebb vagy rövidebb, mint a másik az felesleges
     // de amúgy simán lehet koordináta nélkül fúrni, ekkor ugyanoda kerül
     // !!! ha egy furat oda kerül, ahol már lett fúrva, és

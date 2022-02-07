@@ -20,22 +20,19 @@ Point::Point(qreal _x, qreal _y, qreal _z)
 }
 
 auto Point::Parse(const QString &txt,
-                  XYMode mode,
+                  XYMode xymode, MMode mmode,
                   const QString& key,
                   Point*p) -> ParseState
 {
     ParseState st(ParseState::NoData);
     if(!key.isEmpty() && !txt.startsWith(key)) return st;
     auto a = txt.mid(key.length());
-    if(!(
-                a[0].isNumber()||a[0]=='$'||a[0]=='-'||a[0]=='+')
-            )
-        return st;
+    if(!(a[0].isNumber()||a[0]=='$'||a[0]=='-'||a[0]=='+')) {return st;}
     st.setState(ParseState::NotParsed);
     if(!p) return st;
 
     double _x, _y, _z;
-    if(!GCode::ParseValueXYZ(a, &_x, &_y, &_z, mode)){
+    if(!GCode::ParseValueXYZ(a, &_x, &_y, &_z, xymode, mmode)){
          st.addError(L("nincs pozíció adat"));
     };
     if(st.state()== ParseState::ParseError) return st;

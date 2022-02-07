@@ -22,6 +22,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
     gcodes.clear();
 
     _XYMode=XYMode::XY;
+    _MMode = {};
     _tools.clear();
 
     _selected_tool_ix = -1;
@@ -68,6 +69,13 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
         // XYMode::ValidateLineType -> XYMode::Parse(l)
         if(XYMode::ValidateLineType(l)){
             if(ParseSetXYModeToGcode(l, &gcode, &err)){
+                AppendGCode(&gcodes, gcode, err);
+                continue;
+            }
+        }
+
+        if(MMode::ValidateLineType(l)){
+            if(ParseSetMModeToGcode(l, &gcode, &err)){
                 AppendGCode(&gcodes, gcode, err);
                 continue;
             }
@@ -133,7 +141,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Arc m;
-    auto s = Arc::Parse(str, _XYMode, &m);
+    auto s = Arc::Parse(str, _XYMode, &m, _MMode);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Arc típusú sor
@@ -149,7 +157,7 @@ auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString 
 auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Line m;
-    auto s = Line::Parse(str, _XYMode, &m);
+    auto s = Line::Parse(str, _XYMode, _MMode, &m);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Arc típusú sor
@@ -165,7 +173,7 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
 auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Hole m;
-    auto s = Hole::Parse(str, _XYMode, &m);
+    auto s = Hole::Parse(str, _XYMode, _MMode, &m);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Box típusú sor
@@ -181,7 +189,7 @@ auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString
 auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Box m;
-    auto s = Box::Parse(str, _XYMode, &m);
+    auto s = Box::Parse(str, _XYMode, _MMode, &m);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Box típusú sor
@@ -288,6 +296,25 @@ auto GenerateGcode::ParseSetXYModeToGcode(const QString& str, QString *gcode, QS
     {
         //_selected_feed.f=m.f;
         if(gcode)*gcode=SetXYModeToGCode();
+    }
+    QString msg;
+    StringHelper::Append(&msg, s.ToString(), '\n');
+    if(!msg.isEmpty())zInfo(msg);
+    return true;
+}
+
+auto GenerateGcode::ParseSetMModeToGcode(const QString& str, QString *gcode, QString *err) -> bool
+{
+    Q_UNUSED(err)
+    //Feed m;
+    auto s = MMode::Parse(str, &_MMode);
+    if(s.state()==ParseState::NoData) return false;
+    zInfo(T1+str);
+    if(s.state() == ParseState::Parsed )
+    {
+        //_selected_feed.f=m.f;
+        //if(gcode)*gcode=SetXYModeToGCode();
+        *gcode='('+_MMode.ToString()+')';
     }
     QString msg;
     StringHelper::Append(&msg, s.ToString(), '\n');
@@ -726,6 +753,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     if(hasGaps) msg+=L(" gap");
     int steps = qCeil(_last_cut.z/_last_cut.z0)+1;
     msg+= " steps:"+QString::number(steps);
+    zInfo(msg);
 
     if(pre_drill){
         // 81: depth<3-5*t.d;
@@ -781,17 +809,25 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                 GeoMath::Polar(_lastHoleP, p, aa+ab, path_r, &k11);
                 QString err2;
 
-                g.append(
-                    ArcToGCode(
-                        {k01, k11, _lastHoleP,
-                            {mgap.height,_last_cut.z0},//cut
-                            _last_feed//feed
-                        }, &err2));
+                auto q1=_lastArcP0;
+                auto q2=_lastArcP1;
+                auto q3=_lastArcO;
+
+                _lastArcP0=k01;
+                _lastArcP1=k11;
+                _lastArcO=_lastHoleP;
+
+                g.append(CircularArcCut(mgap.height));
+
+                _lastArcP0=q1;
+                _lastArcP1=q2;
+                _lastArcO=q3;
+
                 aa+=ab;
             }
         }
     }
-    zInfo(msg);
+
     return g.join('\n');
 }
 
@@ -888,13 +924,13 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
     msg=G2+ m.p0.ToString()+' '+m.p1.ToString()+' '+m.o.ToString();
 
     msg+= " h:"+GCode::r(_last_cut.z);
+    zInfo(msg);
 
     QStringList g(L("(arc begin)"));
 
     auto g2 = CircularArcCut(_last_cut.z);
     g.append(g2);
 
-    zInfo(msg);
     return g.join('\n');
 }
 /*
@@ -1112,9 +1148,13 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     msg+=' '+BoxType::ToString(_lastBoxType);
     msg+=' '+_last_cut.ToString();
     msg+=' '+_last_feed.ToString();
+    msg+=" d"+GCode::r(_last_hole_diameter);
+    msg+=' '+m.gap.ToString();
+
+    zInfo(msg);
 
     if(_lastBoxType == BoxType::Corners){
-        msg+=" d"+GCode::r(_last_hole_diameter);
+
         QVarLengthArray<Hole> holes = {
             {ba, _last_hole_diameter, _last_cut, _last_feed, {}},
             {ja, _last_hole_diameter, _last_cut, _last_feed, {}},
@@ -1157,7 +1197,6 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
         QVarLengthArray<Line> lines_gap;
         if(hasGaps){
-            msg+=' '+m.gap.ToString();
             //gap layer
             ba.z-=z2;
             bf.z-=z2;
@@ -1220,7 +1259,6 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         }
 
     }
-    zInfo(msg);
     return g.join('\n');
 }
 

@@ -14,6 +14,7 @@
 #include "gcode/string.h"
 #include "parsestate.h"
 #include "geometry/gmode.h"
+#include "geometry/mmode.h"
 #include "common/macrofactory/macro.h"
 
 class GenerateGcode
@@ -33,6 +34,7 @@ public:
 private:
     bool _verbose = true;
     XYMode _XYMode;
+    MMode _MMode;
     //MMode _mmode;
     QStringList gcodes;
     qreal _movZ=10;
@@ -107,6 +109,7 @@ private:
     auto ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetXYModeToGcode(const QString& str, QString *gcode, QString *err) -> bool;
+    auto ParseSetMModeToGcode(const QString &str, QString *gcode, QString *err) -> bool;
 public:
     struct Messages{
         const QString invalid_point = QStringLiteral("invalid point");
@@ -123,6 +126,7 @@ public:
     void GoToCutposition(QStringList *g, const Point& p);
     auto HelicalCut(qreal total_depth, qreal path_r) -> QStringList;
     auto CircularArcCut(qreal total_depth) -> QStringList;
+
 };
 
 #endif // GENERATEGCODE_H

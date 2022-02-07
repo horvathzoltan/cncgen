@@ -5,8 +5,7 @@ t2 m d3 h19
 t3 m d4 h19
 yxz
 safe100,100,15
-xm
-ym
+mx
 
 t1
 s50

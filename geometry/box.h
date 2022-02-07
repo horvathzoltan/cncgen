@@ -35,7 +35,7 @@ public:
     Feed feed;
     Point rp;
     Size size;
-    static auto Parse(const QString& txt, XYMode mode=XYMode::Unknown, Box *m=nullptr) -> ParseState;
+    static auto Parse(const QString& txt, XYMode mode=XYMode::Unknown, MMode mmode={}, Box *m=nullptr) -> ParseState;
     QString ToString() const;
 
     /*ISVALID*/

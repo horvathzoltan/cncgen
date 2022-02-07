@@ -8,6 +8,7 @@
 #include "gcode/cut.h"
 #include "gcode/feed.h"
 #include "parsestate.h"
+#include "geometry/mmode.h"
 
 //struct ArcData{
 //    Point p0;
@@ -39,7 +40,7 @@ struct Arc
     Feed feed;
     Point rp;
 
-    static auto Parse(const QString& txt, XYMode mode, Arc*) -> ParseState;
+    static auto Parse(const QString& txt, XYMode mode, Arc*, MMode mmode) -> ParseState;
     QString ToString() const;
     //auto ToGCode(QString* err) -> QString;
     // todo e7 Arc::Divide

@@ -28,7 +28,7 @@ struct Line{
     Point rp;
     Gap gap;
 
-    static ParseState Parse(const QString& txt, XYMode mode, Line *l);
+    static ParseState Parse(const QString& txt, XYMode xymode,MMode mmode, Line *l);
     QString ToString() const;
     QList<Line> Divide(const Gap& g, qreal tool_d);
 

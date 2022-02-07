@@ -28,7 +28,7 @@ struct Hole{
     Feed feed={};
     Point rp={};
 
-    static ParseState Parse(const QString& txt, XYMode mode, Hole*);
+    static ParseState Parse(const QString& txt, XYMode xymode, MMode mmode, Hole*);
     QString ToString() const;
     Gap gap;
 

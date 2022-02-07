@@ -111,6 +111,7 @@ SOURCES += \
         geometry/gmode.cpp \
         geometry/hole.cpp \
         geometry/line.cpp \
+        geometry/mmode.cpp \
         geometry/point.cpp \
         geometry/size.cpp \
         geometry/xymode.cpp \
@@ -138,6 +139,7 @@ HEADERS += \
     geometry/gmode.h \
     geometry/hole.h \
     geometry/line.h \
+    geometry/mmode.h \
     geometry/point.h \
     geometry/size.h \
     geometry/xymode.h \
@@ -161,6 +163,7 @@ DISTFILES += \
     testdata/geom1.txt \
     testdata/geom2.txt \
     testdata/geom3.txt \
+    testdata/geom3_1.txt \
     testdata/head.gcode \
     testdata/holetest.txt \
     testdata/linetest.txt

@@ -35,7 +35,7 @@ Box::Box(const Point &_p0,
     _isValid = true;
 }
 
-auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
+auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m) -> ParseState
 {
     ParseState st(ParseState::NoData);
     if(!txt.startsWith(key)) return st;
@@ -61,16 +61,16 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
             continue;
             }
 
-        if(Point::Parse(p, mode, {}, nullptr).state()!=ParseState::NoData) {
+        if(Point::Parse(p, xymode, mmode, {}, nullptr).state()!=ParseState::NoData) {
             Point p0;
-            if(Point::Parse(p, mode, {}, &p0).state()==ParseState::Parsed){
+            if(Point::Parse(p, xymode,mmode, {}, &p0).state()==ParseState::Parsed){
                 if(p0.isValid()) points.append(p0);
             }
             continue;
         }
         if(p.startsWith('r')) {
             Point rp;
-            if(Point::Parse(p, mode, L("r"), &rp).state()==ParseState::Parsed)
+            if(Point::Parse(p, xymode, mmode,L("r"), &rp).state()==ParseState::Parsed)
             {
                 rpoint = rp;
             };
@@ -81,9 +81,10 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
         // todo mirrorzás
         if(Size::Parse(p).state()!=ParseState::NoData) {
             Size s0;
-            auto pp = Size::Parse(p, mode, &s0);
+            auto pp = Size::Parse(p, xymode, mmode, &s0);
             if(pp.state()==ParseState::Parsed){
-                if(s0.isValid()) size=s0;
+                //if(s0.isValid())
+                    size=s0;
             }
             continue;
         }

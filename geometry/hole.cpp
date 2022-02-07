@@ -27,7 +27,7 @@ Hole::Hole(const Point &_p,
    // _isValid = true;
 }
 
-auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
+auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m) -> ParseState
 {
     ParseState st(ParseState::NoData);
     if(!txt.startsWith(key)) return st;
@@ -46,9 +46,9 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
 
-        if(Point::Parse(p, mode, {}, nullptr).state()!=ParseState::NoData) {
+        if(Point::Parse(p, xymode, mmode, {}, nullptr).state()!=ParseState::NoData) {
             Point p0;
-            if(Point::Parse(p, mode, {}, &p0).state()==ParseState::Parsed){
+            if(Point::Parse(p, xymode, mmode, {}, &p0).state()==ParseState::Parsed){
                 if(p0.isValid()) point=p0;
             }
             continue;
@@ -62,7 +62,7 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
             bool isok_u2;
             qreal u3 = u.toDouble(&isok_u2);
 
-            auto pp = Point::Parse(p, mode, L("r"), &rp);
+            auto pp = Point::Parse(p, xymode, mmode,L("r"), &rp);
             if(pp.state()==ParseState::Parsed)
             {
                 rpoint = rp;

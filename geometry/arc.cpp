@@ -32,7 +32,7 @@ Arc::Arc(const Point &_p0,
     //_isValid = true;
 }
 
-auto Arc::Parse(const QString &txt, XYMode mode, Arc *a) -> ParseState
+auto Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode) -> ParseState
 {
     //_lasterr.clear();
     ParseState st(ParseState::NoData);
@@ -49,16 +49,16 @@ auto Arc::Parse(const QString &txt, XYMode mode, Arc *a) -> ParseState
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
-        if(Point::Parse(p, mode, {}, nullptr).state()!=ParseState::NoData) {
+        if(Point::Parse(p, xymode, mmode, {}, nullptr).state()!=ParseState::NoData) {
             Point p0;
-            if(Point::Parse(p, mode, {}, &p0).state()==ParseState::Parsed){
+            if(Point::Parse(p, xymode,mmode, {}, &p0).state()==ParseState::Parsed){
                 if(p0.isValid()) points.append(p0);
             }
             continue;
         }
         if(p.startsWith('r')) {
             Point rp;
-            if(Point::Parse(p, mode, L("r"), &rp).state()==ParseState::Parsed)
+            if(Point::Parse(p, xymode, mmode,L("r"), &rp).state()==ParseState::Parsed)
             {
                 rpoint = rp;
             };
@@ -91,11 +91,22 @@ auto Arc::Parse(const QString &txt, XYMode mode, Arc *a) -> ParseState
     if(st.state()== ParseState::ParseError) return st;
 
     *a={
-        hasPoints?points[0]:Point(),
         hasPoints?points[1]:Point(),
+        hasPoints?points[0]:Point(),
         hasPoints?points[2]:Point(),
         cut, feed, rpoint};
 
+    if(xymode.mode==XYMode::YX){
+        auto i = a->p0;
+        a->p0=a->p1;
+        a->p1=i;
+    }
+
+    if(mmode.direction_ccw()){
+        auto i = a->p0;
+        a->p0=a->p1;
+        a->p1=i;
+    }
     st.setState(ParseState::Parsed);
     return st;
 }

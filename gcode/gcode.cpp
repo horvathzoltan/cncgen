@@ -70,7 +70,7 @@ auto GCode::ParseValue(const QString &p, const QString &key, QString *v) -> bool
     return isok;
 }
 
-auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode mode) -> bool
+auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode mode, MMode mm) -> bool
 {
     if(mode.mode==XYMode::Unknown) return false;
     QStringList ns = p.split(',');
@@ -108,10 +108,8 @@ auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode 
             else if(isok_c){
                 if(z)*z=c;
             }
-//            bool mmode_x=true;
-//            if(mmode_x){
-//                *x=-*x;
-//            }
+            if(mm.XM){*x=-*x;}
+            if(mm.YM){*y=-*y;}
         }
     }
     //zInfo(L("XYZ:")+p+(isok?" ok":" err"));

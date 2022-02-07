@@ -5,9 +5,6 @@
 
 #include "parsestate.h"
 
-
-
-
 struct XYMode{
 public:
     static const QString key_xyz;

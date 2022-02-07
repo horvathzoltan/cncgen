@@ -33,6 +33,7 @@ public:
 private:
     bool _verbose = true;
     XYMode _XYMode;
+    //MMode _mmode;
     QStringList gcodes;
     qreal _movZ=10;
     qreal _maxZ=15;

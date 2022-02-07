@@ -1092,11 +1092,21 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     Point bf4 = bf;
     Point ba4 = ba;
 
-    ba1.x=bf3.x=bao.x;
-    ja1.x=jf3.x=jfo.x;
-
-    ja2.y=ba4.y=bao.y;
-    jf2.y=bf4.y=jfo.y;
+    switch(_lastBoxType){
+    case BoxType::Outline:
+        ba1.x=bf3.x=bao.x;
+        ja1.x=jf3.x=jfo.x;
+        ja2.y=ba4.y=bao.y;
+        jf2.y=bf4.y=jfo.y;
+        break;
+    case BoxType::Inline:
+        ba1.x=bf3.x=ba.x;
+        ja1.x=jf3.x=jf.x;
+        ja2.y=ba4.y=ba.y;
+        jf2.y=bf4.y=jf.y;
+        break;
+    default: break;
+    }
 
     msg=G2+ ba.ToString()+' '+jf.ToString();
     msg+=' '+BoxType::ToString(_lastBoxType);

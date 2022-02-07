@@ -55,7 +55,15 @@ auto Hole::Parse(const QString &txt, XYMode mode, Hole* m) -> ParseState
         }
         if(p.startsWith('r')) {
             Point rp;
-            if(Point::Parse(p, mode, L("r"), &rp).state()==ParseState::Parsed)
+            QString u("-11.95");
+            bool u1 = u[0].isNumber();
+            qreal uu;
+            bool isok_u = GCode::ToDouble(u, &uu);
+            bool isok_u2;
+            qreal u3 = u.toDouble(&isok_u2);
+
+            auto pp = Point::Parse(p, mode, L("r"), &rp);
+            if(pp.state()==ParseState::Parsed)
             {
                 rpoint = rp;
             };

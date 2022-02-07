@@ -76,9 +76,13 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
             };
             continue;
         }
+
+        // todo size nem parseolódik
+        // todo mirrorzás
         if(Size::Parse(p).state()!=ParseState::NoData) {
             Size s0;
-            if(Size::Parse(p, mode, &s0).state()==ParseState::Parsed){
+            auto pp = Size::Parse(p, mode, &s0);
+            if(pp.state()==ParseState::Parsed){
                 if(s0.isValid()) size=s0;
             }
             continue;
@@ -125,7 +129,9 @@ auto Box::Parse(const QString &txt, XYMode mode, Box *m) -> ParseState
     bool positionErr = !hasPoints&&!rpoint.isValid();
     bool isCornerErr = type==BoxType::Corners&&corner_diameter<=0;
 
-    if(positionErr){st.addError(L("no position data"));}
+    if(positionErr){
+        st.addError(L("no position data"));
+    }
     if(isCornerErr){st.addError(L("no corner diameter"));}
 
     if(st.state()== ParseState::ParseError) return st;

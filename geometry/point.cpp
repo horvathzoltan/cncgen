@@ -27,7 +27,10 @@ auto Point::Parse(const QString &txt,
     ParseState st(ParseState::NoData);
     if(!key.isEmpty() && !txt.startsWith(key)) return st;
     auto a = txt.mid(key.length());
-    if(!(a[0].isNumber()||a[0]=='$')) return st;
+    if(!(
+                a[0].isNumber()||a[0]=='$'||a[0]=='-'||a[0]=='+')
+            )
+        return st;
     st.setState(ParseState::NotParsed);
     if(!p) return st;
 

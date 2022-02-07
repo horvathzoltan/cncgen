@@ -108,6 +108,10 @@ auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode 
             else if(isok_c){
                 if(z)*z=c;
             }
+//            bool mmode_x=true;
+//            if(mmode_x){
+//                *x=-*x;
+//            }
         }
     }
     //zInfo(L("XYZ:")+p+(isok?" ok":" err"));
@@ -119,7 +123,7 @@ auto GCode::ToDouble(const QString& a, qreal *v) -> bool
 {
     if(!v) return false;
     if(a.isEmpty()) return false;
-    if(a[0].isNumber()){
+    if(a[0].isNumber()||a[0]=='-'||a[0]=='+'){
         bool isok;
         qreal b = a.toDouble(&isok);
         if(isok){

@@ -40,7 +40,7 @@ struct Arc
     Feed feed;
     Point rp;
 
-    static auto Parse(const QString& txt, XYMode mode, Arc*, MMode mmode) -> ParseState;
+    static auto Parse(const QString& txt, XYMode mode, Arc*, MMode mmode, Point *offset) -> ParseState;
     QString ToString() const;
     //auto ToGCode(QString* err) -> QString;
     // todo e7 Arc::Divide

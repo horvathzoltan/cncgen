@@ -46,8 +46,10 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
     _total_length=0;
     _total_cut=0;
 
+    _offset_xyz = {};
+
     GCode::_variables.Clear();
-    _lastBoxType = BoxType::Undefined;
+    _lastBoxType = BoxType::Undefined;       
 
     for(auto l:g){
         QString err;
@@ -84,6 +86,24 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
         if(Box::Parse(l).state()!=ParseState::NoData){
             if(ParseBoxToGcode(l, &gcode, &err)){
                 AppendGCode(&gcodes, gcode, err);
+            }
+            continue;
+        }
+
+        if(Point::Parse(l, _XYMode, _MMode, "safe", nullptr, nullptr).state()!=ParseState::NoData){
+            Point ps;
+            auto s1 = Point::Parse(l,  _XYMode, _MMode, "safe", &ps, &_offset_xyz);
+            if(s1.state()==ParseState::Parsed){
+                _safe_place = ps;
+            }
+            continue;
+        }
+
+        if(Point::Parse(l, _XYMode, _MMode, "offset", nullptr, nullptr).state()!=ParseState::NoData){
+            Point ps;
+            auto s1 = Point::Parse(l,  _XYMode, _MMode, "offset", &ps, nullptr);
+            if(s1.state()==ParseState::Parsed){
+                _offset_xyz = ps;
             }
             continue;
         }
@@ -134,6 +154,16 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
         }
     }
 
+    _last_position.z=0;
+    auto gc2=TravelXYToGCode(_safe_place);
+    if(gc2.isEmpty()){
+        zInfo("no safe place")
+    } else {
+        gcodes.insert(0, gc2);
+        gcodes.insert(1, "(travel to safe place)");
+        gcodes.append(gc2);
+        gcodes.append("(travel to safe place)");
+    }
 
     return gcodes;
 }
@@ -141,7 +171,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Arc m;
-    auto s = Arc::Parse(str, _XYMode, &m, _MMode);
+    auto s = Arc::Parse(str, _XYMode, &m, _MMode, &_offset_xyz);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Arc típusú sor
@@ -157,7 +187,7 @@ auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString 
 auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Line m;
-    auto s = Line::Parse(str, _XYMode, _MMode, &m);
+    auto s = Line::Parse(str, _XYMode, _MMode, &m, &_offset_xyz);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Arc típusú sor
@@ -173,7 +203,7 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
 auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Hole m;
-    auto s = Hole::Parse(str, _XYMode, _MMode, &m);
+    auto s = Hole::Parse(str, _XYMode, _MMode, &m, &_offset_xyz);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Box típusú sor
@@ -189,7 +219,7 @@ auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString
 auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString *err) -> bool
 {
     Box m;
-    auto s = Box::Parse(str, _XYMode, _MMode, &m);
+    auto s = Box::Parse(str, _XYMode, _MMode, &m, &_offset_xyz);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Box típusú sor

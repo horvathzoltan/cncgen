@@ -2,6 +2,7 @@
 #include <QStringList>
 #include "gcode/gcode.h"
 #include "common/logger/log.h"
+#include "geomath.h"
 
 //QString Point::_lasterr;
 
@@ -22,7 +23,7 @@ Point::Point(qreal _x, qreal _y, qreal _z)
 auto Point::Parse(const QString &txt,
                   XYMode xymode, MMode mmode,
                   const QString& key,
-                  Point*p) -> ParseState
+                  Point*p, Point *offset) -> ParseState
 {
     ParseState st(ParseState::NoData);
     if(!key.isEmpty() && !txt.startsWith(key)) return st;
@@ -31,12 +32,14 @@ auto Point::Parse(const QString &txt,
     st.setState(ParseState::NotParsed);
     if(!p) return st;
 
-    double _x, _y, _z;
+    double _x, _y, _z;        
     if(!GCode::ParseValueXYZ(a, &_x, &_y, &_z, xymode, mmode)){
          st.addError(L("nincs pozíció adat"));
     };
     if(st.state()== ParseState::ParseError) return st;
-    *p={_x,_y, _z};
+    *p={_x,_y,_z};
+
+    if(offset){*p = GeoMath::Translation(*p, *offset);}
     st.setState(ParseState::Parsed);
     return st;
 }

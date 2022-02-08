@@ -37,8 +37,10 @@ private:
     MMode _MMode;
     //MMode _mmode;
     QStringList gcodes;
-    qreal _movZ=10;
-    qreal _maxZ=15;
+    qreal _movZ=5;
+    qreal _maxZ=10;
+
+    Point _safe_place = {};
 
     QMap<int, Tool> _tools;    
     int _selected_tool_ix;
@@ -71,6 +73,8 @@ private:
 
     Point _last_position;
     GMode::Mode _last_gmode;
+
+    Point _offset_xyz;
 
     auto setXYMode(const QString &txt) -> bool;
 

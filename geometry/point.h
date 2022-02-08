@@ -13,7 +13,8 @@ struct Point{
     Point();
     Point(qreal, qreal, qreal);
 
-    //static auto isParseable(const QString& p) ->bool;
+    static auto Parse(const QString &txt) -> ParseState;
+    static auto Parse(const QString &txt, const QString& key) ->ParseState;
     static auto Parse(const QString&, XYMode xmode, MMode mmode,
                       const QString& key, Point *, Point *) -> ParseState;
 

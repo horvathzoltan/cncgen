@@ -24,6 +24,26 @@ auto Feed::isValid() const -> bool
 //}
 
 
+bool Feed::ParseInto(const QString& p, ParseState* st)
+{
+    if(!st) return false;
+
+    if(p.startsWith(Feed::keyUniCode_feed)){
+        if(ParseSetFeedToGCode(p, &gcode, &err)){
+            AppendGCode(&gcodes, gcode, err);
+            return true;
+        }
+    }
+    if(p.startsWith(Feed::keyUniCode_spindleSpeed)){
+        if(ParseSetSpindleSpeedToGCode(p, &gcode, &err)){
+            AppendGCode(&gcodes, gcode, err);
+            return true;
+        }
+    }
+    return false;
+}
+
+
 auto Feed::ParseIntoFeed(const QString &txt) -> ParseState
 {
 //    _lasterr.clear();

@@ -26,6 +26,9 @@ public:
     static const QString T_ERR;
     static const QString T_W;
 
+    static const QString safeKey;
+    static const QString offsetKey;
+
     auto Generate(const QStringList& g) -> QStringList;
     auto AppendGCode(QStringList* gs, const QString &g, const QString& err={},const QString& comment={}) -> bool;
     qreal _total_time;
@@ -37,6 +40,7 @@ private:
     MMode _MMode;
     //MMode _mmode;
     QStringList gcodes;
+
     qreal _movZ=5;
     qreal _maxZ=10;
 
@@ -115,16 +119,7 @@ private:
     auto ParseSetXYModeToGcode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetMModeToGcode(const QString &str, QString *gcode, QString *err) -> bool;
 public:
-    struct Messages{
-        const QString invalid_point = QStringLiteral("invalid point");
-        const QString zero_feed = QStringLiteral("cutting movement with zero feed");
-        const QString zero_spindleSpeed = QStringLiteral("cutting movement with zero spindleSpeed");
-        const QString no_feed = nameof(no_feed);
-        const QString no_speed = nameof(no_speed);
-        const QString cannot_calculate = nameof(cannot_calculate);
-        const QString movement_time = nameof(movement_time);
-        const QString no_calc_length = QStringLiteral("not calculated movement length");
-    } _messages;
+
     /*CUTS*/
     auto LinearCut(qreal z2)-> QStringList;
     void GoToCutposition(QStringList *g, const Point& p);

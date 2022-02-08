@@ -1,5 +1,6 @@
 #include "common/logger/log.h"
 #include "generategcode.h"
+#include "messages.h"
 #include <QtMath>
 #include <QString>
 #include <QStringList>
@@ -16,6 +17,8 @@ const QString GenerateGcode::G2 = L("    ->");
 const QString GenerateGcode::T1 = L("T:");
 const QString GenerateGcode::T_ERR = L("E:");
 const QString GenerateGcode::T_W = L("W:");
+const QString GenerateGcode::safeKey = L("safe");
+const QString GenerateGcode::offsetKey = L("offset");
 
 auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 {
@@ -90,18 +93,18 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             continue;
         }
 
-        if(Point::Parse(l, _XYMode, _MMode, "safe", nullptr, nullptr).state()!=ParseState::NoData){
+        if(Point::Parse(l, safeKey).state()!=ParseState::NoData){
             Point ps;
-            auto s1 = Point::Parse(l,  _XYMode, _MMode, "safe", &ps, &_offset_xyz);
+            auto s1 = Point::Parse(l,  _XYMode, _MMode, safeKey, &ps, nullptr);
             if(s1.state()==ParseState::Parsed){
                 _safe_place = ps;
             }
             continue;
         }
 
-        if(Point::Parse(l, _XYMode, _MMode, "offset", nullptr, nullptr).state()!=ParseState::NoData){
+        if(Point::Parse(l, offsetKey).state()!=ParseState::NoData){
             Point ps;
-            auto s1 = Point::Parse(l,  _XYMode, _MMode, "offset", &ps, nullptr);
+            auto s1 = Point::Parse(l,  _XYMode, _MMode, offsetKey, &ps, nullptr);
             if(s1.state()==ParseState::Parsed){
                 _offset_xyz = ps;
             }
@@ -160,9 +163,9 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
         zInfo("no safe place")
     } else {
         gcodes.insert(0, gc2);
-        gcodes.insert(1, "(travel to safe place)");
+        gcodes.insert(1, '('+Messages::travelSafe+')');
         gcodes.append(gc2);
-        gcodes.append("(travel to safe place)");
+        gcodes.append('('+Messages::travelSafe+')');
     }
 
     return gcodes;
@@ -1402,7 +1405,7 @@ auto GenerateGcode::SpindleStopToGCode() ->QString
 auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QString
 {
     if(!p.isValid()){
-        zInfo(_messages.invalid_point);
+        zInfo(Messages::invalid_point);
         return {};
     }
     if(i==GMode::Undefined){ return {};}
@@ -1418,7 +1421,7 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
          i==GMode::Mode::Circular||
          i==GMode::Mode::Circular_ccw)){
         if(_last_feed.feed()<=0){
-            zInfo(_messages.zero_feed);
+            zInfo(Messages::zero_feed);
             //return {};
         }
         else{
@@ -1426,7 +1429,7 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
             _total_cut+=length;
         }
         if(_last_feed.spindleSpeed()<=0){
-            zInfo(_messages.zero_spindleSpeed);
+            zInfo(Messages::zero_spindleSpeed);
             // return {};
         }
     }
@@ -1440,12 +1443,12 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
     if(length>0){
         _total_length+=length;
         if(v<=0){
-            zInfo(_messages.cannot_calculate+' '+_messages.movement_time+": "+_messages.no_speed)
+            zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
         } else{            
             _total_time+=length/v;
         }
     } else {
-        zInfo(_messages.zero_spindleSpeed)
+        zInfo(Messages::zero_spindleSpeed)
     }
 
     return GMode::ToGCcode(i)+' '+p.ToStringZ();
@@ -1454,7 +1457,7 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
 auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QString
 {
     if(!p.isValid()){
-        zInfo(_messages.invalid_point);
+        zInfo(Messages::invalid_point);
         return {};
     }
     if(i==GMode::Undefined){ return {};}
@@ -1470,7 +1473,7 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
          i==GMode::Mode::Circular||
          i==GMode::Mode::Circular_ccw)){
         if(_last_feed.feed()<=0){
-            zInfo(_messages.zero_feed);
+            zInfo(Messages::zero_feed);
             //return {};
         }
         else{
@@ -1478,7 +1481,7 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
             _total_cut+=length;
         }
         if(_last_feed.spindleSpeed()<=0){
-            zInfo(_messages.zero_spindleSpeed);
+            zInfo(Messages::zero_spindleSpeed);
            // return {};
         }
     }
@@ -1493,12 +1496,12 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
     if(length>0){
         _total_length+=length;
         if(v<=0){
-            zInfo(_messages.cannot_calculate+' '+_messages.movement_time+": "+_messages.no_speed)
+            zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
         } else{
             _total_time+=length/v;
         }
     } else {
-        zInfo(_messages.no_calc_length)
+        zInfo(Messages::no_calc_length)
     }
 
     return GMode::ToGCcode(i)+' '+p.ToStringXY();
@@ -1507,7 +1510,7 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
 auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QString
 {
     if(!p.isValid()){
-        zInfo(_messages.invalid_point);
+        zInfo(Messages::invalid_point);
         return {};
     }
     if(i==GMode::Undefined){ return {};}
@@ -1520,14 +1523,14 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QStr
          i==GMode::Mode::Circular_ccw)){
 
         if(_last_feed.feed()<=0){
-            zInfo(_messages.zero_feed);
+            zInfo(Messages::zero_feed);
             //return {};
         } else{
             v = _last_feed.feed();
             _total_cut+=length;
         }
         if(_last_feed.spindleSpeed()<=0){
-            zInfo(_messages.zero_spindleSpeed);
+            zInfo(Messages::zero_spindleSpeed);
             // return {};
         }
     } else if(i==GMode::Rapid){
@@ -1540,12 +1543,12 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QStr
     if(length>0){
         _total_length+=length;
         if(v<=0){
-            zInfo(_messages.cannot_calculate+' '+_messages.movement_time+": "+_messages.no_speed)
+            zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
         } else{
             _total_time+=length/v;
         }
     } else {
-        zInfo(_messages.no_calc_length)
+        zInfo(Messages::no_calc_length)
     }
 
     return GMode::ToGCcode(i)+' '+p.ToStringXYZ();

@@ -5,6 +5,7 @@
 #include "geometry/geomath.h"
 #include "common/logger/log.h"
 #include "helpers/stringhelper.h"
+#include "messages.h"
 
 //QString Line::_lasterr;
 
@@ -49,7 +50,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
-        if(Point::Parse(p, xymode, mmode,{}, nullptr, nullptr).state()!=ParseState::NoData) {
+        if(Point::Parse(p).state()!=ParseState::NoData) {
             Point p0;
             if(Point::Parse(p, xymode, mmode,{}, &p0, offset).state()==ParseState::Parsed){
                 if(p0.isValid()) points.append(p0);
@@ -66,18 +67,11 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         }
         // todo 20 kiszervezni a z,c, s,f párokat függvénybe
         // todo 21 mindenhol megírni a releváns hibaüzenetet
-        if(p.startsWith('z')){
-            if(!GCode::ParseValue(p, L("z"), &cut.z)){
-                st.addWarn(L("cannot read full_cutting_depth:'")+p+'\'');
-            }
-            continue;
-        }
-        if(p.startsWith('c')){
-            if(!GCode::ParseValue(p, L("c"), &cut.z0)){
-                st.addWarn(L("cannot read cutting_depth:'")+p+'\'');
-            }
-            continue;
-        }
+        cut.ParseInto(p, &st);
+
+        feed.ParseInto(p, &st);
+
+        // todo 22 kiszervezni a feedbe parseinto
         if(p.startsWith('s')){
             qreal x;
             if(GCode::ParseValue(p, L("s"), &x)){
@@ -96,6 +90,8 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             Gap gp;
             if(Gap::Parse(p, &gp).state()==ParseState::Parsed){
                 gap=gp;
+            } else{
+                st.addWarn(Messages::cannotParse(Messages::gap,p));
             }
             continue;
         }

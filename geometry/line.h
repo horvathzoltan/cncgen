@@ -35,6 +35,7 @@ struct Line{
     /*ISVALID*/
 public:
     bool isValid() const {return _isValid;}
+    
 private:
     bool _isValid;
 

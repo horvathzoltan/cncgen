@@ -116,6 +116,7 @@ SOURCES += \
         geometry/size.cpp \
         geometry/xymode.cpp \
         main.cpp \
+        messages.cpp \
         parsestate.cpp \
         work1.cpp
 
@@ -145,6 +146,7 @@ HEADERS += \
     geometry/xymode.h \
     helpers/filenamehelper.h \
     helpers/stringhelper.h \
+    messages.h \
     parsestate.h \
     work1.h
 

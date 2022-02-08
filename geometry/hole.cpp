@@ -46,7 +46,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
 
-        if(Point::Parse(p, xymode, mmode, {}, nullptr, offset).state()!=ParseState::NoData) {
+        if(Point::Parse(p).state()!=ParseState::NoData) {
             Point p0;
             if(Point::Parse(p, xymode, mmode, {}, &p0, offset).state()==ParseState::Parsed){
                 if(p0.isValid()) point=p0;

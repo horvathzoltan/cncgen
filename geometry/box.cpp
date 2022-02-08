@@ -65,7 +65,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             continue;
             }
 
-        if(Point::Parse(p, xymode, mmode, {}, nullptr, nullptr).state()!=ParseState::NoData) {
+        if(Point::Parse(p).state()!=ParseState::NoData) {
             Point p0;
             if(Point::Parse(p, xymode,mmode, {}, &p0, offset).state()==ParseState::Parsed){
                 if(p0.isValid()) points.append(p0);
@@ -81,15 +81,10 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             continue;
         }
 
-        // todo size nem parseolódik
-        // todo mirrorzás
         if(Size::Parse(p).state()!=ParseState::NoData) {
             Size s0;
             auto pp = Size::Parse(p, xymode, mmode, &s0);
-            if(pp.state()==ParseState::Parsed){
-                //if(s0.isValid())
-                    size=s0;
-            }
+            if(pp.state()==ParseState::Parsed){size=s0;}
             continue;
         }
 //        if(Size::Parse(p,&size).state()!=ParseState::NoData) {

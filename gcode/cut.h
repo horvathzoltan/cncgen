@@ -2,6 +2,7 @@
 #define CUT_H
 
 #include <QString>
+#include "parsestate.h"
 
 struct Cut
 {
@@ -18,6 +19,7 @@ public:
     //static Cut Parse(const QString& txt);
     [[nodiscard]] auto ToString() const -> QString;
 
+    auto ParseInto(const QString& p, ParseState* st) -> bool;
 //    /*ISVALID*/
 //public:
 //    bool isValid() const {return _isValid;}

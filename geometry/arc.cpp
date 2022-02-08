@@ -49,7 +49,7 @@ auto Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode, Point *o
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
-        if(Point::Parse(p, xymode, mmode, {}, nullptr, nullptr).state()!=ParseState::NoData) {
+        if(Point::Parse(p).state()!=ParseState::NoData) {
             Point p0;
             if(Point::Parse(p, xymode,mmode, {}, &p0, offset).state()==ParseState::Parsed){
                 if(p0.isValid()) points.append(p0);

@@ -20,6 +20,20 @@ Point::Point(qreal _x, qreal _y, qreal _z)
     _isValid=true;
 }
 
+auto Point::Parse(const QString &txt) ->ParseState {
+    return Point::Parse(txt,
+                        XYMode::Unknown, {},
+                        {},
+                        nullptr, nullptr);
+}
+
+auto Point::Parse(const QString &txt, const QString& key) ->ParseState {
+    return Point::Parse(txt,
+                        XYMode::Unknown, {},
+                        key,
+                        nullptr, nullptr);
+}
+
 auto Point::Parse(const QString &txt,
                   XYMode xymode, MMode mmode,
                   const QString& key,

@@ -32,6 +32,7 @@ public:
 //        qreal f
 //        );
 
+    bool ParseInto(const QString& p, ParseState* st);
     auto ParseIntoFeed(const QString &txt) -> ParseState;
     auto ParseIntoSpindleSpeed(const QString &txt) -> ParseState;
 

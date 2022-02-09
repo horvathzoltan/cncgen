@@ -111,6 +111,12 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             continue;
         }
 
+        if(Feed::Parse(l).state()!=ParseState::NoData){
+            ParseSetFeedToGCode(l, &gcode, &err);
+            continue;
+        }
+
+
         switch(l[0].unicode()){
         case Comment::keyUniCode:
             if(ParseCommentToGCode(l, &gcode, &err)){
@@ -142,18 +148,18 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
                 continue;
             }
             break;
-        case Feed::keyUniCode_feed:
-            if(ParseSetFeedToGCode(l, &gcode, &err)){
-                AppendGCode(&gcodes, gcode, err);
-                continue;
-            }
-            break;
-        case Feed::keyUniCode_spindleSpeed:
-            if(ParseSetSpindleSpeedToGCode(l, &gcode, &err)){
-                AppendGCode(&gcodes, gcode, err);
-                continue;
-            }
-            break;
+//        case Feed::keyUniCode_feed:
+//            if(ParseSetFeedToGCode(l, &gcode, &err)){
+//                AppendGCode(&gcodes, gcode, err);
+//                continue;
+//            }
+//            break;
+//        case Feed::keyUniCode_spindleSpeed:
+//            if(ParseSetSpindleSpeedToGCode(l, &gcode, &err)){
+//                AppendGCode(&gcodes, gcode, err);
+//                continue;
+//            }
+//            break;
         }
     }
 
@@ -287,13 +293,22 @@ auto GenerateGcode::ParseSetToolToGCode(const QString& str, QString *gcode, QStr
 auto GenerateGcode::ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool
 {
     //Feed m;
-    auto s = _selected_feed.ParseIntoFeed(str);
+    auto s = Feed::Parse(str, &_selected_feed);
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
+
+    QString gcode1, gcode2;
+    gcode1=SetFeedToGCode(err);
+    gcode2=SetSpindleSpeedToGCode(err);
+
     if(s.state() == ParseState::Parsed )
     {
-        //_selected_feed.f=m.f;
-        if(gcode)*gcode=SetFeedToGCode(err);
+        if(gcode){
+            auto g1=SetFeedToGCode(err);
+            if(!g1.isEmpty()) g1+='\n';
+            g1+=SetSpindleSpeedToGCode(err);
+            *gcode=g1;
+        }
     }
     QString msg;
     StringHelper::Append(&msg, s.ToString(), '\n');
@@ -301,22 +316,22 @@ auto GenerateGcode::ParseSetFeedToGCode(const QString& str, QString *gcode, QStr
     return true;
 }
 
-auto GenerateGcode::ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool
-{
-    //Feed m;
-    auto s = _selected_feed.ParseIntoSpindleSpeed(str);
-    if(s.state()==ParseState::NoData) return false;
-    zInfo(T1+str);
-    if(s.state() == ParseState::Parsed )
-    {
-        //_selected_feed.spindleSpeed=m.spindleSpeed;
-        if(gcode)*gcode=SetSpindleSpeedToGCode(err);
-    }
-    QString msg;
-    StringHelper::Append(&msg, s.ToString(), '\n');
-    if(!msg.isEmpty())zInfo(msg);
-    return true;
-}
+//auto GenerateGcode::ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool
+//{
+//    //Feed m;
+//    auto s = _selected_feed.ParseIntoSpindleSpeed(str);
+//    if(s.state()==ParseState::NoData) return false;
+//    zInfo(T1+str);
+//    if(s.state() == ParseState::Parsed )
+//    {
+//        //_selected_feed.spindleSpeed=m.spindleSpeed;
+//        if(gcode)*gcode=SetSpindleSpeedToGCode(err);
+//    }
+//    QString msg;
+//    StringHelper::Append(&msg, s.ToString(), '\n');
+//    if(!msg.isEmpty())zInfo(msg);
+//    return true;
+//}
 
 auto GenerateGcode::ParseSetXYModeToGcode(const QString& str, QString *gcode, QString *err) -> bool
 {

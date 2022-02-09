@@ -24,50 +24,57 @@ auto Feed::isValid() const -> bool
 //}
 
 
-bool Feed::ParseInto(const QString& p, ParseState* st)
+auto Feed::Parse(const QString& txt, Feed *a) -> ParseState
 {
-    if(!st) return false;
-
-    if(p.startsWith(Feed::keyUniCode_feed)){
+    ParseState st(ParseState::NoData);
+    if(!txt.startsWith(key_feed) &&
+        !txt.startsWith(key_spindleSpeed)) return st;
+    st.setState(ParseState::NotParsed);
+    if(!a) return st;
+    //bool feed_ok=false, speed_ok=false;
+    if(txt.startsWith(Feed::keyUniCode_feed)){
+        qreal x;        
+        if(GCode::ParseValue(txt, key_feed, &x)){
+            st.setState(ParseState::Parsed);
+            a->_feed=x;
+        }else{st.addWarn(Messages::cannotParse(Messages::full_cutting_depth,txt));}
+    }else if(txt.startsWith(Feed::keyUniCode_spindleSpeed)){
         qreal x;
-        if(GCode::ParseValue(p, keyUniCode_feed, &x)){_feed=x;
-        }else{st->addWarn(Messages::cannotParse(Messages::full_cutting_depth,p));}
-        return true;
+        if(GCode::ParseValue(txt, key_spindleSpeed, &x)){
+            st.setState(ParseState::Parsed);
+            a->_spindleSpeed = x;
+        }else{
+            st.addWarn(Messages::cannotParse(Messages::full_cutting_depth,txt));
+        }
     }
-    if(p.startsWith(Feed::keyUniCode_spindleSpeed)){
-        qreal x;
-        if(GCode::ParseValue(p, keyUniCode_feed, &x)){_spindleSpeed=x;
-        }else{st->addWarn(Messages::cannotParse(Messages::full_cutting_depth,p));}
-        return true;
-    }
-    return false;
+    return st;
 }
 
 
-auto Feed::ParseIntoFeed(const QString &txt) -> ParseState
-{
-//    _lasterr.clear();
-    if(!txt.startsWith(key_feed)) return ParseState::NoData;
+//auto Feed::ParseIntoFeed(const QString &txt) -> ParseState
+//{
+////    _lasterr.clear();
+//    if(!txt.startsWith(key_feed)) return ParseState::NoData;
 
-    bool isok;
-    auto x = txt.midRef(1).toDouble(&isok);
-    if(!isok || x<=0) return ParseState::NotParsed;
-    _feed=x;
-    return ParseState::Parsed;
-}
+//    bool isok;
+//    auto x = txt.midRef(1).toDouble(&isok);
+//    if(!isok || x<=0) return ParseState::NotParsed;
+//    _feed=x;
+//    return ParseState::Parsed;
+//}
 
-auto Feed::ParseIntoSpindleSpeed(const QString &txt) -> ParseState
-{
-    //_lasterr.clear();
-    if(!txt.startsWith(key_spindleSpeed)) return ParseState::NoData;
+//auto Feed::ParseIntoSpindleSpeed(const QString &txt) -> ParseState
+//{
+//    //_lasterr.clear();
+//    if(!txt.startsWith(key_spindleSpeed)) return ParseState::NoData;
 
-    bool isok;
-    auto x = txt.midRef(1).toDouble(&isok);
-    if(!isok || x<=0) return ParseState::NotParsed;
+//    bool isok;
+//    auto x = txt.midRef(1).toDouble(&isok);
+//    if(!isok || x<=0) return ParseState::NotParsed;
 
-    _spindleSpeed=x;
-    return ParseState::Parsed;
-}
+//    _spindleSpeed=x;
+//    return ParseState::Parsed;
+//}
 
 
 auto Feed::ToString() const -> QString

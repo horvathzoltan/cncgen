@@ -64,26 +64,32 @@ auto Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode, Point *o
             };
             continue;
         }
-        if(p.startsWith('z')){
-            GCode::ParseValue(p, L("z"), &cut.z); continue;
+        if(cut.ParseInto(p,&st)) continue;
+
+        if(Feed::Parse(p, &feed).state()!=ParseState::NoData){
+            continue;
         }
-        if(p.startsWith('c')){
-            GCode::ParseValue(p, L("c"), &cut.z0); continue;
-        }
-        if(p.startsWith('s')){
-            qreal x;
-            if(GCode::ParseValue(p, L("s"), &x)){
-                feed.setSpindleSpeed(x);
-                continue;
-            }
-        }
-        if(p.startsWith('f')){
-            qreal x;
-            if(GCode::ParseValue(p, L("f"), &x)){
-                feed.setFeed(x);
-                continue;
-            }
-        }
+
+//        if(p.startsWith('z')){
+//            GCode::ParseValue(p, L("z"), &cut.z); continue;
+//        }
+//        if(p.startsWith('c')){
+//            GCode::ParseValue(p, L("c"), &cut.z0); continue;
+//        }
+//        if(p.startsWith('s')){
+//            qreal x;
+//            if(GCode::ParseValue(p, L("s"), &x)){
+//                feed.setSpindleSpeed(x);
+//                continue;
+//            }
+//        }
+//        if(p.startsWith('f')){
+//            qreal x;
+//            if(GCode::ParseValue(p, L("f"), &x)){
+//                feed.setFeed(x);
+//                continue;
+//            }
+//        }
     }
     bool hasPoints = points.length()>=3;
     bool positionErr = !hasPoints&&!rpoint.isValid();

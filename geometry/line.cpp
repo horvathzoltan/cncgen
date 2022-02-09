@@ -65,27 +65,14 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             };
             continue;
         }
-        // todo 20 kiszervezni a z,c, s,f párokat függvénybe
+        // todo 20 kiszervezni a z,c, párokat függvénybe
+        // todo 22 cutot hasonlóan, mint a feed, parse és generatecode részek
         // todo 21 mindenhol megírni a releváns hibaüzenetet
         cut.ParseInto(p, &st);
-
-        feed.ParseInto(p, &st);
-
-        // todo 22 kiszervezni a feedbe parseinto
-        if(p.startsWith('s')){
-            qreal x;
-            if(GCode::ParseValue(p, L("s"), &x)){
-                feed.setSpindleSpeed(x);
-                continue;
-            }
+        if(Feed::Parse(p, &feed).state()!=ParseState::NoData){
+            continue;
         }
-        if(p.startsWith('f')){
-            qreal x;
-            if(GCode::ParseValue(p, L("f"), &x)){
-                feed.setFeed(x);
-                continue;
-            }
-        }
+
         if(Gap::Parse(p, nullptr).state()!=ParseState::NoData){
             Gap gp;
             if(Gap::Parse(p, &gp).state()==ParseState::Parsed){

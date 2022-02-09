@@ -7,6 +7,10 @@
 struct Cut
 {
 public:
+    constexpr static const QChar key_TotalDepth = 'z';
+    constexpr static const auto keyUniCode_TotalDepth = key_TotalDepth.unicode();
+    constexpr static const QChar key_CuttingDepth = 'c';
+    constexpr static const auto keyUniCode_CuttingDepth = key_CuttingDepth.unicode();
 //    Cut();
 //    Cut(
 //        qreal _z,

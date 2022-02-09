@@ -19,6 +19,11 @@ auto GCode::i(int x) -> QString{
     return QString::number(x);
 }
 
+auto GCode::ParseValue(const QString &p, const QChar &key, qreal *v) -> bool
+{
+    return ParseValue(p, QString(key), v);
+}
+
 auto GCode::ParseValue(const QString &p, const QString &key, qreal *v) -> bool
 {
     bool isok = false;

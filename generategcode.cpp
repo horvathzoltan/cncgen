@@ -788,31 +788,31 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     msg+= " steps:"+QString::number(steps);
     zInfo(msg);
 
-    if(pre_drill){
-        // 81: depth<3-5*t.d;
-        // normal: 5*t.d
-        // 83 peck:5-7
-        // ha hőre lágyul az anyag, homlokmarónál előfúrásnál kellhet a peck
-        //bool is_peck = t.type==Tool::Milling&&_last_cut.z>3;
-        qreal zz = _lastHoleP.z-_last_cut.z;
+//    if(pre_drill){
+//        // 81: depth<3-5*t.d;
+//        // normal: 5*t.d
+//        // 83 peck:5-7
+//        // ha hőre lágyul az anyag, homlokmarónál előfúrásnál kellhet a peck
+//        //bool is_peck = t.type==Tool::Milling&&_last_cut.z>3;
+//        qreal zz = _lastHoleP.z-_last_cut.z;
 
-       g.append(L("(predrill)"));
-       g.append(TravelXYToGCode(p)); //TRAVEL
-       auto sp = SpindleStartToGCode(); // selected->last
-       if(!sp.isEmpty()) g.append(sp);
-       auto f = SetFeedToGCode();
-       if(!f.isEmpty()) g.append(f);
+//       g.append(L("(predrill)"));
+//       g.append(TravelXYToGCode(p)); //TRAVEL
+//       auto sp = SpindleStartToGCode(); // selected->last
+//       if(!sp.isEmpty()) g.append(sp);
+//       auto f = SetFeedToGCode();
+//       if(!f.isEmpty()) g.append(f);
 
-       g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
-       if(_last_feed.feed()>0){
-           qreal l0 = _last_position.z-zz;
-           qreal l1 = p.z-zz;
+//       g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
+//       if(_last_feed.feed()>0){
+//           qreal l0 = _last_position.z-zz;
+//           qreal l1 = p.z-zz;
 
-           _total_time+=l1/_last_feed.feed()+l0/1500;
-       }
+//           _total_time+=l1/_last_feed.feed()+l0/1500;
+//       }
 
-       _last_position.z = p.z;
-    }
+//       _last_position.z = p.z;
+//    }
     if(!drillOnly){
         if(pre_mill){
             g.append(L("(premill)"));

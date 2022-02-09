@@ -162,10 +162,15 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #    signalhelper.h
 
 DISTFILES += \
+    testdata/alatet.txt \
+    testdata/ethernet2.txt \
     testdata/geom1.txt \
     testdata/geom2.txt \
     testdata/geom3.txt \
     testdata/geom3_1.txt \
     testdata/head.gcode \
     testdata/holetest.txt \
-    testdata/linetest.txt
+    testdata/linetest.txt \
+    testdata/tapdugo.txt \
+    testdata/tapdugo2.txt \
+    testdata/tapdugo3.txt

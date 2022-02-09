@@ -1,6 +1,6 @@
 #include "feed.h"
-
-#include "gcode/gcode.h"
+#include "gcode.h"
+#include "messages.h"
 
 //QString Feed::_lasterr;
 
@@ -29,16 +29,16 @@ bool Feed::ParseInto(const QString& p, ParseState* st)
     if(!st) return false;
 
     if(p.startsWith(Feed::keyUniCode_feed)){
-        if(ParseSetFeedToGCode(p, &gcode, &err)){
-            AppendGCode(&gcodes, gcode, err);
-            return true;
-        }
+        qreal x;
+        if(GCode::ParseValue(p, keyUniCode_feed, &x)){_feed=x;
+        }else{st->addWarn(Messages::cannotParse(Messages::full_cutting_depth,p));}
+        return true;
     }
     if(p.startsWith(Feed::keyUniCode_spindleSpeed)){
-        if(ParseSetSpindleSpeedToGCode(p, &gcode, &err)){
-            AppendGCode(&gcodes, gcode, err);
-            return true;
-        }
+        qreal x;
+        if(GCode::ParseValue(p, keyUniCode_feed, &x)){_spindleSpeed=x;
+        }else{st->addWarn(Messages::cannotParse(Messages::full_cutting_depth,p));}
+        return true;
     }
     return false;
 }

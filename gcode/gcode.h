@@ -13,6 +13,7 @@ public:
 
     static QString r(qreal x);
     static QString i(int x);
+    static bool ParseValue(const QString &p, const QChar &key, qreal *v);
     static bool ParseValue(const QString&p, const QString&key, qreal*v);
     static bool ParseValue(const QString&p, const QString&key, int*v);
     static bool ParseValue(const QString&p, const QString&key, QString*v);

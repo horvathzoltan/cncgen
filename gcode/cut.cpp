@@ -29,14 +29,14 @@ bool Cut::ParseInto(const QString& p, ParseState* st)
 {
     if(!st) return false;
 
-    if(p.startsWith('z')){
-        if(!GCode::ParseValue(p, QStringLiteral("z"), &z)){
+    if(p.startsWith(key_TotalDepth)){
+        if(!GCode::ParseValue(p, key_TotalDepth, &z)){
             st->addWarn(Messages::cannotParse(Messages::full_cutting_depth,p));
         }
         return true;
     }
-    if(p.startsWith('c')){
-        if(!GCode::ParseValue(p, QStringLiteral("c"), &z0)){
+    if(p.startsWith(key_CuttingDepth)){
+        if(!GCode::ParseValue(p, key_CuttingDepth, &z0)){
             st->addWarn(Messages::cannotParse(Messages::cutting_depth,p));
         }
         return true;

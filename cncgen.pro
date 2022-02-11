@@ -171,6 +171,8 @@ DISTFILES += \
     testdata/head.gcode \
     testdata/holetest.txt \
     testdata/linetest.txt \
+    testdata/pi_hatlap.txt \
     testdata/tapdugo.txt \
     testdata/tapdugo2.txt \
-    testdata/tapdugo3.txt
+    testdata/tapdugo3.txt \
+    testdata/usb.txt

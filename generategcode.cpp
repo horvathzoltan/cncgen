@@ -112,7 +112,9 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
         }
 
         if(Feed::Parse(l).state()!=ParseState::NoData){
-            ParseSetFeedToGCode(l, &gcode, &err);
+            if(ParseSetFeedToGCode(l, &gcode, &err)){
+                AppendGCode(&gcodes, gcode, err);
+            }
             continue;
         }
 
@@ -297,9 +299,9 @@ auto GenerateGcode::ParseSetFeedToGCode(const QString& str, QString *gcode, QStr
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
 
-    QString gcode1, gcode2;
-    gcode1=SetFeedToGCode(err);
-    gcode2=SetSpindleSpeedToGCode(err);
+    //QString gcode1, gcode2;
+    //gcode1=SetFeedToGCode(err);
+    //gcode2=SetSpindleSpeedToGCode(err);
 
     if(s.state() == ParseState::Parsed )
     {

@@ -11,11 +11,8 @@ t1
 s50
 f300
 
-b inline 2,2 size15.9,13.5 z2.7 c0.1 g1,1,0.7
-b inline 22.4,3.5 size13.1,14.00 z2.7 c0.1 g1,1,0.7
-b inline 40.4,3.5 size13.1,14.00 z2.7 c0.1 g1,1,0.7
+b inline 2,2 size15.9,13.5 z3 c0.07 g1,1,0.7 jg0.1
+b inline 22.4,3.5 size13.1,14.00 z3 c0.07 g1,1,0.7 jg0.85
+b inline 40.4,3.5 size13.1,14.00 z3 c0.07 g1,1,0.7 jg0.85
 
-b inline 21.6,2.7 size14.7,15.6 z1 c0.1
-b inline 39.6,2.7 size14.7,15.6 z1 c0.1
-
-b outline 0,0 size58,20 g1,1,0.7 z2.7 c0.1
+b outline 0,0 size58,20 g1,1,0.7 z3 c0.07 jg-1

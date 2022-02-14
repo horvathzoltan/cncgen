@@ -1137,7 +1137,32 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         }
     }
 
+
     QStringList g(QStringLiteral("(box with gaps)"));
+
+    switch(_lastBoxType){
+    case BoxType::Outline:
+
+        if(m.jointGap!=0){
+            ba.x+=m.jointGap;
+            ba.y+=m.jointGap;
+            jf.x-=m.jointGap;
+            jf.y-=m.jointGap;
+        }
+
+        break;
+    case BoxType::Inline:
+
+        if(m.jointGap!=0){
+            ba.y-=m.jointGap;
+            ba.x-=m.jointGap;
+            jf.y+=m.jointGap;
+            jf.x+=m.jointGap;
+        }
+        break;
+    default: break;
+    }
+
 
     /*szerszámpálya*/
     qreal tool_r = t.d/2;
@@ -1149,6 +1174,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         ba.y-=tool_r;
         jf.x+=tool_r;
         jf.y+=tool_r;
+
         //
         ja.x=jf.x;
         ja.y=ba.y;
@@ -1159,7 +1185,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         ba.y+=tool_r;
         ba.x+=tool_r;
         jf.y-=tool_r;        
-        jf.x-=tool_r;
+        jf.x-=tool_r;        
         //
         ja.x=jf.x;
         ja.y=ba.y;

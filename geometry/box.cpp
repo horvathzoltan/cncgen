@@ -21,7 +21,8 @@ Box::Box(const Point &_p0,
          qreal _corner_diameter,
          Feed _feed,
          const Point& _rp,
-         const Size& _size)
+         const Size& _size,
+         qreal _jg)
 {
     p0=_p0;
     p1=_p1;
@@ -32,6 +33,7 @@ Box::Box(const Point &_p0,
     feed=_feed;
     rp=_rp;
     size=_size;
+    jointGap=_jg;
     _isValid = true;
 }
 
@@ -55,6 +57,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     Feed feed;
     Point rpoint;
     Size size;
+    qreal jointGap=-1;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -98,6 +101,13 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         if(Feed::Parse(p, &feed).state()!=ParseState::NoData){
             continue;
         }
+
+        if(p.startsWith("jg")){
+            qreal a;
+            if(GCode::ParseValue(p, L("jg"), &a)){jointGap=a;}
+            continue;
+        }
+
 //        if(p.startsWith('z')){
 //            GCode::ParseValue(p, L("z"), &cut.z);
 //            continue;
@@ -149,7 +159,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         corner_diameter,
         feed,
         rpoint,
-        size
+        size,
+        jointGap
     };
 
     st.setState(ParseState::Parsed);

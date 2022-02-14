@@ -22,7 +22,8 @@ public:
         qreal _corner_diameter,
         Feed _feed,
         const Point& _rp,
-        const Size& _size
+        const Size& _size,
+        qreal _jg
         );
 
     QList<Line> lines;
@@ -31,10 +32,12 @@ public:
     Gap gap;
     BoxType::Type type = BoxType::Outline;
     Cut cut;
-    qreal corner_diameter=-1;
+    qreal corner_diameter=-1; // ha csak a sarkait fúrjuk a furatátmérő
     Feed feed;
     Point rp;
     Size size;
+    qreal jointGap=0; // illesztési hézag
+
     static auto Parse(const QString& txt, XYMode mode, MMode mmode, Box *m, Point *offset) -> ParseState;
     static auto Parse(const QString& txt) -> ParseState;
     QString ToString() const;

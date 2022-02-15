@@ -655,7 +655,7 @@ auto GenerateGcode::CircularArcCut(qreal total_depth) -> QStringList{
     QString msg;
 
     GoToCutposition(&g, _lastArcP0);
-    Point p;//invalid!!!
+    Point p;
     GMode::Mode mode;
     QString ij;
     qreal i,j,i1,j1,i0,j0;

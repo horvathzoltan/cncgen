@@ -65,8 +65,6 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             };
             continue;
         }
-        // todo 20 kiszervezni a z,c, párokat függvénybe
-        // todo 22 cutot hasonlóan, mint a feed, parse és generatecode részek
         // todo 21 mindenhol megírni a releváns hibaüzenetet
         cut.ParseInto(p, &st);
         if(Feed::Parse(p, &feed).state()!=ParseState::NoData){

@@ -175,4 +175,8 @@ DISTFILES += \
     testdata/tapdugo.txt \
     testdata/tapdugo2.txt \
     testdata/tapdugo3.txt \
+    testdata/uniturn_also.txt \
+    testdata/uniturn_doboz_hatlap.txt \
+    testdata/uniturn_felso.txt \
+    testdata/uniturn_usb_tavtarto.txt \
     testdata/usb.txt

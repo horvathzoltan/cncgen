@@ -967,7 +967,7 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
 
     auto distance = GeoMath::Distance(_lastArcP0, _lastArcP1);
     if(distance<t.d) {
-        if(err){*err=L("line too short");}
+        if(err){*err=L("arc line too short");}
         return {};
     }
 
@@ -1055,6 +1055,8 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         if(_last_hole_diameter==-1 && m.corner_diameter==-1){
             if(err){*err=L("no diameter");}
             return {};
+        } else{
+            if(m.corner_diameter!=-1) _last_hole_diameter=m.corner_diameter;
         }
     }
     /*CUT*/
@@ -1094,7 +1096,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
 
     if(GeoMath::Distance(_lastBoxP0, _lastBoxP1)<(t.d/1.4)) {
-        if(err)*err=L("line too short");
+        if(err)*err=L("box line too short");
         return {};
     }
 
@@ -1140,27 +1142,22 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
     QStringList g(QStringLiteral("(box with gaps)"));
 
-    switch(_lastBoxType){
-    case BoxType::Outline:
-
-        if(m.jointGap!=0){
+    if(m.jointGap>0){
+        switch(_lastBoxType){
+        case BoxType::Outline:
             ba.x+=m.jointGap;
             ba.y+=m.jointGap;
             jf.x-=m.jointGap;
             jf.y-=m.jointGap;
-        }
-
-        break;
-    case BoxType::Inline:
-
-        if(m.jointGap!=0){
+            break;
+        case BoxType::Inline:
             ba.y-=m.jointGap;
             ba.x-=m.jointGap;
             jf.y+=m.jointGap;
             jf.x+=m.jointGap;
+            break;
+        default: break;
         }
-        break;
-    default: break;
     }
 
 

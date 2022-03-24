@@ -1,0 +1,21 @@
+(UNITURN mérőállomás felső panel)
+(szerszám beállítás)
+t1 m d2 h19
+t2 m d3 h19
+t3 m d4 h19
+yxz
+t1
+s50
+f150
+
+
+(rfid furatok)
+h 85.6,85.1 d3 z2.8 c0.1
+h 122.4,69.2
+l 131.5,73 131.5,81 z2.8 c0.1 g3,2,0.7
+l 132.2,73 132.2,81 z2.8 c0.1 g3,2,0.7
+
+(B3218101 - NET-BOX 220, VERS. I)
+(körvonal)
+b corners 4,4.5 size200,145 z2.8 c0.1 d2.5
+b outline 0,0 208,154 z2.8 c0.1 g3,2,0.7

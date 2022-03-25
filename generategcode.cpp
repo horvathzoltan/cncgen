@@ -548,7 +548,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
             auto px1 = _lastLineP1;
             _lastLineP0=segment.p0;
             _lastLineP1=segment.p1;
-            g.append(LinearCut(segment.cut.z));
+            g.append(LinearCut(segment.cut.z));            
             _lastLineP0 = px0; // azonnal vissza is állítjuk
             _lastLineP1 = px1;
         }
@@ -601,6 +601,7 @@ auto GenerateGcode::LinearCut(qreal total_depth) -> QStringList{
 
         qreal d=GeoMath::Distance(pd,p);
         AppendGCode(&g, GoToXYZ(GMode::Linear, p, d));
+        if(d<=10) AppendGCode(&g, Dwell(250));
     }
 
     AppendGCode(&g, LiftUpToGCode(p.z));
@@ -805,31 +806,33 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     msg+= " steps:"+QString::number(steps);
     zInfo(msg);
 
-//    if(pre_drill){
-//        // 81: depth<3-5*t.d;
-//        // normal: 5*t.d
-//        // 83 peck:5-7
-//        // ha hőre lágyul az anyag, homlokmarónál előfúrásnál kellhet a peck
-//        //bool is_peck = t.type==Tool::Milling&&_last_cut.z>3;
-//        qreal zz = _lastHoleP.z-_last_cut.z;
+    if(pre_drill){
+        // 81: depth<3-5*t.d;
+        // normal: 5*t.d
+        // 83 peck:5-7
+        // ha hőre lágyul az anyag, homlokmarónál előfúrásnál kell a peck
+        //bool is_peck = t.type==Tool::Milling&&_last_cut.z>3;
+        qreal zz = _lastHoleP.z-_last_cut.z;
 
-//       g.append(L("(predrill)"));
-//       g.append(TravelXYToGCode(p)); //TRAVEL
-//       auto sp = SpindleStartToGCode(); // selected->last
-//       if(!sp.isEmpty()) g.append(sp);
-//       auto f = SetFeedToGCode();
-//       if(!f.isEmpty()) g.append(f);
+       g.append(L("(predrill)"));
+       g.append(TravelXYToGCode(p)); //TRAVEL
+       auto sp = SpindleStartToGCode(); // selected->last
+       if(!sp.isEmpty()) g.append(sp);
+       auto f = SetFeedToGCode();
+       if(!f.isEmpty()) g.append(f);
 
-//       g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
-//       if(_last_feed.feed()>0){
-//           qreal l0 = _last_position.z-zz;
-//           qreal l1 = p.z-zz;
+       //g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
+       g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z)+" p250"+" q"+GCode::r(m.cut.z0) );
 
-//           _total_time+=l1/_last_feed.feed()+l0/1500;
-//       }
+       if(_last_feed.feed()>0){
+           qreal l0 = _last_position.z-zz;
+           qreal l1 = p.z-zz;
 
-//       _last_position.z = p.z;
-//    }
+           _total_time+=l1/_last_feed.feed()+l0/1500;
+       }
+
+       _last_position.z = p.z;
+    }
     if(!drillOnly){
         if(pre_mill){
             g.append(L("(premill)"));
@@ -1298,6 +1301,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         QList<Line> segments;
 
         for(int i=0;i<4;i++){
+            if(m.nl[i]==0) continue;
             if(lines_border.length()>i){
                 auto&l_border=lines_border[i];
                 //if(cut_border.z>0){ segments.append(l_border);}
@@ -1545,6 +1549,12 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
     }
 
     return GMode::ToGCcode(i)+' '+p.ToStringXY();
+}
+
+auto GenerateGcode::Dwell(int p) -> QString
+{
+    _total_time+=p/1000;
+    return "G04 P"+QString::number(p);
 }
 
 auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QString

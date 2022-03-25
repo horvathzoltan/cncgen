@@ -44,9 +44,26 @@ auto GCode::ParseValue(const QString &p, const QString &key, int *v) -> bool
     auto hasKey = !key.isEmpty();
     if(v && (!hasKey || p.startsWith(key))){
         auto a = hasKey?p.midRef(key.length()):&p;        
-        if(!a.isEmpty() && a[0].isNumber()){
+        if(!a.isEmpty() && a[0].isNumber()){//todo vagy ha = jel
             auto sp = a.toInt(&isok);
             if(isok){*v = sp;}
+        }
+    }
+    return isok;
+}
+
+auto GCode::ParseValues(const QString &p, const QString &key, QList<int>*v) -> bool
+{
+    bool isok = false;
+    auto hasKey = !key.isEmpty();
+    if(v && (!hasKey || p.startsWith(key))){
+        auto a = hasKey?p.midRef(key.length()):&p;
+        if(!a.isEmpty() && a[0].isNumber()){
+            auto b = a.split(',');
+            for(int i=0;i<b.length();i++){
+                auto sp = b[i].toInt(&isok);
+                if(isok){v->append(sp);}
+                }
         }
     }
     return isok;

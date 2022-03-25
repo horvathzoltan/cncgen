@@ -106,6 +106,7 @@ private:
     auto GoToXY(GMode::Mode, const Point& p, qreal length) -> QString;
     auto GoToZ(GMode::Mode, const Point& p, qreal length) -> QString;
     auto GoToXYZ(GMode::Mode, const Point& p, qreal length) -> QString;
+    auto Dwell(int p) -> QString;
     /*Parse*/
     auto ParseCommentToGCode(const QString &str, QString *gcode, QString *err) -> bool;
     auto ParseArcToGCode(const QString& str, QString *gcode, QString *err) -> bool;

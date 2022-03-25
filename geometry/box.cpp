@@ -22,7 +22,8 @@ Box::Box(const Point &_p0,
          Feed _feed,
          const Point& _rp,
          const Size& _size,
-         qreal _jg)
+         qreal _jg,
+         bool _nl[4])
 {
     p0=_p0;
     p1=_p1;
@@ -34,6 +35,10 @@ Box::Box(const Point &_p0,
     rp=_rp;
     size=_size;
     jointGap=_jg;
+    nl[0]=_nl[0];
+    nl[1]=_nl[1];
+    nl[2]=_nl[2];
+    nl[3]=_nl[3];
     _isValid = true;
 }
 
@@ -57,7 +62,9 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     Feed feed;
     Point rpoint;
     Size size;
-    qreal jointGap=-1;
+    qreal jointGap=0;
+
+    bool nl[]={1,1,1,1};
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -104,7 +111,20 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
 
         if(p.startsWith("jg")){
             qreal a;
-            if(GCode::ParseValue(p, L("jg"), &a)){jointGap=a;}
+            if(GCode::ParseValue(p, L("jg"), &a)){
+                jointGap=a;
+            }
+            continue;
+        }
+
+        if(p.startsWith("nl")){
+            QList<int> a;
+            if(GCode::ParseValues(p, L("nl"), &a)){
+                if(a.count()>0){nl[0]=a[0];}
+                if(a.count()>1){nl[1]=a[1];}
+                if(a.count()>2){nl[2]=a[2];}
+                if(a.count()>3){nl[3]=a[3];}
+            }
             continue;
         }
 
@@ -160,7 +180,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         feed,
         rpoint,
         size,
-        jointGap
+        jointGap,
+        nl
     };
 
     st.setState(ParseState::Parsed);

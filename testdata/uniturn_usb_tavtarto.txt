@@ -9,48 +9,60 @@ s50
 f200
 
 (bigyó_1)
-b inline 5,0 size2.5,3 z2.8 c0.1 g0,0.1,0.7
-b inline 5,8 size2.5,3 z2.8 c0.1 g0,0.1,0.7
-b inline 17.5,0 size2.5,3 z2.8 c0.1 g0,0.1,0.7
-b inline 17.5,8 size2.5,3 z2.8 c0.1 g0,0.1,0.7
-b inline 7.5,4.25 size10,2.5 z2.8 c0.1 g0,0.1,0.7
+h 6.25,1.5 d2 z2.8 c0.03
+b inline 5,0 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 6.25,9.5 d2 z2.8 c0.03
+b inline 5,8 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 18.75,1.5 d2 z2.8 c0.03
+b inline 17.5,0 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 18.75,9.5 d2 z2.8 c0.03
+b inline 17.5,8 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+l 8,5.5 17,5.5 z2.8 c0.05
+b inline 7.5,4.25 size10,2.5 z2.8 c0.05 g0,0.1,0.7 jg0.1
 
 (horony)
-l 0,14.6 25,14.6 z1.5 c0.1
-l 0,14.85 25,14.85 z1.5 c0.1
+l 0,13.8 25,13.8 z1.5 c0.1
+l 0,14.05 25,14.05 z1.5 c0.1
 
 (körvonal)
-b outline 0,0 size25,17 z2.8 c0.1 g1,2,0.7
+b outline 0,0 size25,22 z2.8 c0.1 g1,2,0.7 nl1,1,0,1
 
 (bigyó_2)
-b inline 33,0 size2.5,3 z2.8 c0.1 g0,0.1,0.7
-b inline 33,8 size2.5,3 z2.8 c0.1 g0,0.1,0.7
-b inline 45.5,0 size2.5,3 z2.8 c0.1 g0,0.1,0.7
-b inline 45.5,8 size2.5,3 z2.8 c0.1 g0,0.1,0.7
-b inline 35.5,4.25 size10,2.5 z2.8 c0.1 g0,0.1,0.7
+h 32.25,1.5 d2 z2.8 c0.03
+b inline 31,0 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 32.25,9.5 d2 z2.8 c0.03
+b inline 31,8 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 44.75,1.5 d2 z2.8 c0.03
+b inline 43.5,0 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 44.75,9.5 d2 z2.8 c0.03
+b inline 43.5,8 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+l 34,5.5 43,5.5 z2.8 c0.05
+b inline 33.5,4.25 size10,2.5 z2.8 c0.05 g0,0.1,0.7 jg0.1
 
 (horony)
-l 28,17.1 53,17.1 z1.5 c0.1
-l 28,17.35 53,17.35 z1.5 c0.1
+l 26,17.4 51,17.4 z1.5 c0.1
+l 26,17.65 51,17.65 z1.5 c0.1
 
 (körvonal2)
-b outline 28,0 size25,20 z2.8 c0.1 g1,2,0.7
+b outline 26,0 size25,22 z2.8 c0.1 g1,2,0.7
 
 (merevito_1)
-b outline 0,25 size43.8,11 z2.8 c0.1 g1,2,0.7
-b inline 0,28 size2.5,5 z2.8
-b inline 41.3,28 size2.5,5 z2.8
-b inline 16.9,29.25 size10,2.5 z2.8
+b outline 0,23 size43.8,11 z2.8 c0.1 g1,2,0.7 nl1,0,1,0
+b inline 0,26 size2.5,5 c0.03 z2.8 nl0,1,1,1
+b inline 41.3,26 size2.5,5 c0.03 z2.8 nl1,1,0,1
+l 17.4,28.5 26.4,28.5 z2.8 c0.05
+b inline 16.9,27.25 size10,2.5 c.05 z2.8 jg0.1
 
 (merevito_2)
-b outline 0,39 size43.8,11 z2.8 c0.1 g1,2,0.7
-b inline 0,42 size2.5,5 z2.8
-b inline 41.3,42 size2.5,5 z2.8
-b inline 16.9,43.25 size10,2.5 z2.8
+b outline 0,35 size43.8,11 z2.8 c0.1 g1,2,0.7 nl1,1,1,1
+b inline 0,38 size2.5,5 c0.03  z2.8 nl0,1,1,1
+b inline 41.3,38 size2.5,5 c0.03 z2.8 nl1,1,0,1
+l 17.4,40.5 26.4,40.5 z2.8 c0.05
+b inline 16.9,39.25 size10,2.5 c0.05 z2.8 jg0.1
 
 (merevito_3)
-b outline 0,53 size43.8,15 z2.8 c0.1 g1,2,0.7
-b inline 0,53 size16.9,2.5 z2.8
-b inline 26.9,53 size16.9,2.5 z2.8
-b inline 0,65.5 size16.9,2.5 z2.8
-b inline 26.9,65.5 size16.9,2.5 z2.8
+b outline 0,47 size43.8,15 z2.8 c0.1 g1,2,0.7 nl1,1,1,0
+b inline 0,47 size16.9,2.5 z2.8 c0.03 nl0,1,1,0
+b inline 26.9,47 size16.9,2.5 z2.8 c0.03 nl1,1,0,0
+b inline 0,59.5 size16.9,2.5 z2.8 c.0.3 nl0,0,1,1
+b inline 26.9,59.5 size16.9,2.5 z2.8 c0.03 nl1,0,0,1

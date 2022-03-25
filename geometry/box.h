@@ -23,7 +23,8 @@ public:
         Feed _feed,
         const Point& _rp,
         const Size& _size,
-        qreal _jg
+        qreal _jg,
+        bool _nl[4]
         );
 
     QList<Line> lines;
@@ -38,6 +39,7 @@ public:
     Size size;
     qreal jointGap=0; // illesztési hézag
 
+    bool nl[4]={1,1,1,1};
     static auto Parse(const QString& txt, XYMode mode, MMode mmode, Box *m, Point *offset) -> ParseState;
     static auto Parse(const QString& txt) -> ParseState;
     QString ToString() const;

@@ -1,0 +1,37 @@
+(UNITURN mérőállomás alsó szerelőlap)
+(szerszám beállítás)
+t1 m d1 h19
+t2 m d2 h19
+t3 m d3 h19
+yxz
+t1
+s50
+f200
+
+(bigyó_1)
+b corners -.5,-.5 size26,25 d1 z2.8 c0.02 g1,2,0.7 nl1,1,1,1
+h 6.25,1.5 d2 z2.8 c0.03
+b inline 5,0 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 6.25,9.5 d2 z2.8 c0.03
+b inline 5,8 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 18.75,1.5 d2 z2.8 c0.03
+b inline 17.5,0 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+h 18.75,9.5 d2 z2.8 c0.03
+b inline 17.5,8 size2.5,3 z2.8 c0.03 g0,0.1,0.7 jg0.1
+l 8,5.5 17,5.5 z2.8 c0.05
+b inline 7.5,4.25 size10,2.5 z2.8 c0.05 g0,0.1,0.7 jg0.1
+
+(horony)
+l 0,13.75 25,13.75 z1.5 c0.1
+l 0,14.05 25,14.05 z1.5 c0.1
+(horony2)
+l 0,21.2 25,21.2 z1.5 c0.1
+l 0,21.5 25,21.5 z1.5 c0.1
+
+(körvonal)
+b outline 0,0 size25,24 z2.8 c0.1 g1,2,0.7 nl1,1,1,1
+
+
+
+
+

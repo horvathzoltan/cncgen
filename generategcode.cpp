@@ -812,7 +812,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         // 83 peck:5-7
         // ha hőre lágyul az anyag, homlokmarónál előfúrásnál kell a peck
         //bool is_peck = t.type==Tool::Milling&&_last_cut.z>3;
-        qreal zz = _lastHoleP.z-_last_cut.z;
+        qreal zz = _lastHoleP.z;//-_last_cut.z;
 
        g.append(L("(predrill)"));
        g.append(TravelXYToGCode(p)); //TRAVEL
@@ -822,7 +822,10 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
        if(!f.isEmpty()) g.append(f);
 
        //g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
-       g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z)+" p250"+" q"+GCode::r(m.cut.z0) );
+       // zz: mélység
+       // r: visszahúzás z-je
+       // q: mélység inkrement per peck
+       g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z)+" q"+GCode::r(m.cut.z0) );
 
        if(_last_feed.feed()>0){
            qreal l0 = _last_position.z-zz;

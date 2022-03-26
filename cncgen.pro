@@ -180,4 +180,5 @@ DISTFILES += \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_felso.txt \
     testdata/uniturn_usb_tavtarto.txt \
+    testdata/uniturn_usb_tavtarto2.txt \
     testdata/usb.txt

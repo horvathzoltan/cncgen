@@ -268,12 +268,16 @@ auto GenerateGcode::ParseStringToGCode(const QString& str, QString *gcode, QStri
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed )
-    {
-        if(gcode)*gcode=m.ToString();
+    {        
+        auto mm = m.ToString();
+        if(gcode)*gcode=mm;//.ToString();
+        auto msg1 = G1+mm;//.ToString();
+        StringHelper::Tabulate(&msg1, G2);
+        zInfo(msg1);
     }
     QString msg;
     StringHelper::Append(&msg, s.ToString(), '\n');
-    if(!msg.isEmpty())zInfo(msg);
+    if(!msg.isEmpty())zInfo(msg+" "+s.ToString());
     return true;
 }
 

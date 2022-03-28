@@ -1,0 +1,74 @@
+(UNITURN mérőállomás doboz fedlap)
+(szerszám beállítás)
+t1 m d1 h19
+t2 m d2 h19
+t3 m d3 h19
+yxz
+t1
+s50
+f200
+
+mx = 179.5
+my = 25
+ma = 12
+
+print "mx: $mx"
+print "my: $my"
+print "ma: $ma"
+
+hx = 167.25
+hy = 27.55
+
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
+h $hx,$hy d3 z3.2 c0.03
+
+hx = add($hx,15)
+hy = add($hy,11)
+
+h $hx,$hy d3 z3.2 c0.03
+

@@ -1,27 +1,31 @@
 UNITURN mérőállomás doboz hátlap)
 (szerszám beállítás)
-t1 m d2 h19
-t2 m d3 h19
-t3 m d4 h19
+t1 m d1 h19
+t2 m d2 h19
+t3 m d3 h19
 yxz
-safe100,100,15
-mx
+safe-100,100,15
+xm
+ym
 
 t1
 s50
-f300
+f200
 
 (ethernet)
-b inline 75.80,18.8 size15.9,13.5 z2.7 c0.15 g1,1,0.7
+#b inline 74.80,16.5 size15.9,13.5 z4.5 c0.1 g1,0.5,1 jg0.1
 
 (usb1)
-b inline 55.4,20.3 size13.1,14.00 z3 c0.07 g1,1,0.7 jg0.85
-(b inline 35.4,20.3 size13.1,14.00 z3 c0.07 g1,1,0.7 jg0.85)
+b inline 57.4,18 size13.1,14.00 z4.5 c0.1 g1,0.5,1 jg0.5
+#b inline 39.4,18 size13.1,14.00 z4.5 c0.1 g1,0.5,1 jg0.5
 
 (hdmi)
-h 110.6,20.4 d23.8 z2.7 c0.15 s70 f300
-h r-11.95,9.35 d3
-h r23.9,-18.7 d3
+#h 110.6,18.1 d23.8 z4.5 c0.1 s70 f300 g2,.5,1
+#h r-11.95,9.35 z5 d3
+#h r23.9,-18.7 z5 d3
 
 (tápcsati)
-h 150,20.4 d11.9 c0.15 s70 f300
+#h 150,18.1 z5 d11.9 c0.1 s70 f300 g2,.5,1
+
+
+

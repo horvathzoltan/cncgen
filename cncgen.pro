@@ -172,6 +172,8 @@ DISTFILES += \
     testdata/holetest.txt \
     testdata/linetest.txt \
     testdata/luk.txt \
+    testdata/pi_alatet.txt \
+    testdata/pi_bolcso.txt \
     testdata/pi_hatlap.txt \
     testdata/tapdugo.txt \
     testdata/tapdugo2.txt \

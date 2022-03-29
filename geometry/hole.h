@@ -19,7 +19,8 @@ struct Hole{
          Cut _cut,
          Feed _feed,
          const Gap& _gap,
-         const Point& _rp={}
+         const Point& _rp={},
+         bool _np=false
         );
     Point p;
     qreal diameter=-1;
@@ -27,6 +28,7 @@ struct Hole{
     Cut cut={};
     Feed feed={};
     Point rp={};
+    bool np=false;
 
     static ParseState Parse(const QString& txt, XYMode xymode,
                             MMode mmode, Hole*, Point *offset);

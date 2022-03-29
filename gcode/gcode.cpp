@@ -30,7 +30,7 @@ auto GCode::ParseValue(const QString &p, const QString &key, qreal *v) -> bool
     auto hasKey = !key.isEmpty();
     if(v && (!hasKey || p.startsWith(key))){
         auto a = p.midRef(key.length()).trimmed();
-        if(!a.isEmpty() && a[0].isNumber()){
+        if(!a.isEmpty() && (a[0].isNumber() || a[0]=='-')){
             auto sp = a.toDouble(&isok);
             if(isok){*v = sp;}
         }

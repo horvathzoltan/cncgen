@@ -16,7 +16,7 @@ Hole::Hole(const Point &_p,
            Cut _cut,
            Feed _feed,
            const Gap &_gap,
-           const Point &_rp)
+           const Point &_rp, bool _np)
 {
     p = _p;
     diameter =_diameter;
@@ -24,6 +24,7 @@ Hole::Hole(const Point &_p,
     feed = _feed;
     rp = _rp;
     gap = _gap;
+    np=_np;
    // _isValid = true;
 }
 
@@ -42,6 +43,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     Feed feed;
     QString rpointTxt;
     Point rpoint;
+    bool no_predrill = false;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -103,6 +105,10 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
             }
             continue;
         }
+        if(p=="np"){
+            no_predrill=true;
+            continue;
+        }
     }
 
     bool positionErr = !point.isValid()&&!rpoint.isValid();
@@ -116,7 +122,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     // !!! ha egy furat oda kerül, ahol már lett fúrva, és
     // sem az átmérő, sem a mélység nem nagyobb mint az előző, akkor semmit nem kell csinálni
 
-    *m= {point, diameter, cut, feed, gap, rpoint};
+    *m= {point, diameter, cut, feed, gap, rpoint, no_predrill};
     st.setState(ParseState::Parsed);
     return st;
 }

@@ -511,7 +511,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
         }
     }
 
-    if(_lastLineP0==_lastBoxP1){
+    if(_lastLineP0==_lastLineP1){
         if(err){*err=L("start and end points are equal");}
         return{};
     }
@@ -761,29 +761,41 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     }
 
     double path_r = (_last_hole_diameter-t.d)/2; // a furat belső szélét érintő pályapont
-    Gap mgap = m.gap.isValid()?m.gap:Gap{4, 1, 0.5};
+    Gap mgap = m.gap.isValid()?m.gap:Gap{2, .5, 0.5};
 
     bool pre_drill, pre_mill,hasGaps, drillOnly=m.diameter==t.d;
-    if(drillOnly){
-        pre_drill=true;
-        pre_mill=false;
-        hasGaps = false;
-    } else{
-        hasGaps = _last_hole_diameter>5*t.d; //
-        if(hasGaps){
-            pre_drill=false;
-            pre_mill=false;
+    if(m.np){
+        pre_drill = false;
+        pre_mill =false;
+
+        hasGaps = true; //
 
             int gapn = (2*path_r*M_PI)/(2*t.d+mgap.length); // hány gap fér ki
             if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
             if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
 
-        } else {
-            pre_drill = _last_hole_diameter>2*t.d; //d=0
-            pre_mill = _last_hole_diameter>3*t.d; //d=2*t.d
+
+    }else{
+        if(drillOnly){
+            pre_drill=true;
+            pre_mill=false;
+            hasGaps = false;
+        } else{
+            hasGaps = _last_hole_diameter>5*t.d; //
+            if(hasGaps){
+                pre_drill=false;
+                pre_mill=false;
+
+                int gapn = (2*path_r*M_PI)/(2*t.d+mgap.length); // hány gap fér ki
+                if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
+                if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
+
+            } else {
+                pre_drill = _last_hole_diameter>2*t.d; //d=0
+                pre_mill = _last_hole_diameter>3*t.d; //d=2*t.d
+            }
         }
     }
-
     if(m.p.isValid()){
         _lastHoleP=m.p;
     }
@@ -816,7 +828,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         // 83 peck:5-7
         // ha hőre lágyul az anyag, homlokmarónál előfúrásnál kell a peck
         //bool is_peck = t.type==Tool::Milling&&_last_cut.z>3;
-        qreal zz = _lastHoleP.z;//-_last_cut.z;
+        qreal zz = _lastHoleP.z-_last_cut.z;
 
        g.append(L("(predrill)"));
        g.append(TravelXYToGCode(p)); //TRAVEL
@@ -829,7 +841,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
        // zz: mélység
        // r: visszahúzás z-je
        // q: mélység inkrement per peck
-       g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z)+" q"+GCode::r(m.cut.z0) );
+       g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z+1)+" q"+GCode::r(m.cut.z0) );
 
        if(_last_feed.feed()>0){
            qreal l0 = _last_position.z-zz;
@@ -1152,7 +1164,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
     QStringList g(QStringLiteral("(box with gaps)"));
 
-    if(m.jointGap>0){
+    if(m.jointGap!=0){
         switch(_lastBoxType){
         case BoxType::Outline:
             ba.x+=m.jointGap;

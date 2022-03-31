@@ -1,12 +1,12 @@
 (Nagisz UWP terminal)
 (szerszám beállítás)
-t1 m d2 h19
+t1 m d1.5 h19
 yxz
 
 t1
 s50
 f200
 
-h 4,4 d3 z2.8 c0.2
-h 4,4 d12 z2.8 c0.2 g2,0.5,0,7 np
+h 5,5 d3 z2.8 c0.2
+h 5,5 d11 z2.8 c0.2 g2,0.5,0,7 np
 

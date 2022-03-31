@@ -29,13 +29,22 @@ auto GCode::ParseValue(const QString &p, const QString &key, qreal *v) -> bool
     bool isok = false;
     auto hasKey = !key.isEmpty();
     if(v && (!hasKey || p.startsWith(key))){
-        auto a = p.midRef(key.length()).trimmed();
+        auto a = p.mid(key.length()).trimmed();
         if(!a.isEmpty() && (a[0].isNumber() || a[0]=='-')){
             auto sp = a.toDouble(&isok);
-            if(isok){*v = sp;}
+            if(isok){
+                *v = sp;
+                return true;
+            }
         }
-    }
-    return isok;
+        QVariant variable;
+        if(a.startsWith('$')&&a.length()>1 &&(variable = GCode::_variables.value(a.mid(1))).isValid())
+        {
+            *v=variable.toDouble();
+            return true;
+        }
+    }    
+    return false;
 }
 
 auto GCode::ParseValue(const QString &p, const QString &key, int *v) -> bool

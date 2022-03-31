@@ -1,18 +1,17 @@
 (Nagisz UWP terminal)
 (szerszám beállítás)
-t1 m d2 h19
-t2 m d3 h19
-t3 m d4 h19
+t1 m d1.5 h19
 yxz
 ym
 offset-60,0
 
 t1
 s50
-f300
+f200
 
-b inline 2,2 size15.9,13.5 z3 c0.07 g1,1,0.7 jg0.1
-b inline 22.4,3.5 size13.1,14.00 z3 c0.07 g1,1,0.7 jg0.85
-b inline 40.4,3.5 size13.1,14.00 z3 c0.07 g1,1,0.7 jg0.85
+b inline 2,2 size15.9,13.5 z2.7 c0.05 g1,0.5,0.7 jg0.1
+b inline 22.4,3.5 size13.1,14.00 z2.7 c0.05 g1,0.5,0.7 jg0.85
+b inline 40.4,3.5 size13.1,14.00 z2.7 c0.05 g1,0.5,0.7 jg0.85
 
-b outline 0,0 size58,20 g1,1,0.7 z3 c0.07 jg-1
+
+b outline 0,0 size58,20 g1,1,0.7 z2.7 c0.07 jg-1.2

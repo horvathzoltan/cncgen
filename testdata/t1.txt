@@ -1,0 +1,32 @@
+(Mestercipo CPU hátlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+t2 m d3 h19
+
+yxz
+safe-100,10,15
+xm
+ym
+
+t1
+s50
+f350
+
+t2
+
+
+(simítás)
+
+t1
+
+offset21.5,7
+
+c1 = 1
+print "c1=$c1"
+
+f200
+
+(ethernet wan)
+b inline 85.65,10.9 size16.1,16.6 z2.9 c$c1 g1,1,0.7 jg0.1
+
+

@@ -1,0 +1,221 @@
+(Mestercipo CPU hátlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+t2 m d3 h19
+
+yxz
+safe-100,10,15
+xm
+ym
+
+t1
+s50
+f350
+
+t2
+
+(router nulla)
+#h 0,0 d3 z1 c0.05
+#h 268,0 d3 z1 c0.05
+
+(nagyolás)
+t2
+
+offset21.5,7
+
+c2 = 0.5
+z2 = 3.5
+print "c2=$c2"
+print "z2=$z2"
+
+(antenna)
+h 4.5,19 d7 z$z2 c$c2
+h 241.8,19 d7 z$z2 c$c2
+
+(táp)
+h 219.8,19 d9.5 z$z2 c$c2
+
+(ledsor)
+x1 = 9
+y1 = 4
+y2 = add($y1,6.5)
+
+print "x1=$x1"
+print "y1=$y1"
+print "y2=$y2"
+
+h $x1,$y1 d3 z$z2 c$c2
+h $x1,$y2 d3
+
+x1 = add($x1,5)
+h $x1,$y1 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+
+x1 = add($x1,5)
+h $x1,$y1 d3
+h $x1,$y2 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+h $x1,$y2 d3
+
+(reset)
+x1 = add($x1,9)
+h $x1,$y2 d3.5
+
+(furatok)
+
+
+(ethernet wan)
+b inline 85.65,10.9 size16.1,16.6 z$z2 c$c2 g1,0.5,0.7
+
+(ethernet lan)
+b inline 106.45,11.9 size69.7,15.8 z$z2 f350 c$c2 g1,0.5,0.7
+
+offset0,10
+
+(hdmi)
+
+b inline 203.5,11 size19,9 z$z2 c$c2 f200 g1,0.5,0.7
+
+(hűtő - furatok)
+x1 = 203.5
+y1 = 24
+y2 = add($y1,5.55)
+
+hx1 = add($x1,1.915)
+hy1 = add($y1,2.08)
+hy2 = add($y2,2.08)
+
+h $hx1,$hy1 d3 z$z2 c$c2
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)c1 = 1
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+#h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+#h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+
+(simítás)
+
+t1
+
+offset21.5,7
+
+c1 = 1
+print "c1=$c1"
+
+f200
+
+(ethernet wan)
+b inline 85.65,10.9 size16.1,16.6 z2.9 c$c1 g1,1,0.7 jg0.1
+
+(ethernet lan)
+b inline 106.45,11.9 size69.7,15.8 z2.9 c$c1 g1,1,0.7 jg0.1
+
+c1 = 0.1
+
+(hdmi)
+offset0,10
+b inline 203.5,11 size19,9 z2.9 c$c1 g1,1,0.7 jg1
+
+(hűtő - rács)
+x1 = 203.5
+y1 = 24
+y2 = add($y1,5.55)
+
+hx1 = add($x1,1.915)
+hy1 = add($y1,2.08)
+hy2 = add($y2,2.08)
+
+b inline $x1,$y1 size3.83,4.16 z2.9 c$c1
+b inline $x1,$y2 size3.83,4.16 z2.9 cc$c1
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size3.83,4.16
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y2 size3.83,4.16
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+

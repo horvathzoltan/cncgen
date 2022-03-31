@@ -172,9 +172,12 @@ DISTFILES += \
     testdata/holetest.txt \
     testdata/linetest.txt \
     testdata/luk.txt \
-    testdata/pi_alatet.txt \
-    testdata/pi_bolcso.txt \
+    testdata/mestercipo_doboz_hatlap.txt \
+    testdata/pi_alatet_15.txt \
+    testdata/pi_bolcso_15.txt \
+    testdata/pi_bolcso_15_2.txt \
     testdata/pi_hatlap.txt \
+    testdata/t1.txt \
     testdata/tapdugo.txt \
     testdata/tapdugo2.txt \
     testdata/tapdugo3.txt \

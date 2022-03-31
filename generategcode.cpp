@@ -467,7 +467,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
 {
     //_lasterr.clear();/*LINE*/
     QString msg = G1+m.ToString();
-    StringHelper::Tabulate(&msg, G2);
+    StringHelper::Tabulate(&msg, G2);    
     zInfo(msg);
 
     /*CUT*/
@@ -533,6 +533,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
     }
 
     QStringList g(QStringLiteral("(line)"));    
+    g.append(TotalTimeToGCode());
     msg=G2+ _lastLineP0.ToString()+' '+_lastLineP1.ToString();
     msg+=' '+_last_cut.ToString();
     msg+=' '+_last_feed.ToString();    
@@ -560,7 +561,13 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
     }
 
 
+    g.append(TotalTimeToGCode());
     return g.join('\n');
+}
+
+auto GenerateGcode::TotalTimeToGCode() -> QString
+{
+    return "(time: "+QString::number(_total_time)+")";
 }
 
 void GenerateGcode::GoToCutposition(QStringList *g, const Point& p){
@@ -605,7 +612,7 @@ auto GenerateGcode::LinearCut(qreal total_depth) -> QStringList{
 
         qreal d=GeoMath::Distance(pd,p);
         AppendGCode(&g, GoToXYZ(GMode::Linear, p, d));
-        if(d<=10) AppendGCode(&g, Dwell(250));
+        if(d<=10) AppendGCode(&g, Dwell(100));//250
     }
 
     AppendGCode(&g, LiftUpToGCode(p.z));
@@ -768,12 +775,14 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         pre_drill = false;
         pre_mill =false;
 
-        hasGaps = true; //
-
+        if(m.gap.n>0){
+            hasGaps = true; //
             int gapn = (2*path_r*M_PI)/(2*t.d+mgap.length); // hány gap fér ki
             if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
             if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
-
+        } else{
+            hasGaps=false;
+        }
 
     }else{
         if(drillOnly){
@@ -808,6 +817,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     SetSelectedFeed(m.feed);
 
     QStringList g(QStringLiteral("(hole - helical interpolation)"));
+    g.append(TotalTimeToGCode());
 
     Point p = _lastHoleP; // _lastHoleP középpont , p a szerszámpálya kezdőpontja lesz
 
@@ -900,6 +910,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         }
     }
 
+    g.append(TotalTimeToGCode());
     return g.join('\n');
 }
 
@@ -998,11 +1009,13 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
     msg+= " h:"+GCode::r(_last_cut.z);
     zInfo(msg);
 
-    QStringList g(L("(arc begin)"));
+    QStringList g(L("(arc)"));
+    g.append(TotalTimeToGCode());
 
     auto g2 = CircularArcCut(_last_cut.z);
     g.append(g2);
 
+    g.append(TotalTimeToGCode());
     return g.join('\n');
 }
 /*
@@ -1060,6 +1073,8 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     //_lasterr.clear();
     auto msg = G1+m.ToString();
     StringHelper::Tabulate(&msg, G2);
+    zInfo(msg);
+    msg = "(time: "+QString::number(_total_time)+")";
     zInfo(msg);
 
     /*BOXTYPE*/
@@ -1162,7 +1177,8 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     }
 
 
-    QStringList g(QStringLiteral("(box with gaps)"));
+    QStringList g(QStringLiteral("(box)"));
+    g.append(TotalTimeToGCode());
 
     if(m.jointGap!=0){
         switch(_lastBoxType){
@@ -1307,7 +1323,8 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             bf4.z-=z2;
             ba4.z-=z2;
 
-            Cut cut_gap{m.gap.height, _last_cut.z0};
+            auto cz0 = m.gap.height<_last_cut.z0?m.gap.height:_last_cut.z0;
+            Cut cut_gap{m.gap.height,  cz0};
 
             lines_gap = {
                 {ba1,ja1, cut_gap, _last_feed,{}},
@@ -1355,6 +1372,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         }
 
     }
+    g.append(TotalTimeToGCode());
     return g.join('\n');
 }
 
@@ -1437,7 +1455,8 @@ auto GenerateGcode::ChangeToolToGCode() ->QString
 
     g.append(QStringLiteral("(change tool)"));
     g.append(SpindleStopToGCode());//spindle stop
-    g.append(TravelXYToGCode({0,0,0}));//kiáll nullára
+    g.append(TravelXYToGCode(_safe_place));
+    //g.append(TravelXYToGCode({0,0,0}));//kiáll nullára
     g.append(QStringLiteral("g0 z")+GCode::r(_maxZ));
     g.append('t'+QString::number(t.ix)+" (tool select)");
     g.append(QStringLiteral("m6 (tool change)"));
@@ -1447,6 +1466,7 @@ auto GenerateGcode::ChangeToolToGCode() ->QString
     g.append(QStringLiteral("g0 z")+GCode::r(_maxZ));
 
     _last_tool_ix=_selected_tool_ix;
+
     return g.join('\n');
 }
 
@@ -1573,7 +1593,9 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
 auto GenerateGcode::Dwell(int p) -> QString
 {
     _total_time+=p/1000;
-    return "G04 P"+QString::number(p);
+    auto str =  "G04 P"+QString::number(p);
+    //QString str;
+    return str;
 }
 
 auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QString

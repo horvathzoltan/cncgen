@@ -1,0 +1,15 @@
+(Nagisz UWP terminal)
+(szerszám beállítás)
+t1 m d1.5 h19
+yxz
+
+t1
+s50
+f200
+
+h 4,4 d7.5 z1.2 c0.175 g0,0,0 np
+h 4,4 d5 z1.2 c0.175 g0,0,0 np
+h 4,4 d2.5 z3 c0.2
+h 4,4 d9 z3 c0.2 g3,0.2,1.1 np
+
+

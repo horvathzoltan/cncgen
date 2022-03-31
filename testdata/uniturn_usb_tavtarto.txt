@@ -1,8 +1,6 @@
 (UNITURN mérőállomás alsó szerelőlap)
 (szerszám beállítás)
-t1 m d1 h19
-t2 m d2 h19
-t3 m d3 h19
+t1 m d1.5 h19
 yxz
 t1
 s50
@@ -66,3 +64,4 @@ b inline -.5,48.5 size17.4,3 z2.8 c0.03 nl0,1,1,0
 b inline 26.9,48.5 size17.4,3 z2.8 c0.03 nl1,1,0,0
 b inline -.5,61.5 size17.4,3 z2.8 c.0.3 nl0,0,1,1
 b inline 26.9,61.5 size17.4,3 z2.8 c0.03 nl1,0,0,1
+h 21.9,56.5 d4 z2.8 c0.03

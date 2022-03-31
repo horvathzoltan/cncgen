@@ -44,7 +44,7 @@ private:
     qreal _movZ=5;
     qreal _maxZ=10;
 
-    Point _safe_place = {};
+    Point _safe_place = {0,0,0};
 
     QMap<int, Tool> _tools;    
     int _selected_tool_ix;
@@ -127,6 +127,7 @@ public:
     auto HelicalCut(qreal total_depth, qreal path_r) -> QStringList;
     auto CircularArcCut(qreal total_depth) -> QStringList;
 
+    QString TotalTimeToGCode();
 };
 
 #endif // GENERATEGCODE_H

@@ -1,0 +1,39 @@
+(UNITURN mérőállomás alsó szerelőlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+
+yxz
+t1
+s50
+f300
+
+(pi3b furatok)
+
+m2 = sum(87.1,-3.5,-58,-1,-10)
+
+
+print "m2: $m2"
+b corners 12,$m2 size49,58 z2.8 c0.05 d2.5
+
+b corners 5,30 size63,25 z2.8 c0.05 d4
+#b corners 21.5,8 size25,72 z2.8 c0.05 d3.5
+
+h 21.55,79 z2.8 c0.05 d4
+h 51.55,79 z2.8 c0.05 d4
+
+l 11.5,19.5 11.5,68.5 z1.9 c0.05
+l 12.5,19.5 12.5,68.5 z1.9 c0.05
+
+m3 = add($m2,4)
+b inline 9.75,$m3 size4.5,50.5 z1.9 c0.05 ng
+
+b inline 49,4.85 size11,5 z1.9 c0.05 ng
+l 50,6.85 59,6.85 z1.9 c0.05
+l 50,7.85 59,7.85 z1.9 c0.05
+
+h 42.15,4.85 d3.5 z1.9 c0.05
+h 29.15,4.85 d3.5 z1.9 c0.05
+h 24.15,4.85 d3.5 z1.9 c0.05
+h 11.15,4.85 d3.5 z1.9 c0.05
+
+b outline 12,$m2 size49,58 z2.8 c0.05 d2.5 jg-10 g2,0.5,0.7

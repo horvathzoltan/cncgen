@@ -14,8 +14,9 @@ Hole::Hole()
 Hole::Hole(const Point &_p,
            qreal _diameter,
            Cut _cut,
-           Feed _feed,
-           const Gap &_gap,
+           Feed _feed,           
+           const Gap &_gap,                    
+           qreal _jg,
            const Point &_rp, bool _np)
 {
     p = _p;
@@ -25,6 +26,7 @@ Hole::Hole(const Point &_p,
     rp = _rp;
     gap = _gap;
     np=_np;
+    jointGap=_jg;
    // _isValid = true;
 }
 
@@ -44,6 +46,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     QString rpointTxt;
     Point rpoint;
     bool no_predrill = false;
+    qreal jointGap=0;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -78,6 +81,14 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
         if(Feed::Parse(p, &feed).state()!=ParseState::NoData){
             continue;
         }
+        if(p.startsWith("jg")){
+            qreal a;
+            if(GCode::ParseValue(p, L("jg"), &a)){
+                jointGap=a;
+            }
+            continue;
+        }
+
 //        if(p.startsWith('z')){
 //            GCode::ParseValue(p, L("z"), &cut.z); continue;
 //        }
@@ -122,7 +133,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     // !!! ha egy furat oda kerül, ahol már lett fúrva, és
     // sem az átmérő, sem a mélység nem nagyobb mint az előző, akkor semmit nem kell csinálni
 
-    *m= {point, diameter, cut, feed, gap, rpoint, no_predrill};
+    *m= {point, diameter, cut, feed, gap, jointGap, rpoint, no_predrill};
     st.setState(ParseState::Parsed);
     return st;
 }

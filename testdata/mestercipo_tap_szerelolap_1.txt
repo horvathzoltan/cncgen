@@ -1,0 +1,31 @@
+(Mestercipo CPU táp szelőlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+t2 m d3 h19
+
+yxz
+
+s50
+f400
+
+(nagyolás)
+t2
+
+c2 = 1
+z2 = 3
+print "c2=$c2"
+print "z2=$z2"
+
+b inline 10,10 size86,45 z$z2 c$c2 g1,1,0.7
+b inline 106,10 size66,36 z$z2 c$c2 g1,1,0.7
+b outline 0,0 size185,65 z$z2 c$c2 g2,1,0.7
+
+
+(simítás)
+
+#t1
+#c2 = 0.5
+#z2 = 2.8
+
+#b inline 10,10 size86,45 z$z2 c$c2 g1,1,0.7 jg0.5
+#b inline 106,10 size66,36 z$z2 c$c2 g1,1,0.7 jg0.5

@@ -760,17 +760,19 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     /*TOOL*/
     if(!ValidateTool()) {if(err)*err=L("no tool"); return {};}
     Tool t = _tools[_selected_tool_ix];
-    if(_last_hole_diameter<t.d) {
-        if(err){*err=L("wrong diameter: ")+GCode::r(_last_hole_diameter)+
+    qreal holeDiameter = _last_hole_diameter+m.jointGap;
+    if(holeDiameter<t.d) {
+        if(err){*err=L("wrong diameter: ")+GCode::r(holeDiameter)+
                 " tool: "+t.ToString();
         }
         return {};
     }
 
-    double path_r = (_last_hole_diameter-t.d)/2; // a furat belső szélét érintő pályapont
+
+    double path_r = (holeDiameter-t.d)/2; // a furat belső szélét érintő pályapont
     Gap mgap = m.gap.isValid()?m.gap:Gap{2, .5, 0.5};
 
-    bool pre_drill, pre_mill,hasGaps, drillOnly=m.diameter==t.d;
+    bool pre_drill, pre_mill,hasGaps, drillOnly=holeDiameter==t.d;
     if(m.np){
         pre_drill = false;
         pre_mill =false;
@@ -790,7 +792,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
             pre_mill=false;
             hasGaps = false;
         } else{
-            hasGaps = _last_hole_diameter>5*t.d; //
+            hasGaps = holeDiameter>5*t.d; //
             if(hasGaps){
                 pre_drill=false;
                 pre_mill=false;
@@ -800,8 +802,8 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                 if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
 
             } else {
-                pre_drill = _last_hole_diameter>2*t.d; //d=0
-                pre_mill = _last_hole_diameter>3*t.d; //d=2*t.d
+                pre_drill = holeDiameter>2*t.d; //d=0
+                pre_mill = holeDiameter>3*t.d; //d=2*t.d
             }
         }
     }
@@ -824,7 +826,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     msg=G2+ p.ToString();
     msg+=' '+_last_cut.ToString();
     msg+=' '+_selected_feed.ToString();
-    msg+=" d"+GCode::r(_last_hole_diameter);
+    msg+=" d"+GCode::r(holeDiameter);
     if(pre_drill) msg+=L(" predrill");
     if(pre_mill) msg+=L(" premill");
     if(hasGaps) msg+=L(" gap");
@@ -1267,10 +1269,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     if(_lastBoxType == BoxType::Corners){
 
         QVarLengthArray<Hole> holes = {
-            {ba, _last_hole_diameter, _last_cut, _last_feed, {}},
-            {ja, _last_hole_diameter, _last_cut, _last_feed, {}},
-            {jf, _last_hole_diameter, _last_cut, _last_feed,{}},
-            {bf, _last_hole_diameter, _last_cut, _last_feed, {}}
+            {ba, _last_hole_diameter, _last_cut, _last_feed, {},0},
+            {ja, _last_hole_diameter, _last_cut, _last_feed, {},0},
+            {jf, _last_hole_diameter, _last_cut, _last_feed, {},0},
+            {bf, _last_hole_diameter, _last_cut, _last_feed, {},0}
         };
         if(_verbose){
             for(int i=0;i<holes.length();i++){

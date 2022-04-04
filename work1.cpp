@@ -139,7 +139,7 @@ auto Work1::doWork2() -> Result
             L("(input file: ")+params.inFile+')',
             L("(output file: ")+params.outFile+')',
             L("(created on: ")+QDateTime::currentDateTime().toString()+')',
-            L("(total time: ")+tm.toString()+")",
+            L("(total time: ")+tm.toString("hh:mm:ss.zzz")+")",
             L("(total cut: ")+QString::number(g._total_cut)+"mm)",
             L("(total length: ")+QString::number(g._total_length)+"mm)"
         });

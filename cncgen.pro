@@ -170,8 +170,12 @@ DISTFILES += \
     testdata/geom3_1.txt \
     testdata/head.gcode \
     testdata/holetest.txt \
+    testdata/huto.txt \
+    testdata/huto_furatsablon.txt \
     testdata/linetest.txt \
     testdata/luk.txt \
+    testdata/mestercipo_doboz_felso.txt \
+    testdata/mestercipo_doboz_felso_szerelolap.txt \
     testdata/mestercipo_doboz_hatlap.txt \
     testdata/mestercipo_doboz_hatlap_felso.txt \
     testdata/mestercipo_tap_szerelolap_1.txt \

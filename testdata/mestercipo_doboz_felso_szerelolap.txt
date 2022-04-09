@@ -1,0 +1,41 @@
+(Mestercipo doboz fedlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+t2 m d3 h19
+
+safe0,0,3
+
+xyz
+
+(nagyolás)
+
+t2
+s50
+f200
+
+fw = 254
+fh = 204
+
+c2 = 0.5
+z2 = 3.2
+
+(szerelőlap)
+
+(vezérlőpanel furatok)
+b corners 0,85 size250,67 d3 z$z2 c$c2
+
+(kábel)
+b inline 60,40 size40,30 z$z2 c$c2 g2,1,0.7
+b inline 40,160 size45,30 z$z2 c$c2 g2,1,0.7
+
+(furatok)
+b corners 0,0 size$fw,$fh d3 z$z2 c$c2
+
+(kontúr)
+b outline 0,0 size$fw,$fh z$z2 c$c2 g2,1,0.7 jg-3.5
+
+
+
+
+
+

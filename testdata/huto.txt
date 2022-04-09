@@ -1,0 +1,17 @@
+(Mestercipo CPU hátlap felső fedlap)
+(szerszám beállítás)
+t1 m d3 h19
+
+yxz
+
+t1
+s50
+f200
+
+
+#b outline 0,0 size55,50 z3.2 c0.5 g1,1,0.7
+
+b outline 0,0 size50,10.5 z3.2 c0.5 g1,1,0.7
+
+
+

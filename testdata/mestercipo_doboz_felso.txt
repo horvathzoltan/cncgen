@@ -1,0 +1,22 @@
+(Mestercipo doboz fedlap)
+(szerszám beállítás)
+
+t2 m d3 h19
+
+safe0,0,3
+
+xyz
+
+(nagyolás)
+
+t2
+s50
+f200
+
+b inline 36.5,50 size228,148 z3 c0.5 g2,1,0.7 jg.5
+
+
+
+
+
+

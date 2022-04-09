@@ -41,8 +41,8 @@ private:
     //MMode _mmode;
     QStringList gcodes;
 
-    qreal _movZ=5;
-    qreal _maxZ=10;
+    qreal _movZ=1;
+    qreal _maxZ=2;
 
     Point _safe_place = {0,0,0};
 

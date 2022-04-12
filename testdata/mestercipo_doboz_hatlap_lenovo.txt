@@ -1,0 +1,326 @@
+(Mestercipo CPU hátlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+t2 m d3 h19
+
+yxz
+safe-100,10,15
+xm
+ym
+
+t1
+s50
+f200
+
+t2
+
+(router nulla)
+#h 0,0 d3 z1 c0.05
+#h 268,0 d3 z1 c0.05
+
+(nagyolás)
+t2
+
+offset21.5,9
+
+c2 = 0.5
+z2 = 3.5
+print "c2=$c2"
+print "z2=$z2"
+
+(antenna)
+#h 4.5,19 d7 z$z2 c$c2
+(h 221.8,19 d7 z$z2 c$c2)
+(h 221.8,41 d7 z$z2 c$c2)
+(h 200.715,41 d7 z$z2 c$c2)
+#h 195.715,45 d7 z$z2 c$c2
+
+(ledsor)
+x1 = 9
+y1 = 4
+y2 = add($y1,6.5)
+
+print "x1=$x1"
+print "y1=$y1"
+print "y2=$y2"
+
+h $x1,$y1 d3 z$z2 c$c2
+h $x1,$y2 d3
+
+x1 = add($x1,5)
+h $x1,$y1 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+h $x1,$y2 d3
+x1 = add($x1,5)
+h $x1,$y1 d3
+h $x1,$y2 d3
+
+(reset)
+x1 = add($x1,9)
+h $x1,$y2 d3
+
+(furatok)
+
+
+(ethernet wan)
+b inline 85.65,10.9 size16.1,16.6 z$z2 c$c2 g1,0.5,0.7
+
+(ethernet lan)
+b inline 106.45,11.9 size69.7,15.8 z$z2 c$c2 g1,0.5,0.7
+
+offset0,10.5
+
+(hdmi)
+hdmi_x = 203.975
+hdmi_y = 11.1
+
+hdmi_x2 = 206
+hdmi_y2 = 9.85
+
+#b inline $hdmi_x,$hdmi_y size19,9 z$z2 c$c g1,0.5,0.7
+b inline $hdmi_x,$hdmi_y size15.05,4.4 z$z2 c$c g1,0.5,0.7 nl1,1,1,0
+b inline $hdmi_x2,$hdmi_y2 size10,1.25 z$z2 c$c g1,0.5,0.7 nl1,0,1,1
+
+(táp)
+(h 209.8,9 d9.5 z$z2 c$c2)
+tap_x = sub(252.65,19.9,1.25)
+#tap_y = sub(21.1,15.5,1.25)
+tap_y = sub(40,3.5,1.25)
+
+b inline $tap_x,$tap_y size20,15.4 z$z2 c$c2 g1,0.5,0.7 jg0.6
+
+(hűtő - furatok)
+x1 = 202
+y1 = 24
+y2 = add($y1,5.55)
+y3 = add($y2,5.55)
+y4 = add($y3,5.55)
+y5 = add($y4,5.55)
+
+hx1 = add($x1,1.915)
+hy1 = add($y1,2.08)
+hy2 = add($y2,2.08)
+hy3 = add($y3,2.08)
+hy4 = add($y4,2.08)
+hy5 = add($y5,2.08)
+
+#1
+h $hx1,$hy1 d3 z$z2 c$c2
+h $hx1,$hy2 d3
+h $hx1,$hy3 d3
+h $hx1,$hy4 d3
+h $hx1,$hy5 d3
+#2
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+h $hx1,$hy3 d3
+h $hx1,$hy4 d3
+h $hx1,$hy5 d3
+#3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+h $hx1,$hy3 d3
+h $hx1,$hy4 d3
+h $hx1,$hy5 d3
+#4
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+h $hx1,$hy3 d3
+h $hx1,$hy4 d3
+h $hx1,$hy5 d3
+#5
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+h $hx1,$hy3 d3
+h $hx1,$hy4 d3
+h $hx1,$hy5 d3
+#6
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+#7
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+#8
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+#9
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+#10
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+h $hx1,$hy1 d3
+h $hx1,$hy2 d3
+
+
+(simítás)
+
+t1
+
+offset21.5,9
+
+c1 = 1
+print "c1=$c1"
+
+f300
+
+(ethernet wan)
+b inline 85.65,10.9 size16.1,16.6 z2.9 c$c1 g1,1,0.7 jg0.1
+
+(ethernet lan)
+b inline 106.45,11.9 size69.7,15.8 z2.9 c$c1 g1,1,0.7 jg0.1
+
+(ledsor)
+x1 = 9
+y1 = 4
+y2 = add($y1,6.5)
+
+print "x1=$x1"
+print "y1=$y1"
+print "y2=$y2"
+
+h $x1,$y1 d3 z$z2 c$c2 jg0.1 np
+h $x1,$y2 d3 jg0.1 np
+
+x1 = add($x1,5)
+h $x1,$y1 d3 jg0.1 np
+x1 = add($x1,5)
+h $x1,$y1 d3 jg0.1 np
+x1 = add($x1,5)
+h $x1,$y1 d3 jg0.1 np
+x1 = add($x1,5)
+h $x1,$y1 d3 jg0.1 np
+x1 = add($x1,5)
+h $x1,$y1 d3 jg0.1 np
+h $x1,$y2 d3 jg0.1 np
+x1 = add($x1,5)
+h $x1,$y1 d3 jg0.1 np
+h $x1,$y2 d3 jg0.1 np
+
+c1 = 0.1
+
+(reset)
+x1 = add($x1,9)
+h $x1,$y2 d4 np
+
+(furatok)
+
+(hdmi)
+offset0,10.5
+b inline $hdmi_x,$hdmi_y size15.05,4.4 z$z2 c$c g1,0.5,0.7 nl1,0,1,1
+b inline $hdmi_x2,$hdmi_y2 size10,1.25 z$z2 c$c g1,0.5,0.7 nl1,1,1,0
+
+(hűtő - rács)
+x1 = 202
+y1 = 24
+y2 = add($y1,5.55)
+y3 = add($y2,5.55)
+y4 = add($y3,5.55)
+y5 = add($y4,5.55)
+
+hx1 = add($x1,1.915)
+hy1 = add($y1,2.08)
+hy2 = add($y2,2.08)
+hy3 = add($y3,2.08)
+hy4 = add($y4,2.08)
+hy5 = add($y5,2.08)
+
+# 1 rács átmérője 35 db-nál 19,187142857 mm2
+#w = 4.38
+#h = 4.38
+#w = 4.5
+#h = 4.5
+w = 4
+h = 4
+
+#1
+b inline $x1,$y1 size$w,$h ng z2.9 c$c1
+b inline $x1,$y2 size$w,$h ng
+b inline $x1,$y3 size$w,$h ng
+b inline $x1,$y4 size$w,$h ng
+b inline $x1,$y5 size$w,$h ng
+#2
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+b inline $x1,$y3 size$w,$h ng
+b inline $x1,$y4 size$w,$h ng
+b inline $x1,$y5 size$w,$h ng
+#3
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+b inline $x1,$y3 size$w,$h ng
+b inline $x1,$y4 size$w,$h ng
+b inline $x1,$y5 size$w,$h ng
+#4
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+b inline $x1,$y3 size$w,$h ng
+b inline $x1,$y4 size$w,$h ng
+b inline $x1,$y5 size$w,$h ng
+#5
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+b inline $x1,$y3 size$w,$h ng
+b inline $x1,$y4 size$w,$h ng
+b inline $x1,$y5 size$w,$h ng
+#6
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+#7
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+#8
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+#9
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+#10
+x1 = add($x1,5.2)
+hx1 = add($hx1,5.2)
+b inline $x1,$y1 size$w,$h ng
+b inline $x1,$y2 size$w,$h ng
+
+(táp)
+b inline $tap_x,$tap_y size20,15.4 z1.25 c$c1 f200 ng jg1.25
+
+

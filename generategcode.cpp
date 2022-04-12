@@ -48,6 +48,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
     _total_time=0;
     _total_length=0;
     _total_cut=0;
+    _ratio=1;
 
     _offset_xyz = {};
 
@@ -110,6 +111,14 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             }
             continue;
         }
+
+        if(l.startsWith("ratio")){
+            qreal r;
+            bool isok = GCode::ParseValue(l, L("ratio"), &r);
+            if(isok) _ratio = r;
+            continue;
+        }
+
 
         if(Feed::Parse(l).state()!=ParseState::NoData){
             if(ParseSetFeedToGCode(l, &gcode, &err)){
@@ -1578,6 +1587,7 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
     _last_position.y = p.y;
     _last_gmode=i;
 
+
     if(length>0){
         _total_length+=length;
         if(v<=0){
@@ -1589,7 +1599,9 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
         zInfo(Messages::no_calc_length)
     }
 
-    return GMode::ToGCcode(i)+' '+p.ToStringXY();
+    QString a = (_ratio>0&&_ratio!=1)?p.ToStringXY(_ratio):p.ToStringXY();
+    //QString a = p.ToStringXY();
+    return GMode::ToGCcode(i)+' '+a;
 }
 
 auto GenerateGcode::Dwell(int p) -> QString
@@ -1644,5 +1656,7 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QStr
         zInfo(Messages::no_calc_length)
     }
 
-    return GMode::ToGCcode(i)+' '+p.ToStringXYZ();
+    QString a = (_ratio>0&&_ratio!=1)?p.ToStringXYZ(_ratio):p.ToStringXYZ();
+
+    return GMode::ToGCcode(i)+' '+a;
 }

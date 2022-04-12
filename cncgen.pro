@@ -176,8 +176,9 @@ DISTFILES += \
     testdata/luk.txt \
     testdata/mestercipo_doboz_felso.txt \
     testdata/mestercipo_doboz_felso_szerelolap.txt \
-    testdata/mestercipo_doboz_hatlap.txt \
     testdata/mestercipo_doboz_hatlap_felso.txt \
+    testdata/mestercipo_doboz_hatlap_hp.txt \
+    testdata/mestercipo_doboz_hatlap_lenovo.txt \
     testdata/mestercipo_tap_szerelolap_1.txt \
     testdata/mestercipo_tap_szerelolap_also.txt \
     testdata/mestercipo_tap_szerelolap_also_2.txt \

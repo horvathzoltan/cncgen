@@ -21,7 +21,9 @@ struct Point{
     [[nodiscard]] auto ToString() const -> QString;
     [[nodiscard]] auto ToStringZ() const -> QString;
     [[nodiscard]] auto ToStringXY() const -> QString;
+    [[nodiscard]] auto ToStringXY(qreal r) const -> QString;
     [[nodiscard]] auto ToStringXYZ() const -> QString;
+    [[nodiscard]] auto ToStringXYZ(qreal r) const -> QString;
 
     auto operator ==(const Point& p) const -> bool {
         return x==p.x&&y==p.y&&z==p.z;

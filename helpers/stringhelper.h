@@ -13,7 +13,10 @@ public:
 
     static auto isLetterOrNumber(const QString& str) -> bool
     {
-        for(auto&c:str) if(!c.isLetterOrNumber()) return false;
+        for(auto&c:str){
+            if(c=='_') continue;
+            if(!c.isLetterOrNumber()) return false;
+        }
         return true;
     }
 

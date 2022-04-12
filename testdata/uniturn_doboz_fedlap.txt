@@ -1,74 +1,131 @@
 (UNITURN mérőállomás doboz fedlap)
 (szerszám beállítás)
-t1 m d1 h19
-t2 m d2 h19
-t3 m d3 h19
+(szerszám beállítás)
+t1 m d1.5 h19
+t2 m d3 h19
+
+safe0,0,3
+
 yxz
-t1
+
+(nagyolás)
+
+t2
 s50
 f200
 
-mx = 179.5
-my = 25
-ma = 12
+my = 26.3
+mx = 35.7
+ma = 12.05
 
 print "mx: $mx"
 print "my: $my"
 print "ma: $ma"
 
-hx = 167.25
-hy = 27.55
+hx = 63
+hy = 30
 
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+c2 = 0.2
+z2 = 5
+print "c2=$c2"
+print "z2=$z2"
 
-my = add($my,$ma)
-hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
-
-my = add($my,$ma)
-hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+b inline $mx,$my size12.5,5.1 z$z2 c$c2 ng
+h $hx,$hy d3 z$z2 c$c2
 
 my = add($my,$ma)
 hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
 
 my = add($my,$ma)
 hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
 
 my = add($my,$ma)
 hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
 
 my = add($my,$ma)
 hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
 
 my = add($my,$ma)
 hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
 
 my = add($my,$ma)
 hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
 
 my = add($my,$ma)
 hy = add($hy,$ma)
-b inline $mx,$my size12.5,5.1  z3.2 c0.03 g1,0.1,0.7 jg0.4
-h $hx,$hy d3 z3.2 c0.03
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
 
-hx = add($hx,15)
-hy = add($hy,11)
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
 
-h $hx,$hy d3 z3.2 c0.03
+my = add($my,$ma)
+hy = add($hy,$ma)
+b inline $mx,$my size12.5,5.1 ng
+h $hx,$hy d3
+
+h 45,18 d3
+
+
+(simítás)
+
+t1
+
+f300
+
+my = 26.3
+mx = 35.7
+
+print "mx: $mx"
+print "my: $my"
+print "ma: $ma"
+
+c2 = 0.1
+z2 = 4
+
+print "c2=$c2"
+print "z2=$z2"
+
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg0.4
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
+
+my = add($my,$ma)
+b inline $mx,$my size12.5,5.1 jg0.4 ng
 

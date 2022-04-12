@@ -74,7 +74,17 @@ auto  Point::ToStringXY() const -> QString
     return "x"+GCode::r(x)+'y'+GCode::r(y);
 }
 
+auto  Point::ToStringXY(qreal r) const -> QString
+{
+    return "x"+GCode::r(x*r)+'y'+GCode::r(y*r);
+}
+
 auto Point::ToStringXYZ() const -> QString
 {
     return ToStringXY()+ToStringZ();
+}
+
+auto Point::ToStringXYZ(qreal r) const -> QString
+{
+    return ToStringXY(r)+ToStringZ();
 }

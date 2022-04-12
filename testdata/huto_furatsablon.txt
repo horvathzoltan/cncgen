@@ -1,0 +1,30 @@
+(Mestercipo CPU hátlap felső fedlap)
+(szerszám beállítás)
+t1 m d3 h19
+
+yxz
+
+t1
+s50
+f200
+
+
+c2 = 0.05
+z2 = 3.5
+print "c2=$c2"
+print "z2=$z2"
+
+x1 = 0
+
+h $x1,0 d3 z2 c0.3
+x1 = sub($x1,7)
+h $x1,0
+x1 = sub($x1,7)
+h $x1,0
+x1 = sub($x1,7)
+h $x1,0
+x1 = sub($x1,7)
+h $x1,0
+
+
+

@@ -19,7 +19,8 @@ struct Hole{
          Cut _cut,
          Feed _feed,
          const Gap& _gap,
-         const Point& _rp={},
+         qreal _jg,
+         const Point& _rp={},          
          bool _np=false
         );
     Point p;
@@ -29,6 +30,8 @@ struct Hole{
     Feed feed={};
     Point rp={};
     bool np=false;
+    qreal jointGap=0; // illesztési hézag
+
 
     static ParseState Parse(const QString& txt, XYMode xymode,
                             MMode mmode, Hole*, Point *offset);

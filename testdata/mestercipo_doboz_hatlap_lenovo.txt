@@ -78,6 +78,8 @@ b inline 106.45,11.9 size69.7,15.8 z$z2 c$c2 g1,0.5,0.7
 offset0,10.5
 
 (hdmi)
+# https://www.datapro.net/drawings/cutouts/hdmi_cutout.pdf
+# 14x4.55 belső
 hdmi_x = 203.975
 hdmi_y = 11.1
 
@@ -85,7 +87,7 @@ hdmi_x2 = 206
 hdmi_y2 = 9.85
 
 #b inline $hdmi_x,$hdmi_y size19,9 z$z2 c$c g1,0.5,0.7
-b inline $hdmi_x,$hdmi_y size15.05,4.4 z$z2 c$c g1,0.5,0.7 nl1,1,1,0
+b inline $hdmi_x,$hdmi_y size15,4 z$z2 c$c g1,0.5,0.7 nl1,1,1,0
 b inline $hdmi_x2,$hdmi_y2 size10,1.25 z$z2 c$c g1,0.5,0.7 nl1,0,1,1
 
 (táp)
@@ -97,19 +99,25 @@ tap_y = sub(40,3.5,1.25)
 b inline $tap_x,$tap_y size20,15.4 z$z2 c$c2 g1,0.5,0.7 jg0.6
 
 (hűtő - furatok)
-x1 = 202
-y1 = 24
-y2 = add($y1,5.55)
-y3 = add($y2,5.55)
-y4 = add($y3,5.55)
-y5 = add($y4,5.55)
+huto_x1 = 200.2
+huto_y1 = 20.5
+huto_w = 5
+huto_h = 5
+huto_g = 2
 
-hx1 = add($x1,1.915)
-hy1 = add($y1,2.08)
-hy2 = add($y2,2.08)
-hy3 = add($y3,2.08)
-hy4 = add($y4,2.08)
-hy5 = add($y5,2.08)
+huto_wg = add($huto_w,$huto_g)
+huto_hg = add($huto_h,$huto_g)
+
+huto_w2 = div($huto_w,2)
+huto_h2 = div($huto_h,2)
+
+hx1 = add($huto_x1,$huto_w2)
+hy1 = add($huto_y1,$huto_h2)
+
+hy2 = add($hy1,$huto_hg)
+hy3 = add($hy2,$huto_hg)
+hy4 = add($hy3,$huto_hg)
+hy5 = add($hy4,$huto_hg)
 
 #1
 h $hx1,$hy1 d3 z$z2 c$c2
@@ -118,62 +126,53 @@ h $hx1,$hy3 d3
 h $hx1,$hy4 d3
 h $hx1,$hy5 d3
 #2
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
+hx1 = add($hx1,$huto_wg)
 h $hx1,$hy1 d3
 h $hx1,$hy2 d3
 h $hx1,$hy3 d3
 h $hx1,$hy4 d3
 h $hx1,$hy5 d3
 #3
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
+hx1 = add($hx1,$huto_wg)
 h $hx1,$hy1 d3
 h $hx1,$hy2 d3
 h $hx1,$hy3 d3
 h $hx1,$hy4 d3
 h $hx1,$hy5 d3
 #4
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
+hx1 = add($hx1,$huto_wg)
 h $hx1,$hy1 d3
 h $hx1,$hy2 d3
 h $hx1,$hy3 d3
 h $hx1,$hy4 d3
 h $hx1,$hy5 d3
 #5
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
+hx1 = add($hx1,$huto_wg)
 h $hx1,$hy1 d3
 h $hx1,$hy2 d3
-h $hx1,$hy3 d3
-h $hx1,$hy4 d3
-h $hx1,$hy5 d3
+#h $hx1,$hy3 d3
+#h $hx1,$hy4 d3
+#h $hx1,$hy5 d3
 #6
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
+hx1 = add($hx1,$huto_wg)
 h $hx1,$hy1 d3
 h $hx1,$hy2 d3
 #7
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
+hx1 = add($hx1,$huto_wg)
 h $hx1,$hy1 d3
 h $hx1,$hy2 d3
 #8
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
+hx1 = add($hx1,$huto_wg)
 h $hx1,$hy1 d3
 h $hx1,$hy2 d3
 #9
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-h $hx1,$hy1 d3
-h $hx1,$hy2 d3
+#hx1 = add($hx1,$huto_wg)
+#h $hx1,$hy1 d3
+#h $hx1,$hy2 d3
 #10
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-h $hx1,$hy1 d3
-h $hx1,$hy2 d3
+#hx1 = add($hx1,$huto_wg)
+#h $hx1,$hy1 d3
+#h $hx1,$hy2 d3
 
 
 (simítás)
@@ -234,91 +233,72 @@ b inline $hdmi_x,$hdmi_y size15.05,4.4 z$z2 c$c g1,0.5,0.7 nl1,0,1,1
 b inline $hdmi_x2,$hdmi_y2 size10,1.25 z$z2 c$c g1,0.5,0.7 nl1,1,1,0
 
 (hűtő - rács)
-x1 = 202
-y1 = 24
-y2 = add($y1,5.55)
-y3 = add($y2,5.55)
-y4 = add($y3,5.55)
-y5 = add($y4,5.55)
-
-hx1 = add($x1,1.915)
-hy1 = add($y1,2.08)
-hy2 = add($y2,2.08)
-hy3 = add($y3,2.08)
-hy4 = add($y4,2.08)
-hy5 = add($y5,2.08)
+#kezdőpont
 
 # 1 rács átmérője 35 db-nál 19,187142857 mm2
-#w = 4.38
-#h = 4.38
-#w = 4.5
-#h = 4.5
-w = 4
-h = 4
+hx1 = $huto_x1
+hy1 = $huto_y1
+
+hy2 = add($hy1,$huto_hg)
+hy3 = add($hy2,$huto_hg)
+hy4 = add($hy3,$huto_hg)
+hy5 = add($hy4,$huto_hg)
+
 
 #1
-b inline $x1,$y1 size$w,$h ng z2.9 c$c1
-b inline $x1,$y2 size$w,$h ng
-b inline $x1,$y3 size$w,$h ng
-b inline $x1,$y4 size$w,$h ng
-b inline $x1,$y5 size$w,$h ng
+b inline $hx1,$hy1 size$huto_w,$huto_h ng z2.9 c$c1
+b inline $hx1,$hy2 size$huto_w,$huto_h ng
+b inline $hx1,$hy3 size$huto_w,$huto_h ng
+b inline $hx1,$hy4 size$huto_w,$huto_h ng
+b inline $hx1,$hy5 size$huto_w,$huto_h ng
 #2
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
-b inline $x1,$y3 size$w,$h ng
-b inline $x1,$y4 size$w,$h ng
-b inline $x1,$y5 size$w,$h ng
+hx1 = add($hx1,$huto_wg)
+b inline $hx1,$hy1 size$huto_w,$huto_h ng
+b inline $hx1,$hy2 size$huto_w,$huto_h ng
+b inline $hx1,$hy3 size$huto_w,$huto_h ng
+b inline $hx1,$hy4 size$huto_w,$huto_h ng
+b inline $hx1,$hy5 size$huto_w,$huto_h ng
 #3
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
-b inline $x1,$y3 size$w,$h ng
-b inline $x1,$y4 size$w,$h ng
-b inline $x1,$y5 size$w,$h ng
+hx1 = add($hx1,$huto_wg)
+b inline $hx1,$hy1 size$huto_w,$huto_h ng
+b inline $hx1,$hy2 size$huto_w,$huto_h ng
+b inline $hx1,$hy3 size$huto_w,$huto_h ng
+b inline $hx1,$hy4 size$huto_w,$huto_h ng
+b inline $hx1,$hy5 size$huto_w,$huto_h ng
 #4
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
-b inline $x1,$y3 size$w,$h ng
-b inline $x1,$y4 size$w,$h ng
-b inline $x1,$y5 size$w,$h ng
+hx1 = add($hx1,$huto_wg)
+b inline $hx1,$hy1 size$huto_w,$huto_h ng
+b inline $hx1,$hy2 size$huto_w,$huto_h ng
+b inline $hx1,$hy3 size$huto_w,$huto_h ng
+b inline $hx1,$hy4 size$huto_w,$huto_h ng
+b inline $hx1,$hy5 size$huto_w,$huto_h ng
 #5
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
-b inline $x1,$y3 size$w,$h ng
-b inline $x1,$y4 size$w,$h ng
-b inline $x1,$y5 size$w,$h ng
+hx1 = add($hx1,$huto_wg)
+b inline $hx1,$hy1 size$huto_w,$huto_h ng
+b inline $hx1,$hy2 size$huto_w,$huto_h ng
+#b inline $hx1,$hy3 size$huto_w,$huto_h ng
+#b inline $hx1,$hy4 size$huto_w,$huto_h ng
+#b inline $hx1,$hy5 size$huto_w,$huto_h ng
 #6
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
+hx1 = add($hx1,$huto_wg)
+b inline $hx1,$hy1 size$huto_w,$huto_h ng
+b inline $hx1,$hy2 size$huto_w,$huto_h ng
 #7
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
+hx1 = add($hx1,$huto_wg)
+b inline $hx1,$hy1 size$huto_w,$huto_h ng
+b inline $hx1,$hy2 size$huto_w,$huto_h ng
 #8
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
+hx1 = add($hx1,$huto_wg)
+b inline $hx1,$hy1 size$huto_w,$huto_h ng
+b inline $hx1,$hy2 size$huto_w,$huto_h ng
 #9
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
+#hx1 = add($hx1,$huto_wg)
+#b inline $hx1,$hy1 size$huto_w,$huto_h ng
+#b inline $hx1,$hy2 size$huto_w,$huto_h ng
 #10
-x1 = add($x1,5.2)
-hx1 = add($hx1,5.2)
-b inline $x1,$y1 size$w,$h ng
-b inline $x1,$y2 size$w,$h ng
+#hx1 = add($hx1,$huto_wg)
+#b inline $hx1,$hy1 size$huto_w,$huto_h ng
+#b inline $hx1,$hy2 size$huto_w,$huto_h ng
 
 (táp)
 b inline $tap_x,$tap_y size20,15.4 z1.25 c$c1 f200 ng jg1.25

@@ -1,0 +1,96 @@
+(Mestercipo CPU hátlap)
+(szerszám beállítás)
+t1 m d1 h19
+
+yxz
+
+t1
+s50
+f200
+
+x = 0
+y = 7
+w = 2.54
+w2 = div($w,2)
+h = 13
+
+x1 = $x
+y1 = $y
+
+y2 = add($y1,$h)
+
+z2 = 0.25
+c2 = 0.1
+
+print "x1: $x1"
+print "y1: $y1"
+print "x2: $x2"
+print "y2: $y2"
+
+l $x1,$y1 $x1,$y2 z$z2 c$c2
+
+x1 = add($x1,$w)
+
+#l $x1,$y1 $x1,$y2 z$z2 c$c2
+
+w3 = mul($w,2)
+by = add($y,6)
+bh = sub($h,5)
+
+
+b inline $x1,$by size$w3,$bh z$z2 c$c2 ng
+
+x1 = add($x1,$w)
+l $x1,$y1 $x1,$y2 z$z2 c$c2
+
+x1 = add($x1,$w)
+#l $x1,$y1 $x1,$y2 z$z2 c$c2
+
+x1 = add($x1,$w)
+l $x1,$y1 $x1,$y2 z$z2 c$c2
+
+
+
+l $x,$y1 $x1,$y1 z$z2 c$c2
+y1 = sub($y1,0.5)
+l $x,$y1 $x1,$y1 z$z2 c$c2
+y1 = sub($y1,0.5)
+l $x,$y1 $x1,$y1 z$z2 c$c2
+
+
+l $x,$y2 $x1,$y2 z$z2 c$c2
+y2 = add($y2,0.5)
+l $x,$y2 $x1,$y2 z$z2 c$c2
+y2 = add($y2,0.5)
+l $x,$y2 $x1,$y2 z$z2 c$c2
+
+
+
+hx = add($x,$w2)
+hy = add($y,3)
+
+hy2 = sub($y2,3)
+
+#h $hx,$hy d1 z2 c0.1
+h $hx,$hy2 d1 z2 c0.1
+
+hx = add($hx,$w)
+h $hx,$hy
+#h $hx,$hy2
+
+hx = add($hx,$w)
+h $hx,$hy
+#h $hx,$hy2
+
+hx = add($hx,$w)
+#h $hx,$hy
+h $hx,$hy2
+
+h 5.08,3.5 d3.2 z2
+h 5.08,3.5 d5 z$z2 c$c2
+
+h 5.08,26.5 d3.2 z2
+h 5.08,26.5 d5 z$z2 c$c2
+
+b outline 0,0 size10.16,30 z2 c0.1 g1,0,5,1
+

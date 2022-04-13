@@ -1,0 +1,29 @@
+(Mestercipo CPU hátlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+
+yxz
+
+t1
+s50
+f200
+
+d = 10
+
+d1 = add($d,2.5)
+d2 = add($d1,2.5)
+
+w = add($d2,$d2)
+w2 = div($w,2)
+w3 = add($d,$w2)
+w4 = add($w3,$w2)
+
+h $d,$d d$d2 z4 c0.5 g2,0,5,1 np
+
+h $w3,$d d$d z1 c0.5 np g0,0,0
+
+h $w3,$d d$d1 z1 c0.5 np g0,0,0
+
+h $w3,$d d$d2 z4 c0.5 g2,0,5,1 np
+
+h $w4,$d d$d2 z4 c0.5 g2,0,5,1 np

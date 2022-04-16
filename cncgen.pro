@@ -163,11 +163,15 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     testdata/alatet.txt \
+    testdata/bekapcsolo.txt \
+    testdata/csatlakozo.txt \
     testdata/ethernet2.txt \
     testdata/geom1.txt \
     testdata/geom2.txt \
     testdata/geom3.txt \
     testdata/geom3_1.txt \
+    testdata/gomb.txt \
+    testdata/gomb6mm.txt \
     testdata/head.gcode \
     testdata/holetest.txt \
     testdata/huto.txt \

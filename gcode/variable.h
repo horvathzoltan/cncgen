@@ -10,7 +10,7 @@ public:
     VariableRepository();
 
     void Clear();
-    bool Parse(const QString& p);
+    auto Parse(const QString& p) -> bool;
     QVariant value(const QString& key) const;
     bool contains(const QString& key) const;
     QVariant expression(const QString& key) const;

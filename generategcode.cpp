@@ -11,6 +11,8 @@
 #include "geometry/geomath.h"
 #include "gcode/feed.h"
 #include "helpers/stringhelper.h"
+#include "common/helper/textfilehelper/textfilehelper.h"
+#include <QDir>
 
 const QString GenerateGcode::G1 = L("G:");
 const QString GenerateGcode::G2 = L("    ->");
@@ -20,8 +22,7 @@ const QString GenerateGcode::T_W = L("W:");
 const QString GenerateGcode::safeKey = L("safe");
 const QString GenerateGcode::offsetKey = L("offset");
 
-auto GenerateGcode::Generate(const QStringList &g) -> QStringList
-{
+void GenerateGcode::Init(){
     gcodes.clear();
 
     _XYMode=XYMode::XY;
@@ -36,12 +37,11 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
     _last_feed ={};
     _last_cut = {};
     _lastHoleP={};
-    _last_hole_diameter =-1;    
-    _lastLineP0={};
-    _lastLineP1={};
-    _lastBoxP0={};
-    _lastBoxP1={};
-    _lastBoxType=BoxType::Undefined;
+    _last_hole_diameter =-1;
+    _lastLine={};
+    _lastBox={{},{},BoxType::Undefined};
+    //    _lastBoxP1={};
+    //    _lastBoxType=BoxType::Undefined;
     _last_position = {};
     _last_gmode=GMode::Undefined;
 
@@ -53,7 +53,12 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
     _offset_xyz = {};
 
     GCode::_variables.Clear();
-    _lastBoxType = BoxType::Undefined;       
+}
+
+auto GenerateGcode::Generate(const QStringList &g) -> QStringList
+{
+
+    //_lastBox.type = BoxType::Undefined;
 
     for(auto l:g){
         QString err;
@@ -62,6 +67,8 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
         l = l.trimmed().toLower();
         if(l.isEmpty()) continue;
         if(l.startsWith('#')) continue;
+        if(l.startsWith('/')) continue;
+
         if(GCode::_variables.Parse(l)){
             zInfo(T1+l)
             continue;
@@ -112,13 +119,38 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             continue;
         }
 
-        if(l.startsWith("ratio")){
+        if(l.startsWith(L("ratio"))){
             qreal r;
             bool isok = GCode::ParseValue(l, L("ratio"), &r);
             if(isok) _ratio = r;
             continue;
         }
 
+        if(l.startsWith(L("include"))){
+            QString fn;
+            bool isok = GCode::ParseValue(l, L("include"), &fn);
+            if(isok){
+                _includeFn = fn;
+
+                auto d = QDir(_workingFolder);
+
+                auto inf = d.filePath(fn);
+
+                auto geomLines = com::helper::TextFileHelper::loadLines(inf);
+
+                if(!geomLines.isEmpty()){
+                    // todo ee1 a változóknak ide kell egy prefix
+                    QStringList gcodes2 = Generate(geomLines);
+                    QString gcodes3 = gcodes2.join('\n');
+                    AppendGCode(&gcodes, gcodes3, err);
+                } else{
+                    zInfo("include: empty file: "+fn )
+                }
+            } else{
+                zInfo("include is not ok")
+            }
+            continue;
+        }
 
         if(Feed::Parse(l).state()!=ParseState::NoData){
             if(ParseSetFeedToGCode(l, &gcode, &err)){
@@ -494,38 +526,38 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
 
     /**/
     if(m.p0.isValid()){
-        _lastLineP0=m.p0;
+        _lastLine.p0=m.p0;
     }
     if(m.rp.isValid()){
-        if(_lastLineP0.isValid()){
-            _lastLineP0.x+=m.rp.x;
-            _lastLineP0.y+=m.rp.y;
-            _lastLineP0.z+=m.rp.z;
+        if(_lastLine.p0.isValid()){
+            _lastLine.p0.x+=m.rp.x;
+            _lastLine.p0.y+=m.rp.y;
+            _lastLine.p0.z+=m.rp.z;
         } else{
             if(err){*err=L("p0 not valid");}
             return {};
         }
     }
     if(m.p1.isValid()){
-        _lastLineP1=m.p1;
+        _lastLine.p1=m.p1;
     }
     if(m.rp.isValid()){
-        if(_lastLineP1.isValid()){
-            _lastLineP1.x+=m.rp.x;
-            _lastLineP1.y+=m.rp.y;
-            _lastLineP1.z+=m.rp.z;
+        if(_lastLine.p1.isValid()){
+            _lastLine.p1.x+=m.rp.x;
+            _lastLine.p1.y+=m.rp.y;
+            _lastLine.p1.z+=m.rp.z;
         } else {
             if(err){*err=L("p1 not valid");}
             return {};
         }
     }
 
-    if(_lastLineP0==_lastLineP1){
+    if(_lastLine.p0==_lastLine.p1){
         if(err){*err=L("start and end points are equal");}
         return{};
     }
 
-    auto distance = GeoMath::Distance(_lastLineP0, _lastLineP1);
+    auto distance = GeoMath::Distance(_lastLine.p0, _lastLine.p1);
     if(distance<t.d) {
         if(err){*err=L("line too short");}
         return {};
@@ -543,7 +575,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
 
     QStringList g(QStringLiteral("(line)"));    
     g.append(TotalTimeToGCode());
-    msg=G2+ _lastLineP0.ToString()+' '+_lastLineP1.ToString();
+    msg=G2+ _lastLine.p0.ToString()+' '+_lastLine.p1.ToString();
     msg+=' '+_last_cut.ToString();
     msg+=' '+_last_feed.ToString();    
     if(mgap.isValid()) msg+= " gaps:"+QString::number(mgap.n);
@@ -552,19 +584,19 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
     qreal z2 = mgap.isValid()?_last_cut.z-mgap.height:_last_cut.z;
     if(z2>0){ g.append(LinearCut(z2)); }
     if(mgap.isValid()){
-        Point ba1=GeoMath::Translation(_lastLineP0, 0, 0, -z2);
-        Point ja1=GeoMath::Translation(_lastLineP1, 0, 0, -z2);
+        Point ba1=GeoMath::Translation(_lastLine.p0, 0, 0, -z2);
+        Point ja1=GeoMath::Translation(_lastLine.p1, 0, 0, -z2);
         Cut cut_gap{mgap.height, _last_cut.z0};
         Line l_gap={ba1,ja1, cut_gap, _last_feed,{}};
         auto segments = l_gap.Divide(m.gap, t.d);
         for(auto&segment:segments){
-            auto px0 = _lastLineP0;
-            auto px1 = _lastLineP1;
-            _lastLineP0=segment.p0;
-            _lastLineP1=segment.p1;
+            auto px0 = _lastLine.p0;
+            auto px1 = _lastLine.p1;
+            _lastLine.p0=segment.p0;
+            _lastLine.p1=segment.p1;
             g.append(LinearCut(segment.cut.z));            
-            _lastLineP0 = px0; // azonnal vissza is állítjuk
-            _lastLineP1 = px1;
+            _lastLine.p0 = px0; // azonnal vissza is állítjuk
+            _lastLine.p1 = px1;
         }
 
     }
@@ -590,13 +622,13 @@ void GenerateGcode::GoToCutposition(QStringList *g, const Point& p){
 auto GenerateGcode::LinearCut(qreal total_depth) -> QStringList{
     QStringList g(QStringLiteral("(linear cut)"));
     QString msg;
-    Point p = _lastLineP0;
+    Point p = _lastLine.p0;
 
     GoToCutposition(&g, p);
 
     int steps_0 = qCeil(total_depth/_last_cut.z0)+1;
 
-    msg+= "cut:"+_lastLineP0.ToString()+"->"+_lastLineP1.ToString();
+    msg+= "cut:"+_lastLine.p0.ToString()+"->"+_lastLine.p1.ToString();
     msg+= " total_depth:"+QString::number(total_depth);
     msg+= " steps:"+QString::number(steps_0);
 
@@ -604,11 +636,11 @@ auto GenerateGcode::LinearCut(qreal total_depth) -> QStringList{
         Point pd=p;
         if(!(i%2))
         {
-            p=_lastLineP1;
+            p=_lastLine.p1;
         }
         else
         {
-            p=_lastLineP0;
+            p=_lastLine.p0;
         }
 
         qreal z = p.z-(i+1)*_last_cut.z0;
@@ -675,20 +707,20 @@ auto GenerateGcode::CircularArcCut(qreal total_depth) -> QStringList{
     QStringList g(QStringLiteral("(circular_arc cut)"));
     QString msg;
 
-    GoToCutposition(&g, _lastArcP0);
+    GoToCutposition(&g, _lastArc.p0);
     Point p;
     GMode::Mode mode;
     QString ij;
     qreal i,j,i1,j1,i0,j0;
-    i1=_lastArcO.x-_lastArcP0.x;
-    j1=_lastArcO.y-_lastArcP0.y;
+    i1=_lastArc.o.x-_lastArc.p0.x;
+    j1=_lastArc.o.y-_lastArc.p0.y;
 
-    i0=_lastArcO.x-_lastArcP1.x;
-    j0=_lastArcO.y-_lastArcP1.y;
+    i0=_lastArc.o.x-_lastArc.p1.x;
+    j0=_lastArc.o.y-_lastArc.p1.y;
 
     int steps = qCeil(total_depth/_last_cut.z0)+1;
 
-    msg+= "cut:"+_lastArcP0.ToString()+"->"+_lastArcP1.ToString()+"o="+_lastArcO.ToString();
+    msg+= "cut:"+_lastArc.p0.ToString()+"->"+_lastArc.p1.ToString()+"o="+_lastArc.o.ToString();
     msg+= " total_depth:"+QString::number(total_depth);
     msg+= " steps:"+QString::number(steps);
 
@@ -696,14 +728,14 @@ auto GenerateGcode::CircularArcCut(qreal total_depth) -> QStringList{
         Point pp = p;
         if(!(step%2))
         {
-            p=_lastArcP1;
+            p=_lastArc.p1;
             mode = GMode::Circular;
             i=i1;
             j=j1;
         }
         else
         {
-            p=_lastArcP0;
+            p=_lastArc.p0;
             mode = GMode::Circular_ccw;
             i=i0;
             j=j0;
@@ -717,10 +749,10 @@ auto GenerateGcode::CircularArcCut(qreal total_depth) -> QStringList{
             p.z = z;
         }
 
-        qreal d=GeoMath::ArcLength(pp,p, _lastArcO);
+        qreal d=GeoMath::ArcLength(pp,p, _lastArc.o);
         g.append(GoToXYZ(mode, p, d)+' '+ij2);
     }
-    g.append(LiftUpToGCode(_lastArcP0.z));
+    g.append(LiftUpToGCode(_lastArc.p0.z));
 
     QString h=StringHelper::Tabulate2(G2);
     zInfo(h+msg);
@@ -889,7 +921,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         }
 
         if(hasGaps){
-            Point p=GeoMath::Translation(_lastLineP0, 0, 0, -z2);
+            Point p=GeoMath::Translation(_lastLine.p0, 0, 0, -z2);
             qreal b = (mgap.length+t.d)/(path_r);
             qreal ab = (2*M_PI)/mgap.n;
 
@@ -902,19 +934,19 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                 GeoMath::Polar(_lastHoleP, p, aa+ab, path_r, &k11);
                 QString err2;
 
-                auto q1=_lastArcP0;
-                auto q2=_lastArcP1;
-                auto q3=_lastArcO;
+                auto q1=_lastArc.p0;
+                auto q2=_lastArc.p1;
+                auto q3=_lastArc.o;
 
-                _lastArcP0=k01;
-                _lastArcP1=k11;
-                _lastArcO=_lastHoleP;
+                _lastArc.p0=k01;
+                _lastArc.p1=k11;
+                _lastArc.o=_lastHoleP;
 
                 g.append(CircularArcCut(mgap.height));
 
-                _lastArcP0=q1;
-                _lastArcP1=q2;
-                _lastArcO=q3;
+                _lastArc.p0=q1;
+                _lastArc.p1=q2;
+                _lastArc.o=q3;
 
                 aa+=ab;
             }
@@ -963,13 +995,13 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
 
     /**/
     if(m.p0.isValid()){
-        _lastArcP0=m.p0;
+        _lastArc.p0=m.p0;
     }
     if(m.rp.isValid()){
-        if(_lastArcP0.isValid()){
-            _lastArcP0.x+=m.rp.x;
-            _lastArcP0.y+=m.rp.y;
-            _lastArcP0.z+=m.rp.z;
+        if(_lastArc.p0.isValid()){
+            _lastArc.p0.x+=m.rp.x;
+            _lastArc.p0.y+=m.rp.y;
+            _lastArc.p0.z+=m.rp.z;
         } else{
             if(err){*err=L("p0 not valid");}
             return {};
@@ -977,13 +1009,13 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
     }
 
     if(m.p1.isValid()){
-        _lastArcP1=m.p1;
+        _lastArc.p1=m.p1;
     }
     if(m.rp.isValid()){
-        if(_lastArcP1.isValid()){
-            _lastArcP1.x+=m.rp.x;
-            _lastArcP1.y+=m.rp.y;
-            _lastArcP1.z+=m.rp.z;
+        if(_lastArc.p1.isValid()){
+            _lastArc.p1.x+=m.rp.x;
+            _lastArc.p1.y+=m.rp.y;
+            _lastArc.p1.z+=m.rp.z;
         } else {
             if(err){*err=L("p1 not valid");}
             return {};
@@ -991,25 +1023,25 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
     }
 
     if(m.o.isValid()){
-        _lastArcO=m.o;
+        _lastArc.o=m.o;
     }
     if(m.rp.isValid()){
-        if(_lastArcO.isValid()){
-            _lastArcO.x+=m.rp.x;
-            _lastArcO.y+=m.rp.y;
-            _lastArcO.z+=m.rp.z;
+        if(_lastArc.o.isValid()){
+            _lastArc.o.x+=m.rp.x;
+            _lastArc.o.y+=m.rp.y;
+            _lastArc.o.z+=m.rp.z;
         } else {
             if(err){*err=L("o not valid");}
             return {};
         }
     }
 
-    if(_lastArcP0==_lastArcP1){
+    if(_lastArc.p0==_lastArc.p1){
         if(err){*err=L("start and end points are equal");}
         return{};
     }
 
-    auto distance = GeoMath::Distance(_lastArcP0, _lastArcP1);
+    auto distance = GeoMath::Distance(_lastArc.p0, _lastArc.p1);
     if(distance<t.d) {
         if(err){*err=L("arc line too short");}
         return {};
@@ -1089,17 +1121,17 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     zInfo(msg);
 
     /*BOXTYPE*/
-    if(_lastBoxType==BoxType::Undefined && m.type==BoxType::Undefined){
+    if(_lastBox.type==BoxType::Undefined && m.type==BoxType::Undefined){
         if(err)*err=L("no box type");
         return {};
     }
-    if(m.type!=BoxType::Undefined) _lastBoxType = m.type;
-    if(_lastBoxType==BoxType::Undefined) {
+    if(m.type!=BoxType::Undefined) _lastBox.type = m.type;
+    if(_lastBox.type==BoxType::Undefined) {
         if(err)*err=L("undefined box type");
         return {};
     }
     /*CORNER_DIAMETER*/
-    if(_lastBoxType==BoxType::Corners){
+    if(_lastBox.type==BoxType::Corners){
         if(_last_hole_diameter==-1 && m.corner_diameter==-1){
             if(err){*err=L("no diameter");}
             return {};
@@ -1120,67 +1152,69 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     Tool t = _tools[_selected_tool_ix];
 
     if(m.p0.isValid()){
-        _lastBoxP0=m.p0;
+        _lastBox.p0=m.p0;
     }
     if(m.rp.isValid()){
-        if(_lastBoxP0.isValid()){
-            _lastBoxP0.x+=m.rp.x;
-            _lastBoxP0.y+=m.rp.y;
-            _lastBoxP0.z+=m.rp.z;
+        if(_lastBox.p0.isValid()){
+            _lastBox.p0.x+=m.rp.x;
+            _lastBox.p0.y+=m.rp.y;
+            _lastBox.p0.z+=m.rp.z;
         } else{
             if(err)*err=L("p0 not valid");
             return {};
         }
     }    
     if(m.p1.isValid()){        
-        _lastBoxP1=m.p1;
+        _lastBox.p1=m.p1;
     } else{
         if(m.size.isValid()){ // ha van méret megadva az az elsődleges
-            _lastBoxP1=GeoMath::Translation(_lastBoxP0,m.size.width(), m.size.height());
-        } else if(m.rp.isValid() && _lastBoxP1.isValid()){
-            _lastBoxP1=GeoMath::Translation(_lastBoxP1,m.rp);
+            _lastBox.p1=GeoMath::Translation(_lastBox.p0,m.size.width(), m.size.height());
+        } else if(m.rp.isValid() && _lastBox.p1.isValid()){
+            _lastBox.p1=GeoMath::Translation(_lastBox.p1,m.rp);
         }
     }
 
 
-    if(GeoMath::Distance(_lastBoxP0, _lastBoxP1)<(t.d/1.4)) {
+    if(GeoMath::Distance(_lastBox.p0, _lastBox.p1)<(t.d/1.4)) {
         if(err)*err=L("box line too short");
         return {};
     }
 
+
+
     /*rectangle normalizálás*/
-    auto zz = (_lastBoxP0.z+_lastBoxP1.z)/2;
+    auto zz = (_lastBox.p0.z+_lastBox.p1.z)/2;
     Point ba,jf,ja,bf;
-    if(_lastBoxP0.x<_lastBoxP1.x){
+    if(_lastBox.p0.x<_lastBox.p1.x){
         //p0b, p1j
-        if(_lastBoxP0.y<_lastBoxP1.y){
+        if(_lastBox.p0.y<_lastBox.p1.y){
             //p0ba, p1jf
-            ba=_lastBoxP0;
-            jf=_lastBoxP1;
+            ba=_lastBox.p0;
+            jf=_lastBox.p1;
             //1
             bf={ba.x,jf.y,zz};
             ja={jf.x,ba.y,zz};
         } else{
             //p0bf, p1ja
-            bf=_lastBoxP0;
-            ja=_lastBoxP1;
+            bf=_lastBox.p0;
+            ja=_lastBox.p1;
             //2
             ba={bf.x,ja.y,zz};
             jf={ja.x,bf.y,zz};
         }
     } else{
         //p0j, p1b
-        if(_lastBoxP0.y<_lastBoxP1.y){
+        if(_lastBox.p0.y<_lastBox.p1.y){
             //p0ja, p1bf
-            ja=_lastBoxP0;
-            bf=_lastBoxP1;
+            ja=_lastBox.p0;
+            bf=_lastBox.p1;
             //3
             ba={bf.x,ja.y,zz};
             jf={ja.x,bf.y,zz};
         } else{
             //p0jf, p1ba
-            jf=_lastBoxP0;
-            ba=_lastBoxP1;
+            jf=_lastBox.p0;
+            ba=_lastBox.p1;
             //4
             bf={ba.x,jf.y,zz};
             ja={jf.x,ba.y,zz};
@@ -1192,7 +1226,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     g.append(TotalTimeToGCode());
 
     if(m.jointGap!=0){
-        switch(_lastBoxType){
+        switch(_lastBox.type){
         case BoxType::Outline:
             ba.x+=m.jointGap;
             ba.y+=m.jointGap;
@@ -1209,12 +1243,23 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         }
     }
 
+    if(jf.x-ba.x<t.d)
+    {
+        if(err)*err=L("box w is too small");
+        return {};
+    }
+
+    if(jf.y-ba.y<t.d)
+    {
+        if(err)*err=L("box h is too small");
+        return {};
+    }
 
     /*szerszámpálya*/
     qreal tool_r = t.d/2;
 
     Point bao=ba, jfo=jf;
-    switch(_lastBoxType){
+    switch(_lastBox.type){
     case BoxType::Outline:
         ba.x-=tool_r;
         ba.y-=tool_r;
@@ -1250,7 +1295,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     Point bf4 = bf;
     Point ba4 = ba;
 
-    switch(_lastBoxType){
+    switch(_lastBox.type){
     case BoxType::Outline:
         ba1.x=bf3.x=bao.x;
         ja1.x=jf3.x=jfo.x;
@@ -1267,7 +1312,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     }
 
     msg=G2+ ba.ToString()+' '+jf.ToString();
-    msg+=' '+BoxType::ToString(_lastBoxType);
+    msg+=' '+BoxType::ToString(_lastBox.type);
     msg+=' '+_last_cut.ToString();
     msg+=' '+_last_feed.ToString();
     msg+=" d"+GCode::r(_last_hole_diameter);
@@ -1275,7 +1320,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
     zInfo(msg);
 
-    if(_lastBoxType == BoxType::Corners){
+    if(_lastBox.type == BoxType::Corners){
 
         QVarLengthArray<Hole> holes = {
             {ba, _last_hole_diameter, _last_cut, _last_feed, {},0},
@@ -1375,11 +1420,11 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 //        }
 
         for(auto&bl:segments){
-            auto px0 = _lastLineP0;
-            auto px1 = _lastLineP1;
+            auto px0 = _lastLine.p0;
+            auto px1 = _lastLine.p1;
             g.append(LineToGCode(bl,err));
-            _lastLineP0 = px0; // azonnal vissza is állítjuk
-            _lastLineP1 = px1;
+            _lastLine.p0 = px0; // azonnal vissza is állítjuk
+            _lastLine.p1 = px1;
         }
 
     }

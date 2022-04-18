@@ -102,9 +102,15 @@ void Work1::run() {
     if(_isEventLoopNeeded) emit finished();
 }
 
-auto Work1::doWork2() -> Result
+auto Work1::GetWorkingFolder() -> QString
 {
     QString workingFolder = params.isTest?FileNameHelper::GetTestFolderPath():qApp->applicationDirPath();
+    return workingFolder;
+}
+
+auto Work1::doWork2() -> Result
+{
+    QString workingFolder = GetWorkingFolder();
 
     if(params.outFile.isEmpty()){
         QFileInfo fi(params.inFile);
@@ -125,6 +131,8 @@ auto Work1::doWork2() -> Result
     if(geomLines.isEmpty()) return {Result::State::NoResult, 56};
 
     GenerateGcode g;
+    g.Init();
+    g.setWorkingFolder(workingFolder);
     QStringList gcodes = g.Generate(geomLines);
 
     if(!gcodes.isEmpty()){

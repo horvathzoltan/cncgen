@@ -172,6 +172,7 @@ DISTFILES += \
     testdata/geom3_1.txt \
     testdata/gomb.txt \
     testdata/gomb6mm.txt \
+    testdata/hdmi.txt \
     testdata/head.gcode \
     testdata/holetest.txt \
     testdata/huto.txt \
@@ -191,6 +192,7 @@ DISTFILES += \
     testdata/pi_bolcso_15_2.txt \
     testdata/pi_hatlap.txt \
     testdata/t1.txt \
+    testdata/t2.txt \
     testdata/tapdugo.txt \
     testdata/tapdugo2.txt \
     testdata/tapdugo3.txt \

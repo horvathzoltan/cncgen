@@ -1,0 +1,12 @@
+(Mestercipo CPU hátlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+t2 m d3 h19
+
+offset0,0
+include "hdmi.txt"
+
+offset10,10
+include "hdmi.txt"
+
+#include hdmi.txt simitas

@@ -16,6 +16,7 @@
 #include "geometry/gmode.h"
 #include "geometry/mmode.h"
 #include "common/macrofactory/macro.h"
+#include <QDir>
 
 class GenerateGcode
 {
@@ -29,12 +30,14 @@ public:
     static const QString safeKey;
     static const QString offsetKey;
 
+    void Init();
     auto Generate(const QStringList& g) -> QStringList;
     auto AppendGCode(QStringList* gs, const QString &g, const QString& err={},const QString& comment={}) -> bool;
     qreal _total_time;
     qreal _total_length;
     qreal _total_cut;
 private:
+    QDir _workingFolder = {};
     bool _verbose = true;
     XYMode _XYMode;
     MMode _MMode;
@@ -49,9 +52,10 @@ private:
     QMap<int, Tool> _tools;    
     int _selected_tool_ix;
 
-// todo f0 Machine osztály ami az utolsó előtolás, fogás és a szerszám pozíciót tudja
+//  f0 Machine osztály ami az utolsó előtolás, fogás és a szerszám pozíciót tudja
 // innen lehet tudni, hogy fel kell-e emelni vagy le kell e süllyeszteni amikor azt kérik
-
+// todo f0a azt kellene megadni, hogy az adott anyagba a szerszám mennyit süllyedhet / mm
+// és ebből kiszámolni, hogy az adott mélységhet hány menet kell
     Feed _selected_feed;
     Cut _selected_cut;
 
@@ -64,16 +68,28 @@ private:
     Point _lastHoleP;
     qreal _last_hole_diameter;
 
-    Point _lastLineP0;
-    Point _lastLineP1;
+    struct LastLine{
+        Point p0;
+        Point p1;
+    };
 
-    Point _lastBoxP0;
-    Point _lastBoxP1;
-    BoxType::Type _lastBoxType;
+    LastLine _lastLine;
 
-    Point _lastArcP0;
-    Point _lastArcP1;
-    Point _lastArcO;
+    struct LastBox{
+        Point p0;
+        Point p1;
+        BoxType::Type type;
+    };
+
+    LastBox _lastBox;
+
+    struct LastArc{
+        Point p0;
+        Point p1;
+        Point o;
+    };
+
+    LastArc _lastArc;
 
     Point _last_position;
     GMode::Mode _last_gmode;
@@ -81,6 +97,7 @@ private:
     Point _offset_xyz;
 
     qreal _ratio = 1;
+    QString _includeFn = {};
 
     auto setXYMode(const QString &txt) -> bool;
 
@@ -122,6 +139,7 @@ private:
     auto ParseSetXYModeToGcode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetMModeToGcode(const QString &str, QString *gcode, QString *err) -> bool;
 public:
+    void setWorkingFolder(const QDir &a){ _workingFolder = a; }
 
     /*CUTS*/
     auto LinearCut(qreal z2)-> QStringList;

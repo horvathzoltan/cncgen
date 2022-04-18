@@ -1,0 +1,36 @@
+(Mestercipo CPU hátlap)
+(szerszám beállítás)
+t1 m d1.5 h19
+t2 m d3 h19
+
+section nagyolas
+
+t2
+
+c2 = 0.5
+z2 = 3.5
+
+(hdmi)
+# https://www.datapro.net/drawings/cutouts/hdmi_cutout.pdf
+# 14x4.55 belső
+hdmi_x = 1
+hdmi_y = 1
+
+hdmi_x2 = add($hdmi_x,2.025)
+hdmi_y2 = sub($hdmi_y,1.3)
+
+b inline $hdmi_x,$hdmi_y size15,4 z$z2 c$c2 g1,0.5,0.7 nl1,1,1,0
+b inline $hdmi_x2,$hdmi_y2 size10,1.25 z$z2 c$c2 g1,0.5,0.7 nl1,0,1,1
+
+end
+
+section simitas
+
+t1
+
+c1 = 0.1
+
+b inline $hdmi_x,$hdmi_y size15.05,4.4 z$z2 c$c1 g1,0.5,0.7 nl1,1,1,1
+b inline $hdmi_x2,$hdmi_y2 size10,1.5 z$z2 c$c1 g1,0.5,0.7 nl1,1,1,1
+
+end

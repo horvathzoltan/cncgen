@@ -47,13 +47,15 @@ auto GCode::ParseValue(const QString &p, const QString &key, qreal *v) -> bool
     return false;
 }
 
+// a = 44 ok
+// a =44 nem ok
 auto GCode::ParseValue(const QString &p, const QString &key, int *v) -> bool
 {
     bool isok = false;
     auto hasKey = !key.isEmpty();
     if(v && (!hasKey || p.startsWith(key))){
         auto a = p.mid(key.length()).trimmed();
-        if(!a.isEmpty() && a[0].isNumber()){//todo vagy ha = jel
+        if(!a.isEmpty() && a[0].isNumber()){
             auto sp = a.toInt(&isok);
             if(isok){*v = sp;}
         }
@@ -115,7 +117,6 @@ auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode 
         bool isok_b = GCode::ToDouble(ns[1], &b);
         //double b = ns[1].toDouble(&isok_b);
         bool has_c = (ns.length()>=3&&!ns[2].isEmpty());
-        // todo 14 ha a geometria kiesik a várt területről
         //bool has_c = (ns.length()>=3);
         //double c = has_c?ns[2].toDouble(&isok_c):0;
         bool isok_c=has_c?GCode::ToDouble(ns[2], &c):false;

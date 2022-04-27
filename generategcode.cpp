@@ -139,7 +139,6 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
                 auto geomLines = com::helper::TextFileHelper::loadLines(inf);
 
                 if(!geomLines.isEmpty()){
-                    // todo ee1 a változóknak ide kell egy prefix
                     QStringList gcodes2 = Generate(geomLines);
                     QString gcodes3 = gcodes2.join('\n');
                     AppendGCode(&gcodes, gcodes3, err);
@@ -700,9 +699,6 @@ auto GenerateGcode::HelicalCut(qreal total_depth, qreal path_r) -> QStringList{
     return g;
 }
 
-// todo 13 minden cut generate last modelljét osztályba kell szervezni
-// todo 14 kiszervezni staticnak egy cutgeometry-be a lastos logika a generateban marad
-// todo 15 talán szerencsés lenne, ha a cut a lastos modellekkel menne + Cut
 auto GenerateGcode::CircularArcCut(qreal total_depth) -> QStringList{
     QStringList g(QStringLiteral("(circular_arc cut)"));
     QString msg;

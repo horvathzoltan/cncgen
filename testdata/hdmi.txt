@@ -7,6 +7,9 @@ section nagyolas
 
 t2
 
+s50
+f200
+
 c2 = 0.5
 z2 = 3.5
 

@@ -196,6 +196,7 @@ DISTFILES += \
     testdata/tapdugo.txt \
     testdata/tapdugo2.txt \
     testdata/tapdugo3.txt \
+    testdata/telefontarto.txt \
     testdata/uniturn_also.txt \
     testdata/uniturn_doboz_fedlap.txt \
     testdata/uniturn_doboz_hatlap.txt \

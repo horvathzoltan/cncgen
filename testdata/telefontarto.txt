@@ -10,72 +10,79 @@ f200
 
 z1 = 3
 
-b outline 0,0 size81.5,124.5 g2,1,0.7 z$z1 c0.1 nl1,1,1,0
+c1 = 0.5
+
+b outline 0,0 size81.5,124.5 g2,1,0.7 z$z1 c$c1 nl1,1,1,0
 
 r1 = 15.5
 d2 = -0.75
 
-a $d2,$r1 $r1,$d2 $r1,$r1 z$z1 c0.1
+a $d2,$r1 $r1,$d2 $r1,$r1 z$z1 c$c1
 
 px = 82.25
 ox = sub($px,$r1)
 ox1 = sub($ox,0.75)
 
-a $ox,$d2 $px,$r1 $ox1,$r1 z$z1 c0.1
+a $ox,$d2 $px,$r1 $ox1,$r1 z$z1 c$c1
 
 by = add($r1,$d2)
-bx = sub($px,3)
+bx = sub($px,15)
+by2 = add($by,3)
+by3 = add($by2,105)
 
-b inline $px,$by $bx,79.25 g1,1,0.7 z$z1 c0.1 nl1,1,0,1
+b inline $px,$by2 $bx,73.25 g1,1,0.7 z$z1 c$c1 nl1,1,0,1
 
-b inline -0.75,$by 2.25,39.25 g1,1,0.7 z$z1 c0.1 nl0,1,1,1
+b inline $px,$by3 $bx,96.25 g1,1,0.7 z$z1 c$c1 nl1,1,0,1
 
-b inline $r1,$d2 $ox,2.25 g1,1,0.7 z$z1 c0.1 nl1,1,1,0
+#b inline -0.75,$by 15,39.25 g1,1,0.7 z$z1 c$c1 nl0,1,1,1
+b inline -0.75,$by2 15,53.25 g1,1,0.7 z$z1 c$c1 nl0,1,1,1
 
-#a -0.75,80 39.25,120 -0.75,120 z$z1 c0.1
+b inline $r1,$d2 $ox,5 g1,1,0.7 z$z1 c$c1 nl1,1,1,0
 
-a 4.25,80 24.25,100 4.25,100 z$z1 c0.1
+#a -0.75,80 39.25,120 -0.75,120 z$z1 c$c1
 
-l 24.25,100 24.25,125 g1,1,0.7 z$z1 c0.1
-l 4.25,80 0,80 g1,1,0.7 z$z1 c0.1
+a 4.25,80 24.25,100 4.25,100 z$z1 c$c1
+
+l 24.25,100 24.25,125 g1,1,0.7 z$z1 c$c1
+l 4.25,80 0,80 g1,1,0.7 z$z1 c$c1
 
 
 (tavtarto)
 offset0,-20
-a $d2,$r1 $r1,$d2 $r1,$r1 z$z1 c0.1
+a $d2,$r1 $r1,$d2 $r1,$r1 z$z1 c$c1
 offset4.5,-15.5
-a $r1,$d2 $d2,$r1 $d2,$d2 z$z1 c0.1
+a $r1,$d2 $d2,$r1 $d2,$d2 z$z1 c$c1
 
 offset0,-20
-a $ox,$d2 $px,$r1 $ox1,$r1 z$z1 c0.1
+a $ox,$d2 $px,$r1 $ox1,$r1 z$z1 c$c1
 offset-4.5,-15.5
-a $px,$r1 $ox,$d2 $px,0 z$z1 c0.1
+a $px,$r1 $ox,$d2 $px,0 z$z1 c$c1
 
 offset0,-40
-a $d2,$r1 $r1,$d2 $r1,$r1 z$z1 c0.1
+a $d2,$r1 $r1,$d2 $r1,$r1 z$z1 c$c1
 #l $d2,$r1 10,$r1
 #l $r1,$d2 $r1,10
 
 offset4.5,-35.5
-a $d2,$r1 $r1,$d2 $r1,$r1 z$z1 c0.1
+a $d2,$r1 $r1,$d2 $r1,$r1 z$z1 c$c1
 
 offset0,-40
-a $ox,$d2 $px,$r1 $ox1,$r1 z$z1 c0.1
+a $ox,$d2 $px,$r1 $ox1,$r1 z$z1 c$c1
 #l $ox,$d2 $ox,10
 #l $px,$r1 70,$r1
 
 offset-4.5,-35.5
-a $ox,$d2 $px,$r1 $ox1,$r1 z$z1 c0.1
+a $ox,$d2 $px,$r1 $ox1,$r1 z$z1 c$c1
 
 offset1,-41
 
-b outline 20,0 size40,3 g1,1,0.7 z$z1 c0.1
+b outline 20,0 size40,3 g1,1,0.7 z$z1 c$c1
 h
-b outline 20,4.5 size40,3 g1,1,0.7 z$z1 c0.1 nl1,1,1,0
-b outline 20,9 size40,3 g1,1,0.7 z$z1 c0.1 nl1,1,1,0
-b outline 20,13.5 size40,3 g1,1,0.7 z$z1 c0.1 nl1,1,1,0
-b outline 20,18 size40,3 g1,1,0.7 z$z1 c0.1 nl1,1,1,0
-b outline 20,22.5 size40,3 g1,1,0.7 z$z1 c0.1 nl1,1,1,0
+b outline 20,4.5 size40,3 g1,1,0.7 z$z1 c$c1 nl1,1,1,0
+b outline 20,9 size40,3 g1,1,0.7 z$z1 c$c1 nl1,1,1,0
+b outline 20,13.5 size40,3 g1,1,0.7 z$z1 c$c1 nl1,1,1,0
+b outline 20,18 size40,3 g1,1,0.7 z$z1 c$c1 nl1,1,1,0
+b outline 20,22.5 size40,3 g1,1,0.7 z$z1 c$c1 nl1,1,1,0
 
-b outline 20,27 size40,6 g1,1,0.7 z$z1 c0.1 nl1,1,1,0
-b outline 20,34.5 size40,6 g1,1,0.7 z$z1 c0.1 nl1,1,1,0
+b outline 20,27 size40,6 g1,1,0.7 z$z1 c$c1 nl1,1,1,0
+b outline 20,34.5 size40,6 g1,1,0.7 z$z1 c$c1 nl1,1,1,0

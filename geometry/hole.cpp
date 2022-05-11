@@ -125,13 +125,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     bool positionErr = !point.isValid()&&!rpoint.isValid();
 
     if(positionErr){st.addError(L("no position data"));}
-    if(st.state()== ParseState::ParseError) return st;
-
-    // todo f1 ha ugyanoda fúrunk egy másikat, ami
-    // kisebb vagy rövidebb, mint a másik az felesleges
-    // de amúgy simán lehet koordináta nélkül fúrni, ekkor ugyanoda kerül
-    // !!! ha egy furat oda kerül, ahol már lett fúrva, és
-    // sem az átmérő, sem a mélység nem nagyobb mint az előző, akkor semmit nem kell csinálni
+    if(st.state()== ParseState::ParseError) return st;   
 
     *m= {point, diameter, cut, feed, gap, jointGap, rpoint, no_predrill};
     st.setState(ParseState::Parsed);

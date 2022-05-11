@@ -52,10 +52,6 @@ private:
     QMap<int, Tool> _tools;    
     int _selected_tool_ix;
 
-//  f0 Machine osztály ami az utolsó előtolás, fogás és a szerszám pozíciót tudja
-// innen lehet tudni, hogy fel kell-e emelni vagy le kell e süllyeszteni amikor azt kérik
-// todo f0a azt kellene megadni, hogy az adott anyagba a szerszám mennyit süllyedhet / mm
-// és ebből kiszámolni, hogy az adott mélységhet hány menet kell
     Feed _selected_feed;
     Cut _selected_cut;
 
@@ -63,8 +59,6 @@ private:
     Feed _last_feed;    
     Cut _last_cut;
 
-// todo f1 PositionRepo osztály, amiben vannak pozíció listák és a last(type) adja az utolsó aktuális elemet
-// innen lehet tudni, hogy egy furatot elkészítettünk, oda másik ugyanolyat már nem kell kifúrni
     Point _lastHoleP;
     qreal _last_hole_diameter;
 

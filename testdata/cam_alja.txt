@@ -1,0 +1,17 @@
+(Mestercipo Kamera alja)
+(szerszám beállítás)
+t1 m d1.5 h19
+
+xyz
+
+t1
+s50
+f200
+
+d = 12
+
+(DCtáp)
+h 23.45,21.15 d11.8 z4.5 c0.2 g2,0.5,3 jg0.1 np
+
+(ethernet)
+b inline 32.95,14.75 size15.9,13.5 z4.5 c0.2 g1,0.5,3 jg0.1

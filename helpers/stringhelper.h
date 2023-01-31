@@ -3,46 +3,21 @@
 
 #include <QString>
 
+#define STRINGIFY(msg) #msg
+#define STRING(msg) QStringLiteral(STRINGIFY(msg))
+#define L(msg) QStringLiteral(msg)
+
 class StringHelper{
 public:
-    static auto isNumber(const QString& str) -> bool
-    {
-        for(auto&c:str) if(!c.isNumber()) return false;
-        return true;
-    }
+    static auto isNumber(const QString& str) -> bool;
 
-    static auto isLetterOrNumber(const QString& str) -> bool
-    {
-        for(auto&c:str){
-            if(c=='_') continue;
-            if(!c.isLetterOrNumber()) return false;
-        }
-        return true;
-    }
+    static auto isLetterOrNumber(const QString& str) -> bool;
 
-    static void Append(QString *s1, const QString& s2, QChar u=' '){
-        if(!s1) return;
-        if(s2.isEmpty()) return;
-        if(!u.isNull()&& !s1->endsWith(u) && !s1->isEmpty()) s1->append(u);
-        s1->append(s2);
-    }
+    static void Append(QString *s1, const QString& s2, QChar u=' ');
 
-    static void Tabulate(QString *s1, const QString& s2){
-        return;
-        static const QChar c(' ');
-        if(!s1) return;
-        auto ix = s1->indexOf(c);
-        if(ix==-1) return;
-        auto n = s2.length()-ix-1;
-        auto a = QString().fill(c, n);
-        if(n>0) s1->insert(ix,a);
-    }
+    static void Tabulate(QString *s1, const QString& s2);
 
-    static QString Tabulate2(const QString& s){
-        auto l = s.length();
-        auto a= QString().fill(' ', l);
-        return a;
-    }
+    static QString Tabulate2(const QString& s);
 
 };
 #endif // STRINGHELPER_H

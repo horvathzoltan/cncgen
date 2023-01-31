@@ -1,14 +1,16 @@
 #include "work1.h"
-#include "common/logger/log.h"
-#include "common/helper/textfilehelper/textfilehelper.h"
+#include "helpers/logger.h"
+#include "helpers/textfilehelper.h"
+#include "helpers/nameof.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QThread>
 #include "generategcode.h"
 #include "QDebug"
 #include <helpers/filenamehelper.h>
-#include "common/helper/CommandLineParserHelper/commandlineparserhelper.h"
+#include "helpers/commandlineparserhelper.h"
 #include <QDateTime>
+#include "helpers/stringhelper.h"
 
 auto Work1::Params::Parse(const QCoreApplication& app) -> Work1::Params
 {
@@ -23,10 +25,10 @@ auto Work1::Params::Parse(const QCoreApplication& app) -> Work1::Params
     const QString OPTION_BACKUP = QStringLiteral("backup");
     const QString OPTION_TEST = QStringLiteral("test");
 
-    com::helper::CommandLineParserHelper::addOption(&parser, OPTION_IN, QStringLiteral("geometry file as input"));
-    com::helper::CommandLineParserHelper::addOption(&parser, OPTION_OUT, QStringLiteral("g-code file as output"));
-    com::helper::CommandLineParserHelper::addOptionBool(&parser, OPTION_BACKUP, QStringLiteral("set if backup is needed"));
-    com::helper::CommandLineParserHelper::addOptionBool(&parser, OPTION_TEST, QStringLiteral("set to activate test mode"));
+    CommandLineParserHelper::addOption(&parser, OPTION_IN, QStringLiteral("geometry file as input"));
+    CommandLineParserHelper::addOption(&parser, OPTION_OUT, QStringLiteral("g-code file as output"));
+    CommandLineParserHelper::addOptionBool(&parser, OPTION_BACKUP, QStringLiteral("set if backup is needed"));
+    CommandLineParserHelper::addOptionBool(&parser, OPTION_TEST, QStringLiteral("set to activate test mode"));
 
     parser.process(app);
 
@@ -126,7 +128,7 @@ auto Work1::doWork2() -> Result
 
     auto d = QDir(workingFolder);
 
-    auto geomLines = com::helper::TextFileHelper::loadLines(d.filePath(params.inFile));
+    auto geomLines = TextFileHelper::loadLines(d.filePath(params.inFile));
 
     if(geomLines.isEmpty()) return {Result::State::NoResult, 56};
 
@@ -136,8 +138,8 @@ auto Work1::doWork2() -> Result
     QStringList gcodes = g.Generate(geomLines);
 
     if(!gcodes.isEmpty()){
-        auto headLines = com::helper::TextFileHelper::loadLines(d.filePath(
-            QStringLiteral("head.gcode")));
+        QString headFileName = d.filePath(QStringLiteral("head.gcode"));
+        auto headLines = TextFileHelper::loadLines(headFileName);
 
         QTime tm(0,0);
         tm = tm.addSecs(g._total_time*60);
@@ -161,7 +163,7 @@ auto Work1::doWork2() -> Result
         }
 
         if(!outLines.isEmpty()) {
-            com::helper::TextFileHelper::save(outLines.join('\n'), d.filePath(params.outFile));
+            TextFileHelper::save(outLines.join('\n'), d.filePath(params.outFile));
         }
     }
     return {Result::State::Ok, 55};

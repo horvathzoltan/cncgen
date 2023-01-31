@@ -3,7 +3,7 @@
 #include <QStringList>
 #include "gcode/gcode.h"
 #include "helpers/stringhelper.h"
-#include "common/macrofactory/macro.h"
+#include "helpers/macro.h"
 
 Gap::Gap()
 {

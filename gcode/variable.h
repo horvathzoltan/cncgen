@@ -2,7 +2,6 @@
 #define VARIABLE_H
 
 #include <QVariant>
-#include "gcode/expression.h"
 
 class VariableRepository
 {

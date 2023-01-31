@@ -1,7 +1,7 @@
 #ifndef FILENAMEHELPER_H
 #define FILENAMEHELPER_H
 
-#include "common/macrofactory/macro.h"
+#include "helpers/macro.h"
 #include <QDir>
 
 class FileNameHelper{

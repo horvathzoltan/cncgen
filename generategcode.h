@@ -10,12 +10,12 @@
 #include "geometry/arc.h"
 
 #include "gcode/tool.h"
-#include "gcode/variable.h"
-#include "gcode/string.h"
-#include "parsestate.h"
+//#include "gcode/variable.h"
+//#include "gcode/string.h"
+//#include "parsestate.h"
 #include "geometry/gmode.h"
 #include "geometry/mmode.h"
-#include "common/macrofactory/macro.h"
+//#include "helpers/macro.h"
 #include <QDir>
 
 class GenerateGcode

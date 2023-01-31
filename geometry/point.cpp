@@ -1,9 +1,9 @@
 #include "point.h"
 #include <QStringList>
 #include "gcode/gcode.h"
-#include "common/logger/log.h"
+//#include "helpers/log.h"
 #include "geomath.h"
-
+#include "helpers/stringhelper.h"
 //QString Point::_lasterr;
 
 Point::Point()

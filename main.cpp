@@ -1,17 +1,18 @@
 #include <QCoreApplication>
 #include <QAbstractEventDispatcher>
-#include "common/logger/log.h"
-//#include "appworker.h"
-#include "common/helper/signalhelper/signalhelper.h"
-
-//#include "common/coreappworker/coreappworker.h"
+#include "helpers/logger.h"
+#include "helpers/stringhelper.h"
+#include "helpers/signalhelper.h"
 #include "work1.h"
-//#include "coreappworker2.h"
+#include "helpers/nameof.h"
+
+
+// -i gomb.txt -o gomb.gcode -t
 
 auto main(int argc, char *argv[]) -> int
 {
-    com::helper::SignalHelper::setShutDownSignal(com::helper::SignalHelper::SIGINT_); // shut down on ctrl-c
-    com::helper::SignalHelper::setShutDownSignal(com::helper::SignalHelper::SIGTERM_); // shut down on killall
+    SignalHelper::setShutDownSignal(SignalHelper::SIGINT_); // shut down on ctrl-c
+    SignalHelper::setShutDownSignal(SignalHelper::SIGTERM_); // shut down on killall
 
 #if defined (STRING) && defined (TARGI)
     auto poj = STRING(TARGI);

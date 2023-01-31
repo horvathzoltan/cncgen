@@ -63,13 +63,13 @@ message( " commonlibs full path = "$$COMMON_LIBS_FULLPATH)
 unix:!macx:
 {
 message( "hmmmm "$$HOME/$$COMMON_LIBS)
-LIBS += -L$$COMMON_LIBS_FULLPATH/ -llogger
-LIBS += -L$$COMMON_LIBS_FULLPATH/ -lshortguid # loggerhez kell
-LIBS += -L$$COMMON_LIBS_FULLPATH/ -lsignalhelper
-LIBS += -L$$COMMON_LIBS_FULLPATH/ -lCommandLineParserHelper
+#LIBS += -L$$COMMON_LIBS_FULLPATH/ -llogger
+#LIBS += -L$$COMMON_LIBS_FULLPATH/ -lshortguid # loggerhez kell
+#LIBS += -L$$COMMON_LIBS_FULLPATH/ -lsignalhelper
+#LIBS += -L$$COMMON_LIBS_FULLPATH/ -lCommandLineParserHelper
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -lcoreappworker
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -lstringhelper
-LIBS += -L$$COMMON_LIBS_FULLPATH/ -ltextfilehelper
+#LIBS += -L$$COMMON_LIBS_FULLPATH/ -ltextfilehelper
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -lfilehelper
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -ldownloadhelper
 #LIBS += -L$$COMMON_LIBS_FULLPATH/ -lprocesshelper
@@ -115,6 +115,11 @@ SOURCES += \
         geometry/point.cpp \
         geometry/size.cpp \
         geometry/xymode.cpp \
+        helpers/commandlineparserhelper.cpp \
+        helpers/logger.cpp \
+        helpers/signalhelper.cpp \
+        helpers/stringhelper.cpp \
+        helpers/textfilehelper.cpp \
         main.cpp \
         messages.cpp \
         parsestate.cpp \
@@ -144,8 +149,14 @@ HEADERS += \
     geometry/point.h \
     geometry/size.h \
     geometry/xymode.h \
+    helpers/commandlineparserhelper.h \
     helpers/filenamehelper.h \
+    helpers/logger.h \
+    helpers/macro.h \
+    helpers/nameof.h \
+    helpers/signalhelper.h \
     helpers/stringhelper.h \
+    helpers/textfilehelper.h \
     messages.h \
     parsestate.h \
     work1.h
@@ -164,6 +175,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     testdata/alatet.txt \
     testdata/bekapcsolo.txt \
+    testdata/cam_alja.txt \
     testdata/csatlakozo.txt \
     testdata/ethernet2.txt \
     testdata/geom1.txt \

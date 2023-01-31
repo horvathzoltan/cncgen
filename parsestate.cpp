@@ -1,4 +1,5 @@
 #include "parsestate.h"
+#include "helpers/stringhelper.h"
 
 ParseState::ParseState(){_state=State::Unknown;}
 

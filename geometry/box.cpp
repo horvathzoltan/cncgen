@@ -1,6 +1,6 @@
 #include "box.h"
 #include "gcode/gcode.h"
-#include "common/macrofactory/macro.h"
+#include "helpers/macro.h"
 #include <QVarLengthArray>
 #include "helpers/stringhelper.h"
 #include "geometry/size.h"

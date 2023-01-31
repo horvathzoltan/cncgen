@@ -1,5 +1,5 @@
 #include "messages.h"
-#include "common/macrofactory/macro.h"
+#include "helpers/nameof.h"
 
 const QString Messages::invalid_point = QStringLiteral("invalid point");
 const QString Messages::zero_feed = QStringLiteral("cutting movement with zero feed");

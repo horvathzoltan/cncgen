@@ -2,7 +2,7 @@
 #define PARSESTATE_H
 
 #include <QStringList>
-#include "helpers/stringhelper.h"
+//#include "helpers/stringhelper.h"
 
 class ParseState
 {

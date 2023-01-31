@@ -7,7 +7,7 @@ auto GMode::ToGCcode(Mode i) -> QString{
     case Linear:return QStringLiteral("G1");
     case Circular:return QStringLiteral("G2");
     case Circular_ccw:return QStringLiteral("G3");
+    default: return QString();
     }
-    return QString();
 }
 

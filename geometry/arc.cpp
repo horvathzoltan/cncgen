@@ -1,11 +1,12 @@
 #include "arc.h"
 
 #include <QStringList>
-#include "gcode/gcode.h"
-#include "geometry/geomath.h"
-#include "common/logger/log.h"
+#include <QVarLengthArray>
+//#include "gcode/gcode.h"
+//#include "geometry/geomath.h"
+//#include "helpers/log.h"
 #include "helpers/stringhelper.h"
-
+#include "helpers/macro.h"
 //QString Arc::_lasterr;
 
 

@@ -2,7 +2,7 @@
 #include "helpers/stringhelper.h"
 #include "gcode/gcode.h"
 #include "gcode/expression.h"
-#include "common/macrofactory/macro.h"
+#include "helpers/macro.h"
 
 VariableRepository::VariableRepository()
 = default;

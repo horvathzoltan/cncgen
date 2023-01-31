@@ -1,4 +1,4 @@
-#include "common/macrofactory/macro.h"
+#include "helpers/stringhelper.h"
 #include "size.h"
 #include "gcode/gcode.h"
 #include "parsestate.h"

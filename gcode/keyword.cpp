@@ -1,5 +1,5 @@
 #include "keyword.h"
-#include "common/macrofactory/macro.h"
+#include "helpers/nameof.h"
 
 
 auto KeyWord::ToString(Word v) -> QString

@@ -3,7 +3,7 @@
 #include <QStringList>
 #include "gcode/gcode.h"
 #include "geometry/geomath.h"
-#include "common/logger/log.h"
+#include "helpers/logger.h"
 #include "helpers/stringhelper.h"
 #include "messages.h"
 

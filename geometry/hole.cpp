@@ -1,5 +1,5 @@
 #include "hole.h"
-#include "common/macrofactory/macro.h"
+#include "helpers/macro.h"
 #include <QStringList>
 #include "gcode/gcode.h"
 #include "helpers/stringhelper.h"

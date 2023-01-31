@@ -1,4 +1,4 @@
-#include "common/logger/log.h"
+#include "helpers/logger.h"
 #include "generategcode.h"
 #include "messages.h"
 #include <QtMath>
@@ -11,7 +11,7 @@
 #include "geometry/geomath.h"
 #include "gcode/feed.h"
 #include "helpers/stringhelper.h"
-#include "common/helper/textfilehelper/textfilehelper.h"
+#include "helpers/textfilehelper.h"
 #include <QDir>
 
 const QString GenerateGcode::G1 = L("G:");
@@ -136,7 +136,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 
                 auto inf = d.filePath(fn);
 
-                auto geomLines = com::helper::TextFileHelper::loadLines(inf);
+                auto geomLines = TextFileHelper::loadLines(inf);
 
                 if(!geomLines.isEmpty()){
                     QStringList gcodes2 = Generate(geomLines);

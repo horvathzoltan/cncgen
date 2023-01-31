@@ -1,6 +1,6 @@
 #include "gcode.h"
 #include <QStringList>
-#include "common/logger/log.h"
+//#include "helpers/log.h"
 
 //bool _isInited = false;
 VariableRepository GCode::_variables={};

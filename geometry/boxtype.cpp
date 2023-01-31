@@ -1,5 +1,5 @@
 #include "boxtype.h"
-#include "common/macrofactory/macro.h"
+#include "helpers/nameof.h"
 
 auto BoxType::ToString(Type type) -> QString
 {

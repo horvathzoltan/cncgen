@@ -3,7 +3,7 @@
 
 #include <QString>
 #include "point.h"
-#include "gap.h"
+//#include "gap.h"
 #include <QList>
 #include "gcode/cut.h"
 #include "gcode/feed.h"

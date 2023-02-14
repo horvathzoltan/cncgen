@@ -1,0 +1,22 @@
+(Mestercipo Kamera teteje)
+(szerszám beállítás)
+t1 m d1.5 h19
+
+yxz
+xm
+
+t1
+s50
+f200
+
+d = 12
+
+(LED)
+h 23.80,17.5 d3 z5 c0.5 np
+
+h 34.10,17.5 d3 z9 c0.5 np
+
+h 47.4,17.5 d3 z9 c0.5 np
+
+h 57.4,17.5 d3 z5 c0.5 np
+

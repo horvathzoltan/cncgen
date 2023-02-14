@@ -21,7 +21,8 @@ struct Hole{
          const Gap& _gap,
          qreal _jg,
          const Point& _rp={},          
-         bool _np=false
+         bool _np=false,
+         bool _ng=false
         );
     Point p;
     qreal diameter=-1;
@@ -30,6 +31,7 @@ struct Hole{
     Feed feed={};
     Point rp={};
     bool np=false;
+    bool ng=false;
     qreal jointGap=0; // illesztési hézag
 
 

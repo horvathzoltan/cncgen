@@ -111,7 +111,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
 
         if(p.startsWith("jg")){
             qreal a;
-            if(GCode::ParseValue(p, L("jg"), &a)){
+            bool ok = GCode::ParseValue(p, L("jg"), &a);
+            if(ok){
                 jointGap=a;
             }
             continue;

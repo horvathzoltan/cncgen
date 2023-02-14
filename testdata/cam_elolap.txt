@@ -1,0 +1,20 @@
+(Mestercipo Kamera előlap)
+(szerszám beállítás)
+(-t -i cam_elolap.txt)
+t1 m d1.5 h19
+
+yxz
+xm
+
+t1
+s50
+f200
+
+movz = 15
+maxz = 20
+
+(kamera furat)
+h 65.765,45.0,12.80 d8.4 z3 c0.5 ng
+
+
+

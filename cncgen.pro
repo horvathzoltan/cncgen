@@ -176,6 +176,9 @@ DISTFILES += \
     testdata/alatet.txt \
     testdata/bekapcsolo.txt \
     testdata/cam_alja.txt \
+    testdata/cam_elolap.txt \
+    testdata/cam_elolap_bolcso.txt \
+    testdata/cam_teteje.txt \
     testdata/csatlakozo.txt \
     testdata/ethernet2.txt \
     testdata/geom1.txt \
@@ -213,6 +216,7 @@ DISTFILES += \
     testdata/uniturn_doboz_fedlap.txt \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_felso.txt \
+    testdata/uniturn_relay_szerelolap.txt \
     testdata/uniturn_usb_tavtarto.txt \
     testdata/uniturn_usb_tavtarto2.txt \
     testdata/usb.txt

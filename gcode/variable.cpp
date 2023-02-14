@@ -10,6 +10,8 @@ VariableRepository::VariableRepository()
 void VariableRepository::Clear()
 {
     _values.clear();
+    _maxZ = 5;
+    _movZ = 2;
     //_expressions.clear();
 }
 
@@ -26,24 +28,32 @@ auto VariableRepository::Parse(const QString &p) -> bool
     if(!StringHelper::isLetterOrNumber(key)) return false;
     if(KeyWord::Parse(key)!=KeyWord::Undefined) return false;
     auto value = p.mid(ix0+1).trimmed();
-    QString str;
-    QString function_str;
     qreal r;
-    int i;
-    Expression expression;
-    if(GCode::ParseValue(value, QString(), &str)){
-        _values[key]=str;
-    } else if(GCode::ParseValue(value, QString(), &r)){
-        _values[key]=r;
-    } else if(GCode::ParseValue(value, QString(), &i)){
-        _values[key]=i;
-    } else {
-        expression = Expression::Parse(value);
-        QVariant exp_result;
-        if((exp_result = expression.Calculate()).isValid()){
-            _values[key]=exp_result;
-        } else{
-            _values[key]={};//expression.ToString();
+    if(key.toLower()=="movz")
+    {
+        if(GCode::ParseValue(value, QString(), &r) && r>0 && r<50) _movZ = r;
+    } else if(key=="maxz"){
+        if(GCode::ParseValue(value, QString(), &r) && r>0 && r<50) _maxZ = r;
+    } else{
+        QString str;
+        QString function_str;
+
+        int i;
+        Expression expression;
+        if(GCode::ParseValue(value, QString(), &str)){
+            _values[key]=str;
+        } else if(GCode::ParseValue(value, QString(), &r)){
+            _values[key]=r;
+        } else if(GCode::ParseValue(value, QString(), &i)){
+            _values[key]=i;
+        } else {
+            expression = Expression::Parse(value);
+            QVariant exp_result;
+            if((exp_result = expression.Calculate()).isValid()){
+                _values[key]=exp_result;
+            } else{
+                _values[key]={};//expression.ToString();
+            }
         }
     }
     return true;

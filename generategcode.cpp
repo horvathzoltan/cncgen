@@ -437,16 +437,16 @@ auto GenerateGcode::LiftUpToGCode(const QVariant& z=QVariant()) -> QString
 {
     QStringList g;
     QString err;
-
-    if(_last_position.z >=_movZ){ return {};}
+    auto movZ = GCode::_variables.movZ();
+    if(_last_position.z >=movZ){ return {};}
     if(!z.isNull()){
         auto z0 = z.value<double>();
         qreal l = z0-_last_position.z;
         auto gcode = GoToZ(GMode::Linear,{0,0,z0}, l);//+ " (pull)";
         AppendGCode(&g, gcode, err, QStringLiteral("pull"));
     }
-    qreal l = _movZ-_last_position.z;
-    auto gcode = GoToZ(GMode::Rapid,{0,0,_movZ}, l);// + "(lift up)";
+    qreal l = movZ-_last_position.z;
+    auto gcode = GoToZ(GMode::Rapid,{0,0,movZ}, l);// + "(lift up)";
     AppendGCode(&g, gcode, err, "lift up");
     return g.join('\n');
 }
@@ -810,37 +810,45 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     Gap mgap = m.gap.isValid()?m.gap:Gap{2, .5, 0.5};
 
     bool pre_drill, pre_mill,hasGaps, drillOnly=holeDiameter==t.d;
-    if(m.np){
-        pre_drill = false;
-        pre_mill =false;
+    if(m.ng)
+    {
+        hasGaps = false;
+        pre_drill = true;
+        pre_mill = true;
+    }
+    else{
+        if(m.np){
+            pre_drill = false;
+            pre_mill =false;
 
-        if(m.gap.n>0){
-            hasGaps = true; //
-            int gapn = (2*path_r*M_PI)/(2*t.d+mgap.length); // hány gap fér ki
-            if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
-            if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
-        } else{
-            hasGaps=false;
-        }
-
-    }else{
-        if(drillOnly){
-            pre_drill=true;
-            pre_mill=false;
-            hasGaps = false;
-        } else{
-            hasGaps = holeDiameter>5*t.d; //
-            if(hasGaps){
-                pre_drill=false;
-                pre_mill=false;
-
+            if(m.gap.n>0){
+                hasGaps = true; //
                 int gapn = (2*path_r*M_PI)/(2*t.d+mgap.length); // hány gap fér ki
                 if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
                 if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
+            } else{
+                hasGaps=false;
+            }
 
-            } else {
-                pre_drill = holeDiameter>2*t.d; //d=0
-                pre_mill = holeDiameter>3*t.d; //d=2*t.d
+        }else{
+            if(drillOnly){
+                pre_drill=true;
+                pre_mill=false;
+                hasGaps = false;
+            } else{
+                hasGaps = holeDiameter>5*t.d; //
+                if(hasGaps){
+                    pre_drill=false;
+                    pre_mill=false;
+
+                    int gapn = (2*path_r*M_PI)/(2*t.d+mgap.length); // hány gap fér ki
+                    if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
+                    if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
+
+                } else {
+                    pre_drill = holeDiameter>2*t.d; //d=0
+                    pre_mill = holeDiameter>3*t.d; //d=2*t.d
+                }
             }
         }
     }
@@ -1319,10 +1327,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     if(_lastBox.type == BoxType::Corners){
 
         QVarLengthArray<Hole> holes = {
-            {ba, _last_hole_diameter, _last_cut, _last_feed, {},0},
-            {ja, _last_hole_diameter, _last_cut, _last_feed, {},0},
-            {jf, _last_hole_diameter, _last_cut, _last_feed, {},0},
-            {bf, _last_hole_diameter, _last_cut, _last_feed, {},0}
+            {ba, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap},
+            {ja, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap},
+            {jf, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap},
+            {bf, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap}
         };
         if(_verbose){
             for(int i=0;i<holes.length();i++){
@@ -1509,13 +1517,15 @@ auto GenerateGcode::ChangeToolToGCode() ->QString
     g.append(SpindleStopToGCode());//spindle stop
     g.append(TravelXYToGCode(_safe_place));
     //g.append(TravelXYToGCode({0,0,0}));//kiáll nullára
-    g.append(QStringLiteral("g0 z")+GCode::r(_maxZ));
+    auto maxZ = GCode::_variables.maxZ();
+
+    g.append(QStringLiteral("g0 z")+GCode::r(maxZ));
     g.append('t'+QString::number(t.ix)+" (tool select)");
     g.append(QStringLiteral("m6 (tool change)"));
     g.append(QStringLiteral("(msg, change tool to ")+Tool::TypeToString(t.type)+
              ", diameter="+GCode::r(t.d)+')');
     g.append(QStringLiteral("m0 (machine stop)"));
-    g.append(QStringLiteral("g0 z")+GCode::r(_maxZ));
+    g.append(QStringLiteral("g0 z")+GCode::r(maxZ));
 
     _last_tool_ix=_selected_tool_ix;
 

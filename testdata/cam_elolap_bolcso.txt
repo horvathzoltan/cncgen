@@ -1,0 +1,20 @@
+(Mestercipo Kamera teteje)
+(szerszám beállítás)
+(-t -i cam_elolap_bolcso.txt)
+t1 m d1.5 h19
+
+yxz
+xm
+
+t1
+s50
+f200
+
+movz = 5
+maxz = 15
+
+(furatok)
+b corners 17,14 size116,62 d5.5 z2.8 c0.5 jg0.15
+
+
+

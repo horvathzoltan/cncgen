@@ -7,17 +7,22 @@ t1
 s50
 f300
 
-(pi3b furatok)
-m2 = sum(87.1,-3.5,-58,-1)
-print "m2: $m2"
-b corners 27,$m2 size49,58 z2.2 c0.1 d2.5
+c1 = 0.5
 
+(PI, PIzero felső furatok)
+m3 = sub(152,11.5)
+pi_y = sub($m3,49)
+
+(pi3b furatok)
+b corners 119,$pi_y size58,49 z2.2 c$c1 d2.5
+
+piz_y = sub($m3,23)
 (piZero furatok)
-b corners 70,116 size58,23 d3 z2.2 c0.1 d2.5
+b corners 20.5,$piz_y size58,23 z2.2 c$c1 d2.5
 
 (B3218101 - NET-BOX 220, VERS. I)
 (rögzítő furatok)
-h 5,4 d3 z2.2 c0.1
+h 5,4 d3 z2.2 c$c1
 h 5,124
 h 25,146
 h 169,146
@@ -25,14 +30,15 @@ h 189,124
 h 189,4
 
 (dugó kivágások)
-l 147.7,0 147.7,23 g1,2,.7
-l 146.7,24 117.5,24 g1,2,0.7
-l 117.5,24 117.5,36
-l 117.5,36 84,36 g1,2,.7
-l 83,35 83,0 g1,2,.7
-l 82,1 80,1
+b inline 69,0 size100,6 z2.2 c$c1 nl1,1,1,0
 
-(usb hub furatai)
+(trafó furatok)
+m_t1_x1 = 23
+m_t1_y1 = 66
+m_t1_x2 = add($m_t1_x1,55)
+
+h $m_t1_x1,$m_t1_y1 d3 jg0.1 z2.2 c$c1 g0,0,0 np
+h $m_t1_x2,$m_t1_y1 d3 jg0.1 z2.2 c$c1 g0,0,0 np
 
 (körvonal)
-b outline 0,0 194,152 z2.5 c0.1 g3,2,0.7
+b outline 0,0 194,152 z2.5 c$c1 g3,2,0.7

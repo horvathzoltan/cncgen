@@ -1,24 +1,26 @@
 (UNITURN mérőállomás alsó szerelőlap)
+(2mm polikarbonát lemez)
+(xy0 a ja saroknál)
 (szerszám beállítás)
 t1 m d1.5 h19
 
 yxz
 t1
 s50
-f300
+f200
 
-c1 = 0.5
+c1 = 0.2
 
 (PI, PIzero felső furatok)
 m3 = sub(152,11.5)
 pi_y = sub($m3,49)
 
 (pi3b furatok)
-b corners 119,$pi_y size58,49 z2.2 c$c1 d2.5
+b corners 112,$pi_y size58,49 z2.2 c$c1 d2.5
 
 piz_y = sub($m3,23)
 (piZero furatok)
-b corners 20.5,$piz_y size58,23 z2.2 c$c1 d2.5
+b corners 10,$piz_y size58,23 z2.2 c$c1 d2.5
 
 (B3218101 - NET-BOX 220, VERS. I)
 (rögzítő furatok)
@@ -34,7 +36,7 @@ b inline 69,0 size100,6 z2.2 c$c1 nl1,1,1,0
 
 (trafó furatok)
 m_t1_x1 = 23
-m_t1_y1 = 66
+m_t1_y1 = 61
 m_t1_x2 = add($m_t1_x1,55)
 
 h $m_t1_x1,$m_t1_y1 d3 jg0.1 z2.2 c$c1 g0,0,0 np

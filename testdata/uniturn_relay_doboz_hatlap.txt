@@ -1,0 +1,88 @@
+UNITURN mérőállomás doboz hátlap)
+(szerszám beállítás)
+t1 m d1 h19
+t2 m d2 h19
+t3 m d3 h19
+yxz
+safe-100,100,15
+
+ym
+
+t1
+s50
+f200
+
+h = 5
+y0 = 19.5
+o0 = 12.9
+hc = 31
+hc2 = div($hc,2)
+xc = 26
+xc2 = div($xc,2)
+
+d0 = 2.5
+d1 = 24
+fx = 24
+fy = 19
+fx2 = div($fx,2)
+fy2 = div($fy,2)
+gx = 0.1
+c = 0.2
+
+(hdmi)
+x = add($o0,$hc2)
+f1x = sub($x,$fx2)
+f1y = sub($y0,$fy2)
+f2x = add($x,$fx2)
+f2y = add($y0,$fy2)
+
+h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,1
+h $f1x,$f1y z$h d$d0
+h $f2x,$f2y z$h d$d0
+
+(rj45)
+x = sum($x,$hc2,$xc2,$gx)
+f1x = sub($x,$fy2)
+f1y = add($y0,$fx2)
+f2x = add($x,$fy2)
+f2y = sub($y0,$fx2)
+
+h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,1
+h $f1x,$f1y z$h d$d0
+h $f2x,$f2y z$h d$d0
+
+(usb)
+x = sum($x,$hc2,$xc2,$gx)
+f1x = sub($x,$fx2)
+f1y = sub($y0,$fy2)
+f2x = add($x,$fx2)
+f2y = add($y0,$fy2)
+
+h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,1
+h $f1x,$f1y z$h d$d0
+h $f2x,$f2y z$h d$d0
+
+(canon d25)
+x = sum($x,$hc2,$gx)
+cx1 = 3
+cx2 = sub(53,$cx1)
+
+f1x = add($x,$cx1)
+f2x = add($x,$cx2)
+
+h $f1x,$y0 z$h d$d0
+h $f2x,$y0 z$h d$d0
+
+cx3 = 6.5
+ch = 9.5
+ch2 = div($ch,2)
+y2 = sub($y0,$ch2)
+x2 = add($x,$cx3)
+
+b inline $x2,$y2 size40.5,$ch z$h c$c g1,0.3,0.7
+
+(tápcsati)
+#h 150,18.1 z5 d11.9 c0.1 s70 f300 g2,.5,1
+
+
+

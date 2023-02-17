@@ -1,0 +1,66 @@
+(UNITURN mérőállomás relé 3x4 szerelőlap)
+(2mm polikarbonát lemez)
+(xy0 a ja saroknál)
+(szerszám beállítás)
+t1 m d1.5 h19
+
+yxz
+t1
+s50
+f150
+
+c1 = 0.2
+
+(csavar a szélétől)
+g = 5
+g2 = 5
+
+(relé panel w,h)
+rw = 65.85
+rh = 45.1
+(teljes lap w,h)
+
+rwd = sum(3.2,1,2)
+rww = sum($rw,$rwd)
+ro = sum($rww,0.2)
+
+w = sum($g,$g2,$rw,$rwd,$rw,$rwd,$rw,$rwd,$g2,$g)
+h = sum($g,$g2,$rh,$g2,$g)
+
+print "w: $w"
+print "h: $h"
+
+rx = add($g,$g2)
+ry = add($g,$g2)
+
+(relé furatok)
+b corners $rx,$ry size$rw,$rh z2.2 c$c1 d3 jg0.1
+rx = add($rx,$ro)
+b corners $rx,$ry size$rw,$rh z2.2 c$c1 d3 jg0.1
+rx = add($rx,$ro)
+b corners $rx,$ry size$rw,$rh z2.2 c$c1 d3 jg0.1
+
+(rögzítő furatok)
+
+ro2 = div($ro,2)
+hx = sum($g,$g2,$ro2)
+hy = $g
+hy2 = sub($h,$g)
+
+h $hx,$hy d3 jg0.1 z2.2 c$c1
+h $hx,$hy2 d3 jg0.1 z2.2 c$c1
+hx = add($hx,$ro)
+h $hx,$hy
+h $hx,$hy2
+hx = add($hx,$ro)
+h $hx,$hy
+h $hx,$hy2
+hx = $g
+h $hx,$hy
+h $hx,$hy2
+hx = sub($w,$g)
+h $hx,$hy
+h $hx,$hy2
+
+(körvonal)
+b outline 0,0 $w,$h z2.2 c$c1 g3,2,0.7

@@ -173,6 +173,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #    signalhelper.h
 
 DISTFILES += \
+    testdata/M3_alatet_8db.txt \
     testdata/alatet.txt \
     testdata/bekapcsolo.txt \
     testdata/cam_alja.txt \
@@ -203,6 +204,7 @@ DISTFILES += \
     testdata/mestercipo_tap_szerelolap_also.txt \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
     testdata/pi_alatet_15.txt \
+    testdata/pi_alatet_8db_15.txt \
     testdata/pi_bolcso_15.txt \
     testdata/pi_bolcso_15_2.txt \
     testdata/pi_hatlap.txt \
@@ -216,6 +218,8 @@ DISTFILES += \
     testdata/uniturn_doboz_fedlap.txt \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_felso.txt \
+    testdata/uniturn_relay_doboz_hatlap.txt \
+    testdata/uniturn_relay_relays.txt \
     testdata/uniturn_relay_szerelolap.txt \
     testdata/uniturn_usb_tavtarto.txt \
     testdata/uniturn_usb_tavtarto2.txt \

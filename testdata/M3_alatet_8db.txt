@@ -1,4 +1,4 @@
-(pi alatet 8 db)
+(M3 alatet 8 db)
 (szerszám beállítás)
 t1 m d2 h19
 yxz

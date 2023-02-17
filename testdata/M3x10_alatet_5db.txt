@@ -1,0 +1,51 @@
+(M3 alatet 8 db)
+(szerszám beállítás)
+t1 m d2 h19
+yxz
+
+t1
+s50
+f200
+
+th = 2.7
+db = 3
+dk = sum(10,2,2)
+print "dk: $dk"
+c = 0.2
+
+(h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
+(h 4,4 d5 z1.2 c0.175 g0,0,0 np)
+
+x = div($dk,2)
+y = div($dk,2)
+o = add($dk,1)
+
+(1.sor)
+
+h $x,$y d$db z$th c$c jg0.1
+h $x,$y d$dk z$th c$c g2,0.3,0.9 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg0.1
+h $x,$y d$dk z$th c$c g2,0.3,0.9 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg0.1
+h $x,$y d$dk z$th c$c g2,0.3,0.9 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg0.1
+h $x,$y d$dk z$th c$c g2,0.3,0.9 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg0.1
+h $x,$y d$dk z$th c$c g2,0.3,0.9 np
+
+
+
+
+

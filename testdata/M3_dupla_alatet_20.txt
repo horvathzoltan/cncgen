@@ -15,9 +15,9 @@ dk = sum(6,2)
 rk = div($dk,2)
 
 print "dk: $dk"
-c = 0.2
+c = 0.3
 tav = 6.4
-o = 2
+o = 0
 
 x = div($dk,2)
 y = div($dk,2)

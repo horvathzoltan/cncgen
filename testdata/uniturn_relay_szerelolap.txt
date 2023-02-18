@@ -35,8 +35,8 @@ h 189,4
 b inline 69,0 size100,6 z2.2 c$c1 nl1,1,1,0
 
 (trafó furatok)
-m_t1_x1 = 23
-m_t1_y1 = 61
+m_t1_x1 = 15
+m_t1_y1 = 54
 m_t1_x2 = add($m_t1_x1,55)
 
 h $m_t1_x1,$m_t1_y1 d3 jg0.1 z2.2 c$c1 g0,0,0 np

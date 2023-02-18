@@ -4,9 +4,11 @@ t1 m d1 h19
 t2 m d2 h19
 t3 m d3 h19
 yxz
-safe-100,100,15
+safe100,10
+movz=20
+maxz=40
 
-ym
+xm
 
 t1
 s50
@@ -27,7 +29,7 @@ fy = 19
 fx2 = div($fx,2)
 fy2 = div($fy,2)
 gx = 0.1
-c = 0.2
+c = 0.3
 
 (hdmi)
 x = add($o0,$hc2)

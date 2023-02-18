@@ -1297,7 +1297,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     Point jf3 = jf;
     Point bf3 = bf;
     Point bf4 = bf;
-    Point ba4 = ba;
+    Point ba4 = ba;    
 
     switch(_lastBox.type){
     case BoxType::Outline:
@@ -1313,6 +1313,24 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         jf2.y=bf4.y=jf.y;
         break;
     default: break;
+    }
+
+    bool isRounding = _lastBox.type!=BoxType::Corners && m.rounding>0;
+
+    if(isRounding){
+        qreal rounding_r = m.rounding-tool_r;
+        //1
+        ba1.x+=rounding_r;
+        ja1.x-=rounding_r;
+        //2
+        ja2.y+=rounding_r;
+        jf2.y-=rounding_r;
+        //3
+        bf3.x+=rounding_r;
+        jf3.x-=rounding_r;
+        //4
+        ba4.y+=rounding_r;
+        bf4.y-=rounding_r;
     }
 
     msg=G2+ ba.ToString()+' '+jf.ToString();
@@ -1355,6 +1373,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         bool hasGaps = m.gap.isValid() && m.gap.n>0;
         qreal z2 = hasGaps?_last_cut.z-m.gap.height:_last_cut.z;
         QVarLengthArray<Line> lines_border;
+        QVarLengthArray<Arc> arcs;
         Cut cut_border;//{z2, _last_cut.z0};
         if(z2>0){
             cut_border = {z2, _last_cut.z0};
@@ -1366,6 +1385,15 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                 {bf4,ba4, cut_border, _last_feed,{}}};
             }
 
+        if(isRounding){
+            Cut cut = {_last_cut.z,_last_cut.z0};
+            arcs = {
+                {ba1, ba4, {ba1.x, ba4.y,ba4.z}, cut, _last_feed, {0,0,0}},
+                {bf4, bf3, {bf3.x, bf4.y,bf4.z}, cut, _last_feed, {0,0,0}},
+                {jf3, jf2, {jf3.x, jf2.y,jf2.z}, cut, _last_feed, {0,0,0}},
+                {ja2, ja1, {ja1.x, ja2.y,ja2.z}, cut, _last_feed, {0,0,0}},
+            };
+        }
         QVarLengthArray<Line> lines_gap;
         if(hasGaps){
             //gap layer
@@ -1420,7 +1448,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 //                auto&l=segments[i];
 //                g.append('('+l.ToString()+')');
 //                zInfo('l'+QString::number(i)+':'+l.ToString());
-//            }
+ //            }
 //        }
 
         for(auto&bl:segments){
@@ -1430,7 +1458,17 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             _lastLine.p0 = px0; // azonnal vissza is állítjuk
             _lastLine.p1 = px1;
         }
-
+        if(isRounding){
+            for(auto&al:arcs){
+                auto px0 = _lastArc.p0;
+                auto px1 = _lastArc.p1;
+                auto pxo = _lastArc.o;
+                g.append(ArcToGCode(al,err));
+                _lastArc.p0 = px0; // azonnal vissza is állítjuk
+                _lastArc.p1 = px1;
+                _lastArc.o = pxo;
+            }
+        }
     }
     g.append(TotalTimeToGCode());
     return g.join('\n');

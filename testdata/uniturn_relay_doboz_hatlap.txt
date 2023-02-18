@@ -14,7 +14,10 @@ t1
 s50
 f200
 
+(átmenő)
 h = 5
+(süllyesztés mélység)
+h2 = 2.5
 y0 = 19.5
 o0 = 12.9
 hc = 31
@@ -38,7 +41,7 @@ f1y = sub($y0,$fy2)
 f2x = add($x,$fx2)
 f2y = add($y0,$fy2)
 
-h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,1
+h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,2
 h $f1x,$f1y z$h d$d0
 h $f2x,$f2y z$h d$d0
 
@@ -49,7 +52,7 @@ f1y = add($y0,$fx2)
 f2x = add($x,$fy2)
 f2y = sub($y0,$fx2)
 
-h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,1
+h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,2
 h $f1x,$f1y z$h d$d0
 h $f2x,$f2y z$h d$d0
 
@@ -60,7 +63,7 @@ f1y = sub($y0,$fy2)
 f2x = add($x,$fx2)
 f2y = add($y0,$fy2)
 
-h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,1
+h $x,$y0 d$d1 z$h c$c s70 f300 g2,.5,2
 h $f1x,$f1y z$h d$d0
 h $f2x,$f2y z$h d$d0
 
@@ -68,12 +71,21 @@ h $f2x,$f2y z$h d$d0
 x = sum($x,$hc2,$gx)
 cx1 = 3
 cx2 = sub(53,$cx1)
+cd0 = 2.5
+cd1 = 5.5
 
 f1x = add($x,$cx1)
 f2x = add($x,$cx2)
 
-h $f1x,$y0 z$h d$d0
-h $f2x,$y0 z$h d$d0
+(furat1)
+h $f1x,$y0 z$h d$cd0
+(süllyesztés1)
+h $f1x,$y0 z$h2 d$cd1 ng
+
+(furat2)
+h $f2x,$y0 z$h d$cd0
+(süllyesztés2)
+h $f2x,$y0 z$h2 d$cd1 ng
 
 cx3 = 6.5
 ch = 9.5
@@ -81,10 +93,10 @@ ch2 = div($ch,2)
 y2 = sub($y0,$ch2)
 x2 = add($x,$cx3)
 
-b inline $x2,$y2 size40.5,$ch z$h c$c g1,0.3,0.7
+b inline $x2,$y2 size40.5,$ch z$h c$c g1,0.3,2
 
 (tápcsati)
-#h 150,18.1 z5 d11.9 c0.1 s70 f300 g2,.5,1
+#h 150,18.1 z5 d11.9 c0.1 s70 f300 g2,.5,2
 
 
 

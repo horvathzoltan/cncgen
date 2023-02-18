@@ -1,6 +1,6 @@
 #include "box.h"
 #include "gcode/gcode.h"
-#include "helpers/macro.h"
+//#include "helpers/macro.h"
 #include <QVarLengthArray>
 #include "helpers/stringhelper.h"
 #include "geometry/size.h"
@@ -23,7 +23,8 @@ Box::Box(const Point &_p0,
          const Point& _rp,
          const Size& _size,
          qreal _jg,
-         bool _nl[4])
+         bool _nl[4],
+         qreal _rounding)
 {
     p0=_p0;
     p1=_p1;
@@ -40,6 +41,7 @@ Box::Box(const Point &_p0,
     nl[2]=_nl[2];
     nl[3]=_nl[3];
     _isValid = true;
+    rounding = _rounding;
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -59,6 +61,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     Gap gap;
     Cut cut;
     qreal corner_diameter=-1;
+    qreal rounding=0;
     Feed feed;
     Point rpoint;
     Size size;
@@ -84,24 +87,31 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         }
         if(p.startsWith('r')) {
             Point rp;
-            if(Point::Parse(p, xymode, mmode,L("r"), &rp, nullptr).state()==ParseState::Parsed)
+            auto state = Point::Parse(p, xymode, mmode,L("r"), &rp, nullptr).state();
+            if(state==ParseState::Parsed)
             {
                 rpoint = rp;
-            };
+            } else{ //rounding
+                qreal a;
+                bool ok = GCode::ParseValue(p, L("r"), &a);
+                if(ok)rounding=a;
+            }
             continue;
         }
 
         if(Size::Parse(p).state()!=ParseState::NoData) {
             Size s0;
             auto pp = Size::Parse(p, xymode, mmode, &s0);
-            if(pp.state()==ParseState::Parsed){size=s0;}
+            if(pp.state()==ParseState::Parsed)size=s0;
             continue;
         }
 //        if(Size::Parse(p,&size).state()!=ParseState::NoData) {
 //            continue;
 //        }
         if(p.startsWith('d')){
-            GCode::ParseValue(p, L("d"), &corner_diameter);
+            qreal a;
+            bool ok = GCode::ParseValue(p, L("d"), &a);
+            if(ok) corner_diameter=a;
             continue;
         }
         if(cut.ParseInto(p,&st)) continue;
@@ -112,9 +122,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         if(p.startsWith("jg")){
             qreal a;
             bool ok = GCode::ParseValue(p, L("jg"), &a);
-            if(ok){
-                jointGap=a;
-            }
+            if(ok)jointGap=a;
             continue;
         }
 
@@ -182,7 +190,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         rpoint,
         size,
         jointGap,
-        nl
+        nl,
+        rounding
     };
 
     st.setState(ParseState::Parsed);

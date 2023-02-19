@@ -13,7 +13,7 @@ c1 = 0.2
 
 (csavar a szélétől)
 g = 5
-g2 = 5
+g2 = 8
 
 (relé panel w,h)
 rw = 65.85
@@ -22,7 +22,7 @@ rh = 45.1
 
 rwd = sum(3.2,1,2)
 rww = sum($rw,$rwd)
-ro = sum($rww,0.2)
+ro = sum($rww,0.4)
 
 w = sum($g,$g2,$rw,$rwd,$rw,$rwd,$rw,$rwd,$g2,$g)
 h = sum($g,$g2,$rh,$g2,$g)
@@ -63,4 +63,4 @@ h $hx,$hy
 h $hx,$hy2
 
 (körvonal)
-b outline 0,0 $w,$h z2.2 c$c1 g3,2,0.7
+b outline 0,0 $w,$h z2.2 c$c1 g3,2,0.7 r5

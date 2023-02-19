@@ -24,7 +24,8 @@ Box::Box(const Point &_p0,
          const Size& _size,
          qreal _jg,
          bool _nl[4],
-         qreal _rounding)
+         qreal _rounding,
+        int _rjoin)
 {
     p0=_p0;
     p1=_p1;
@@ -42,6 +43,7 @@ Box::Box(const Point &_p0,
     nl[3]=_nl[3];
     _isValid = true;
     rounding = _rounding;
+    rjoin=_rjoin;
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -66,6 +68,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     Point rpoint;
     Size size;
     qreal jointGap=0;
+    int rjoin = 0;
 
     bool nl[]={1,1,1,1};
 
@@ -94,7 +97,13 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             } else{ //rounding
                 qreal a;
                 bool ok = GCode::ParseValue(p, L("r"), &a);
-                if(ok)rounding=a;
+                if(ok){
+                    rounding=a;
+                } else{
+                    int a;
+                    bool ok = GCode::ParseValue(p, L("rj"), &a);
+                    if(ok) rjoin = a;
+                }
             }
             continue;
         }
@@ -191,7 +200,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         size,
         jointGap,
         nl,
-        rounding
+        rounding, rjoin
     };
 
     st.setState(ParseState::Parsed);

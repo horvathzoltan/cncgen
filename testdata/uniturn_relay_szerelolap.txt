@@ -32,7 +32,7 @@ h 189,124
 h 189,4
 
 (dugó kivágások)
-b inline 69,0 size100,15 z2.2 c$c1 nl1,1,1,0
+b inline 69,0 size100,15 z2.2 c$c1 r2.5 rj2 nl1,1,1,0
 
 (trafó furatok)
 m_t1_x1 = 17

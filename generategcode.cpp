@@ -1317,20 +1317,107 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
     bool isRounding = _lastBox.type!=BoxType::Corners && m.rounding>0;
 
+    bool isR0 = m.nl[0]!=0&&m.nl[1]!=0;//0
+    bool isR1 = m.nl[1]!=0&&m.nl[2]!=0;//1
+    bool isR2 = m.nl[2]!=0&&m.nl[3]!=0;//2
+    bool isR3 = m.nl[3]!=0&&m.nl[0]!=0;//3
+
+    bool isR0m = false;
+    bool isR1m = false;
+    bool isR2m = false;
+    bool isR3m = false;
+
     if(isRounding){
-        qreal rounding_r = m.rounding-tool_r;
+        qreal rounding_r = m.rounding-tool_r;        
         //1
-        ba1.x+=rounding_r;
-        ja1.x-=rounding_r;
+        if(isR0){
+            ja1.x-=rounding_r;
+            ja2.y+=rounding_r;
+        } else{
+            if(m.rjoin==1){
+                ja1.x-=rounding_r;
+                ja2.y+=rounding_r;
+                isR0=true;
+            } else if(m.rjoin==2){
+                if(m.nl[0]==0){
+                    ja1.x-=-rounding_r;
+                    ja2.y+=rounding_r;
+                } else if(m.nl[1]==0){
+                    ja1.x-=rounding_r;
+                    ja2.y+=-rounding_r;
+                    isR0m=true;
+                }
+                isR0=true;
+            }
+        }
         //2
-        ja2.y+=rounding_r;
-        jf2.y-=rounding_r;
+        if(isR1){
+            jf2.y-=rounding_r;
+            jf3.x-=rounding_r;
+        }else{
+            if(m.rjoin==1){
+                jf2.y-=rounding_r;
+                jf3.x-=rounding_r;
+                isR1=true;
+            } else if(m.rjoin==2){
+                if(m.nl[1]==0){
+                    jf2.y-=-rounding_r;
+                    jf3.x-=rounding_r;
+                }
+                else if (m.nl[2]==0){
+                    jf2.y-=rounding_r;
+                    jf3.x-=-rounding_r;
+                    isR1m=true;
+                }
+
+                isR1=true;
+            }
+        }
         //3
-        bf3.x+=rounding_r;
-        jf3.x-=rounding_r;
+        if(isR2){
+            bf3.x+=rounding_r;
+            bf4.y-=rounding_r;
+        }else{
+            if(m.rjoin==1){
+                bf3.x+=rounding_r;
+                bf4.y-=rounding_r;
+                isR2=true;
+            } else if(m.rjoin==2){
+                if(m.nl[2]==0){
+                    bf3.x+=-rounding_r;
+                    bf4.y-=rounding_r;
+                }
+                else if(m.nl[3]==0){
+                    bf3.x+=rounding_r;
+                    bf4.y-=-rounding_r;
+                    isR2m=true;
+                }
+                isR2=true;
+            }
+        }
         //4
-        ba4.y+=rounding_r;
-        bf4.y-=rounding_r;
+        if(isR3){
+            ba1.x+=rounding_r;
+            ba4.y+=rounding_r;
+        }else{
+            if(m.rjoin==1){
+                ba1.x+=rounding_r;
+                ba4.y+=rounding_r;
+                isR3=true;
+            } else if(m.rjoin==2){
+                if(m.nl[3]==0){
+                    ba1.x+=rounding_r;
+                    ba4.y+=-rounding_r;
+                    isR3m=true;
+                }
+                else if(m.nl[0]==0){
+                    ba1.x+=-rounding_r;
+                    ba4.y+=rounding_r;
+                }
+
+                isR3=true;
+            }
+        }
     }
 
     msg=G2+ ba.ToString()+' '+jf.ToString();
@@ -1387,12 +1474,30 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
         if(isRounding){
             Cut cut = {_last_cut.z,_last_cut.z0};
-            arcs = {
-                {ba1, ba4, {ba1.x, ba4.y,ba4.z}, cut, _last_feed, {0,0,0}},
-                {bf4, bf3, {bf3.x, bf4.y,bf4.z}, cut, _last_feed, {0,0,0}},
-                {jf3, jf2, {jf3.x, jf2.y,jf2.z}, cut, _last_feed, {0,0,0}},
-                {ja2, ja1, {ja1.x, ja2.y,ja2.z}, cut, _last_feed, {0,0,0}},
-            };
+            if(isR0){
+                if(isR0m)
+                    arcs.append({ja1, ja2, {ja1.x, ja2.y,ja2.z}, cut, _last_feed, {0,0,0}});
+                else
+                    arcs.append({ja2, ja1, {ja1.x, ja2.y,ja2.z}, cut, _last_feed, {0,0,0}});
+            }
+            if(isR1){
+                if(isR1m)
+                    arcs.append({jf2, jf3, {jf3.x, jf2.y,jf2.z}, cut, _last_feed, {0,0,0}});
+                else
+                    arcs.append({jf3, jf2, {jf3.x, jf2.y,jf2.z}, cut, _last_feed, {0,0,0}});
+            }
+            if(isR2){
+                if(isR2m)
+                    arcs.append({bf3, bf4, {bf3.x, bf4.y,bf4.z}, cut, _last_feed, {0,0,0}});
+                else
+                    arcs.append({bf4, bf3, {bf3.x, bf4.y,bf4.z}, cut, _last_feed, {0,0,0}});
+            }
+            if(isR3){
+                if(isR3m)
+                    arcs.append({ba4, ba1, {ba1.x, ba4.y,ba4.z}, cut, _last_feed, {0,0,0}});
+                else
+                    arcs.append({ba1, ba4, {ba1.x, ba4.y,ba4.z}, cut, _last_feed, {0,0,0}});
+            }
         }
         QVarLengthArray<Line> lines_gap;
         if(hasGaps){

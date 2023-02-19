@@ -25,7 +25,8 @@ public:
         const Size& _size,
         qreal _jg,
         bool _nl[4],
-        qreal rounding
+        qreal rounding,
+        int _rjoin
         );
 
     QList<Line> lines;
@@ -40,6 +41,7 @@ public:
     Size size;
     qreal jointGap=0; // illesztési hézag
     qreal rounding=0; // sarkok lekerekítése
+    int rjoin=0;//szabad vég: 0 szabadon, 1: befele íves, kifele íves
 
     bool nl[4]={1,1,1,1};
     static auto Parse(const QString& txt, XYMode mode, MMode mmode, Box *m, Point *offset) -> ParseState;

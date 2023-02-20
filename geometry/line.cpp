@@ -165,4 +165,10 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
     return m;
 }
 
+qreal Line::Length()
+{
+    auto d =  GeoMath::Distance(p0,p1);
+    return d;
+}
+
 

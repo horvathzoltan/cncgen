@@ -16,7 +16,7 @@ c1 = 0.2
 box_w = 208
 box_h = 154
 hx0 = 4
-hy0 = 5
+hy0 = 4.5
 hx1 = sub($box_w,$hx0)
 hy1 = sub($box_h,$hy0)
 
@@ -32,5 +32,13 @@ b outline 0,0 $box_w,$box_h z2.5 c$c1 g3,2,0.7 r5
 
 w1 = div($box_w,2)
 h1 = div($box_h,2)
+h1 = add($h1,10)
+
+print "h1: $h1"
 
 b inline 0,0 size$w1,$h1 z2.2 c$c1 r2.5 rj2 nl0,1,1,0
+
+h2 = 20
+y3 = sub($box_h,$h2)
+
+b inline 120,$y3 size58,$h2 z2.2 c$c1 r2.5 rj2 nl1,0,1,1

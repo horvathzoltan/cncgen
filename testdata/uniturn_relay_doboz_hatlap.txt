@@ -80,12 +80,12 @@ f2x = add($x,$cx2)
 (furat1)
 h $f1x,$y0 z$h d$cd0
 (süllyesztés1)
-h $f1x,$y0 z$h2 d$cd1 ng
+#h $f1x,$y0 z$h2 d$cd1 ng
 
 (furat2)
 h $f2x,$y0 z$h d$cd0
 (süllyesztés2)
-h $f2x,$y0 z$h2 d$cd1 ng
+#h $f2x,$y0 z$h2 d$cd1 ng
 
 cx3 = 6.5
 ch = 9.5

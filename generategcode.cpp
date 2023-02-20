@@ -1329,7 +1329,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
     if(isRounding){
         qreal rounding_r = m.rounding-tool_r;        
-        //1
+        //0
         if(isR0){
             ja1.x-=rounding_r;
             ja2.y+=rounding_r;
@@ -1340,18 +1340,19 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                 isR0=true;
             } else if(m.rjoin==2){
                 if(m.nl[0]==0 && m.nl[1]==1){
-                    ja1.x-=-rounding_r;
+                    ja1.x+=rounding_r;
                     ja2.y+=rounding_r;
                     isR0m=true;
                 } else if(m.nl[0]==1 && m.nl[1]==0){
-                    ja1.x-=rounding_r;
-                    ja2.y+=-rounding_r;
-
+                    ja1.x-=rounding_r-t.d;
+                    ja2.x+=t.d;
+                    ja2.y-=rounding_r;
+                    isR0m=true;
                 }
                 isR0=true;
             }
         }
-        //2
+        //1
         if(isR1){
             jf2.y-=rounding_r;
             jf3.x-=rounding_r;
@@ -1362,19 +1363,21 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                 isR1=true;
             } else if(m.rjoin==2){
                 if(m.nl[1]==0&&m.nl[2]==1){
-                    jf2.y-=-rounding_r;
-                    jf3.x-=rounding_r;
+                    jf2.y+=rounding_r;
+                    jf2.x+=t.d;
+                    jf3.x-=rounding_r-t.d;
+                    isR1m=true;
                 }
                 else if (m.nl[1]==1 &&m.nl[2]==0){
                     jf2.y-=rounding_r;
-                    jf3.x-=-rounding_r;
+                    jf3.x+=rounding_r;
                     isR1m=true;
                 }
 
                 isR1=true;
             }
         }
-        //3
+        //2
         if(isR2){
             bf3.x+=rounding_r;
             bf4.y-=rounding_r;
@@ -1385,18 +1388,19 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                 isR2=true;
             } else if(m.rjoin==2){
                 if(m.nl[2]==0&&m.nl[3]==1){
-                    bf3.x+=-rounding_r;
+                    bf3.x-=rounding_r;
                     bf4.y-=rounding_r;
+                    isR2m=true;
                 }
                 else if(m.nl[2]==1&&m.nl[3]==0){
                     bf3.x+=rounding_r;
-                    bf4.y-=-rounding_r;
+                    bf4.y+=rounding_r;
                     isR2m=true;
                 }
                 isR2=true;
             }
         }
-        //4
+        //3
         if(isR3){
             ba1.x+=rounding_r;
             ba4.y+=rounding_r;
@@ -1408,12 +1412,13 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             } else if(m.rjoin==2){
                 if(m.nl[3]==0&&m.nl[0]==1){
                     ba1.x+=rounding_r;
-                    ba4.y+=-rounding_r;
+                    ba4.y-=rounding_r;
                     isR3m=true;
                 }
                 else if(m.nl[3]==1&&m.nl[0]==0){
-                    ba1.x+=-rounding_r;
+                    ba1.x-=rounding_r;
                     ba4.y+=rounding_r;
+                    isR3m=true;
                 }
 
                 isR3=true;
@@ -1530,16 +1535,33 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         zInfo(L("(segments)"));
         QList<Line> segments;
 
+        qreal l0 = lines_border[0].Length();
+        qreal l1 = lines_border[1].Length();
+
+        qreal l_min = l0<l1?l0:l1;
+        qreal l_max = l0>l1?l0:l1;
+        //qreal m_min = (l0<l1?l0:l1)/m.gap.n+1;
+        qreal gap_max_l = l_max/m.gap.n+1;
+
         for(int i=0;i<4;i++){
             if(m.nl[i]==0) continue;
+            auto&l_border=lines_border[i];
             if(lines_border.length()>i){
-                auto&l_border=lines_border[i];
+
+                //l_border.length();
                 //if(cut_border.z>0){ segments.append(l_border);}
                 segments.append(l_border);
             }
             if(hasGaps){
+                qreal l = l_border.Length();
+                auto gap2 = m.gap;
+                if(l<gap_max_l){
+                    gap2.n = 1;
+                } else{
+                    gap2.n = m.gap.n;
+                }
                 auto&l_gap=lines_gap[i];
-                auto s = l_gap.Divide(m.gap, t.d);
+                auto s = l_gap.Divide(gap2, t.d);
                 if(s.isEmpty()){
                     zInfo(QStringLiteral("cannot divide line"));
                     segments.append(l_gap);

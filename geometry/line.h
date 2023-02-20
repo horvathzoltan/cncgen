@@ -35,7 +35,7 @@ struct Line{
     /*ISVALID*/
 public:
     bool isValid() const {return _isValid;}
-    
+    qreal Length();
 private:
     bool _isValid;
 

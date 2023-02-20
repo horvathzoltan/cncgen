@@ -1341,9 +1341,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             } else if(m.rjoin==2){
                 if(m.nl[0]==0 && m.nl[1]==1){
                     ja1.x+=rounding_r;
-                    ja2.y+=rounding_r;
+                    ja1.y-=t.d;
+                    ja2.y+=rounding_r-t.d;
                     isR0m=true;
-                } else if(m.nl[0]==1 && m.nl[1]==0){
+                } else if(m.nl[0]==1 && m.nl[1]==0){ //ez
                     ja1.x-=rounding_r-t.d;
                     ja2.x+=t.d;
                     ja2.y-=rounding_r;
@@ -1369,7 +1370,8 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                     isR1m=true;
                 }
                 else if (m.nl[1]==1 &&m.nl[2]==0){
-                    jf2.y-=rounding_r;
+                    jf2.y-=rounding_r-t.d;
+                    jf3.y+=t.d;
                     jf3.x+=rounding_r;
                     isR1m=true;
                 }
@@ -1389,11 +1391,13 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             } else if(m.rjoin==2){
                 if(m.nl[2]==0&&m.nl[3]==1){
                     bf3.x-=rounding_r;
-                    bf4.y-=rounding_r;
+                    bf3.y+=t.d;
+                    bf4.y-=rounding_r-t.d;//+
                     isR2m=true;
                 }
                 else if(m.nl[2]==1&&m.nl[3]==0){
-                    bf3.x+=rounding_r;
+                    bf3.x+=rounding_r-t.d;
+                    bf4.x-=t.d;
                     bf4.y+=rounding_r;
                     isR2m=true;
                 }
@@ -1411,13 +1415,15 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                 isR3=true;
             } else if(m.rjoin==2){
                 if(m.nl[3]==0&&m.nl[0]==1){
-                    ba1.x+=rounding_r;
+                    ba1.x+=rounding_r-t.d;
+                    ba4.x-=t.d;
                     ba4.y-=rounding_r;
                     isR3m=true;
                 }
                 else if(m.nl[3]==1&&m.nl[0]==0){
                     ba1.x-=rounding_r;
-                    ba4.y+=rounding_r;
+                    ba1.y-=t.d;
+                    ba4.y+=rounding_r-t.d;
                     isR3m=true;
                 }
 

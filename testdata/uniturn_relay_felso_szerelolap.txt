@@ -1,0 +1,36 @@
+(UNITURN mérőállomás felső szerelőlap)
+(2mm polikarbonát lemez)
+(xy0 a ja saroknál)
+(szerszám beállítás)
+t1 m d2 h19
+
+yxz
+t1
+s50
+f200
+
+c1 = 0.2
+
+(B3218101 - NET-BOX 220, VERS. I)
+(rögzítő furatok)
+box_w = 208
+box_h = 154
+hx0 = 4
+hy0 = 5
+hx1 = sub($box_w,$hx0)
+hy1 = sub($box_h,$hy0)
+
+#h $hx0,$hy0 d3 z2.2 c$c1
+h $hx1,$hy0 d3 z2.2 c$c1
+h $hx1,$hy1 d3 z2.2 c$c1
+h $hx0,$hy1 d3 z2.2 c$c1
+
+(körvonal)
+b outline 0,0 $box_w,$box_h z2.5 c$c1 g3,2,0.7 r5
+
+(dugó kivágások)
+
+w1 = div($box_w,2)
+h1 = div($box_h,2)
+
+b inline 0,0 size$w1,$h1 z2.2 c$c1 r2.5 rj2 nl0,1,1,0

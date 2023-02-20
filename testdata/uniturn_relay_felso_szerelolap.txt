@@ -36,7 +36,7 @@ h1 = add($h1,10)
 
 print "h1: $h1"
 
-b inline 0,0 size$w1,$h1 z2.2 c$c1 r2.5 rj2 nl0,1,1,0
+b outline 0,0 size$w1,$h1 z2.2 c$c1 r2.5 rj2 nl0,1,1,0
 
 h2 = 20
 y3 = sub($box_h,$h2)

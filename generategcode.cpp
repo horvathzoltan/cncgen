@@ -1335,9 +1335,11 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             ja2.y+=rounding_r;
         } else{
             if(m.rjoin==1){
+                if(m.nl[0]==1||m.nl[1]==1){
                 ja1.x-=rounding_r;
                 ja2.y+=rounding_r;
                 isR0=true;
+                }
             } else if(m.rjoin==2){
                 if(m.type==BoxType::Inline){
                     if(m.nl[0]==0 && m.nl[1]==1){
@@ -1373,9 +1375,11 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             jf3.x-=rounding_r;
         }else{
             if(m.rjoin==1){
-                jf2.y-=rounding_r;
-                jf3.x-=rounding_r;
-                isR1=true;
+                if(m.nl[1]==1||m.nl[2]==1){
+                    jf2.y-=rounding_r;
+                    jf3.x-=rounding_r;
+                    isR1=true;
+                }
             } else if(m.rjoin==2){
                 if(m.type==BoxType::Inline){
                     if(m.nl[1]==0&&m.nl[2]==1){
@@ -1411,9 +1415,11 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             bf4.y-=rounding_r;
         }else{
             if(m.rjoin==1){
-                bf3.x+=rounding_r;
-                bf4.y-=rounding_r;
-                isR2=true;
+                if(m.nl[2]==1||m.nl[3]==1){
+                    bf3.x+=rounding_r;
+                    bf4.y-=rounding_r;
+                    isR2=true;
+                }
             } else if(m.rjoin==2){
                 if(m.type==BoxType::Inline){
                     if(m.nl[2]==0&&m.nl[3]==1){
@@ -1449,9 +1455,12 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             ba4.y+=rounding_r;
         }else{
             if(m.rjoin==1){
-                ba1.x+=rounding_r;
-                ba4.y+=rounding_r;
-                isR3=true;
+                if(m.nl[3]==1||m.nl[0]==1)
+                {
+                    ba1.x+=rounding_r;
+                    ba4.y+=rounding_r;
+                    isR3=true;
+                }
             } else if(m.rjoin==2){
                 if(m.type==BoxType::Inline){
                     if(m.nl[3]==0&&m.nl[0]==1){

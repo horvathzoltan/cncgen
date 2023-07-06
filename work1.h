@@ -36,7 +36,6 @@ public:
     bool init(Params p);
     Result doWork();
     Result _result{};
-    QString GetWorkingFolder();
 
 private:
     bool _isInited = false;

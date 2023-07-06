@@ -104,33 +104,33 @@ void Work1::run() {
     if(_isEventLoopNeeded) emit finished();
 }
 
-auto Work1::GetWorkingFolder() -> QString
-{
-    QString workingFolder = params.isTest?FileNameHelper::GetTestFolderPath():qApp->applicationDirPath();
-    return workingFolder;
-}
-
 auto Work1::doWork2() -> Result
 {
-    QString workingFolder = GetWorkingFolder();
-
     if(params.outFile.isEmpty()){
         QFileInfo fi(params.inFile);
         QString bn = fi.baseName();
         params.outFile=bn + ".gcode";
     }
-    zInfo("workingFolder: "+workingFolder);
+
     zInfo(QStringLiteral("params: %1, %2, %3, %4")
               .arg(params.inFile)
               .arg(params.outFile)
               .arg(params.isBackup)
               .arg(params.isTest));
 
+    FileNameHelper::SetTestMode(params.isTest);
+    QString workingFolder = FileNameHelper::GetWorkingFolder();
+    zInfo("workingFolder: "+workingFolder);
+
     auto d = QDir(workingFolder);
 
-    auto geomLines = TextFileHelper::loadLines(d.filePath(params.inFile));
+    auto fn = d.filePath(params.inFile);
+    auto geomLines = TextFileHelper::loadLines(fn);
 
-    if(geomLines.isEmpty()) return {Result::State::NoResult, 56};
+    if(geomLines.isEmpty()) {
+        zInfo("cannot load file: "+fn);
+        return {Result::State::NoResult, 56};
+    }
 
     GenerateGcode g;
     g.Init();

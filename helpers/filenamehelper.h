@@ -1,19 +1,22 @@
 #ifndef FILENAMEHELPER_H
 #define FILENAMEHELPER_H
 
-#include "helpers/macro.h"
-#include <QDir>
+#include <QString>
+
+#define STRINGIFY(msg) #msg
+#define STRING(msg) QStringLiteral(STRINGIFY(msg))
+#define L(msg) QStringLiteral(msg)
 
 class FileNameHelper{
+private:
+    static bool _inited;
+    static QString _projectPath;
+    static bool _isTest;
 public:
-    static auto GetTestFolderPath()-> QString
-    {
-#if defined (STRING) && defined (TARGI)
-        return QDir(STRING(SOURCE_PATH)).filePath("testdata");
-#else
-        return ("/home/zoli/cncgen/testdata");
-#endif
-    }
+    static bool Init(const char *file = __FILE__);
+    static QString GetTestFolderPath();
+    static QString GetWorkingFolder();
+    static void SetTestMode(bool v){_isTest=v;};
 };
 
 #endif // FILENAMEHELPER_H

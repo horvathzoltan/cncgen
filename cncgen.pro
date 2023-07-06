@@ -116,6 +116,7 @@ SOURCES += \
         geometry/size.cpp \
         geometry/xymode.cpp \
         helpers/commandlineparserhelper.cpp \
+        helpers/filenamehelper.cpp \
         helpers/logger.cpp \
         helpers/signalhelper.cpp \
         helpers/stringhelper.cpp \

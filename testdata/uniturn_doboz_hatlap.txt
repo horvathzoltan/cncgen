@@ -1,5 +1,6 @@
 UNITURN mérőállomás doboz hátlap)
 (szerszám beállítás)
+(cmd args: -i uniturn_doboz_hatlap.txt -t)
 t1 m d1 h19
 t2 m d2 h19
 t3 m d3 h19

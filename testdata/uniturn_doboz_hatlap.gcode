@@ -2,7 +2,7 @@
 (type: GCode from geometry)
 (input file: uniturn_doboz_hatlap.txt)
 (output file: uniturn_doboz_hatlap.gcode)
-(created on: Cs júl. 6 16:13:47 2023)
+(created on: Cs júl. 6 19:48:37 2023)
 (total time: 00:45:25.000)
 (total cut: 12231.7mm)
 (total length: 12907.6mm)

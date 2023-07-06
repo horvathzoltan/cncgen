@@ -1,11 +1,11 @@
 #include <QCoreApplication>
 #include <QAbstractEventDispatcher>
 #include "helpers/logger.h"
-#include "helpers/stringhelper.h"
+//#include "helpers/stringhelper.h"
 #include "helpers/signalhelper.h"
 #include "work1.h"
 #include "helpers/nameof.h"
-
+#include "helpers/filenamehelper.h"
 
 // -i gomb.txt -o gomb.gcode -t
 
@@ -16,6 +16,8 @@ auto main(int argc, char *argv[]) -> int
 
 #if defined (STRING) && defined (TARGI)
     auto poj = STRING(TARGI);
+    Logger::Init(Logger::INFO, Logger::DEBUG, true, true);
+    FileNameHelper::Init();
     zInfo(QStringLiteral("started ")+poj);
 #else
     auto poj=L("manymany");

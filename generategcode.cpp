@@ -232,6 +232,10 @@ auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString 
             if(m.p1.z<0) m.p1.z=0;
             if(m.o.z<0) m.o.z=0;
             if(m.rp.z<0) m.rp.z=0;
+
+            m.cut.z = 0.02;
+            m.cut.z0 = 0.02;
+            //m.gap.height = 0.01;
         }
 
         if(gcode)*gcode=ArcToGCode(m,err);
@@ -254,6 +258,10 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
             if(m.p0.z<0) m.p0.z=0;
             if(m.p1.z<0) m.p1.z=0;
             if(m.rp.z<0) m.rp.z=0;
+
+            m.cut.z = 0.02;
+            m.cut.z0 = 0.02;
+            m.gap.height = 0.01;
         }
         if(gcode)*gcode=LineToGCode(m,err);
     }
@@ -274,6 +282,10 @@ auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString
         if(_isPlot){
             if(m.p.z<0) m.p.z=0;
             if(m.rp.z<0) m.rp.z=0;
+
+            m.cut.z = 0.02;
+            m.cut.z0 = 0.02;
+            m.gap.height = 0.01;
         }
 
         if(gcode)*gcode=HoleToGCode(m,err);
@@ -296,6 +308,10 @@ auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString 
             if(m.p0.z<0) m.p0.z=0;
             if(m.p1.z<0) m.p1.z=0;
             if(m.rp.z<0) m.rp.z=0;
+
+            m.cut.z = 0.02;
+            m.cut.z0 = 0.02;
+            m.gap.height = 0.01;
         }
 
         if(gcode)*gcode=BoxToGCode(m,err);
@@ -1625,38 +1641,43 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         zInfo(L("(segments)"));
         QList<Line> segments;
 
-        qreal l0 = lines_border[0].Length();
-        qreal l1 = lines_border[1].Length();
+        qreal l0 = 0;
+        qreal l1 = 0;
+        if(lines_border.length()>=4){
+            l0 = lines_border[0].Length();
+            l1 = lines_border[1].Length();
 
-        qreal l_min = l0<l1?l0:l1;
-        qreal l_max = l0>l1?l0:l1;
-        //qreal m_min = (l0<l1?l0:l1)/m.gap.n+1;
-        qreal gap_max_l = l_max/m.gap.n+1;
 
-        for(int i=0;i<4;i++){
-            if(m.nl[i]==0) continue;
-            auto&l_border=lines_border[i];
-            if(lines_border.length()>i){
+            qreal l_min = l0<l1?l0:l1;
+            qreal l_max = l0>l1?l0:l1;
+            //qreal m_min = (l0<l1?l0:l1)/m.gap.n+1;
+            qreal gap_max_l = l_max/m.gap.n+1;
 
-                //l_border.length();
-                //if(cut_border.z>0){ segments.append(l_border);}
-                segments.append(l_border);
-            }
-            if(hasGaps){
-                qreal l = l_border.Length();
-                auto gap2 = m.gap;
-                if(l<gap_max_l){
-                    gap2.n = 1;
-                } else{
-                    gap2.n = m.gap.n;
+            for(int i=0;i<4;i++){
+                if(m.nl[i]==0) continue;
+                auto&l_border=lines_border[i];
+                if(lines_border.length()>i){
+
+                    //l_border.length();
+                    //if(cut_border.z>0){ segments.append(l_border);}
+                    segments.append(l_border);
                 }
-                auto&l_gap=lines_gap[i];
-                auto s = l_gap.Divide(gap2, t.d);
-                if(s.isEmpty()){
-                    zInfo(QStringLiteral("cannot divide line"));
-                    segments.append(l_gap);
-                }else{
-                    segments.append(s);
+                if(hasGaps){
+                    qreal l = l_border.Length();
+                    auto gap2 = m.gap;
+                    if(l<gap_max_l){
+                        gap2.n = 1;
+                    } else{
+                        gap2.n = m.gap.n;
+                    }
+                    auto&l_gap=lines_gap[i];
+                    auto s = l_gap.Divide(gap2, t.d);
+                    if(s.isEmpty()){
+                        zInfo(QStringLiteral("cannot divide line"));
+                        segments.append(l_gap);
+                    }else{
+                        segments.append(s);
+                    }
                 }
             }
         }

@@ -19,6 +19,7 @@ public:
         QString outFile;
         bool isBackup;
         bool isTest = false;
+        bool isPlot = false;
 
         bool IsValid();
 

@@ -1,5 +1,7 @@
 (UNITURN mérőállomás alsó szerelőlap)
 (szerszám beállítás)
+(cmd line: -i uniturn_also.txt -t)
+
 t1 m d2 h19
 t2 m d3 h19
 t3 m d4 h19
@@ -23,9 +25,8 @@ h 57.35,106
 b corners 70,116 size58,23 d3 z2.8 c0.1 d2.5
 
 (rfid furatok)
-// mozgatás 5mm<-
-h 122.4,85.1 d3 z2.8 c0.1
-h 85.6,69.2
+(h 117.4,85.1 d3 z2.8 c0.1)
+(9h 80.6,69.2)
 
 (B3218101 - NET-BOX 220, VERS. I)
 (rögzítő furatok)

@@ -227,6 +227,13 @@ auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString 
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Arc típusú sor
     {
+        if(_isPlot){
+            if(m.p0.z<0) m.p0.z=0;
+            if(m.p1.z<0) m.p1.z=0;
+            if(m.o.z<0) m.o.z=0;
+            if(m.rp.z<0) m.rp.z=0;
+        }
+
         if(gcode)*gcode=ArcToGCode(m,err);
     }
     QString msg;
@@ -242,7 +249,12 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
     if(s.state()==ParseState::NoData) return false;
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Arc típusú sor
-    {        
+    {
+        if(_isPlot){
+            if(m.p0.z<0) m.p0.z=0;
+            if(m.p1.z<0) m.p1.z=0;
+            if(m.rp.z<0) m.rp.z=0;
+        }
         if(gcode)*gcode=LineToGCode(m,err);
     }
     QString msg;
@@ -259,6 +271,11 @@ auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Box típusú sor
     {
+        if(_isPlot){
+            if(m.p.z<0) m.p.z=0;
+            if(m.rp.z<0) m.rp.z=0;
+        }
+
         if(gcode)*gcode=HoleToGCode(m,err);
     }
     QString msg;
@@ -275,6 +292,12 @@ auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString 
     zInfo(T1+str);
     if(s.state() == ParseState::Parsed ) // ha Box típusú sor
     {
+        if(_isPlot){
+            if(m.p0.z<0) m.p0.z=0;
+            if(m.p1.z<0) m.p1.z=0;
+            if(m.rp.z<0) m.rp.z=0;
+        }
+
         if(gcode)*gcode=BoxToGCode(m,err);
     }
     QString msg;
@@ -457,7 +480,7 @@ auto GenerateGcode::LiftDownToGCode(qreal z)-> QString
     QString err;
 
     if(_last_position.z==z){ return {};}
-    auto z2 = z+1;
+    auto z2 = z+1; // z2-ig gyorsan megyünk
     qreal l = _last_position.z-z2;
     auto gcode = GoToZ(GMode::Rapid,{0,0,z2},l);//+ " (lift down)";
     AppendGCode(&g, gcode, err, L("lift down"));

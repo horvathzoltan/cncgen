@@ -36,9 +36,11 @@ public:
     qreal _total_time;
     qreal _total_length;
     qreal _total_cut;
+    void SetIsPlot(bool v){_isPlot = v;}
 private:
     QDir _workingFolder = {};
     bool _verbose = true;
+    bool _isPlot = false;
     XYMode _XYMode;
     MMode _MMode;
     //MMode _mmode;

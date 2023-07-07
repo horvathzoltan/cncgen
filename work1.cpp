@@ -24,19 +24,22 @@ auto Work1::Params::Parse(const QCoreApplication& app) -> Work1::Params
     const QString OPTION_OUT = QStringLiteral("output");
     const QString OPTION_BACKUP = QStringLiteral("backup");
     const QString OPTION_TEST = QStringLiteral("test");
+    const QString OPTION_PLOT = QStringLiteral("plot");
 
     CommandLineParserHelper::addOption(&parser, OPTION_IN, QStringLiteral("geometry file as input"));
     CommandLineParserHelper::addOption(&parser, OPTION_OUT, QStringLiteral("g-code file as output"));
     CommandLineParserHelper::addOptionBool(&parser, OPTION_BACKUP, QStringLiteral("set if backup is needed"));
     CommandLineParserHelper::addOptionBool(&parser, OPTION_TEST, QStringLiteral("set to activate test mode"));
+    CommandLineParserHelper::addOptionBool(&parser, OPTION_PLOT, QStringLiteral("set to activate plotter mode"));
 
     parser.process(app);
 
     return {
-        parser.value(OPTION_IN),
-        parser.value(OPTION_OUT),
-        parser.isSet(OPTION_BACKUP),
-        parser.isSet(OPTION_TEST)
+        .inFile= parser.value(OPTION_IN),
+        .outFile = parser.value(OPTION_OUT),
+        .isBackup = parser.isSet(OPTION_BACKUP),
+        .isTest = parser.isSet(OPTION_TEST),
+        .isPlot = parser.isSet(OPTION_PLOT)
     };
 }
 
@@ -67,16 +70,21 @@ auto Work1::init(Work1::Params p) -> bool
 auto Work1::Params::IsValid() -> bool
 {
     QStringList err;
-//    if(inFile.isEmpty())
-//    {
-//        err.append(QStringLiteral("inFile is empty"));
-//    }
+    if(inFile.isEmpty())
+    {
+        err.append(QStringLiteral("inFile is empty"));
+    }
 //    if(inFile.isEmpty())
 //    {
 //        err.append(QStringLiteral("outFile is empty"));
 //    }
-    if(!err.isEmpty()) zInfo(err)
-            return err.isEmpty();
+    bool hasErrors = !err.isEmpty();
+
+    if(hasErrors){
+        zInfo(err)
+    }
+
+    return !hasErrors;
 }
 
 
@@ -109,7 +117,12 @@ auto Work1::doWork2() -> Result
     if(params.outFile.isEmpty()){
         QFileInfo fi(params.inFile);
         QString bn = fi.baseName();
-        params.outFile=bn + ".gcode";
+        if(params.isPlot){
+            params.outFile=bn + "_plot.gcode";
+        }
+        else{
+            params.outFile=bn + ".gcode";
+        }
     }
 
     zInfo(QStringLiteral("params: %1, %2, %3, %4")
@@ -128,13 +141,14 @@ auto Work1::doWork2() -> Result
     auto geomLines = TextFileHelper::loadLines(fn);
 
     if(geomLines.isEmpty()) {
-        zInfo("cannot load file: "+fn);
+        zInfo("cannot load geometry file: "+fn);
         return {Result::State::NoResult, 56};
     }
 
     GenerateGcode g;
     g.Init();
     g.setWorkingFolder(workingFolder);
+    g.SetIsPlot(params.isPlot);
     QStringList gcodes = g.Generate(geomLines);
 
     if(!gcodes.isEmpty()){

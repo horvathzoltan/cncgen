@@ -1,14 +1,20 @@
-(Nagisz UWP terminal)
+(Raspberry Pi alátét 24 db)
+(cmd line: -i pi_alatet_15.txt -t)
+(plot cmd: -i pi_alatet_15.txt -t -p)
+
 (szerszám beállítás)
 t1 m d1.5 h19
 yxz
 
 t1
 s50
-f200
+f300
 
+(mélység)
 th = 2.2
-db = 2.5
+(belső átmérő)
+db = 2.35
+(külső átmérő)
 dk = sum(5.8,1.5,1.5)
 print "dk: $dk"
 
@@ -62,6 +68,48 @@ h $x,$y d$db z$th c$c
 h $x,$y d$dk z$th c$c g2,0.5,0.5 np
 
 (2.sor)
+y = add($y,$o)
+x = 4
+
+h $x,$y d$db z$th c$c
+h $x,$y d$dk z$th c$c g2,0.5,0.5 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c
+h $x,$y d$dk z$th c$c g2,0.5,0.5 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c
+h $x,$y d$dk z$th c$c g2,0.5,0.5 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c
+h $x,$y d$dk z$th c$c g2,0.5,0.5 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c
+h $x,$y d$dk z$th c$c g2,0.5,0.5 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c
+h $x,$y d$dk z$th c$c g2,0.5,0.5 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c
+h $x,$y d$dk z$th c$c g2,0.5,0.5 np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c
+h $x,$y d$dk z$th c$c g2,0.5,0.5 np
+
+(3.sor)
 y = add($y,$o)
 x = 4
 

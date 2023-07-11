@@ -1,15 +1,21 @@
-(pi alatet 8 db)
+(Raspberry Pi alátét 24 db)
+(cmd line: -i pi_alatet_8db_15.txt -t)
+(plot cmd: -i pi_alatet_8db_15.txt -t -p)
+
 (szerszám beállítás)
-t1 m d2 h19
+t1 m d1.5 h19
 yxz
 
 t1
 s50
-f200
+f300
 
-th = 2.7
-db = 2.5
-dk = sum(5.8,2,2)
+(mélység)
+th = 2.2
+(belső átmérő)
+db = 2.35
+(külső átmérő)
+dk = sum(5.8,1.5,1.5)
 print "dk: $dk"
 c = 0.2
 

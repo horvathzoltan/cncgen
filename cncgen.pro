@@ -177,7 +177,7 @@ DISTFILES += \
     testdata/M3_alatet_8db.txt \
     testdata/M3_dupla_alatet_20.txt \
     testdata/M3x10_alatet_5db.txt \
-    testdata/M3x9_alatet_5db.txt \
+    testdata/M3x9_alatet_6db.txt \
     testdata/alatet.txt \
     testdata/bekapcsolo.txt \
     testdata/cam_alja.txt \

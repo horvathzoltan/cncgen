@@ -2,10 +2,10 @@
 (type: GCode from geometry)
 (input file: pi_alatet_15.txt)
 (output file: pi_alatet_15.gcode)
-(created on: P febr. 17 11:35:19 2023)
-(total time: 00:46:53.000)
-(total cut: 9284.34mm)
-(total length: 9989.98mm)
+(created on: K júl. 11 21:11:53 2023)
+(total time: 01:06:19.000)
+(total cut: 19643.9mm)
+(total length: 20910.6mm)
 G21 (metric units)
 G90 (absolute mode)
 G17 (select XY plane)
@@ -19,7 +19,9 @@ M05 (Spindle stop)
 G0 z2.000 (lift up)
 G0 x0.000y0.000 (travel)
 (travel to safe place)
-(nagisz uwp terminal)
+(raspberry pi alátét 24 db)
+(cmd line: -i pi_alatet_15.txt -t)
+(plot cmd: -i pi_alatet_15.txt -t -p)
 (szerszám beállítás)
 (set tool 1 to t1 m  d1.500 h19.000)
 (set mode to YXZ)
@@ -33,1036 +35,1553 @@ m6 (tool change)
 m0 (machine stop)
 g0 z5.000
 s50.000 (set spindle speed)
-f200.000 (set feed)
+f300.000 (set feed)
 
+(mélység)
+(belső átmérő)
+(külső átmérő)
+(dk: 8.8)
 (h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
 (h 4,4 d5 z1.2 c0.175 g0,0,0 np)
 (1.sor)
 (hole - helical interpolation)
 (time: 0.00133333)
 (helical cut)
-G0 x3.500y4.000 (travel)
+G0 x3.975y4.400 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 0.211965)
+(time: 0.12526)
 (hole - helical interpolation)
-(time: 0.211965)
+(time: 0.12526)
 (helical cut)
-G0 x1.850y4.000 (travel)
+G0 x0.750y4.400 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x1.873y4.310 (travel)
+G0 x0.852y3.541 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x5.520y5.520z-1.900 i2.127 j-0.310
-G3 x1.873y4.310z-2.100 i-1.520 j-1.520
-G2 x5.520y5.520z-2.200 i2.127 j-0.310
-G3 x1.873y4.310z-2.200 i-1.520 j-1.520
+G2 x6.981y6.981z-1.900 i3.548 j0.859
+G3 x0.852y3.541z-2.100 i-2.581 j-2.581
+G2 x6.981y6.981z-2.200 i3.548 j0.859
+G3 x0.852y3.541z-2.200 i-2.581 j-2.581
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x6.127y3.690 (travel)
+G0 x7.948y5.259 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x2.480y2.480z-1.900 i-2.127 j0.310
-G3 x6.127y3.690z-2.100 i1.520 j1.520
-G2 x2.480y2.480z-2.200 i-2.127 j0.310
-G3 x6.127y3.690z-2.200 i1.520 j1.520
+G2 x1.819y1.819z-1.900 i-3.548 j-0.859
+G3 x7.948y5.259z-2.100 i2.581 j2.581
+G2 x1.819y1.819z-2.200 i-3.548 j-0.859
+G3 x7.948y5.259z-2.200 i2.581 j2.581
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 1.16073)
+(time: 1.15415)
 (hole - helical interpolation)
-(time: 1.16073)
+(time: 1.15415)
 (helical cut)
-G0 x3.500y10.800 (travel)
+G0 x3.975y14.200 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 1.3728)
+(time: 1.28056)
 (hole - helical interpolation)
-(time: 1.3728)
+(time: 1.28056)
 (helical cut)
-G0 x1.850y10.800 (travel)
+G0 x0.750y14.200 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x1.937y10.194 (travel)
+G0 x1.662y11.787 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x4.747y12.816z-1.900 i2.063 j0.606
-G3 x1.937y10.194z-2.100 i-0.747 j-2.016
-G2 x4.747y12.816z-2.200 i2.063 j0.606
-G3 x1.937y10.194z-2.200 i-0.747 j-2.016
+G2 x5.480y17.686z-1.900 i2.738 j2.413
+G3 x1.662y11.787z-2.100 i-1.080 j-3.486
+G2 x5.480y17.686z-2.200 i2.738 j2.413
+G3 x1.662y11.787z-2.200 i-1.080 j-3.486
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x6.063y11.406 (travel)
+G0 x7.138y16.613 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x3.253y8.784z-1.900 i-2.063 j-0.606
-G3 x6.063y11.406z-2.100 i0.747 j2.016
-G2 x3.253y8.784z-2.200 i-2.063 j-0.606
-G3 x6.063y11.406z-2.200 i0.747 j2.016
+G2 x3.320y10.714z-1.900 i-2.738 j-2.413
+G3 x7.138y16.613z-2.100 i1.080 j3.486
+G2 x3.320y10.714z-2.200 i-2.738 j-2.413
+G3 x7.138y16.613z-2.200 i1.080 j3.486
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 2.68856)
+(time: 2.68589)
 (hole - helical interpolation)
-(time: 2.68856)
+(time: 2.68589)
 (helical cut)
-G0 x3.500y17.600 (travel)
+G0 x3.975y24.000 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 2.90007)
+(time: 2.81117)
 (hole - helical interpolation)
-(time: 2.90007)
+(time: 2.81117)
 (helical cut)
-G0 x1.850y17.600 (travel)
+G0 x0.750y24.000 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x2.034y16.729 (travel)
+G0 x1.968y21.278 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x4.476y19.697z-1.900 i1.966 j0.871
-G3 x2.034y16.729z-2.100 i-0.476 j-2.097
-G2 x4.476y19.697z-2.200 i1.966 j0.871
-G3 x2.034y16.729z-2.200 i-0.476 j-2.097
+G2 x5.058y27.590z-1.900 i2.432 j2.722
+G3 x1.968y21.278z-2.100 i-0.658 j-3.590
+G2 x5.058y27.590z-2.200 i2.432 j2.722
+G3 x1.968y21.278z-2.200 i-0.658 j-3.590
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x5.966y18.471 (travel)
+G0 x6.832y26.722 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x3.524y15.503z-1.900 i-1.966 j-0.871
-G3 x5.966y18.471z-2.100 i0.476 j2.097
-G2 x3.524y15.503z-2.200 i-1.966 j-0.871
-G3 x5.966y18.471z-2.200 i0.476 j2.097
+G2 x3.742y20.410z-1.900 i-2.432 j-2.722
+G3 x6.832y26.722z-2.100 i0.658 j3.590
+G2 x3.742y20.410z-2.200 i-2.432 j-2.722
+G3 x6.832y26.722z-2.200 i0.658 j3.590
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 4.83718)
+(time: 4.86556)
 (hole - helical interpolation)
-(time: 4.83718)
+(time: 4.86556)
 (helical cut)
-G0 x3.500y24.400 (travel)
+G0 x3.975y33.800 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 5.04851)
+(time: 4.99057)
 (hole - helical interpolation)
-(time: 5.04851)
+(time: 4.99057)
 (helical cut)
-G0 x1.850y24.400 (travel)
+G0 x0.750y33.800 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x2.091y23.411 (travel)
+G0 x2.112y30.956 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x4.348y26.522z-1.900 i1.909 j0.989
-G3 x2.091y23.411z-2.100 i-0.348 j-2.122
-G2 x4.348y26.522z-2.200 i1.909 j0.989
-G3 x2.091y23.411z-2.200 i-0.348 j-2.122
+G2 x4.871y37.419z-1.900 i2.288 j2.844
+G3 x2.112y30.956z-2.100 i-0.471 j-3.619
+G2 x4.871y37.419z-2.200 i2.288 j2.844
+G3 x2.112y30.956z-2.200 i-0.471 j-3.619
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x5.909y25.389 (travel)
+G0 x6.688y36.644 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x3.652y22.278z-1.900 i-1.909 j-0.989
-G3 x5.909y25.389z-2.100 i0.348 j2.122
-G2 x3.652y22.278z-2.200 i-1.909 j-0.989
-G3 x5.909y25.389z-2.200 i0.348 j2.122
+G2 x3.929y30.181z-1.900 i-2.288 j-2.844
+G3 x6.688y36.644z-2.100 i0.471 j3.619
+G2 x3.929y30.181z-2.200 i-2.288 j-2.844
+G3 x6.688y36.644z-2.200 i0.471 j3.619
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 7.62765)
+(time: 7.70547)
 (hole - helical interpolation)
-(time: 7.62765)
+(time: 7.70547)
 (helical cut)
-G0 x3.500y31.200 (travel)
+G0 x3.975y43.600 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 7.83889)
+(time: 7.83038)
 (hole - helical interpolation)
-(time: 7.83889)
+(time: 7.83038)
 (helical cut)
-G0 x1.850y31.200 (travel)
+G0 x0.750y43.600 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x2.127y30.145 (travel)
+G0 x2.195y40.691 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x4.273y33.333z-1.900 i1.873 j1.055
-G3 x2.127y30.145z-2.100 i-0.273 j-2.133
-G2 x4.273y33.333z-2.200 i1.873 j1.055
-G3 x2.127y30.145z-2.200 i-0.273 j-2.133
+G2 x4.766y47.232z-1.900 i2.205 j2.909
+G3 x2.195y40.691z-2.100 i-0.366 j-3.632
+G2 x4.766y47.232z-2.200 i2.205 j2.909
+G3 x2.195y40.691z-2.200 i-0.366 j-3.632
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x5.873y32.255 (travel)
+G0 x6.605y46.509 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x3.727y29.067z-1.900 i-1.873 j-1.055
-G3 x5.873y32.255z-2.100 i0.273 j2.133
-G2 x3.727y29.067z-2.200 i-1.873 j-1.055
-G3 x5.873y32.255z-2.200 i0.273 j2.133
+G2 x4.034y39.968z-1.900 i-2.205 j-2.909
+G3 x6.605y46.509z-2.100 i0.366 j3.632
+G2 x4.034y39.968z-2.200 i-2.205 j-2.909
+G3 x6.605y46.509z-2.200 i0.366 j3.632
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 11.0654)
+(time: 11.2081)
 (hole - helical interpolation)
-(time: 11.0654)
+(time: 11.2081)
 (helical cut)
-G0 x3.500y38.000 (travel)
+G0 x3.975y53.400 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 11.2766)
+(time: 11.3329)
 (hole - helical interpolation)
-(time: 11.2766)
+(time: 11.3329)
 (helical cut)
-G0 x1.850y38.000 (travel)
+G0 x0.750y53.400 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x2.151y36.903 (travel)
+G0 x2.249y50.451 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x4.225y40.138z-1.900 i1.849 j1.097
-G3 x2.151y36.903z-2.100 i-0.225 j-2.138
-G2 x4.225y40.138z-2.200 i1.849 j1.097
-G3 x2.151y36.903z-2.200 i-0.225 j-2.138
+G2 x4.700y57.038z-1.900 i2.151 j2.949
+G3 x2.249y50.451z-2.100 i-0.300 j-3.638
+G2 x4.700y57.038z-2.200 i2.151 j2.949
+G3 x2.249y50.451z-2.200 i-0.300 j-3.638
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x5.849y39.097 (travel)
+G0 x6.551y56.349 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x3.775y35.862z-1.900 i-1.849 j-1.097
-G3 x5.849y39.097z-2.100 i0.225 j2.138
-G2 x3.775y35.862z-2.200 i-1.849 j-1.097
-G3 x5.849y39.097z-2.200 i0.225 j2.138
+G2 x4.100y49.762z-1.900 i-2.151 j-2.949
+G3 x6.551y56.349z-2.100 i0.300 j3.638
+G2 x4.100y49.762z-2.200 i-2.151 j-2.949
+G3 x6.551y56.349z-2.200 i0.300 j3.638
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 15.1525)
+(time: 15.3743)
 (hole - helical interpolation)
-(time: 15.1525)
+(time: 15.3743)
 (helical cut)
-G0 x3.500y44.800 (travel)
+G0 x3.975y63.200 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 15.3637)
+(time: 15.4991)
 (hole - helical interpolation)
-(time: 15.3637)
+(time: 15.4991)
 (helical cut)
-G0 x1.850y44.800 (travel)
+G0 x0.750y63.200 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x2.169y43.673 (travel)
+G0 x2.287y60.224 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x4.191y46.941z-1.900 i1.831 j1.127
-G3 x2.169y43.673z-2.100 i-0.191 j-2.141
-G2 x4.191y46.941z-2.200 i1.831 j1.127
-G3 x2.169y43.673z-2.200 i-0.191 j-2.141
+G2 x4.654y66.841z-1.900 i2.113 j2.976
+G3 x2.287y60.224z-2.100 i-0.254 j-3.641
+G2 x4.654y66.841z-2.200 i2.113 j2.976
+G3 x2.287y60.224z-2.200 i-0.254 j-3.641
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x5.831y45.927 (travel)
+G0 x6.513y66.176 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x3.809y42.659z-1.900 i-1.831 j-1.127
-G3 x5.831y45.927z-2.100 i0.191 j2.141
-G2 x3.809y42.659z-2.200 i-1.831 j-1.127
-G3 x5.831y45.927z-2.200 i0.191 j2.141
+G2 x4.146y59.559z-1.900 i-2.113 j-2.976
+G3 x6.513y66.176z-2.100 i0.254 j3.641
+G2 x4.146y59.559z-2.200 i-2.113 j-2.976
+G3 x6.513y66.176z-2.200 i0.254 j3.641
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 19.8903)
+(time: 20.2044)
 (hole - helical interpolation)
-(time: 19.8903)
+(time: 20.2044)
 (helical cut)
-G0 x3.500y51.600 (travel)
+G0 x3.975y73.000 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 20.1014)
+(time: 20.3292)
 (hole - helical interpolation)
-(time: 20.1014)
+(time: 20.3292)
 (helical cut)
-G0 x1.850y51.600 (travel)
+G0 x0.750y73.000 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x2.182y50.452 (travel)
+G0 x2.315y70.004 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x4.166y53.744z-1.900 i1.818 j1.148
-G3 x2.182y50.452z-2.100 i-0.166 j-2.144
-G2 x4.166y53.744z-2.200 i1.818 j1.148
-G3 x2.182y50.452z-2.200 i-0.166 j-2.144
+G2 x4.620y76.643z-1.900 i2.085 j2.996
+G3 x2.315y70.004z-2.100 i-0.220 j-3.643
+G2 x4.620y76.643z-2.200 i2.085 j2.996
+G3 x2.315y70.004z-2.200 i-0.220 j-3.643
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x5.818y52.748 (travel)
+G0 x6.485y75.996 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x3.834y49.456z-1.900 i-1.818 j-1.148
-G3 x5.818y52.748z-2.100 i0.166 j2.144
-G2 x3.834y49.456z-2.200 i-1.818 j-1.148
-G3 x5.818y52.748z-2.200 i0.166 j2.144
+G2 x4.180y69.357z-1.900 i-2.085 j-2.996
+G3 x6.485y75.996z-2.100 i0.220 j3.643
+G2 x4.180y69.357z-2.200 i-2.085 j-2.996
+G3 x6.485y75.996z-2.200 i0.220 j3.643
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 25.2792)
+(time: 25.6988)
 (2.sor)
 (hole - helical interpolation)
-(time: 25.2792)
+(time: 25.6988)
 (helical cut)
-G0 x10.300y4.000 (travel)
+G0 x13.775y4.000 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 25.5187)
+(time: 25.8668)
 (hole - helical interpolation)
-(time: 25.5187)
+(time: 25.8668)
 (helical cut)
-G0 x8.650y4.000 (travel)
+G0 x10.550y4.000 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x8.996y5.170 (travel)
+G0 x10.686y4.985 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x12.816y4.747z-1.900 i1.804 j-1.170
-G3 x8.996y5.170z-2.100 i-2.016 j-0.747
-G2 x12.816y4.747z-2.200 i1.804 j-1.170
-G3 x8.996y5.170z-2.200 i-2.016 j-0.747
+G2 x17.713y4.990z-1.900 i3.514 j-0.985
+G3 x10.686y4.985z-2.100 i-3.513 j-0.990
+G2 x17.713y4.990z-2.200 i3.514 j-0.985
+G3 x10.686y4.985z-2.200 i-3.513 j-0.990
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x12.604y2.830 (travel)
+G0 x17.714y3.015 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x8.784y3.253z-1.900 i-1.804 j1.170
-G3 x12.604y2.830z-2.100 i2.016 j0.747
-G2 x8.784y3.253z-2.200 i-1.804 j1.170
-G3 x12.604y2.830z-2.200 i2.016 j0.747
+G2 x10.687y3.010z-1.900 i-3.514 j0.985
+G3 x17.714y3.015z-2.100 i3.513 j0.990
+G2 x10.687y3.010z-2.200 i-3.514 j0.985
+G3 x17.714y3.015z-2.200 i3.513 j0.990
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 27.2213)
+(time: 27.148)
 (hole - helical interpolation)
-(time: 27.2213)
+(time: 27.148)
 (helical cut)
-G0 x10.300y10.800 (travel)
+G0 x13.775y13.800 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 27.4338)
+(time: 27.2755)
 (hole - helical interpolation)
-(time: 27.4338)
+(time: 27.2755)
 (helical cut)
-G0 x8.650y10.800 (travel)
+G0 x10.550y13.800 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x8.673y11.110 (travel)
+G0 x10.641y12.992 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x12.320y12.320z-1.900 i2.127 j-0.310
-G3 x8.673y11.110z-2.100 i-1.520 j-1.520
-G2 x12.320y12.320z-2.200 i2.127 j-0.310
-G3 x8.673y11.110z-2.200 i-1.520 j-1.520
+G2 x16.818y16.344z-1.900 i3.559 j0.808
+G3 x10.641y12.992z-2.100 i-2.618 j-2.544
+G2 x16.818y16.344z-2.200 i3.559 j0.808
+G3 x10.641y12.992z-2.200 i-2.618 j-2.544
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x12.927y10.490 (travel)
+G0 x17.759y14.608 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x9.280y9.280z-1.900 i-2.127 j0.310
-G3 x12.927y10.490z-2.100 i1.520 j1.520
-G2 x9.280y9.280z-2.200 i-2.127 j0.310
-G3 x12.927y10.490z-2.200 i1.520 j1.520
+G2 x11.582y11.256z-1.900 i-3.559 j-0.808
+G3 x17.759y14.608z-2.100 i2.618 j2.544
+G2 x11.582y11.256z-2.200 i-3.559 j-0.808
+G3 x17.759y14.608z-2.200 i2.618 j2.544
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 28.4581)
+(time: 28.3821)
 (hole - helical interpolation)
-(time: 28.4581)
+(time: 28.3821)
 (helical cut)
-G0 x10.300y17.600 (travel)
+G0 x13.775y23.600 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 28.6702)
+(time: 28.5085)
 (hole - helical interpolation)
-(time: 28.6702)
+(time: 28.5085)
 (helical cut)
-G0 x8.650y17.600 (travel)
+G0 x10.550y23.600 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x8.659y17.406 (travel)
+G0 x10.964y21.911 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x11.924y19.432z-1.900 i2.141 j0.194
-G3 x8.659y17.406z-2.100 i-1.124 j-1.832
-G2 x11.924y19.432z-2.200 i2.141 j0.194
-G3 x8.659y17.406z-2.200 i-1.124 j-1.832
+G2 x16.082y26.728z-1.900 i3.236 j1.689
+G3 x10.964y21.911z-2.100 i-1.882 j-3.128
+G2 x16.082y26.728z-2.200 i3.236 j1.689
+G3 x10.964y21.911z-2.200 i-1.882 j-3.128
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x12.941y17.794 (travel)
+G0 x17.436y25.289 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x9.676y15.768z-1.900 i-2.141 j-0.194
-G3 x12.941y17.794z-2.100 i1.124 j1.832
-G2 x9.676y15.768z-2.200 i-2.141 j-0.194
-G3 x12.941y17.794z-2.200 i1.124 j1.832
+G2 x12.318y20.472z-1.900 i-3.236 j-1.689
+G3 x17.436y25.289z-2.100 i1.882 j3.128
+G2 x12.318y20.472z-2.200 i-3.236 j-1.689
+G3 x17.436y25.289z-2.200 i1.882 j3.128
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 30.0049)
+(time: 29.8967)
 (hole - helical interpolation)
-(time: 30.0049)
+(time: 29.8967)
 (helical cut)
-G0 x10.300y24.400 (travel)
+G0 x13.775y33.400 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 30.2166)
+(time: 30.0225)
 (hole - helical interpolation)
-(time: 30.2166)
+(time: 30.0225)
 (helical cut)
-G0 x8.650y24.400 (travel)
+G0 x10.550y33.400 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x8.704y23.923 (travel)
+G0 x11.231y31.277 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x11.670y26.366z-1.900 i2.096 j0.477
-G3 x8.704y23.923z-2.100 i-0.870 j-1.966
-G2 x11.670y26.366z-2.200 i2.096 j0.477
-G3 x8.704y23.923z-2.200 i-0.870 j-1.966
+G2 x15.628y36.759z-1.900 i2.969 j2.123
+G3 x11.231y31.277z-2.100 i-1.428 j-3.359
+G2 x15.628y36.759z-2.200 i2.969 j2.123
+G3 x11.231y31.277z-2.200 i-1.428 j-3.359
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x12.896y24.877 (travel)
+G0 x17.169y35.523 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x9.930y22.434z-1.900 i-2.096 j-0.477
-G3 x12.896y24.877z-2.100 i0.870 j1.966
-G2 x9.930y22.434z-2.200 i-2.096 j-0.477
-G3 x12.896y24.877z-2.200 i0.870 j1.966
+G2 x12.772y30.041z-1.900 i-2.969 j-2.123
+G3 x17.169y35.523z-2.100 i1.428 j3.359
+G2 x12.772y30.041z-2.200 i-2.969 j-2.123
+G3 x17.169y35.523z-2.200 i1.428 j3.359
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 32.1256)
+(time: 32.0079)
 (hole - helical interpolation)
-(time: 32.1256)
+(time: 32.0079)
 (helical cut)
-G0 x10.300y31.200 (travel)
+G0 x13.775y43.200 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 32.3372)
+(time: 32.1334)
 (hole - helical interpolation)
-(time: 32.3372)
+(time: 32.1334)
 (helical cut)
-G0 x8.650y31.200 (travel)
+G0 x10.550y43.200 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x8.751y30.550 (travel)
+G0 x11.421y40.834 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x11.503y33.232z-1.900 i2.049 j0.650
-G3 x8.751y30.550z-2.100 i-0.703 j-2.032
-G2 x11.503y33.232z-2.200 i2.049 j0.650
-G3 x8.751y30.550z-2.200 i-0.703 j-2.032
+G2 x15.340y46.667z-1.900 i2.779 j2.366
+G3 x11.421y40.834z-2.100 i-1.140 j-3.467
+G2 x15.340y46.667z-2.200 i2.779 j2.366
+G3 x11.421y40.834z-2.200 i-1.140 j-3.467
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x12.849y31.850 (travel)
+G0 x16.979y45.566 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x10.097y29.168z-1.900 i-2.049 j-0.650
-G3 x12.849y31.850z-2.100 i0.703 j2.032
-G2 x10.097y29.168z-2.200 i-2.049 j-0.650
-G3 x12.849y31.850z-2.200 i0.703 j2.032
+G2 x13.060y39.733z-1.900 i-2.779 j-2.366
+G3 x16.979y45.566z-2.100 i1.140 j3.467
+G2 x13.060y39.733z-2.200 i-2.779 j-2.366
+G3 x16.979y45.566z-2.200 i1.140 j3.467
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 34.859)
+(time: 34.7515)
 (hole - helical interpolation)
-(time: 34.859)
+(time: 34.7515)
 (helical cut)
-G0 x10.300y38.000 (travel)
+G0 x13.775y53.000 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 35.0705)
+(time: 34.8768)
 (hole - helical interpolation)
-(time: 35.0705)
+(time: 34.8768)
 (helical cut)
-G0 x8.650y38.000 (travel)
+G0 x10.550y53.000 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x8.791y37.235 (travel)
+G0 x11.557y50.483 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x11.388y40.068z-1.900 i2.009 j0.765
-G3 x8.791y37.235z-2.100 i-0.588 j-2.068
-G2 x11.388y40.068z-2.200 i2.009 j0.765
-G3 x8.791y37.235z-2.200 i-0.588 j-2.068
+G2 x15.145y56.526z-1.900 i2.643 j2.517
+G3 x11.557y50.483z-2.100 i-0.945 j-3.526
+G2 x15.145y56.526z-2.200 i2.643 j2.517
+G3 x11.557y50.483z-2.200 i-0.945 j-3.526
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x12.809y38.765 (travel)
+G0 x16.843y55.517 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x10.212y35.932z-1.900 i-2.009 j-0.765
-G3 x12.809y38.765z-2.100 i0.588 j2.068
-G2 x10.212y35.932z-2.200 i-2.009 j-0.765
-G3 x12.809y38.765z-2.200 i0.588 j2.068
+G2 x13.255y49.474z-1.900 i-2.643 j-2.517
+G3 x16.843y55.517z-2.100 i0.945 j3.526
+G2 x13.255y49.474z-2.200 i-2.643 j-2.517
+G3 x16.843y55.517z-2.200 i0.945 j3.526
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 38.2202)
+(time: 38.1404)
 (hole - helical interpolation)
-(time: 38.2202)
+(time: 38.1404)
 (helical cut)
-G0 x10.300y44.800 (travel)
+G0 x13.775y62.800 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 38.4316)
+(time: 38.2655)
 (hole - helical interpolation)
-(time: 38.4316)
+(time: 38.2655)
 (helical cut)
-G0 x8.650y44.800 (travel)
+G0 x10.550y62.800 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x8.823y43.955 (travel)
+G0 x11.658y60.180 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x11.304y46.890z-1.900 i1.977 j0.845
-G3 x8.823y43.955z-2.100 i-0.504 j-2.090
-G2 x11.304y46.890z-2.200 i1.977 j0.845
-G3 x8.823y43.955z-2.200 i-0.504 j-2.090
+G2 x15.005y66.360z-1.900 i2.542 j2.620
+G3 x11.658y60.180z-2.100 i-0.805 j-3.560
+G2 x15.005y66.360z-2.200 i2.542 j2.620
+G3 x11.658y60.180z-2.200 i-0.805 j-3.560
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x12.777y45.645 (travel)
+G0 x16.742y65.420 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x10.296y42.710z-1.900 i-1.977 j-0.845
-G3 x12.777y45.645z-2.100 i0.504 j2.090
-G2 x10.296y42.710z-2.200 i-1.977 j-0.845
-G3 x12.777y45.645z-2.200 i0.504 j2.090
+G2 x13.395y59.240z-1.900 i-2.542 j-2.620
+G3 x16.742y65.420z-2.100 i0.805 j3.560
+G2 x13.395y59.240z-2.200 i-2.542 j-2.620
+G3 x16.742y65.420z-2.200 i0.805 j3.560
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 42.2172)
+(time: 42.181)
 (hole - helical interpolation)
-(time: 42.2172)
+(time: 42.181)
 (helical cut)
-G0 x10.300y51.600 (travel)
+G0 x13.775y72.600 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i0.500
-G2 z-0.400 i0.500
-G2 z-0.600 i0.500
-G2 z-0.800 i0.500
-G2 z-1.000 i0.500
-G2 z-1.200 i0.500
-G2 z-1.400 i0.500
-G2 z-1.600 i0.500
-G2 z-1.800 i0.500
-G2 z-2.000 i0.500
-G2 z-2.200 i0.500
-G2 z-2.200 i0.500
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
-(time: 42.4286)
+(time: 42.3061)
 (hole - helical interpolation)
-(time: 42.4286)
+(time: 42.3061)
 (helical cut)
-G0 x8.650y51.600 (travel)
+G0 x10.550y72.600 (travel)
 m3(spindle start)
 G0 z1.000 (lift down)
 G1 z0.000 (push)
-G2 z-0.200 i2.150
-G2 z-0.400 i2.150
-G2 z-0.600 i2.150
-G2 z-0.800 i2.150
-G2 z-1.000 i2.150
-G2 z-1.200 i2.150
-G2 z-1.400 i2.150
-G2 z-1.600 i2.150
-G2 z-1.700 i2.150
-G2 z-1.700 i2.150
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
 G1 z0.000 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x8.850y50.695 (travel)
+G0 x11.736y69.907 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x11.240y53.704z-1.900 i1.950 j0.905
-G3 x8.850y50.695z-2.100 i-0.440 j-2.104
-G2 x11.240y53.704z-2.200 i1.950 j0.905
-G3 x8.850y50.695z-2.200 i-0.440 j-2.104
+G2 x14.901y76.182z-1.900 i2.464 j2.693
+G3 x11.736y69.907z-2.100 i-0.701 j-3.582
+G2 x14.901y76.182z-2.200 i2.464 j2.693
+G3 x11.736y69.907z-2.200 i-0.701 j-3.582
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
 (circular_arc cut)
-G0 x12.750y52.505 (travel)
+G0 x16.664y75.293 (travel)
 m3(spindle start)
 G0 z-0.700 (lift down)
 G1 z-1.700 (push)
-G2 x10.360y49.496z-1.900 i-1.950 j-0.905
-G3 x12.750y52.505z-2.100 i0.440 j2.104
-G2 x10.360y49.496z-2.200 i-1.950 j-0.905
-G3 x12.750y52.505z-2.200 i0.440 j2.104
+G2 x13.499y69.018z-1.900 i-2.464 j-2.693
+G3 x16.664y75.293z-2.100 i0.701 j3.582
+G2 x13.499y69.018z-2.200 i-2.464 j-2.693
+G3 x16.664y75.293z-2.200 i0.701 j3.582
 G1 z-1.700 (pull)
 G0 z2.000 (lift up)
-(time: 46.8547)
+(time: 46.877)
+(3.sor)
+(hole - helical interpolation)
+(time: 46.877)
+(helical cut)
+G0 x23.575y4.000 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(time: 47.0445)
+(hole - helical interpolation)
+(time: 47.0445)
+(helical cut)
+G0 x20.350y4.000 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x20.614y5.363 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x27.600y4.600z-1.900 i3.386 j-1.363
+G3 x20.614y5.363z-2.100 i-3.600 j-0.600
+G2 x27.600y4.600z-2.200 i3.386 j-1.363
+G3 x20.614y5.363z-2.200 i-3.600 j-0.600
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x27.386y2.637 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x20.400y3.400z-1.900 i-3.386 j1.363
+G3 x27.386y2.637z-2.100 i3.600 j0.600
+G2 x20.400y3.400z-2.200 i-3.386 j1.363
+G3 x27.386y2.637z-2.200 i3.600 j0.600
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(time: 49.6482)
+(hole - helical interpolation)
+(time: 49.6482)
+(helical cut)
+G0 x23.575y13.800 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(time: 49.7759)
+(hole - helical interpolation)
+(time: 49.7759)
+(helical cut)
+G0 x20.350y13.800 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x20.351y13.895 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x27.164y15.619z-1.900 i3.649 j-0.095
+G3 x20.351y13.895z-2.100 i-3.164 j-1.819
+G2 x27.164y15.619z-2.200 i3.649 j-0.095
+G3 x20.351y13.895z-2.200 i-3.164 j-1.819
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x27.649y13.705 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x20.836y11.981z-1.900 i-3.649 j0.095
+G3 x27.649y13.705z-2.100 i3.164 j1.819
+G2 x20.836y11.981z-2.200 i-3.649 j0.095
+G3 x27.649y13.705z-2.200 i3.164 j1.819
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(time: 51.1736)
+(hole - helical interpolation)
+(time: 51.1736)
+(helical cut)
+G0 x23.575y23.600 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(time: 51.3006)
+(hole - helical interpolation)
+(time: 51.3006)
+(helical cut)
+G0 x20.350y23.600 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x20.445y22.771 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x26.603y26.159z-1.900 i3.555 j0.829
+G3 x20.445y22.771z-2.100 i-2.603 j-2.559
+G2 x26.603y26.159z-2.200 i3.555 j0.829
+G3 x20.445y22.771z-2.200 i-2.603 j-2.559
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x27.555y24.429 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x21.397y21.041z-1.900 i-3.555 j-0.829
+G3 x27.555y24.429z-2.100 i2.603 j2.559
+G2 x21.397y21.041z-2.200 i-3.555 j-0.829
+G3 x27.555y24.429z-2.200 i2.603 j2.559
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(time: 52.4797)
+(hole - helical interpolation)
+(time: 52.4797)
+(helical cut)
+G0 x23.575y33.400 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(time: 52.6062)
+(hole - helical interpolation)
+(time: 52.6062)
+(helical cut)
+G0 x20.350y33.400 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x20.638y31.979 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x26.130y36.364z-1.900 i3.362 j1.421
+G3 x20.638y31.979z-2.100 i-2.130 j-2.964
+G2 x26.130y36.364z-2.200 i3.362 j1.421
+G3 x20.638y31.979z-2.200 i-2.130 j-2.964
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x27.362y34.821 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x21.870y30.436z-1.900 i-3.362 j-1.421
+G3 x27.362y34.821z-2.100 i2.130 j2.964
+G2 x21.870y30.436z-2.200 i-3.362 j-1.421
+G3 x27.362y34.821z-2.200 i2.130 j2.964
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(time: 54.0457)
+(hole - helical interpolation)
+(time: 54.0457)
+(helical cut)
+G0 x23.575y43.200 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(time: 54.1717)
+(hole - helical interpolation)
+(time: 54.1717)
+(helical cut)
+G0 x20.350y43.200 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x20.825y41.400 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x25.773y46.391z-1.900 i3.175 j1.800
+G3 x20.825y41.400z-2.100 i-1.773 j-3.191
+G2 x25.773y46.391z-2.200 i3.175 j1.800
+G3 x20.825y41.400z-2.200 i-1.773 j-3.191
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x27.175y45.000 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x22.227y40.009z-1.900 i-3.175 j-1.800
+G3 x27.175y45.000z-2.100 i1.773 j3.191
+G2 x22.227y40.009z-2.200 i-3.175 j-1.800
+G3 x27.175y45.000z-2.200 i1.773 j3.191
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(time: 56.1761)
+(hole - helical interpolation)
+(time: 56.1761)
+(helical cut)
+G0 x23.575y53.000 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(time: 56.3018)
+(hole - helical interpolation)
+(time: 56.3018)
+(helical cut)
+G0 x20.350y53.000 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x20.983y50.946 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x25.506y56.325z-1.900 i3.017 j2.054
+G3 x20.983y50.946z-2.100 i-1.506 j-3.325
+G2 x25.506y56.325z-2.200 i3.017 j2.054
+G3 x20.983y50.946z-2.200 i-1.506 j-3.325
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x27.017y55.054 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x22.494y49.675z-1.900 i-3.017 j-2.054
+G3 x27.017y55.054z-2.100 i1.506 j3.325
+G2 x22.494y49.675z-2.200 i-3.017 j-2.054
+G3 x27.017y55.054z-2.200 i1.506 j3.325
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(time: 58.9123)
+(hole - helical interpolation)
+(time: 58.9123)
+(helical cut)
+G0 x23.575y62.800 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(time: 59.0379)
+(hole - helical interpolation)
+(time: 59.0379)
+(helical cut)
+G0 x20.350y62.800 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x21.112y60.568 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x25.303y66.210z-1.900 i2.888 j2.232
+G3 x21.112y60.568z-2.100 i-1.303 j-3.410
+G2 x25.303y66.210z-2.200 i2.888 j2.232
+G3 x21.112y60.568z-2.200 i-1.303 j-3.410
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x26.888y65.032 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x22.697y59.390z-1.900 i-2.888 j-2.232
+G3 x26.888y65.032z-2.100 i1.303 j3.410
+G2 x22.697y59.390z-2.200 i-2.888 j-2.232
+G3 x26.888y65.032z-2.200 i1.303 j3.410
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(time: 62.2732)
+(hole - helical interpolation)
+(time: 62.2732)
+(helical cut)
+G0 x23.575y72.600 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i0.425
+G2 z-0.400 i0.425
+G2 z-0.600 i0.425
+G2 z-0.800 i0.425
+G2 z-1.000 i0.425
+G2 z-1.200 i0.425
+G2 z-1.400 i0.425
+G2 z-1.600 i0.425
+G2 z-1.800 i0.425
+G2 z-2.000 i0.425
+G2 z-2.200 i0.425
+G2 z-2.200 i0.425
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(time: 62.3986)
+(hole - helical interpolation)
+(time: 62.3986)
+(helical cut)
+G0 x20.350y72.600 (travel)
+m3(spindle start)
+G0 z1.000 (lift down)
+G1 z0.000 (push)
+G2 z-0.200 i3.650
+G2 z-0.400 i3.650
+G2 z-0.600 i3.650
+G2 z-0.800 i3.650
+G2 z-1.000 i3.650
+G2 z-1.200 i3.650
+G2 z-1.400 i3.650
+G2 z-1.600 i3.650
+G2 z-1.700 i3.650
+G2 z-1.700 i3.650
+G1 z0.000 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x21.217y70.239 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x25.146y76.066z-1.900 i2.783 j2.361
+G3 x21.217y70.239z-2.100 i-1.146 j-3.466
+G2 x25.146y76.066z-2.200 i2.783 j2.361
+G3 x21.217y70.239z-2.200 i-1.146 j-3.466
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(circular_arc cut)
+G0 x26.783y74.961 (travel)
+m3(spindle start)
+G0 z-0.700 (lift down)
+G1 z-1.700 (push)
+G2 x22.854y69.134z-1.900 i-2.783 j-2.361
+G3 x26.783y74.961z-2.100 i1.146 j3.466
+G2 x22.854y69.134z-2.200 i-2.783 j-2.361
+G3 x26.783y74.961z-2.200 i1.146 j3.466
+G1 z-1.700 (pull)
+G0 z2.000 (lift up)
+(time: 66.2696)
 G0 z2.000 (lift up)
 G0 x0.000y0.000 (travel)
 (travel to safe place)

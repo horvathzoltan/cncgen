@@ -1,15 +1,21 @@
-(M3 alatet 8 db)
+(M3 alatet 6 db)
+(cmd line: -i M3x9_alatet_6db.txt -t)
+(plot cmd: -i M3x9_alatet_6db.txt -t -p)
+
 (szerszám beállítás)
-t1 m d2 h19
+t1 m d1.5 h19
 yxz
 
 t1
 s50
-f200
+f300
 
-th = 2.7
-db = 3
-dk = sum(9,2,2)
+(mélység)
+th = 2.2
+(belső átmérő)
+db = 2.95
+(külső átmérő)
+dk = sum(9,1.5,1.5)
 print "dk: $dk"
 c = 0.4
 
@@ -45,7 +51,10 @@ x = add($x,$o)
 h $x,$y d$db z$th c$c jg0.1
 h $x,$y d$dk z$th c$c g2,0.3,0.9 np
 
+x = add($x,$o)
 
+h $x,$y d$db z$th c$c jg0.1
+h $x,$y d$dk z$th c$c g2,0.3,0.9 np
 
 
 

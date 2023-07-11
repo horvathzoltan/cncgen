@@ -847,6 +847,9 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
     double path_r = (holeDiameter-t.d)/2; // a furat belső szélét érintő pályapont
     Gap mgap = m.gap.isValid()?m.gap:Gap{2, .5, 0.5};
+    if(_isPlot){
+        mgap.height = 0.01;
+    }
 
     bool pre_drill, pre_mill,hasGaps, drillOnly=holeDiameter==t.d;
     if(m.ng)

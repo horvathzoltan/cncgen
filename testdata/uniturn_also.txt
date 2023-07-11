@@ -1,6 +1,7 @@
 (UNITURN mérőállomás alsó szerelőlap)
-(szerszám beállítás)
 (cmd line: -i uniturn_also.txt -t)
+(plot cmd: -i uniturn_also.txt -t -p)
+(szerszám beállítás)
 
 t1 m d2 h19
 t2 m d3 h19

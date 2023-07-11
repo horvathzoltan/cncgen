@@ -1,6 +1,8 @@
 (UNITURN mérőállomás doboz fedlap)
+(cmd line: -i uniturn_doboz_fedlap.txt -t)
+(plot cmd: -i uniturn_doboz_fedlap.txt -t -p)
 (szerszám beállítás)
-(szerszám beállítás)
+
 t1 m d1.5 h19
 t2 m d3 h19
 

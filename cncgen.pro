@@ -184,6 +184,7 @@ DISTFILES += \
     testdata/cam_elolap.txt \
     testdata/cam_elolap_bolcso.txt \
     testdata/cam_teteje.txt \
+    testdata/ceruzatarto.txt \
     testdata/csatlakozo.txt \
     testdata/ethernet2.txt \
     testdata/geom1.txt \

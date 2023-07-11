@@ -1,0 +1,16 @@
+(Ceruzatarto plottolashoz)
+(szerszám beállítás)
+t1 m d2 h19
+yxz
+
+t1
+s50
+f200
+
+b outline -10,0 10,70 z3.5 c0.1 g1,2,0.7 nl1,0,1,1
+
+h 0,98 d25.9 z3.5 c0.1
+
+a 10,70 -10,70 0,98 z3.5 c0.1
+
+h 0,10 d10 z3.5 c0.1

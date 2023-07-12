@@ -10,11 +10,11 @@ safe0,0,3
 
 yxz
 
-(nagyolás)
+(1.menet)
 
 t2
 s50
-f200
+f300
 
 ox = 68.05
 
@@ -31,10 +31,10 @@ hx = 63
 hx = add($hx,$ox)
 hy = 30
 
-c2 = 0.5
+c2 = 0.2
 c3 = 0.1
+z2 = 3
 
-z2 = 4
 print "c2=$c2"
 print "z2=$z2"
 
@@ -94,7 +94,7 @@ h $hx,$hy z$z2 c$c3 d3
 
 
 
-(simítás)
+(2. menet)
 
 t1
 
@@ -108,7 +108,7 @@ print "mx: $mx"
 print "my: $my"
 print "ma: $ma"
 
-c2 = 0.2
+c2 = 0.1
 z2 = 4
 j1 = 0.4
 

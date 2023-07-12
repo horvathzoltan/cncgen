@@ -221,6 +221,7 @@ DISTFILES += \
     testdata/telefontarto.txt \
     testdata/uniturn_also.txt \
     testdata/uniturn_doboz_fedlap.txt \
+    testdata/uniturn_doboz_fedlap_2.txt \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_felso.txt \
     testdata/uniturn_relay_doboz_hatlap.txt \

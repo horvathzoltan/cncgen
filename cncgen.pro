@@ -208,8 +208,8 @@ DISTFILES += \
     testdata/mestercipo_tap_szerelolap_1.txt \
     testdata/mestercipo_tap_szerelolap_also.txt \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
-    testdata/pi_alatet_15.txt \
-    testdata/pi_alatet_8db_15.txt \
+    testdata/pi_alatet_24db.txt \
+    testdata/pi_alatet_8db.txt \
     testdata/pi_bolcso_15.txt \
     testdata/pi_bolcso_15_2.txt \
     testdata/pi_hatlap.txt \
@@ -220,8 +220,10 @@ DISTFILES += \
     testdata/tapdugo3.txt \
     testdata/telefontarto.txt \
     testdata/uniturn_also.txt \
+    testdata/uniturn_also_2.txt \
     testdata/uniturn_doboz_fedlap.txt \
     testdata/uniturn_doboz_hatlap.txt \
+    testdata/uniturn_doboz_hatlap_2.txt \
     testdata/uniturn_felso.txt \
     testdata/uniturn_relay_doboz_hatlap.txt \
     testdata/uniturn_relay_felso_szerelolap.txt \
@@ -229,4 +231,5 @@ DISTFILES += \
     testdata/uniturn_relay_szerelolap.txt \
     testdata/uniturn_usb_tavtarto.txt \
     testdata/uniturn_usb_tavtarto2.txt \
-    testdata/usb.txt
+    testdata/usb.txt \
+    testdata/usb_kengyel.txt

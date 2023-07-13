@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 10.0.2, 2023-07-13T10:53:41. -->
+<!-- Written by QtCreator 10.0.2, 2023-07-13T18:21:23. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -242,7 +242,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">cncgen2</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/zoli/source/repos/cncgen/cncgen.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/zoli/source/repos/cncgen/cncgen.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments">-i usb_kengyel.txt -t</value>
+    <value type="QString" key="RunConfiguration.Arguments">-i uniturn_also_3.txt -t -p</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>

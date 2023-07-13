@@ -1,0 +1,60 @@
+(UNITURN mérőállomás alsó szerelőlap 3)
+(cmd line: -i uniturn_also_3.txt -t)
+(plot cmd: -i uniturn_also_3.txt -t -p)
+(szerszám beállítás)
+
+t1 m d2 h19
+t2 m d3 h19
+t3 m d4 h19
+yxz
+t1
+s50
+f700
+
+c1 = 0.05
+z1 = 2.5
+c2 = 0.30
+ujg = 0.2
+
+(pi3b furatok)
+b corners 3.2,77 size49,58 z$z1 c$c1 d2.5 jg0.5
+
+(relé furatok)
+#b corners 144,12 size44.8,33.1 z$z1 c$c1 d3
+
+(rfid furatok)
+#b corners 130,100 size50,15 z$z1 c$c1 d3
+h 70,140 d3 z$z1 c$c1
+h 95,120 d3 z$z1 c$c1
+h 120,140 d3 z$z1 c$c1
+
+
+(alátámasztás)
+#h 108,67 d3 z$z1 c$c1
+h 75,35
+h 133,80
+
+(B3218101 - NET-BOX 220, VERS. I)
+(rögzítő furatok)
+h 5,4 d3 z$z1 c$c1
+h 5,124
+h 25,146
+h 169,146
+h 189,124
+h 189,4
+
+(dugó kivágások)
+b inline 42,0 size96,30 z$z1 c$c2 g2,2,1 r5 nl1,1,1,0 rj2
+b inline 20,0 size22,22 z$z1 c$c2 g1,2,1 r5 nl1,1,0,0 rj2
+
+(usb hub furatai)
+h 170,142 d3 z$z1 c$c1 jg$ujg
+h 170,17 d3 z$z1 c$c1 jg$ujg
+h 144.5,80 d3 z$z1 c$c1 jg$ujg
+
+h 144.5,142 d3 z$z1 c$c1 jg$ujg
+h 144.5,17 d3 z$z1 c$c1 jg$ujg
+h 170,80 d3 z$z1 c$c1 jg$ujg
+
+(körvonal)
+b outline 0,0 194,152 z$z1 c$c2 g3,2,1 r5

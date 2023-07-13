@@ -3,8 +3,7 @@
 (plot cmd: -i uniturn_doboz_fedlap.txt -t -p)
 (szerszám beállítás)
 
-t1 m d1.5 h19
-t2 m d3 h19
+t2 m d2 h19
 
 safe0,0,3
 
@@ -51,7 +50,7 @@ b inline $mx,$my size12.5,5.1 ng
 h $hx,$hy d3
 
 my = add($my,$ma)
-hy = add($hy,$ma)
+hy = add($hy,$ma)t2
 b inline $mx,$my size12.5,5.1 ng
 h $hx,$hy d3
 
@@ -85,7 +84,7 @@ h 45,18 d3
 
 (simítás)
 
-t1
+t2
 
 f300
 

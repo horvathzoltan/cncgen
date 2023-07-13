@@ -18,21 +18,20 @@ ujg = 0.2
 (pi3b furatok)
 b corners 3.2,77 size49,58 z$z1 c$c1 d3 jg0.1
 
-(relé furatok)
-#b corners 144,12 size44.8,33.1 z$z1 c$c1 d3
-
 (rfid furatok)
 #b corners 130,100 size50,15 z$z1 c$c1 d3 jg0.1
 h 70,140 d3 z$z1 c$c1 jg0.1
 h 95,120 d3 z$z1 c$c1 jg0.1
 h 120,140 d3 z$z1 c$c1 jg0.1
 
-
 (alátámasztás)
 #h 108,67 d3 z$z1 c$c1
 h 183,80
 h 133,80
-h 75,35
+#h 75,5
+
+(relé furatok)
+#b corners 70,60 size44.8,33.1 z$z1 c$c1 d3 jg0.1
 
 (B3218101 - NET-BOX 220, VERS. I)
 (rögzítő furatok)

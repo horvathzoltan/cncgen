@@ -1,0 +1,17 @@
+(UNITURN mérőállomás alsó szerelőlap 2)
+(cmd line: -i usb_kengyel.txt -t)
+(plot cmd: -i usb_kengyel.txt -t -p)
+(szerszám beállítás)
+
+t1 m d2 h19
+t2 m d3 h19
+t3 m d4 h19
+yxz
+t1
+s50
+f200
+
+c1 = 0.1
+z1 = 1.8
+
+l 0,0 0,160 z$z1 c$c1

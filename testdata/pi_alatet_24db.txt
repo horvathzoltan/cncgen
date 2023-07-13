@@ -1,0 +1,155 @@
+(Raspberry Pi alátét 24 db)
+(cmd line: -i pi_alatet_24db.txt -t)
+(plot cmd: -i pi_alatet_24db.txt -t -p)
+
+(szerszám beállítás)
+t1 m d2 h19
+yxz
+
+t1
+s50
+f300
+
+(mélység)
+th = 2.7
+(belső átmérő)
+db = 2.5
+(külső átmérő)
+dk = sum(5.8,2,2)
+print "dk: $dk"
+
+c = 0.2
+j1 = 0.1
+gw = 0.3
+gh = 1
+
+(h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
+(h 4,4 d5 z1.2 c0.175 g0,0,0 np)
+
+x = div($dk,2)
+y = div($dk,2)
+o = add($dk,3)
+
+(1.sor)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+(2.sor)
+y = add($y,$o)
+x = 10
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+(3.sor)
+y = add($y,$o)
+x = 4
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c jg$j1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np

@@ -1,0 +1,43 @@
+(UNITURN mérőállomás táp szerelőlap)
+(cmd line: -i hammond_doboz_tap3.txt -t)
+(plot cmd: -i hammond_doboz_tap3.txt -t -p)
+(szerszám beállítás)
+
+t1 m d3 h19
+
+yxz
+t1
+s50
+f700
+
+#c1 = 0.375
+c1 = 0.5
+z1 = 3.5
+(vágás fogásmélység egy menetben)
+#c2 = 0.675
+c2 = 1
+ujg = 0.2
+
+b corners -1,-1 size161,111 z$z1 c$c2 d12 jg0.5
+h 79.5,-1 size161,111 z$z1 c$c2 d12 jg0.5
+h 79.5,110 size161,111 z$z1 c$c2 d12 jg0.5
+
+(rögzítő furatok)
+b corners 5,14 154,96 z$z1 c$c1 d3 jg0.1
+h 94,14 size161,111 z$z1 c$c1 d3 jg0.1
+h 94,96 size161,111 z$z1 c$c1 d3 jg0.1
+
+(táp 12V - furat táv 55mm)
+h 49,28.8 size161,111 z$z1 c$c1 d3 jg0.1
+h 49,83.8 size161,111 z$z1 c$c1 d3 jg0.1
+
+
+h 125,35 size161,111 z$z1 c$c1 d3 jg0.1
+h 125,90 size161,111 z$z1 c$c1 d3 jg0.1
+
+
+(körvonal)
+b outline 0,0 159,109 z$z1 c$c2 g3,2,2.5 jg1.2
+(bekarcolás)
+#b outline 0,0 159,109 z0.1 c0.1  jg1.2
+

@@ -193,6 +193,8 @@ DISTFILES += \
     testdata/geom3_1.txt \
     testdata/gomb.txt \
     testdata/gomb6mm.txt \
+    testdata/hammond_doboz_tap2.txt \
+    testdata/hammond_doboz_tap3.txt \
     testdata/hdmi.txt \
     testdata/head.gcode \
     testdata/holetest.txt \
@@ -235,4 +237,5 @@ DISTFILES += \
     testdata/uniturn_usb_tavtarto.txt \
     testdata/uniturn_usb_tavtarto2.txt \
     testdata/usb.txt \
-    testdata/usb_kengyel.txt
+    testdata/usb_kengyel.txt \
+    testdata/usb_tavtarto.txt

@@ -1,0 +1,60 @@
+(HAMMOND műszerdoboz láb 4 db)
+(cmd line: -i hammond_doboz_lab_4db.txt -t)
+(plot cmd: -i hammond_doboz_lab_4db.txt -t -p)
+
+(szerszám beállítás)
+t1 m d3 h19
+yxz
+
+t1
+s50
+f750
+
+(mélység)
+th0 = 4.7
+th2 = 2.25
+(belső átmérő)
+db0 = 3
+db2 = 6
+(külső átmérő)
+dk = sum(18,2,2)
+print "dk: $dk"
+
+c = 0.5
+c2 = 0.2
+j1 = 0.1
+gw = 0.5
+gh = 2.7
+
+x = div($dk,2)
+y = div($dk,2)
+o = add($dk,3)
+
+(1.sor)
+
+h $x,$y d$db2 z$th2 c$c2 jg$j1
+h $x,$y d$db0 z$th0 c$c2 jg$j1
+h $x,$y d$dk z$th0 c$c g3,1,2.7 np
+
+x = add($x,$o)
+
+h $x,$y d$db2 z$th2 c$c2 jg$j1
+h $x,$y d$db0 z$th0 c$c2 jg$j1
+h $x,$y d$dk z$th0 c$c g3,1,2.7 np
+
+x = add($x,$o)
+
+h $x,$y d$db2 z$th2 c$c2 jg$j1
+h $x,$y d$db0 z$th0 c$c2 jg$j1
+h $x,$y d$dk z$th0 c$c g3,1,2.7 np
+
+x = add($x,$o)
+
+h $x,$y d$db2 z$th2 c$c2 jg$j1
+h $x,$y d$db0 z$th0 c$c2 jg$j1
+h $x,$y d$dk z$th0 c$c g3,1,2.7 np
+
+
+
+
+

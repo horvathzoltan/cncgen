@@ -25,7 +25,9 @@ Box::Box(const Point &_p0,
          qreal _jg,
          bool _nl[4],
          qreal _rounding,
-        int _rjoin)
+        int _rjoin,
+         qreal _vcorner_x,
+         qreal _vcorner_y)
 {
     p0=_p0;
     p1=_p1;
@@ -44,6 +46,8 @@ Box::Box(const Point &_p0,
     _isValid = true;
     rounding = _rounding;
     rjoin=_rjoin;
+    vcorner_x=_vcorner_x;
+    vcorner_y=_vcorner_y;
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -69,6 +73,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     Size size;
     qreal jointGap=0;
     int rjoin = 0;
+    qreal vcorner_x = 0;
+    qreal vcorner_y = 0;
 
     bool nl[]={1,1,1,1};
 
@@ -123,6 +129,19 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             if(ok) corner_diameter=a;
             continue;
         }
+        if(p.startsWith("vx")){
+            qreal a;
+            bool ok = GCode::ParseValue(p, L("vx"), &a);
+            if(ok) vcorner_x=a;
+            continue;
+        }
+        if(p.startsWith("vy")){
+            qreal a;
+            bool ok = GCode::ParseValue(p, L("vy"), &a);
+            if(ok) vcorner_y=a;
+            continue;
+        }
+
         if(cut.ParseInto(p,&st)) continue;
         if(Feed::Parse(p, &feed).state()!=ParseState::NoData){
             continue;
@@ -200,7 +219,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         size,
         jointGap,
         nl,
-        rounding, rjoin
+        rounding, rjoin, vcorner_x, vcorner_y
     };
 
     st.setState(ParseState::Parsed);

@@ -1312,6 +1312,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         jf.x+=tool_r;
         jf.y+=tool_r;
 
+
         //
         ja.x=jf.x;
         ja.y=ba.y;
@@ -1322,7 +1323,8 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         ba.y+=tool_r;
         ba.x+=tool_r;
         jf.y-=tool_r;        
-        jf.x-=tool_r;        
+        jf.x-=tool_r;
+
         //
         ja.x=jf.x;
         ja.y=ba.y;
@@ -1355,7 +1357,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         jf2.y=bf4.y=jf.y;
         break;
     default: break;
-    }
+    }       
 
     bool isRounding = _lastBox.type!=BoxType::Corners && m.rounding>0;
 
@@ -1580,12 +1582,34 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         if(z2>0){
             cut_border = {z2, _last_cut.z0};
 
+            if(m.vcorner_x>0){
+                //1
+                ba1.x+=m.vcorner_x;
+                ja1.x-=m.vcorner_x;
+
+                //4
+                bf3.x+=m.vcorner_x;
+                jf3.x-=m.vcorner_x;
+            }
+            if(m.vcorner_y>0){
+                //2
+                ja2.y+=m.vcorner_y;
+                jf2.y-=m.vcorner_y;
+
+                //3
+                ba4.y+=m.vcorner_y;
+                bf4.y-=m.vcorner_y;
+            }
+
             lines_border= {
                 {ba1,ja1, cut_border, _last_feed,{}},
                 {ja2,jf2, cut_border, _last_feed,{}},
                 {jf3,bf3, cut_border, _last_feed,{}},
                 {bf4,ba4, cut_border, _last_feed,{}}};
             }
+
+
+
 
         if(isRounding){
             Cut cut = {_last_cut.z,_last_cut.z0};

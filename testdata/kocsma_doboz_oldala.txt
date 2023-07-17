@@ -1,0 +1,35 @@
+(kocsma doboz oldala)
+(cmd line: -i kocsma_doboz_oldala.txt -t)
+(plot cmd: -i kocsma_doboz_oldala.txt -t -p)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f700
+
+c1 = 0.05
+z1 = 3.5
+(vágás fogásmélység egy menetben)
+c2 = 0.1
+ujg = 0.2
+
+(3.26+4.39+2+2+1.4-0.34)
+
+(hdmi0)
+b inline 46,12.75 size10.8,6.6 z$z1 c$c2 jg1
+
+(hdmi1)
+b inline 59.5,12.75 size10.8,6.6 z$z1 c$c2 jg1
+
+(12.71+6.6+6)
+(ethernet)
+b inline 46,25.5 size15.7,13.05 z$z1 c$c2  jg1
+
+h 40.5,30.5 d3 z$z1 c$c1  jg0.1
+h 67.2,30.5 d3 z$z1 c$c1  jg0.1
+
+(táp)
+h 26.6,20 d11 z$z1 c$c1  jg0.1

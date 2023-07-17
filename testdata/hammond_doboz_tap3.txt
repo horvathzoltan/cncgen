@@ -14,7 +14,6 @@ f700
 c1 = 0.5
 z1 = 3.5
 (vágás fogásmélység egy menetben)
-#c2 = 0.675
 c2 = 1
 ujg = 0.2
 

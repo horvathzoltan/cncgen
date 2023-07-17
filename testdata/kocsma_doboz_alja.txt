@@ -1,0 +1,42 @@
+(kocsma alsó szerelőlap)
+(cmd line: -i kocsma_doboz_alja.txt -t)
+(plot cmd: -i kocsma_doboz_alja.txt -t -p)
+(szerszám beállítás)
+
+t1 m d3 h19
+
+yxz
+t1
+s50
+f700
+
+#c1 = 0.375
+c1 = 0.5
+z1 = 3.5
+(vágás fogásmélység egy menetben)
+c2 = 1
+ujg = 0.2
+
+(pi3b furatok)
+b corners 82,6 size58,49 z$z1 c$c1 d2.5 jg0.5
+
+(táp 12V - furat táv 55mm)
+h 130,88 size161,111 z$z1 c$c1 d3 jg0.1
+h 75,88 size161,111 z$z1 c$c1 d3 jg0.1
+
+(alátámasztás)
+h 180,68
+
+(rögzítő furatok)
+#b corners 26,9 size113,97 z$z1 c$c1 d2.5 jg0.5
+b corners 19.6,9 size126.8,97 z$z1 c$c1 d2.5 jg0.5
+
+(körvonal)
+b outline 0,0 size165,115 z$z1 c$c2 g3,2,2.5 jg1.2 vy13 vx22
+#g1,1,2.5
+b outline 0,0 size9.6,18.5 z$z1 c$c2 ng jg1.2 r3 rj2 nl0,1,1,0
+b outline 0,96.5 size9.6,18.5 z$z1 c$c2 ng jg1.2 r3 rj2 nl0,0,1,1
+
+b outline 155.4,0 size9.6,18.5 z$z1 c$c2 ng jg1.2 r3 rj2 nl1,1,0,0
+b outline 155.4,96.5 size9.6,18.5 z$z1 c$c2 ng jg1.2 r3 rj2 nl1,0,0,1
+

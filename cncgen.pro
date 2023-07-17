@@ -193,6 +193,7 @@ DISTFILES += \
     testdata/geom3_1.txt \
     testdata/gomb.txt \
     testdata/gomb6mm.txt \
+    testdata/hammond_doboz_lab_4db.txt \
     testdata/hammond_doboz_tap2.txt \
     testdata/hammond_doboz_tap3.txt \
     testdata/hdmi.txt \

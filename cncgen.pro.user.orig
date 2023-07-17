@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< HEAD
-<!-- Written by QtCreator 10.0.2, 2023-07-13T19:55:27. -->
-=======
-<!-- Written by QtCreator 10.0.2, 2023-07-14T13:17:57. -->
->>>>>>> 6f36d614290c0912cae98c32ded6a332d419ebd5
+<!-- Written by QtCreator 10.0.2, 2023-07-15T17:23:42. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -246,7 +242,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">cncgen2</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/zoli/source/repos/cncgen/cncgen.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/home/zoli/source/repos/cncgen/cncgen.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments">-i M3x9_alatet_6db.txt -t </value>
+    <value type="QString" key="RunConfiguration.Arguments">-i hammond_doboz_lab_4db.txt -t </value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>

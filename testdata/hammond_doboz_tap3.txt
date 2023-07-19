@@ -10,7 +10,6 @@ t1
 s50
 f700
 
-#c1 = 0.375
 c1 = 0.5
 z1 = 3.5
 (vágás fogásmélység egy menetben)

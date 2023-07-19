@@ -1,0 +1,55 @@
+#6x15_lampa_alatet.txt
+
+(M3 alatet 6 db)
+(cmd line: -i 6x15_lampa_alatet.txt -t)
+(plot cmd: -i 6x15_lampa_alatet.txt -t -p)
+
+(szerszám beállítás)
+t1 m d3 h19
+yxz
+
+t1
+s50
+f750
+
+(mélység)
+th = 4.7
+(belső átmérő)
+db = 6
+(külső átmérő)
+dk = sum(15,3,3)
+print "dk: $dk"
+
+
+z1 = 3.5
+(vágás fogásmélység egy menetben)
+c0 = 1
+(fúrás fogásmélység egy menetben)
+c2 = 0.5
+ujg = 0.2
+
+j1 = 0.1
+
+gw = 1
+gh = 2.7
+
+
+x = div($dk,2)
+y = div($dk,2)
+o = add($dk,3)
+
+(1.sor)
+
+h $x,$y d$db z$th c$c2 jg$j1
+h $x,$y d$dk z$th c$c0 g3,1,2.7 np
+
+#x = add($x,$o)
+
+#h $x,$y d$db z$th c$c2 jg$j1
+#h $x,$y d$dk z$th c$c0 g3,1,2.7 np
+
+
+
+
+
+

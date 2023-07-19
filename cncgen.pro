@@ -174,6 +174,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #    signalhelper.h
 
 DISTFILES += \
+    testdata/12x36_lampa_alatet.txt \
+    testdata/6x15_lampa_alatet.txt \
     testdata/M3_alatet_8db.txt \
     testdata/M3_dupla_alatet_20.txt \
     testdata/M3x10_alatet_5db.txt \

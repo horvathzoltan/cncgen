@@ -235,6 +235,8 @@ auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString 
 
             m.cut.z = 0.02;
             m.cut.z0 = 0.02;
+
+            _tools[_selected_tool_ix].d=0.5;
             //m.gap.height = 0.01;
         }
 
@@ -262,6 +264,8 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
             m.cut.z = 0.02;
             m.cut.z0 = 0.02;
             m.gap.height = 0.01;
+
+            _tools[_selected_tool_ix].d=0.5;
         }
         if(gcode)*gcode=LineToGCode(m,err);
     }
@@ -286,6 +290,8 @@ auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString
             m.cut.z = 0.02;
             m.cut.z0 = 0.02;
             m.gap.height = 0.01;
+
+            _tools[_selected_tool_ix].d=0.5;
         }
 
         if(gcode)*gcode=HoleToGCode(m,err);
@@ -312,6 +318,8 @@ auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString 
             m.cut.z = 0.02;
             m.cut.z0 = 0.02;
             m.gap.height = 0.01;
+
+            _tools[_selected_tool_ix].d=0.5;
         }
 
         if(gcode)*gcode=BoxToGCode(m,err);

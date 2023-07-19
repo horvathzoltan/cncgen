@@ -216,6 +216,7 @@ DISTFILES += \
     testdata/mestercipo_tap_szerelolap_also.txt \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
     testdata/pi_alatet_24db.txt \
+    testdata/pi_alatet_4db.txt \
     testdata/pi_alatet_8db.txt \
     testdata/pi_bolcso_15.txt \
     testdata/pi_bolcso_15_2.txt \

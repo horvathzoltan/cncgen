@@ -11,11 +11,11 @@ s50
 f300
 
 (mélység)
-th = 2.2
+th = 2.5
 (belső átmérő)
-db = 2.35
+db = 2.5
 (külső átmérő)
-dk = sum(5.8,2,2)
+dk = sum(6.2,2,2)
 print "dk: $dk"
 c = 0.2
 

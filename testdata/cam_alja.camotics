@@ -1,0 +1,25 @@
+{
+      "units": "metric",
+      "resolution-mode": "high",
+      "resolution": 1,
+      "tools": {
+        "1": {
+          "units": "metric",
+          "shape": "cylindrical",
+          "length": 18.995726,
+          "diameter": 3,
+          "description": ""
+        }
+      },
+      "workpiece": {
+        "automatic": true,
+        "margin": 5,
+        "bounds": {
+          "min": [-8.225, -10.725, -3.675],
+          "max": [123.225, 175.725, 0]
+        }
+      },
+      "files": [
+        "kocsma_doboz_alja.gcode"
+      ]
+    }

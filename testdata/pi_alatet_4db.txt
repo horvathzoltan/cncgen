@@ -3,21 +3,21 @@
 (plot cmd: -i pi_alatet_4db.txt -t -p)
 
 (szerszám beállítás)
-t1 m d2 h19
+t1 m d1 h19
 yxz
 
 t1
 s50
-f700
+f500
 
 (mélység)
 th = 2.5
 (belső átmérő)
 db = 2.5
 (külső átmérő)
-dk = sum(6.2,2,2)
+dk = sum(6.2,1,1)
 print "dk: $dk"
-c0 = 0.03
+c0 = 0.025
 c = 0.1
 
 (h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)

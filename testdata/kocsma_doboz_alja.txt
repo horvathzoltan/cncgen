@@ -11,58 +11,43 @@ s50
 f700
 
 #c1 = 0.375
-c1 = 0.5
-z1 = 3.5
+c1 = 0.20
+z1 = 2.6
 (vágás fogásmélység egy menetben)
-c2 = 1
+c2 = .75
 ujg = 0.2
 
 (pi3b furatok)
-b corners 82,6 size58,49 z$z1 c$c1 d3 jg0.1
+b corners 81,7 size58,49 z$z1 c$c1 d3
 
 (pi3b keret)
 # 82.6+58+3.5-85 , 6-3.5
-b inline 78.5,2.5 size65,56 z$z1 c$c2 g1,1,2.5 jg0.5 vy9 vx9 nl0,1,1,1
-b inline 53.5,2.5 size23,56 z$z1 c$c2 g1,1,2.5 jg0.5 vy0 vx0 r3 rj0 nl1,1,0,1
+b inline 77.5,3.5 size65,56 z$z1 c$c2 g1,2,1 jg0.5 vy9 vx9 nl0,1,1,1
+b inline 52.5,3.5 size23,56 z$z1 c$c2 g1,2,1 jg0.5 vy0 vx0 r3 rj0 nl1,1,0,1
+(kártya)
+b inline 142.5,23 size16,16 z$z1 c$c2 g1,1,1 jg0.5 vy0 vx0  rj0 nl0,1,1,1
+(hálókábel)
+b inline 30,39 size23,20.5 z$z1 c$c2 g1,1,1 jg0.5 r3 vy0 vx0 rj0 nl1,1,0,1
 
-b outline 78,3.5 size8,6 z$z1 c$c2 ng  r3  nl1,1,1,0
-b outline 137,3.5 size5.5,5.5 z$z1 c$c2 ng   r3  nl1,1,0,0
+b outline 77,4.5 size8,6 z$z1 c$c2 ng  r3  nl1,1,1,0
+b outline 136,4.5 size5.5,5.5 z$z1 c$c2 ng   r3  nl1,1,0,0
 
-b outline 78,51.5 size8,6 z$z1 c$c2 ng  r3 nl1,0,1,1
-b outline 137,52 size5.5,5.5 z$z1 c$c2 r3  nl1,0,0,1
+b outline 77,53 size7.5,5.5 z$z1 c$c2 ng  r3 nl1,0,1,1
+b outline 136,53 size5.5,5.5 z$z1 c$c2 r3  nl1,0,0,1
 
 (táp 12V - furat táv 55mm)
-h 130,88 size161,111 z$z1 c$c1 d3 jg0.1
-h 75,88 size161,111 z$z1 c$c1 d3 jg0.1
+h 130,87 size161,111 z$z1 c$c1 d3 jg0.1
+h 75,87 size161,111 z$z1 c$c1 d3 jg0.1
 
 (alátámasztás)
 #h 60,55
 
 (rögzítő furatok)
 #b corners 26,9 size113,97 z$z1 c$c1 d2.5 jg0.5
-b corners 15.5,11.5 size134,92 z$z1 c$c1 d3
+b corners 16.5,12.5 size132,91 z$z1 c$c1 d3 jg0.1
 
-(körvonal)
-h 38.15,0.75 z$z1 c$c1 d3 jg0.1
-h 41.7,0.75 z$z1 c$c1 d3 jg0.1
 
-h 80.7,0.75 z$z1 c$c1 d3 jg0.1
-h 84.35,0.75 z$z1 c$c1 d3 jg0.1
-
-#h 123.7,0.75 z$z1 c$c1 d3 jg0.1
-#h 126.95,0.75 z$z1 c$c1 d3 jg0.1
-
-#2
-h 38.15,114.25 z$z1 c$c1 d3 jg0.1
-h 41.70,114.25 z$z1 c$c1 d3 jg0.1
-
-h 80.7,114.25 z$z1 c$c1 d3 jg0.1
-h 84.35,114.25 z$z1 c$c1 d3 jg0.1
-
-h 123.7,114.25 z$z1 c$c1 d3 jg0.1
-h 126.95,114.25 z$z1 c$c1 d3 jg0.1
-
-b outline 0,0 size165,115 z$z1 c$c2 g3,2,2.5 jg0.75 vy13 vx22
+b outline 0,0 size165,115 z$z1 c$c2 g3,2,1 jg0.75 vy13 vx22
 #g1,1,2.5
 b outline 0,0 size9.5,18.5 z$z1 c$c2 ng jg0.75 r3 rj2 nl0,1,1,0
 b outline 0,96.5 size9.5,18.5 z$z1 c$c2 ng jg0.75 r3 rj2 nl0,0,1,1
@@ -70,3 +55,30 @@ b outline 0,96.5 size9.5,18.5 z$z1 c$c2 ng jg0.75 r3 rj2 nl0,0,1,1
 b outline 155.4,0 size9.5,18.5 z$z1 c$c2 ng jg0.75 r3 rj2 nl1,1,0,0
 b outline 155.4,96.5 size9.5,18.5 z$z1 c$c2 ng jg0.75 r3 rj2 nl1,0,0,1
 
+
+(körvonal)
+h 0.75,55.3 z$z1 c$c1 d3
+h 0.75,59.2 z$z1 c$c1 d3
+
+h 38.15,0.75 z$z1 c$c1 d3
+h 41.7,0.75 z$z1 c$c1 d3
+
+h 80.7,0.75 z$z1 c$c1 d3
+h 84.35,0.75 z$z1 c$c1 d3
+
+h 123.7,0.75 z$z1 c$c1 d3
+h 126.95,0.75 z$z1 c$c1 d3
+
+#2
+
+h 164.25,55.3 z$z1 c$c1 d3
+h 164.25,59.2 z$z1 c$c1 d3
+
+h 38.15,114.25 z$z1 c$c1 d3
+h 41.70,114.25 z$z1 c$c1 d3
+
+h 80.7,114.25 z$z1 c$c1 d3
+h 84.35,114.25 z$z1 c$c1 d3
+
+h 123.7,114.25 z$z1 c$c1 d3
+h 126.95,114.25 z$z1 c$c1 d3

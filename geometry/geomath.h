@@ -14,10 +14,14 @@ public:
     static Point Translation(const Point &p, qreal x, qreal y, qreal z=0);
 private:
     static qreal uSzog(qreal A1, qreal B1);
+    static qreal uSzog2(qreal A1, qreal B1);
     static bool uOsztopontXY(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y, qreal p1z, qreal o, qreal *x, qreal *y, qreal *z);
     static qreal uTavolsagXYZ(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y, qreal p1z);
     static bool uPolarisSZXY(qreal p0x, qreal p0y, qreal p1x, qreal p1y, qreal szog, qreal tavolsag, qreal *x, qreal *y);
     static bool uIvhossz(qreal p0x, qreal p0y, qreal p0z, qreal p1x, qreal p1y, qreal p1z, qreal ox, qreal oy, qreal oz, qreal *l);
+    static qreal uSzog3D(qreal p0x, qreal p0y, qreal p0z,
+                  qreal p1x, qreal p1y, qreal p1z,
+                  qreal ox,  qreal oy,  qreal oz);
 };
 
 

@@ -954,7 +954,8 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
            qreal l0 = _last_position.z-zz;
            qreal l1 = p.z-zz;
 
-           _total_time+=l1/_last_feed.feed()+l0/1500;
+           qreal t0 = 0;//l1/_last_feed.feed()+l0/1500;
+           _total_time+=t0;
        }
 
        _last_position.z = p.z;
@@ -1901,8 +1902,9 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length) -> QStrin
         _total_length+=length;
         if(v<=0){
             zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
-        } else{            
-            _total_time+=length/v;
+        } else{
+            qreal t0 = 0;//length/v;
+            _total_time+=t0;
         }
     } else {
         zInfo(Messages::zero_spindleSpeed)
@@ -1935,7 +1937,10 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
         }
         else{
             v = _last_feed.feed();
-            _total_cut+=length;
+            if(i==GMode::Mode::Linear)
+            {
+                _total_cut+=length;
+            }
         }
         if(_last_feed.spindleSpeed()<=0){
             zInfo(Messages::zero_spindleSpeed);
@@ -1952,11 +1957,14 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
 
 
     if(length>0){
-        _total_length+=length;
-        if(v<=0){
-            zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
-        } else{
-            _total_time+=length/v;
+        if(i==GMode::Mode::Linear){
+            _total_length+=length;
+            if(v<=0){
+                zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
+            } else{
+                qreal t0 = 0;//length/v;
+                _total_time+=t0;
+            }
         }
     } else {
         zInfo(Messages::no_calc_length)
@@ -1969,7 +1977,8 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length) -> QStri
 
 auto GenerateGcode::Dwell(int p) -> QString
 {
-    _total_time+=p/1000;
+    qreal t0 = 0;//p/1000;
+    _total_time+=t0;
     auto str =  "G04 P"+QString::number(p);
     //QString str;
     return str;
@@ -2013,7 +2022,8 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QStr
         if(v<=0){
             zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
         } else{
-            _total_time+=length/v;
+            qreal t0 = 0;//length/v;
+            _total_time+=t0;
         }
     } else {
         zInfo(Messages::no_calc_length)

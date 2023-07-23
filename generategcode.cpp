@@ -2034,13 +2034,7 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length) -> QStr
         if(v<=0){
             zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
         } else{
-            if(i==GMode::Mode::Linear){
-                _total_cut+=length;
-                qreal t0 = length/v;
-                _total_time+=t0;
-            } else if(i==GMode::Rapid){
-
-            } else{
+            if(i!=GMode::Rapid){
                 _total_cut+=length;
                 qreal t0 = length/v;
                 _total_time+=t0;

@@ -182,7 +182,6 @@ DISTFILES += \
     testdata/M3x9_alatet_6db.txt \
     testdata/alatet.txt \
     testdata/bekapcsolo.txt \
-    testdata/cam_alja.txt \
     testdata/cam_elolap.txt \
     testdata/cam_elolap_bolcso.txt \
     testdata/cam_teteje.txt \

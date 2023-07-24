@@ -27,7 +27,7 @@ Hole::Hole(const Point &_p,
     feed = _feed;
     rp = _rp;
     gap = _gap;
-    np=_np;
+    np=_np; // no predrill????
     ng=_ng;
     jointGap=_jg;
    // _isValid = true;

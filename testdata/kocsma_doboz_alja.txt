@@ -11,11 +11,11 @@ s50
 f700
 
 #c1 = 0.375
-c1 = 0.05
+c1 = 0.1
 z1 = 3
 zh1 = 3.5
 (vágás fogásmélység egy menetben)
-c2 = .50
+c2 = 0.50
 ujg = 0.2
 
 (pi3b furatok)
@@ -48,13 +48,16 @@ h 130,87 size161,111 z$zh1 c$c1 d3 jg0.1
 h 75,87 size161,111 z$zh1 c$c1 d3 jg0.1
 
 (alátámasztás)
-#h 60,55
+ay1 = 63
+l 0,$ay1 5,$ay1 z$z1 c$c2
+l 160,$ay1 165,$ay1
 
 (rögzítő furatok)
-#b corners 26,9 size113,97 z$z1 c$c1 d2.5 jg0.5
+#doboz sarkok
 b corners 16.5,12.5 size132,91 z$zh1 c$c1 d3 jg0.1
-h 27,12.5 z$zh1 c$c1 jg0.1 d3
-h 27,103.5 z$zh1 c$c1 jg0.1 d3
+#jobb oldali
+h 30,12.5 z$zh1 c$c1 jg0.1 d3
+h 30,103.5 z$zh1 c$c1 jg0.1 d3
 
 
 b outline 0,0 size165,115 z$z1 c$c2 g3,2,1.5 jg0.75 vy14 vx23

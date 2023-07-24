@@ -887,7 +887,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
             if(m.gap.n>0){
                 hasGaps = true; //
                 int gapn = (2*path_r*M_PI)/(2*t.d+mgap.length); // hány gap fér ki
-                if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
+                if(gapn<1) {if(err)*err=L("cannot create gaps"); return{};}
                 if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
             } else{
                 hasGaps=false;
@@ -905,12 +905,13 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                     pre_mill=false;
 
                     int gapn = (2*path_r*M_PI)/(2*t.d+mgap.length); // hány gap fér ki
-                    if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
+                    if(gapn<1) {if(err)*err=L("cannot create gaps"); return{};}
                     if(mgap.n>gapn){mgap.n=gapn;}// ha többet kért, mint ami kifér
 
                 } else {
-                    pre_drill = holeDiameter>=2*t.d; //d=0
+                    //pre_drill = holeDiameter>=2*t.d; //d=0
                     pre_mill = holeDiameter>=3*t.d; //d=2*t.d
+                    pre_drill = pre_mill;
                 }
             }
         }

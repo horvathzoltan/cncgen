@@ -1,0 +1,23 @@
+(kocsma doboz oldala)
+(cmd line: -i kocsma_doboz_oldala_csakhdmi.txt -t)
+(plot cmd: -i kocsma_doboz_oldala_csakhdmi.txt -t -p)
+(szerszám beállítás)
+
+t1 m d1 h19
+
+yxz
+t1
+s50
+f700
+
+z1 = 4.5
+(vágás fogásmélység egy menetben)
+c1 = 0.075
+c3 = 0.025
+
+(hdmi0)
+b inline 101,5.65 size10.8,6.6 z$z1 c$c1 jg0.25
+
+(hdmi1)
+b inline 114.7,5.65 size10.8,6.6 z$z1 c$c1 jg0.25
+

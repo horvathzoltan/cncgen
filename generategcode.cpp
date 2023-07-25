@@ -979,8 +979,10 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     if(!drillOnly){
         if(pre_mill){
             g.append(L("(premill)"));
-            auto g1=HelicalCut(_last_cut.z, t.d);
+            auto g1=HelicalCut(_last_cut.z, t.d*0.65);
             g.append(g1);
+            auto g2=HelicalCut(_last_cut.z, t.d*0.8);
+            g.append(g2);
         }
 
         p.x -= path_r; //szerszámpálya kezdő pontja

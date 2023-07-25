@@ -1,0 +1,100 @@
+(kocsma alsó szerelőlap)
+(cmd line: -i kocsma_doboz_alja_1mm.txt -t)
+(plot cmd: -i kocsma_doboz_alja_1mm.txt -t -p)
+(szerszám beállítás)
+
+t1 m d1 h19
+
+yxz
+t1
+s50
+f700
+
+z1 = 3
+zh1 = 3.5
+(vágás fogásmélység egy menetben)
+#c1 = 0.375
+c1 = 0.075
+c2 = 0.025
+ujg = 0.2
+
+(pi3b furatok)
+b corners 81,7 size58,49 z$zh1 c$c1 d2.75
+
+(pi3b keret)
+# 82.6+58+3.5-85 , 6-3.5
+b inline 77.5,3.5 size65,56 z$z1 c$c2 g1,1,1.5 jg0.5 vy7.5 vx7 nl0,1,1,1
+b inline 52.5,3.5 size20,56 z$z1 c$c2 g1,1,1.5 jg0.5 vy0 vx0 nl1,1,0,1
+(kártya)
+b inline 142.5,22.5 size16,17 z$z1 c$c2 g1,1,1.5 jg0.5 r4 rj0 nl0,1,1,1
+(hálókábel)
+b inline 30,39 size22.5,20.5 z$z1 c$c2 g1,1,1.5 jg0.5 r4 rj0 nl1,1,0,1
+
+# pi ja sarok
+b outline 76.5,4 size8,6.5 z$z1 c$c2 ng r3 rj2  nl1,1,1,0
+l 85,7 85,0.5 z1.5 c$c2
+
+# ba sarok
+b outline 135.5,3.5 size6.8,6.5 z$z1 c$c2 ng r3 rj0 nl1,1,0,0
+l 135,4 135,0.5 z1.5 c$c2
+
+#jf
+b outline 76,52.5 size8.5,6.5 z$z1 c$c2 ng r3 rj2 nl1,0,1,1
+l 85,59.5 85,57 z1.5 c$c2
+
+#bf
+b outline 135.5,53 size6.8,6.5 z$z1 c$c2 r3 rj0 nl1,0,0,1
+
+(táp 12V - furat táv 55mm)
+h 130,87 size161,111 z$zh1 c$c1 d3 jg0.1
+h 75,87 size161,111 z$zh1 c$c1 d3 jg0.1
+
+(alátámasztás)
+#ay1 = 63
+#l 0,$ay1 5,$ay1 z$z1 c$c2
+#l 160,$ay1 165,$ay1
+
+(rögzítő furatok)
+#doboz sarkok
+b corners 16.5,12.5 size132,91 z$zh1 c$c1 d3 jg0.5
+#jobb oldali
+h 30,12.5 z$zh1 c$c1 jg0.1 d3
+h 30,103.5 z$zh1 c$c1 jg0.1 d3
+
+
+b outline 0,0 size165,115 z$z1 c$c2 g3,2,1.5 jg0.75 vy11 vx20
+#g1,1,2.5
+b outline 0,0 size8,17 z$z1 c$c2 ng jg0.75 r4 rj2 nl0,1,1,0
+b outline 0,98 size8,17 z$z1 c$c2 ng jg0.75 r4 rj2 nl0,0,1,1
+
+b outline 157,0 size8,17 z$z1 c$c2 ng jg0.75 r4 rj2 nl1,1,0,0
+b outline 157,98 size8,17 z$z1 c$c2 ng jg0.75 r4 rj2 nl1,0,0,1
+
+
+(körvonal)
+#oldalt
+h 0.75,55.3 z$zh1 c$c1 d3
+h 0.75,59.2 z$zh1 c$c1 d3
+
+h 38.15,0.75 z$zh1 c$c1 d3
+h 41.7,0.75 z$zh1 c$c1 d3
+
+h 80.7,0.75 z$zh1 c$c1 d3
+#h 84.35,0.75 z$zh1 c$c1 d3
+
+#h 123.7,0.75 z$zh1 c$c1 d3
+#h 126.95,0.75 z$zh1 c$c1 d3
+
+#2
+
+h 164.25,55.3 z$zh1 c$c1 d3
+h 164.25,59.2 z$zh1 c$c1 d3
+
+h 38.15,114.25 z$zh1 c$c1 d3
+h 41.70,114.25 z$zh1 c$c1 d3
+
+h 80.7,114.25 z$zh1 c$c1 d3
+h 84.35,114.25 z$zh1 c$c1 d3
+
+h 123.7,114.25 z$zh1 c$c1 d3
+h 126.95,114.25 z$zh1 c$c1 d3

@@ -3,35 +3,33 @@
 (plot cmd: -i kocsma_doboz_oldala.txt -t -p)
 (szerszám beállítás)
 
-t1 m d1.5 h19
+t1 m d1 h19
 
 yxz
 t1
 s50
 f700
 
-c1 = 0.1
-z1 = 3.6
+z1 = 4.5
 (vágás fogásmélység egy menetben)
-c2 = 0.5
-ujg = 0.2
-
+c1 = 0.075
+c3 = 0.025
 
 (hdmi0)
-b inline 100.5,5.65 size10.8,6.6 z$z1 c$c2 jg0.1
+b inline 101,5.65 size10.8,6.6 z$z1 c$c1 jg0.25
 
 (hdmi1)
-b inline 114.2,5.65 size10.8,6.6 z$z1 c$c2 jg0.1
+b inline 114.7,5.65 size10.8,6.6 z$z1 c$c1 jg0.25
 
 (12.71+6.6+6)
 (ethernet)
-h 106.5,27 d23.4 z$z1 c$c1 jg0.1
+h 107,27,0.25 d23.4 z$z1 c$c1 g3,1,1.5 jg0.1
 
-h r-12,9.5, d3 z$z1 c$c1  jg0.1
-h r24,-19 d3 z$z1 c$c1  jg0.1
+h r-12,9.5,-0.25, d3 z$z1 c$c3 ng jg0.1
+h r24,-19 d3 z$z1 c$c3 ng jg0.1
 
 (táp)
-h 142,20.85 d11 z$z1 c$c1  jg0.1
+h 142.5,20.85 d11 z$z1 c$c1 g3,1,1.5
 
 (körvonal)
-b outline 0,0 size170,40.2 z0.1 c0.1
+#b outline 0,0 size170,40.2 z0.1 c0.1

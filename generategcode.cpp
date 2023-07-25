@@ -976,16 +976,29 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
        _last_position.z = p.z;
     }
+
+
     if(!drillOnly){
         if(pre_mill){
-            g.append(L("(premill)"));
-            auto g1=HelicalCut(_last_cut.z, t.d*0.65);
-            g.append(g1);
-            auto g2=HelicalCut(_last_cut.z, t.d*0.8);
-            g.append(g2);
+           g.append(L("(premill)"));
+           int s0_max = 3;
+           qreal td0 = t.d/2;
+           qreal tds = td0/s0_max;
+           for(int s0=0;s0<s0_max;s0++){
+                td0+=tds;
+                //auto lc = _last_cut.z0;
+                //_last_cut.z0 *= 2;
+                auto g1=HelicalCut(_last_cut.z, td0);
+                //_last_cut.z0 = lc;
+                g.append(g1);
+           }
+//            auto g1=HelicalCut(_last_cut.z, t.d*0.6);
+//            g.append(g1);
+//            auto g2=HelicalCut(_last_cut.z, t.d*0.8);
+//            g.append(g2);
         }
 
-        p.x -= path_r; //szerszámpálya kezdő pontja
+        p.x -= path_r; //szerszámpálya kezdő pontja - furat belső szélének érintése
         qreal z2 = hasGaps?_last_cut.z-mgap.height:_last_cut.z;
 
         if(z2>0){

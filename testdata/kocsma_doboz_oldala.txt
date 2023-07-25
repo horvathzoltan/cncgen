@@ -13,7 +13,7 @@ f700
 z1 = 4.5
 (vágás fogásmélység egy menetben)
 c1 = 0.075
-c3 = 0.025
+c3 = 0.05
 
 (hdmi0)
 b inline 101,5.65 size10.8,6.6 z$z1 c$c1 jg0.25

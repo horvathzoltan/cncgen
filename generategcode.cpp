@@ -740,8 +740,15 @@ auto GenerateGcode::HelicalCut(qreal total_depth, qreal path_r) -> QStringList{
         qreal l = path_r*2*M_PI;
         qreal lz = pp.z-p.z;
         qreal l1 = qSqrt(l*l+lz*lz);
-        g.append(
-            GoToZ(GMode::Circular,p, l1)+" i"+GCode::r(path_r));
+
+        QString g0;
+        if(i%2==0){
+            g0 = GoToZ(GMode::Circular, p, l1) + " i" + GCode::r(path_r);
+        } else{
+            g0 = GoToZ(GMode::Circular_ccw, p, l1) + " i" + GCode::r(path_r);
+        }
+
+        g.append(g0);
     }
 
     AppendGCode(&g, LiftUpToGCode(_lastHoleP.z));
@@ -986,16 +993,12 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
            qreal tds = td0/s0_max;
            for(int s0=0;s0<s0_max;s0++){
                 td0+=tds;
-                //auto lc = _last_cut.z0;
-                //_last_cut.z0 *= 2;
-                auto g1=HelicalCut(_last_cut.z, td0);
-                //_last_cut.z0 = lc;
-                g.append(g1);
+
+                if(td0<path_r-tds){
+                    auto g1=HelicalCut(_last_cut.z, td0);
+                    g.append(g1);
+                }
            }
-//            auto g1=HelicalCut(_last_cut.z, t.d*0.6);
-//            g.append(g1);
-//            auto g2=HelicalCut(_last_cut.z, t.d*0.8);
-//            g.append(g2);
         }
 
         p.x -= path_r; //szerszámpálya kezdő pontja - furat belső szélének érintése

@@ -21,6 +21,10 @@ const QString GenerateGcode::T_ERR = L("E:");
 const QString GenerateGcode::T_W = L("W:");
 const QString GenerateGcode::safeKey = L("safe");
 const QString GenerateGcode::offsetKey = L("offset");
+const QString GenerateGcode::safezKey = L("safez");
+const QString GenerateGcode::ratioKey = L("ratio");
+const QString GenerateGcode::preMillStepsKey = L("pre_mill_steps");
+
 
 void GenerateGcode::Init(){
     gcodes.clear();
@@ -39,6 +43,7 @@ void GenerateGcode::Init(){
     _lastHoleP={};
     _last_hole_diameter =-1;
     _lastLine={};
+    _safez = 0;
     _lastBox={{},{},BoxType::Undefined};
     //    _lastBoxP1={};
     //    _lastBoxType=BoxType::Undefined;
@@ -119,10 +124,24 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             continue;
         }
 
-        if(l.startsWith(L("ratio"))){
+        if(l.startsWith(safezKey)){
             qreal r;
-            bool isok = GCode::ParseValue(l, L("ratio"), &r);
+            bool isok = GCode::ParseValue(l, safezKey, &r);
+            if(isok) _safez = r;
+            continue;
+        }
+
+        if(l.startsWith(ratioKey)){
+            qreal r;
+            bool isok = GCode::ParseValue(l, ratioKey, &r);
             if(isok) _ratio = r;
+            continue;
+        }
+
+        if(l.startsWith(preMillStepsKey)){
+            int r;
+            bool isok = GCode::ParseValue(l, preMillStepsKey, &r);
+            if(isok) _preMillSteps = r;
             continue;
         }
 
@@ -238,6 +257,15 @@ auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString 
 
             _tools[_selected_tool_ix].d=0.5;
             //m.gap.height = 0.01;
+        }else{
+            if(_safez>0){
+                m.p0.z+=_safez;
+                m.p1.z+=_safez;
+                m.o.z+=_safez;
+               // m.rp.z+=_safez;
+
+                m.cut.z+=_safez;
+            }
         }
 
         if(gcode)*gcode=ArcToGCode(m,err);
@@ -266,7 +294,15 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
             m.gap.height = 0.01;
 
             _tools[_selected_tool_ix].d=0.5;
+        } else{
+            if(_safez>0){
+                m.p0.z+=_safez;
+                m.p1.z+=_safez;
+              //  m.rp.z+=_safez;
+                m.cut.z += _safez;
+            }
         }
+
         if(gcode)*gcode=LineToGCode(m,err);
     }
     QString msg;
@@ -292,6 +328,13 @@ auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString
             m.gap.height = 0.01;
 
             _tools[_selected_tool_ix].d=0.5;
+        } else{
+            if(_safez>0){
+                m.p.z+=_safez;
+              //  m.rp.z+=_safez;
+
+                m.cut.z+=_safez;
+            }
         }
 
         if(gcode)*gcode=HoleToGCode(m,err);
@@ -320,6 +363,14 @@ auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString 
             m.gap.height = 0.01;
 
             _tools[_selected_tool_ix].d=0.5;
+        } else{
+            if(_safez>0){
+                m.p0.z+=_safez;
+                m.p1.z+=_safez;
+            //    m.rp.z+=_safez;
+
+                m.cut.z+=_safez;
+            }
         }
 
         if(gcode)*gcode=BoxToGCode(m,err);
@@ -628,7 +679,10 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
     zInfo(msg);
     /*CUT*/
     qreal z2 = mgap.isValid()?_last_cut.z-mgap.height:_last_cut.z;
-    if(z2>0){ g.append(LinearCut(z2)); }
+    if(z2>0){
+         auto g0 = LinearCut(z2);
+         g.append(g0);
+    }
     if(mgap.isValid()){
         Point ba1=GeoMath::Translation(_lastLine.p0, 0, 0, -z2);
         Point ja1=GeoMath::Translation(_lastLine.p1, 0, 0, -z2);
@@ -640,7 +694,8 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
             auto px1 = _lastLine.p1;
             _lastLine.p0=segment.p0;
             _lastLine.p1=segment.p1;
-            g.append(LinearCut(segment.cut.z));            
+            auto g01 = LinearCut(segment.cut.z);
+            g.append(g01);
             _lastLine.p0 = px0; // azonnal vissza is állítjuk
             _lastLine.p1 = px1;
         }
@@ -670,6 +725,10 @@ auto GenerateGcode::LinearCut(qreal total_depth) -> QStringList{
     QString msg;
 
     Point p = _lastLine.p0;
+    //if(safety){
+   //     p.z+=_safez;
+   //     total_depth+=_safez;
+    //}
     GoToCutposition(&g, p);
 
     int steps_0 = qCeil(total_depth/_last_cut.z0)+1;
@@ -697,6 +756,9 @@ auto GenerateGcode::LinearCut(qreal total_depth) -> QStringList{
         } else {
             p.z = z;
         }
+        //if(safety){
+        //    p.z+=_safez;
+       // }
 
         qreal d = GeoMath::Distance(pd,p);
         dt+=d;
@@ -731,7 +793,7 @@ auto GenerateGcode::HelicalCut(qreal total_depth, qreal path_r) -> QStringList{
         Point pp=p;
         qreal z = _lastHoleP.z-(i+1)*_last_cut.z0;//kiszámol
         qreal zz = _lastHoleP.z-total_depth;//_last_cut.z;
-        if(z<zz){    //beállítjuk a p-t
+        if(z<=zz){    //beállítjuk a p-t
             p.z = zz;
         } else {
             p.z = z;
@@ -988,10 +1050,10 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     if(!drillOnly){
         if(pre_mill){
            g.append(L("(premill)"));
-           int s0_max = 3;
+           //int s0_max = _pre_mill_steps;
            qreal td0 = t.d/2;
-           qreal tds = td0/s0_max;
-           for(int s0=0;s0<s0_max;s0++){
+           qreal tds = td0/_preMillSteps;
+           for(int s0=0;s0<_preMillSteps;s0++){
                 td0+=tds;
 
                 if(td0<path_r-tds){
@@ -1010,9 +1072,11 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         }
 
         if(hasGaps){
-            Point p=GeoMath::Translation(_lastLine.p0, 0, 0, -z2);
-            qreal b = (mgap.length+t.d)/(path_r);
-            qreal ab = (2*M_PI)/mgap.n;
+            Point p = GeoMath::Translation(_lastHoleP, -100, 0, -z2);//_lastHoleP
+            //p.x=0;
+            //p.z= _lastHoleP.z-z2;
+            qreal b = (mgap.length+t.d)/(path_r);//ennyi szögig tart a gap
+            qreal ab = (2*M_PI)/mgap.n;//ennyi szögenként van a gap
 
             Point p0,p1;
             qreal aa=0;
@@ -1031,7 +1095,8 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                 _lastArc.p1=k11;
                 _lastArc.o=_lastHoleP;
 
-                g.append(CircularArcCut(mgap.height));
+                auto g0 = CircularArcCut(mgap.height);
+                g.append(g0);
 
                 _lastArc.p0=q1;
                 _lastArc.p1=q2;

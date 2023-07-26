@@ -29,6 +29,9 @@ public:
 
     static const QString safeKey;
     static const QString offsetKey;
+    static const QString safezKey;
+    static const QString ratioKey;
+    static const QString preMillStepsKey;
 
     void Init();
     auto Generate(const QStringList& g) -> QStringList;
@@ -70,6 +73,7 @@ private:
     };
 
     LastLine _lastLine;
+    qreal _safez=0;
 
     struct LastBox{
         Point p0;
@@ -93,6 +97,8 @@ private:
     Point _offset_xyz;
 
     qreal _ratio = 1;
+    int _preMillSteps = 3;
+
     QString _includeFn = {};
 
     auto setXYMode(const QString &txt) -> bool;
@@ -137,9 +143,10 @@ private:
 public:
     void setWorkingFolder(const QDir &a){ _workingFolder = a; }
 
+    /*moves*/
+    void GoToCutposition(QStringList *g, const Point& p);
     /*CUTS*/
     auto LinearCut(qreal z2)-> QStringList;
-    void GoToCutposition(QStringList *g, const Point& p);
     auto HelicalCut(qreal total_depth, qreal path_r) -> QStringList;
     auto CircularArcCut(qreal total_depth) -> QStringList;
 

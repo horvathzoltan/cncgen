@@ -9,7 +9,11 @@ yxz
 t1
 s50
 f700
-safez0.1
+
+#felületi egyenetlenség és túllógás
+safetop0.5
+safebottom0.5
+overcut0.2
 
 z1 = 4
 (vágás fogásmélység egy menetben)

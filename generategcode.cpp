@@ -21,7 +21,9 @@ const QString GenerateGcode::T_ERR = L("E:");
 const QString GenerateGcode::T_W = L("W:");
 const QString GenerateGcode::safeKey = L("safe");
 const QString GenerateGcode::offsetKey = L("offset");
-const QString GenerateGcode::safezKey = L("safez");
+const QString GenerateGcode::safezKey = L("safetop");
+const QString GenerateGcode::safebKey = L("safebottom");
+const QString GenerateGcode::overcutKey = L("overcut");
 const QString GenerateGcode::ratioKey = L("ratio");
 const QString GenerateGcode::preMillStepsKey = L("pre_mill_steps");
 
@@ -44,6 +46,9 @@ void GenerateGcode::Init(){
     _last_hole_diameter =-1;
     _lastLine={};
     _safez = 0;
+    _safeb = 0;
+    _overcut = 0;
+    _preMillSteps = 3;
     _lastBox={{},{},BoxType::Undefined};
     //    _lastBoxP1={};
     //    _lastBoxType=BoxType::Undefined;
@@ -128,6 +133,20 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             qreal r;
             bool isok = GCode::ParseValue(l, safezKey, &r);
             if(isok) _safez = r;
+            continue;
+        }
+
+        if(l.startsWith(safebKey)){
+            qreal r;
+            bool isok = GCode::ParseValue(l, safebKey, &r);
+            if(isok) _safeb = r;
+            continue;
+        }
+
+        if(l.startsWith(overcutKey)){
+            qreal r;
+            bool isok = GCode::ParseValue(l, overcutKey, &r);
+            if(isok) _overcut = r;
             continue;
         }
 
@@ -264,7 +283,13 @@ auto GenerateGcode::ParseArcToGCode(const QString& str, QString *gcode, QString 
                 m.o.z+=_safez;
                // m.rp.z+=_safez;
 
-                m.cut.z+=_safez;
+                m.cut.z+=_safez;                
+            }
+            if(_safeb>0){
+                m.cut.z+=_safeb;
+            }
+            if(_overcut>0){
+                m.cut.z+=_overcut;
             }
         }
 
@@ -301,6 +326,18 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
               //  m.rp.z+=_safez;
                 m.cut.z += _safez;
             }
+            if(_safeb>0){
+                m.cut.z+=_safeb;
+                if(m.gap.isValid()){
+                    m.gap.height+=_safeb;
+                }
+            }
+            if(_overcut>0){
+                m.cut.z+=_overcut;
+                if(m.gap.isValid()){
+                    m.gap.height+=_overcut;
+                }
+            }
         }
 
         if(gcode)*gcode=LineToGCode(m,err);
@@ -334,6 +371,18 @@ auto GenerateGcode::ParseHoleToGCode(const QString& str, QString *gcode, QString
               //  m.rp.z+=_safez;
 
                 m.cut.z+=_safez;
+            }
+            if(_safeb>0){
+                m.cut.z+=_safeb;
+                if(m.gap.isValid()){
+                    m.gap.height+=_safeb;
+                }
+            }
+            if(_overcut>0){
+                m.cut.z+=_overcut;
+                if(m.gap.isValid()){
+                    m.gap.height+=_overcut;
+                }
             }
         }
 
@@ -370,6 +419,18 @@ auto GenerateGcode::ParseBoxToGcode(const QString& str, QString *gcode, QString 
             //    m.rp.z+=_safez;
 
                 m.cut.z+=_safez;
+            }
+            if(_safeb>0){
+                m.cut.z+=_safeb;
+                if(m.gap.isValid()){
+                    m.gap.height+=_safeb;
+                }
+            }
+            if(_overcut>0){
+                m.cut.z+=_overcut;
+                if(m.gap.isValid()){
+                    m.gap.height+=_overcut;
+                }
             }
         }
 

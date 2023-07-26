@@ -9,29 +9,34 @@ yxz
 t1
 s50
 f700
-safez0.5
+
+#felületi egyenetlenség és túllógás
+safetop0.5
+safebottom0.5
+overcut0.2
+
 pre_mill_steps2
 
-z1 = 4.5
+z1 = 3.8
 (vágás fogásmélység egy menetben)
 c1 = 0.05
 c3 = 0.025
 
 (hdmi0)
-b inline 101,5.65 size10.8,6.6 g1,1,1  z$z1 c$c1 jg0.25
+b inline 101,5.65 size10.8,6.6 g1,1,0.5  z$z1 c$c1 jg0.25
 
 (hdmi1)
-b inline 114.7,5.65 size10.8,6.6 g1,1,1 z$z1 c$c1 jg0.25
+b inline 114.7,5.65 size10.8,6.6 g1,1,0.5 z$z1 c$c1 jg0.25
 
 (12.71+6.6+6)
 (ethernet)
-h 107,27 d23.4 z$z1 c$c1 g3,1,1 jg0.1
+h 107,27 d23.4 z$z1 c$c1 g3,1,0.5 jg0.1
 
 h r-12,9.5 d3 z$z1 c$c3 ng jg0.1
 h r24,-19 d3 z$z1 c$c3 ng jg0.1
 
 (táp)
-h 142.5,20.85 d11 z$z1 c$c1 g3,1,1
+h 142.5,20.85 d11 z$z1 c$c1 g3,1,0.5
 
 (körvonal)
 #b outline 0,0 size170,40.2 z0.1 c0.1

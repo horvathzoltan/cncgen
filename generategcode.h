@@ -30,6 +30,8 @@ public:
     static const QString safeKey;
     static const QString offsetKey;
     static const QString safezKey;
+    static const QString overcutKey;
+    static const QString safebKey;
     static const QString ratioKey;
     static const QString preMillStepsKey;
 
@@ -74,6 +76,8 @@ private:
 
     LastLine _lastLine;
     qreal _safez=0;
+    qreal _safeb=0;
+    qreal _overcut =0;
 
     struct LastBox{
         Point p0;

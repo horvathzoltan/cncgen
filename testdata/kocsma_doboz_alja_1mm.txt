@@ -9,6 +9,8 @@ yxz
 t1
 s50
 f700
+safez0.5
+pre_mill_steps2
 
 z1 = 2.5
 zh1 = 3

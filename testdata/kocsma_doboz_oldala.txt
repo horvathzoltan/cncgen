@@ -1,8 +1,11 @@
 (kocsma doboz oldala)
-(cmd line: -i kocsma_doboz_oldala.txt -t)
-(plot cmd: -i kocsma_doboz_oldala.txt -t -p)
-(szerszám beállítás)
+#(cmd line: -i kocsma_doboz_oldala.txt -t)
+#(plot cmd: -i kocsma_doboz_oldala.txt -t -p)
 
+movz5
+maxz20
+
+(szerszám beállítás)
 t1 m d1 h19
 
 yxz
@@ -18,7 +21,7 @@ overcut0.2
 pre_mill_steps2
 
 z1 = 3.8
-(vágás fogásmélység egy menetben)
+#(vágás fogásmélység egy menetben)
 c1 = 0.05
 c3 = 0.025
 
@@ -28,10 +31,11 @@ b inline 101,5.65 size10.8,6.6 g1,1,0.5  z$z1 c$c1 jg0.25
 (hdmi1)
 b inline 114.7,5.65 size10.8,6.6 g1,1,0.5 z$z1 c$c1 jg0.25
 
-(12.71+6.6+6)
+#(12.71+6.6+6)
 (ethernet)
 h 107,27 d23.4 z$z1 c$c1 g3,1,0.5 jg0.1
 
+(ethernet rögzítő furat)
 h r-12,9.5 d3 z$z1 c$c3 ng jg0.1
 h r24,-19 d3 z$z1 c$c3 ng jg0.1
 

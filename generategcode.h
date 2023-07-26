@@ -34,6 +34,8 @@ public:
     static const QString safebKey;
     static const QString ratioKey;
     static const QString preMillStepsKey;
+    static const QString movzKey;
+    static const QString maxzKey;
 
     void Init();
     auto Generate(const QStringList& g) -> QStringList;
@@ -78,6 +80,8 @@ private:
     qreal _safez=0;
     qreal _safeb=0;
     qreal _overcut =0;
+    qreal _movZ=2;
+    qreal _maxZ=4;
 
     struct LastBox{
         Point p0;

@@ -14,13 +14,13 @@ public:
     bool contains(const QString& key) const;
     QVariant expression(const QString& key) const;
     QString ToString(const QString& key);
-    qreal movZ(){ return _movZ; }
-    qreal maxZ(){ return _maxZ; }
+    //qreal movZ(){ return _movZ; }
+    //qreal maxZ(){ return _maxZ; }
 private:
     QMap<QString,QVariant> _values;
     //QMap<QString,Expression> _expressions;
-    qreal _movZ=2;
-    qreal _maxZ=4;
+    //qreal _movZ=2;
+    //qreal _maxZ=4;
 };
 
 #endif // VARIABLE_H

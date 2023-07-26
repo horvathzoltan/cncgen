@@ -26,7 +26,8 @@ const QString GenerateGcode::safebKey = L("safebottom");
 const QString GenerateGcode::overcutKey = L("overcut");
 const QString GenerateGcode::ratioKey = L("ratio");
 const QString GenerateGcode::preMillStepsKey = L("pre_mill_steps");
-
+const QString GenerateGcode::movzKey = L("movz");
+const QString GenerateGcode::maxzKey = L("maxz");
 
 void GenerateGcode::Init(){
     gcodes.clear();
@@ -49,6 +50,8 @@ void GenerateGcode::Init(){
     _safeb = 0;
     _overcut = 0;
     _preMillSteps = 3;
+    _movZ=2;
+    _maxZ=4;
     _lastBox={{},{},BoxType::Undefined};
     //    _lastBoxP1={};
     //    _lastBoxType=BoxType::Undefined;
@@ -147,6 +150,20 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             qreal r;
             bool isok = GCode::ParseValue(l, overcutKey, &r);
             if(isok) _overcut = r;
+            continue;
+        }
+
+        if(l.startsWith(movzKey)){
+            qreal r;
+            bool isok = GCode::ParseValue(l, movzKey, &r);
+            if(isok) _movZ = r;
+            continue;
+        }
+
+        if(l.startsWith(maxzKey)){
+            qreal r;
+            bool isok = GCode::ParseValue(l, maxzKey, &r);
+            if(isok) _maxZ = r;
             continue;
         }
 
@@ -596,7 +613,7 @@ auto GenerateGcode::LiftUpToGCode(const QVariant& z=QVariant()) -> QString
 {
     QStringList g;
     QString err;
-    auto movZ = GCode::_variables.movZ();
+    auto movZ = _movZ;// GCode::_variables.movZ();
     if(_last_position.z >=movZ){ return {};}
     if(!z.isNull()){
         auto z0 = z.value<double>();
@@ -1990,7 +2007,7 @@ auto GenerateGcode::ChangeToolToGCode() ->QString
     g.append(SpindleStopToGCode());//spindle stop
     g.append(TravelXYToGCode(_safe_place));
     //g.append(TravelXYToGCode({0,0,0}));//kiáll nullára
-    auto maxZ = GCode::_variables.maxZ();
+    auto maxZ = _maxZ;//GCode::_variables.maxZ();
 
     g.append(QStringLiteral("g0 z")+GCode::r(maxZ));
     g.append('t'+QString::number(t.ix)+" (tool select)");

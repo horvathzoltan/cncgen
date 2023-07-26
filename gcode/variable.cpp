@@ -10,8 +10,8 @@ VariableRepository::VariableRepository()
 void VariableRepository::Clear()
 {
     _values.clear();
-    _maxZ = 5;
-    _movZ = 2;
+    //_maxZ = 5;
+    //_movZ = 2;
     //_expressions.clear();
 }
 
@@ -29,12 +29,12 @@ auto VariableRepository::Parse(const QString &p) -> bool
     if(KeyWord::Parse(key)!=KeyWord::Undefined) return false;
     auto value = p.mid(ix0+1).trimmed();
     qreal r;
-    if(key.toLower()=="movz")
-    {
-        if(GCode::ParseValue(value, QString(), &r) && r>0 && r<50) _movZ = r;
-    } else if(key=="maxz"){
-        if(GCode::ParseValue(value, QString(), &r) && r>0 && r<50) _maxZ = r;
-    } else{
+//    if(key.toLower()=="movz")
+//    {
+//        if(GCode::ParseValue(value, QString(), &r) && r>0 && r<50) _movZ = r;
+//    } else if(key=="maxz"){
+//        if(GCode::ParseValue(value, QString(), &r) && r>0 && r<50) _maxZ = r;
+//    } else{
         QString str;
         QString function_str;
 
@@ -55,7 +55,7 @@ auto VariableRepository::Parse(const QString &p) -> bool
                 _values[key]={};//expression.ToString();
             }
         }
-    }
+    //}
     return true;
 }
 

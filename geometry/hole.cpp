@@ -1,5 +1,5 @@
 #include "hole.h"
-#include "helpers/macro.h"
+//#include "helpers/macro.h"
 #include <QStringList>
 #include "gcode/gcode.h"
 #include "helpers/stringhelper.h"
@@ -19,7 +19,8 @@ Hole::Hole(const Point &_p,
            qreal _jg,
            const Point &_rp,
            bool _np,
-           bool _ng)
+           bool _ng,
+           const QString& _name)
 {
     p = _p;
     diameter =_diameter;
@@ -30,6 +31,7 @@ Hole::Hole(const Point &_p,
     np=_np; // no predrill????
     ng=_ng;
     jointGap=_jg;
+    name = _name;
    // _isValid = true;
 }
 
@@ -135,7 +137,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     if(positionErr){st.addError(L("no position data"));}
     if(st.state()== ParseState::ParseError) return st;   
 
-    *m= {point, diameter, cut, feed, gap, jointGap, rpoint, no_predrill, no_gaps};
+    *m= {point, diameter, cut, feed, gap, jointGap, rpoint, no_predrill, no_gaps, ""};
     st.setState(ParseState::Parsed);
     return st;
 }
@@ -150,4 +152,14 @@ auto Hole::ToString() const -> QString
     StringHelper::Append(&msg,feed.ToString());
     if(gap.isValid()){StringHelper::Append(&msg,gap.ToString());}
     return msg;
+}
+
+QString Hole::GetComment() const
+{
+    QString n0 = QStringLiteral("hole");
+    if(!name.isEmpty()){
+        n0+=":"+name;
+    }
+    QString n01 = '('+n0+')';
+    return n01;
 }

@@ -9,9 +9,8 @@
 #include "size.h"
 
 struct Box{
-private:
-    static constexpr QChar key = 'b';
-    static constexpr ushort keyUniCode= key.unicode();
+private:    
+    static constexpr QChar key = 'b';    
 public:
     Box();
     Box(const Point& _p0,
@@ -28,7 +27,8 @@ public:
         qreal rounding,
         int _rjoin,
         qreal _vcorner_x,
-        qreal _vcorner_y
+        qreal _vcorner_y,
+        const QString& _name
         );
 
     QList<Line> lines;
@@ -46,12 +46,15 @@ public:
     int rjoin=0;//szabad vég: 0 szabadon, 1: befele íves, kifele íves
     qreal vcorner_x=0;
     qreal vcorner_y=0;
+    QString name;
+
+    static constexpr ushort keyUniCode= key.unicode();
 
     bool nl[4]={1,1,1,1};
     static auto Parse(const QString& txt, XYMode mode, MMode mmode, Box *m, Point *offset) -> ParseState;
     static auto Parse(const QString& txt) -> ParseState;
     QString ToString() const;
-
+    QString GetComment() const;
     /*ISVALID*/
 public:
     [[nodiscard]] auto isValid() const -> bool {return _isValid;}

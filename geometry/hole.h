@@ -20,9 +20,10 @@ struct Hole{
          Feed _feed,
          const Gap& _gap,
          qreal _jg,
-         const Point& _rp={},          
-         bool _np=false,
-         bool _ng=false
+         const Point& _rp,//={},
+         bool _np,//=false,
+         bool _ng,//=false,
+         const QString& _name//=""
         );
     Point p;
     qreal diameter=-1;
@@ -33,7 +34,7 @@ struct Hole{
     bool np=false;
     bool ng=false;
     qreal jointGap=0; // illesztési hézag
-
+    QString name;
 
     static ParseState Parse(const QString& txt, XYMode xymode,
                             MMode mmode, Hole*, Point *offset);
@@ -52,6 +53,7 @@ struct Hole{
 //private:
 //    static QString _lasterr;
 
+    QString GetComment() const;
 };
 
 #endif // HOLE_H

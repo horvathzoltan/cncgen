@@ -27,7 +27,8 @@ Box::Box(const Point &_p0,
          qreal _rounding,
         int _rjoin,
          qreal _vcorner_x,
-         qreal _vcorner_y)
+         qreal _vcorner_y,
+         const QString & _name)
 {
     p0=_p0;
     p1=_p1;
@@ -48,6 +49,7 @@ Box::Box(const Point &_p0,
     rjoin=_rjoin;
     vcorner_x=_vcorner_x;
     vcorner_y=_vcorner_y;
+    name = _name;
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -75,6 +77,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     int rjoin = 0;
     qreal vcorner_x = 0;
     qreal vcorner_y = 0;
+    QString name;
 
     bool nl[]={1,1,1,1};
 
@@ -127,6 +130,12 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             qreal a;
             bool ok = GCode::ParseValue(p, L("d"), &a);
             if(ok) corner_diameter=a;
+            continue;
+        }
+        if(p.startsWith("n\"")){
+            QString a;
+            bool ok = GCode::ParseValue(p, L("n"), &a);
+            if(ok) name=a;
             continue;
         }
         if(p.startsWith("vx")){
@@ -219,7 +228,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         size,
         jointGap,
         nl,
-        rounding, rjoin, vcorner_x, vcorner_y
+        rounding, rjoin, vcorner_x, vcorner_y, name
     };
 
     st.setState(ParseState::Parsed);
@@ -238,6 +247,16 @@ auto Box::ToString() const -> QString
     if (type==BoxType::Corners){StringHelper::Append(&msg,"d"+GCode::r(corner_diameter));}
     if(gap.isValid()){StringHelper::Append(&msg,gap.ToString());}
     return msg;
+}
+
+QString Box::GetComment() const
+{
+    QString n0 = QStringLiteral("box");
+    if(!name.isEmpty()){
+        n0+=":"+name;
+    }
+    QString n01 = '('+n0+')';
+    return n01;
 }
 
 

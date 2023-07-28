@@ -36,6 +36,7 @@ public:
     static const QString preMillStepsKey;
     static const QString movzKey;
     static const QString maxzKey;
+    static const QString nameKey;
 
     void Init();
     auto Generate(const QStringList& g) -> QStringList;

@@ -28,6 +28,7 @@ const QString GenerateGcode::ratioKey = L("ratio");
 const QString GenerateGcode::preMillStepsKey = L("pre_mill_steps");
 const QString GenerateGcode::movzKey = L("movz");
 const QString GenerateGcode::maxzKey = L("maxz");
+const QString GenerateGcode::nameKey = L("_");
 
 void GenerateGcode::Init(){
     gcodes.clear();
@@ -107,12 +108,12 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             }
         }
 
-        if(Box::Parse(l).state()!=ParseState::NoData){
-            if(ParseBoxToGcode(l, &gcode, &err)){
-                AppendGCode(&gcodes, gcode, err);
-            }
-            continue;
-        }
+//        if(Box::Parse(l).state()!=ParseState::NoData){
+//            if(ParseBoxToGcode(l, &gcode, &err)){
+//                AppendGCode(&gcodes, gcode, err);
+//            }
+//            continue;
+//        }
 
         if(Point::Parse(l, safeKey).state()!=ParseState::NoData){
             Point ps;
@@ -172,7 +173,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             bool isok = GCode::ParseValue(l, ratioKey, &r);
             if(isok) _ratio = r;
             continue;
-        }
+        }        
 
         if(l.startsWith(preMillStepsKey)){
             int r;
@@ -221,6 +222,12 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
                 continue;
             }
             break;
+        case Box::keyUniCode:
+             if(ParseBoxToGcode(l, &gcode, &err)){
+                AppendGCode(&gcodes, gcode, err);
+                continue;
+             }
+             break;
         case Hole::keyUniCode:
             if(ParseHoleToGCode(l, &gcode, &err)){
                 AppendGCode(&gcodes, gcode, err);
@@ -790,6 +797,8 @@ auto GenerateGcode::TotalTimeToGCode() -> QString
     return "(time: "+QString::number(_total_time)+")";
 }
 
+
+
 void GenerateGcode::GoToCutposition(QStringList *g, const Point& p){
     AppendGCode(g, TravelXYToGCode(p));
     AppendGCode(g, SpindleStartToGCode());
@@ -1019,6 +1028,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         mgap.height = 0.01;
     }
 
+    // ha csak fúrás, az egy predrill premill nélkül
     bool pre_drill, pre_mill,hasGaps, drillOnly=holeDiameter==t.d;
     if(m.ng)
     {
@@ -1057,8 +1067,8 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
                 } else {
                     //pre_drill = holeDiameter>=2*t.d; //d=0
-                    pre_mill = holeDiameter>=3*t.d; //d=2*t.d
-                    pre_drill = pre_mill;
+                    pre_drill = holeDiameter>=t.d; //d=2*t.d
+                    pre_mill = holeDiameter>t.d;
                 }
             }
         }
@@ -1072,9 +1082,11 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         _lastHoleP.z+=m.rp.z;
     }
 
-    SetSelectedFeed(m.feed);
 
-    QStringList g(QStringLiteral("(hole - helical interpolation)"));
+
+    QString nameComment = m.GetComment();
+    QStringList g(nameComment);
+    g.append(QStringLiteral("(helical interpolation)"));
     g.append(TotalTimeToGCode());
 
     Point p = _lastHoleP; // _lastHoleP középpont , p a szerszámpálya kezdőpontja lesz
@@ -1090,7 +1102,12 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     msg+= " steps:"+QString::number(steps);
     zInfo(msg);
 
+
+
     if(pre_drill){
+        Feed f2 = m.feed;
+        f2.setFeed(m.feed.feed()/2);
+        SetSelectedFeed(f2);
         // 81: depth<3-5*t.d;
         // normal: 5*t.d
         // 83 peck:5-7
@@ -1126,24 +1143,33 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
 
     if(!drillOnly){
-        if(pre_mill){
+       Feed f2 = m.feed;
+       f2.setFeed(m.feed.feed()/2);
+       SetSelectedFeed(f2);
+
+       if(pre_mill){
            g.append(L("(premill)"));
            //int s0_max = _pre_mill_steps;
-           qreal td0 = t.d/2;
-           qreal tds = td0/_preMillSteps;
-           for(int s0=0;s0<_preMillSteps;s0++){
+           qreal td0 = 0;//t.d/2;
+           qreal tds = t.d/_preMillSteps; // a maró átmérőjének ennyied része oldalra a fogás
+           int steps = (path_r)/tds;
+           for(int step=0;step<steps;step++){
                 td0+=tds;
+                if()
 
-                if(td0<path_r-tds){
+                // előmarás a kért átmérőig
+                //if(td0<path_r-tds){
                     auto g1=HelicalCut(_last_cut.z, td0);
                     g.append(g1);
-                }
+                //}
            }
         }
 
+        SetSelectedFeed(m.feed);
         p.x -= path_r; //szerszámpálya kezdő pontja - furat belső szélének érintése
+        // ha van gap, csak a gapig megyünk egyébként teljesen
         qreal z2 = hasGaps?_last_cut.z-mgap.height:_last_cut.z;
-
+        // marás a kért átmérőre
         if(z2>0){
             auto g1=HelicalCut(z2, path_r);
             g.append(g1);
@@ -1453,8 +1479,9 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         }
     }
 
+    QString nameComment = m.GetComment();
+    QStringList g(nameComment);
 
-    QStringList g(QStringLiteral("(box)"));
     g.append(TotalTimeToGCode());
 
     if(m.jointGap!=0){
@@ -1735,11 +1762,12 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     if(_lastBox.type == BoxType::Corners){
 
         QVarLengthArray<Hole> holes = {
-            {ba, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap},
-            {ja, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap},
-            {jf, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap},
-            {bf, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap}
+            {ba, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap, {}, false,false, m.name+":1_ba"},
+            {ja, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap, {}, false,false, m.name+":2_ja"},
+            {jf, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap, {}, false,false, m.name+":3_jf"},
+            {bf, _last_hole_diameter, _last_cut, _last_feed, {}, m.jointGap, {}, false,false, m.name+":4_bf"}
         };
+
         if(_verbose){
             for(int i=0;i<holes.length();i++){
                 auto&l=holes[i];

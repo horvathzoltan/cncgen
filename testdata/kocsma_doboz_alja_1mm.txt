@@ -22,9 +22,16 @@ overcut0.35
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-#emax0.0005 //10:33
-#emax0.0025 //3:36
-emax0.003
+#emax0.0005 #19:34
+#emax0.001  #10:04
+#emax0.002  #05:23
+#emax0.0025 #04:29
+#emax0.003  #03:53
+emax0.004   #3:10
+#emax0.005  #02:53
+#emax0.007  #02:37
+#emax 0.01  #2:30
+
 fmax900
 fmin400
 fratio0.8

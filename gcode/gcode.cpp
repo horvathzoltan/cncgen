@@ -29,7 +29,13 @@ auto GCode::ParseValue(const QString &p, const QString &key, qreal *v) -> bool
     bool isok = false;
     auto hasKey = !key.isEmpty();
     if(v && (!hasKey || p.startsWith(key))){
-        auto a = p.mid(key.length()).trimmed();
+        int ix = p.indexOf('#', key.length());
+        int len = -1;
+        if(ix!=-1){
+            len = ix-key.length();
+        }
+
+        QString a = p.mid(key.length(), len).trimmed();
         if(!a.isEmpty() && (a[0].isNumber() || a[0]=='-')){
             auto sp = a.toDouble(&isok);
             if(isok){
@@ -54,7 +60,14 @@ auto GCode::ParseValue(const QString &p, const QString &key, int *v) -> bool
     bool isok = false;
     auto hasKey = !key.isEmpty();
     if(v && (!hasKey || p.startsWith(key))){
-        auto a = p.mid(key.length()).trimmed();
+        int ix = p.indexOf('#', key.length());
+        int len = -1;
+        if(ix!=-1){
+            len = ix-key.length();
+        }
+
+        QString a = p.mid(key.length(), len).trimmed();
+        //auto a = p.mid(key.length()).trimmed();
         if(!a.isEmpty() && a[0].isNumber()){
             auto sp = a.toInt(&isok);
             if(isok){*v = sp;}
@@ -68,7 +81,14 @@ auto GCode::ParseValues(const QString &p, const QString &key, QList<int>*v) -> b
     bool isok = false;
     auto hasKey = !key.isEmpty();
     if(v && (!hasKey || p.startsWith(key))){
-        auto a = p.mid(key.length()).trimmed();
+        //auto a = p.mid(key.length()).trimmed();
+        int ix = p.indexOf('#', key.length());
+        int len = -1;
+        if(ix!=-1){
+            len = ix-key.length();
+        }
+
+        QString a = p.mid(key.length(), len).trimmed();
         if(!a.isEmpty() && a[0].isNumber()){
             auto b = a.split(',');
             for(int i=0;i<b.length();i++){
@@ -85,7 +105,14 @@ auto GCode::ParseValue(const QString &p, const QString &key, QString *v) -> bool
     bool isok = false;
     auto hasKey = !key.isEmpty();
     if(v && (!hasKey || p.startsWith(key))){
-        auto a = p.mid(key.length()).trimmed();
+        //auto a = p.mid(key.length()).trimmed();
+        int ix = p.indexOf('#', key.length());
+        int len = -1;
+        if(ix!=-1){
+                len = ix-key.length();
+        }
+
+        QString a = p.mid(key.length(), len).trimmed();
         if(a.isEmpty()){
             *v=a;//.toString();
             isok=true;

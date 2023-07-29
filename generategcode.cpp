@@ -1304,7 +1304,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
     if(pre_drill){
         Feed feed_predrill = m.feed;
-        feed_predrill.setFeed(m.feed.feed()/2);
+        feed_predrill.setFeed(_fmin);
         //SetSelectedFeed(f2);
         // 81: depth<3-5*t.d;
         // normal: 5*t.d

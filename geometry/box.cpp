@@ -28,7 +28,8 @@ Box::Box(const Point &_p0,
         int _rjoin,
          qreal _vcorner_x,
          qreal _vcorner_y,
-         const QString & _name)
+         const QString & _name,
+         bool _nr[4])
 {
     p0=_p0;
     p1=_p1;
@@ -50,6 +51,12 @@ Box::Box(const Point &_p0,
     vcorner_x=_vcorner_x;
     vcorner_y=_vcorner_y;
     name = _name;
+
+    //nincs lekerekítés ezeken a sarkokon:
+    nr[0]=_nr[0];
+    nr[1]=_nr[1];
+    nr[2]=_nr[2];
+    nr[3]=_nr[3];
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -80,6 +87,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     QString name;
 
     bool nl[]={1,1,1,1};
+    bool nr[]={1,1,1,1};
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -174,6 +182,17 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             continue;
         }
 
+        if(p.startsWith("nr")){
+            QList<int> a;
+            if(GCode::ParseValues(p, L("nr"), &a)){
+                if(a.count()>0){nr[0]=a[0];}
+                if(a.count()>1){nr[1]=a[1];}
+                if(a.count()>2){nr[2]=a[2];}
+                if(a.count()>3){nr[3]=a[3];}
+            }
+            continue;
+        }
+
 //        if(p.startsWith('z')){
 //            GCode::ParseValue(p, L("z"), &cut.z);
 //            continue;
@@ -228,7 +247,10 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         size,
         jointGap,
         nl,
-        rounding, rjoin, vcorner_x, vcorner_y, name
+        rounding, rjoin,
+        vcorner_x, vcorner_y,
+        name,
+        nr
     };
 
     st.setState(ParseState::Parsed);

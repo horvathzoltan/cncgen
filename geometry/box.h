@@ -28,7 +28,8 @@ public:
         int _rjoin,
         qreal _vcorner_x,
         qreal _vcorner_y,
-        const QString& _name
+        const QString& _name,
+        bool _nr[4]
         );
 
     QList<Line> lines;
@@ -51,6 +52,8 @@ public:
     static constexpr ushort keyUniCode= key.unicode();
 
     bool nl[4]={1,1,1,1};
+    bool nr[4]={1,1,1,1};
+
     static auto Parse(const QString& txt, XYMode mode, MMode mmode, Box *m, Point *offset) -> ParseState;
     static auto Parse(const QString& txt) -> ParseState;
     QString ToString() const;

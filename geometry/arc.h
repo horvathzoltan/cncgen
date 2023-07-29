@@ -30,7 +30,8 @@ struct Arc
         const Point& _o,
         Cut _cut,
         Feed _feed,
-        const Point& _rp = {}
+        const Point& _rp,
+        const QString & _name
         );
 
     Point p0;
@@ -39,6 +40,7 @@ struct Arc
     Cut cut;
     Feed feed;
     Point rp;
+    QString name;
 
     static auto Parse(const QString& txt, XYMode mode, Arc*, MMode mmode, Point *offset) -> ParseState;
     QString ToString() const;
@@ -47,6 +49,7 @@ struct Arc
     //QList<Arc> Divide(const Gap& g, qreal tool_d);
 
     bool isValid() const {return (p0.isValid()&&p1.isValid()&&o.isValid())||rp.isValid();}
+    QString GetComment() const;
     /*ISVALID*/
 //public:
 //    bool isValid() const {return _isValid;}

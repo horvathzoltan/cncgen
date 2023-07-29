@@ -19,7 +19,8 @@ struct Line{
          Cut _cut,
          Feed _feed,
          const Gap& _gap,
-         const Point& _rp = {}         
+         const Point& _rp,
+         const QString& _name
          );
     Point p0;
     Point p1;
@@ -27,11 +28,12 @@ struct Line{
     Feed feed;
     Point rp;
     Gap gap;
+    QString name;
 
     static ParseState Parse(const QString& txt, XYMode xymode,MMode mmode, Line *l, Point *offset);
-    QString ToString() const;
+    QString ToString() const;    
     QList<Line> Divide(const Gap& g, qreal tool_d);
-
+    QString GetComment() const;
     /*ISVALID*/
 public:
     bool isValid() const {return _isValid;}

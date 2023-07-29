@@ -4,7 +4,7 @@
 #include <QString>
 #include "geometry/xymode.h"
 #include "geometry/mmode.h"
-#include "geometry/boxtype.h"
+//#include "geometry/boxtype.h"
 #include "gcode/variable.h"
 
 class GCode{

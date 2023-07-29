@@ -6,9 +6,9 @@
 //#include "geometry/geomath.h"
 //#include "helpers/log.h"
 #include "helpers/stringhelper.h"
-#include "helpers/macro.h"
+//#include "helpers/macro.h"
 //QString Arc::_lasterr;
-
+#include "gcode/gcode.h"
 
 Arc::Arc()
 {
@@ -21,7 +21,8 @@ Arc::Arc(const Point &_p0,
          const Point &_o,
          Cut _cut,
          Feed _feed,
-         const Point& _rp
+         const Point& _rp,
+         const QString & _name
          )
 {
     p0 = _p0;
@@ -30,6 +31,7 @@ Arc::Arc(const Point &_p0,
     cut = _cut;
     feed = _feed;
     rp=_rp;
+    name = _name;
     //_isValid = true;
 }
 
@@ -47,6 +49,7 @@ auto Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode, Point *o
     Feed feed;
     QString rpointTxt;
     Point rpoint;
+    QString name;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -68,6 +71,13 @@ auto Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode, Point *o
         if(cut.ParseInto(p,&st)) continue;
 
         if(Feed::Parse(p, &feed).state()!=ParseState::NoData){
+            continue;
+        }
+
+        if(p.startsWith("n\"")){
+            QString a;
+            bool ok = GCode::ParseValue(p, L("n"), &a);
+            if(ok) name=a;
             continue;
         }
 
@@ -101,7 +111,7 @@ auto Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode, Point *o
         hasPoints?points[1]:Point(),
         hasPoints?points[0]:Point(),
         hasPoints?points[2]:Point(),
-        cut, feed, rpoint};
+        cut, feed, rpoint, name};
 
     if(xymode.mode==XYMode::YX){
         auto i = a->p0;
@@ -129,6 +139,17 @@ auto Arc::ToString() const -> QString
     StringHelper::Append(&msg,feed.ToString());
     return msg;
 }
+
+QString Arc::GetComment() const
+{
+    QString n0 = QStringLiteral("arc");
+    if(!name.isEmpty()){
+        n0+=":"+name;
+    }
+    QString n01 = '('+n0+')';
+    return n01;
+}
+
 
 //auto Arc::Divide(const Gap& g, qreal tool_d) -> QList<Arc>
 //{

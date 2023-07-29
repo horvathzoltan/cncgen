@@ -15,7 +15,8 @@ public:
 private:
     qreal _spindleSpeed=-1;
     qreal _feed=-1;
-public:
+    bool _started=false;
+public:    
     /*_spindleSpeed*/
     [[nodiscard]] auto spindleSpeed() const -> qreal {return _spindleSpeed;}
     void setSpindleSpeed(qreal s) {_spindleSpeed=s; }
@@ -24,6 +25,10 @@ public:
     void setFeed(qreal f) { _feed=f;}
     /*_isValid*/
     [[nodiscard]] auto isValid() const -> bool;
+    /*started*/
+    [[nodiscard]] auto started() const -> bool {return _started;}
+    void setStarted(bool f) { _started=f;}
+
     /*_lasterr*/
 //public:
 //    Feed();
@@ -41,6 +46,11 @@ public:
     auto ToStringFeed() const -> QString;
     auto ToStringSpindleSpeed() const -> QString;
 
+    static auto ToStringFeed(qreal feed) -> QString;
+    static auto ToStringSpindleSpeed(qreal spindle_speed) -> QString;
+
+    bool Check(qreal fmin, qreal fmax, QString *err = nullptr) const;
+    static bool Check(qreal f, qreal fmin, qreal fmax, QString *err=nullptr);
 };
 
 #endif // FEED_H

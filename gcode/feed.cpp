@@ -1,6 +1,7 @@
 #include "feed.h"
 #include "gcode.h"
 #include "messages.h"
+#include "helpers/stringhelper.h"
 
 //QString Feed::_lasterr;
 
@@ -93,4 +94,44 @@ auto Feed::ToStringFeed() const -> QString
 auto Feed::ToStringSpindleSpeed() const -> QString
 {
     return "s"+GCode::r(_spindleSpeed);
+}
+
+auto Feed::ToStringFeed(qreal f) -> QString
+{
+    return "f"+GCode::r(f);
+}
+
+auto Feed::ToStringSpindleSpeed(qreal s) -> QString
+{
+    return "s"+GCode::r(s);
+}
+
+
+bool Feed::Check(qreal fmin, qreal fmax, QString *err ) const
+{
+    bool ok = Check(_feed, fmin, fmax, err);
+    if(!ok) return false;
+    if(_spindleSpeed<=0){
+        if(err) *err= "(no spindle speed available error)";
+        return false;
+    }
+    return true;
+}
+
+bool Feed::Check(qreal f, qreal fmin, qreal fmax, QString *err )
+{
+    if(f<=0){
+        if(err) *err="(no feed available error)";
+        return false;
+    }
+    if(f<fmin){
+        if(err) *err= "(feed too low error)";
+        return false;
+    }
+    if(f>fmax){
+        if(err) *err= "(feed too high error)";
+        return false;
+    }
+
+    return true;
 }

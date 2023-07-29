@@ -2,6 +2,8 @@
 
 #include "gcode/gcode.h"
 #include "messages.h"
+#include <QtMath>
+#include "helpers/stringhelper.h"
 
 //Cut::Cut()
 //{
@@ -42,4 +44,24 @@ bool Cut::ParseInto(const QString& p, ParseState* st)
         return true;
     }
     return false;
+}
+
+int Cut::steps()
+{
+    return qCeil(z/z0)+1;
+}
+
+
+bool Cut::Check(QString *err) const
+{
+    if(z0<=0){if(err)*err=L("no cut depth"); return {};}
+    if(z<=0) {if(err)*err=L("no toal cut depth");return false;}
+    if(z0>z) {
+        if(err){
+            *err=L("wrong cut depth: ")+GCode::r(z0)+
+                   " total: "+GCode::r(z);
+        }
+        return false;
+    }
+    return true;
 }

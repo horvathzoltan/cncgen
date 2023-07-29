@@ -21,6 +21,24 @@
 class GenerateGcode
 {
 public:
+    enum Compensation:int{
+        none=0, speed=1, depth=2
+    };
+
+//    Compensation GetCompensation(qreal l, qreal z);
+//    qreal CompensateSpeed(qreal l, qreal z);
+    bool Compensate(qreal l, qreal z, qreal *s3, qreal *f3, qreal f_in);
+
+    struct CompensateModel{
+        qreal c_f = -1;
+        qreal c_z = -1;
+        bool isCompensated;
+
+        void ToGCode(QStringList* g, const Cut& o_cut, const Feed& o_feed);
+    };
+
+    CompensateModel Compensate2(qreal l, const Cut& cut, const Feed& feed);
+
     static const QString G1;
     static const QString G2;
     static const QString T1;
@@ -37,6 +55,11 @@ public:
     static const QString movzKey;
     static const QString maxzKey;
     static const QString nameKey;
+
+    static const QString emaxKey;
+    static const QString fmaxKey;
+    static const QString fminKey;
+    static const QString fratioKey;
 
     void Init();
     auto Generate(const QStringList& g) -> QStringList;
@@ -62,12 +85,12 @@ private:
     QMap<int, Tool> _tools;    
     int _selected_tool_ix;
 
-    Feed _selected_feed;
+    Feed _selected_feed3;
     Cut _selected_cut;
 
     int _last_tool_ix = -1;
-    Feed _last_feed;    
-    Cut _last_cut;
+    Feed _last_feed3;
+    Cut _last_cut3;
 
     Point _lastHoleP;
     qreal _last_hole_diameter;
@@ -83,6 +106,10 @@ private:
     qreal _overcut =0;
     qreal _movZ=2;
     qreal _maxZ=4;
+    qreal _emax=0.1/100;
+    qreal _fmax=500;
+    qreal _fmin=200;
+    qreal _fratio =0.7;
 
     struct LastBox{
         Point p0;
@@ -113,36 +140,39 @@ private:
     auto setXYMode(const QString &txt) -> bool;
 
     /*SetSelected*/
-    void SetSelectedFeed(Feed feed);
+    //void SetSelectedFeed(Feed feed);
     /*Validators*/
     auto ValidateTool() -> bool;
-    auto CheckCut(QString*err) -> bool;
+    //auto CheckCut(const Cut& cut, QString*err) -> bool;
     /*Geomerty*/
     auto LineToGCode(const Line& m,QString *err) -> QString;
     auto HoleToGCode(const Hole& m,QString*err) -> QString;
     auto BoxToGCode(const Box& m,QString*err) -> QString;
     auto ArcToGCode(const Arc& m,QString*err) -> QString;
     auto SetToolToGCode(Tool m, QString *err) -> QString;
-    auto SetFeedToGCode(QString *err = nullptr) -> QString;
-    auto SetSpindleSpeedToGCode(QString *err = nullptr) -> QString;
+    bool SetFeedToGCode(qreal feed, QString *g, QString *err = nullptr);
+    bool SetSpindleSpeedToGCode(qreal spindle_speed, QString *g, QString *err = nullptr);
     /*G Command*/
     auto ChangeToolToGCode() -> QString;
-    auto SpindleStartToGCode() -> QString;
+    auto SpindleStartToGCode(qreal spindle_speed) -> QString;
     auto SpindleStopToGCode() -> QString;
-    auto LiftDownToGCode(qreal z) -> QString;
-    auto LiftUpToGCode(const QVariant& z) -> QString;
-    auto TravelXYToGCode(const Point& p) -> QString;
+    auto LiftDownToGCode(qreal feed, qreal z) -> QString;
+    auto LiftUpToGCode(qreal feed, const QVariant& z) -> QString;
+    auto TravelXYToGCode(qreal feed, const Point& p) -> QString;
     auto SetXYModeToGCode() -> QString;
-    auto GoToXY(GMode::Mode, const Point& p, qreal length) -> QString;
-    auto GoToZ(GMode::Mode, const Point& p, qreal length) -> QString;
-    auto GoToXYZ(GMode::Mode, const Point& p, qreal length) -> QString;
+    auto GoToXY(GMode::Mode, const Point& p, qreal length, qreal feed) -> QString;
+    auto GoToZ(GMode::Mode, const Point& p, qreal length,qreal feed) -> QString;
+    auto GoToXYZ(GMode::Mode, const Point& p, qreal length, qreal feed) -> QString;
     auto Dwell(int p) -> QString;
     /*Parse*/
     auto ParseCommentToGCode(const QString &str, QString *gcode, QString *err) -> bool;
+
+    /*GEOM*/
     auto ParseArcToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseLineToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseBoxToGcode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseHoleToGCode(const QString& str, QString *gcode, QString *err) -> bool;
+
     auto ParseStringToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetToolToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
@@ -153,11 +183,11 @@ public:
     void setWorkingFolder(const QDir &a){ _workingFolder = a; }
 
     /*moves*/
-    void GoToCutposition(QStringList *g, const Point& p);
+    void GoToCutposition(QStringList *g, const Point& p, const Feed& feed);
     /*CUTS*/
-    auto LinearCut(qreal z2)-> QStringList;
-    auto HelicalCut(qreal total_depth, qreal path_r) -> QStringList;
-    auto CircularArcCut(qreal total_depth) -> QStringList;
+    auto LinearCut(const Feed& feed, const Cut& cut)-> QStringList;
+    auto HelicalCut(qreal path_r, const Feed& feed,const Cut& cut) -> QStringList;
+    auto CircularArcCut(const Feed& feed,const Cut& cut) -> QStringList;
 
     QString TotalTimeToGCode();
 };

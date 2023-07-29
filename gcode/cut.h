@@ -35,6 +35,8 @@ public:
 //    static QString lasterr(){return _lasterr;}
 //private:
 //    static QString _lasterr;
+    int steps();
+    bool Check(QString *err) const;
 };
 
 #endif // CUT_H

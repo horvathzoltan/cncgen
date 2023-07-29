@@ -20,7 +20,8 @@ Line::Line(const Point &_p0,
            Cut _cut,
            Feed _feed,
            const Gap& _gap,
-           const Point& _rp
+           const Point& _rp,
+           const QString& _name
            )
 {
     p0 = _p0;
@@ -30,6 +31,8 @@ Line::Line(const Point &_p0,
     rp=_rp;
     gap=_gap;
     _isValid = true;
+    name = _name;
+
 }
 
 auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point *offset) -> ParseState
@@ -47,6 +50,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
     QString rpointTxt;
     Point rpoint;
     Gap gap;
+    QString name;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -71,6 +75,13 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             continue;
         }
 
+        if(p.startsWith("n\"")){
+            QString a;
+            bool ok = GCode::ParseValue(p, L("n"), &a);
+            if(ok) name=a;
+            continue;
+        }
+
         if(Gap::Parse(p, nullptr).state()!=ParseState::NoData){
             Gap gp;
             if(Gap::Parse(p, &gp).state()==ParseState::Parsed){
@@ -91,7 +102,8 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         hasPoints?points[1]:Point(),
         cut,
         feed, gap,
-        rpoint};
+        rpoint,
+    name};
 
     st.setState(ParseState::Parsed);
     return st;
@@ -145,7 +157,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
         bool isok2 = GeoMath::Divider(kp,op,o1,&op1);
         if(!isok2) continue;
         // line:kp2->op1
-        Line l = {kp2, op1, cut, feed,{}};
+        Line l = {kp2, op1, cut, feed,{}, {}, name+" slice:"+QString::number(i)};
         m.append(l);
         Point op2 ={0,0,0};
         bool isok3 = GeoMath::Divider(kp,op,o2,&op2);
@@ -156,7 +168,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
 //        Line gap = {op1, op2, z-g.h, s, sp, f};
 //        m.append(gap);
     }
-    Line lx = {kp2, p1, cut, feed,{}};
+    Line lx = {kp2, p1, cut, feed,{},{}, name + " slice:last"};
     m.append(lx);
     zInfo(L("gap_")+": " + ToString());
     for(int i=0;i<m.length();i++){
@@ -171,4 +183,14 @@ qreal Line::Length()
     return d;
 }
 
+
+QString Line::GetComment() const
+{
+    QString n0 = QStringLiteral("line");
+    if(!name.isEmpty()){
+        n0+=":"+name;
+    }
+    QString n01 = '('+n0+')';
+    return n01;
+}
 

@@ -23,7 +23,7 @@ pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
 #emax0.0005 #19:34
-#emax0.001  #10:04
+#emax0.001  #8:56
 #emax0.002  #05:23
 #emax0.0025 #04:29
 #emax0.003  #03:30

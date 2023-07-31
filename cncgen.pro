@@ -204,6 +204,7 @@ DISTFILES += \
     testdata/huto_furatsablon.txt \
     testdata/kocsma_doboz_alja.txt \
     testdata/kocsma_doboz_alja_1mm.txt \
+    testdata/kocsma_doboz_alja_1mm_keret.txt \
     testdata/kocsma_doboz_oldala.txt \
     testdata/kocsma_doboz_oldala_csakhdmi.txt \
     testdata/linetest.txt \

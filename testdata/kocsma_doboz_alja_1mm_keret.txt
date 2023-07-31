@@ -1,0 +1,86 @@
+(kocsma alsó szerelőlap keret)
+(cmd line: -i kocsma_doboz_alja_1mm_keret.txt -t)
+(plot cmd: -i kocsma_doboz_alja_1mm_keret.txt -t -p)
+
+movz5
+maxz20
+
+(szerszám beállítás)
+
+t1 m d1 h19
+
+yxz
+t1
+s50
+f900
+
+#felületi egyenetlenség és túllógás
+safetop0.5
+safebottom0.5
+overcut0.35
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+#emax0.0005 #19:34
+#emax0.001  #8:56
+#emax0.002  #05:23
+#emax0.0025 #04:29
+#emax0.003  #03:30
+emax0.004  #02:53
+#emax0.0045 #02:43
+#emax0.005  #02:36
+#emax0.007  #02:20
+#emax0.01   #2:13
+
+fmax900
+fmin450
+fratio0.8
+
+z1 = 2
+zh1 = 2
+(vágás fogásmélység egy menetben)
+c1 = 0.025
+c2 = 0.05
+ujg = 0.2
+
+(körvonal bordázat)
+#jobb
+h 0.75,55.3 z$zh1 c$c1 d3
+h 0.75,59.2 z$zh1 c$c1 d3
+
+#&lent
+h 38.15,0.75 z$zh1 c$c1 d3
+h 41.7,0.75 z$zh1 c$c1 d3
+
+h 80.7,0.75 z$zh1 c$c1 d3
+h 84.35,0.75 z$zh1 c$c1 d3
+
+#h 123.7,0.75 z$zh1 c$c1 d3
+#h 126.95,0.75 z$zh1 c$c1 d3
+
+#bal
+h 164.25,55.3 z$zh1 c$c1 d3
+h 164.25,59.2 z$zh1 c$c1 d3
+
+#fent
+
+h 126.95,114.25 z$zh1 c$c1 d3
+h 123.7,114.25 z$zh1 c$c1 d3
+
+h 84.35,114.25 z$zh1 c$c1 d3
+h 80.7,114.25 z$zh1 c$c1 d3
+
+h 41.70,114.25 z$zh1 c$c1 d3
+h 38.15,114.25 z$zh1 c$c1 d3
+
+(megrág)
+
+&ja
+l 85,7 85,3.5 z$z1 c$c1 n"kivágás_ja_1"
+l 85,3.5 85,2 z1.5 c$c1 n"kivágás_ja_2"
+
+#ba
+l 135,5 135,2 z$z1 c$c1 n"kivágás_ba_1"
+l 135,2 135,0.5 z1.5 c$c1 n"kivágás_ba_2"
+

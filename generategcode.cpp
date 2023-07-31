@@ -854,7 +854,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
 
     qreal distance = GeoMath::Distance(_lastLine.p0, _lastLine.p1);
     if(distance<t.d) {
-        if(err){*err=L("line too short(")+QString::number(distance)+"mm)";}
+        if(err){*err=L("line too short: ")+QString::number(distance)+"mm";}
         return {};
     }
 
@@ -1507,7 +1507,7 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
     auto distance = GeoMath::Distance(_lastArc.p0, _lastArc.p1);
     if(distance<t.d) {
         if(err){
-            *err=L("chord of arc too short(")+QString::number(distance)+"mm)";
+            *err=L("chord of arc too short: ")+QString::number(distance)+"mm";
         }
         return {};
     }
@@ -1644,7 +1644,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     qreal distance = GeoMath::Distance(_lastBox.p0, _lastBox.p1);
     if(distance<(t.d/1.4)) {
         if(err){
-            *err=L("box diagonal too short(")+QString::number(distance)+"mm)";
+            *err=L("box diagonal too short: ")+QString::number(distance)+"mm";
         }
         return {};
     }

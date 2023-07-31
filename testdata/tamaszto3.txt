@@ -1,0 +1,48 @@
+(támasztó)
+(cmd line: -i tamaszto3.txt -t)
+(plot cmd: -i tamaszto3.txt -t -p)
+
+movz5
+maxz20
+
+(szerszám beállítás)
+
+t1 m d3 h19
+
+yxz
+t1
+s50
+f700
+
+#felületi egyenetlenség és túllógás
+safetop0.25
+safebottom0.25
+overcut0.25
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+#emax0.0005 #19:34
+#emax0.001  #8:56
+#emax0.002  #05:23
+#emax0.0025 #04:29
+#emax0.003  #03:30
+#emax0.004  #02:53 - 02:07
+#emax0.0045 #02:43 - 01:56
+#emax0.005  #02:36 02:19 01:47
+#emax0.007  #02:20
+emax0.015   #2:13
+
+fmax700
+fmin500
+fratio0.8
+
+z1 = 2
+zh1 = 2
+(vágás fogásmélység egy menetben)
+c1 = 0.05
+c3 = 0.25
+
+h 10,7.5 z$zh1 c$c1 jg0.5 d5
+b outline 0,0 size30,15 z$z1 c$c3 g1,1,0.3
+

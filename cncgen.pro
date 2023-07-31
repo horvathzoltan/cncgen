@@ -225,6 +225,9 @@ DISTFILES += \
     testdata/pi_hatlap.txt \
     testdata/t1.txt \
     testdata/t2.txt \
+    testdata/tamaszto.txt \
+    testdata/tamaszto2.txt \
+    testdata/tamaszto3.txt \
     testdata/tapdugo.txt \
     testdata/tapdugo2.txt \
     testdata/tapdugo3.txt \

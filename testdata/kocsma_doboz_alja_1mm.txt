@@ -27,22 +27,22 @@ pre_mill_steps2
 #emax0.002  #05:23
 #emax0.0025 #04:29
 #emax0.003  #03:30
-#emax0.004  #02:53 - 02:07
-emax0.0045 #02:43 - 01:56
+emax0.004  #02:53 - 02:07
+#emax0.0045 #02:43 - 01:56
 #emax0.005  #02:36 02:19 01:47
 #emax0.007  #02:20
 #emax0.01   #2:13
 
 fmax900
 fmin450
-fratio0.8
+fratio0.85
 
 z1 = 2
 zh1 = 2
 (vágás fogásmélység egy menetben)
-c1 = 0.025 #0.025 #furatiok
-c2 = 0.05 #0.050 #letörések
-c3 = 0.075 #keret
+c1 = 0.025 #0.025 #furatok
+c2 = 0.050 #0.050 #letörések
+c3 = 0.060 #keret
 ujg = 0.2
 
 (pi4b furatok)
@@ -50,8 +50,8 @@ b corners 81,7 size58,49 z$zh1 c$c1 d2.75 n"pi_furatok"
 
 (pi4b keret)
 # 82.6+58+3.5-85  ,6-3.5
-b inline 77.5,3.5 size65,56 z$z1 c$c3 g3,1,0.3 jg0.5 vy7.5 vx7 nl0,1,1,0 n"pi_keret_1"
-b inline 52.5,3.5 size20.5,56 z$z1 c$c3 g1,1,0.3 jg0.5 vy0 vx0 nl1,1,0,1 n"pi_keret_2"
+b inline 77.5,3.5 size65,56 z$z1 c$c2 g3,1,0.3 jg0.5 vy7.5 vx7 nl0,1,1,0 n"pi_keret_1"
+b inline 52.5,3.5 size20.5,56 z$z1 c$c2 g1,1,0.3 jg0.5 vy0 vx0 nl1,1,0,1 n"pi_keret_2"
 (kártya)
 b inline 142.5,22.5 size16,17 z$z1 c$c2 g1,1,0.3 jg0.5 r4 rj0 nl0,1,1,1 n"pi_kártya"
 (hálókábel)

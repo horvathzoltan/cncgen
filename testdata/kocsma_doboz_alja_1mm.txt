@@ -17,7 +17,7 @@ f900
 #felületi egyenetlenség és túllógás
 safetop0.125
 safebottom0.125
-overcut0.125
+overcut0.2
 
 pre_mill_steps2
 

@@ -1305,24 +1305,10 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     if(pre_drill){
         Feed feed_predrill = m.feed;
         feed_predrill.setFeed(_fmin);
-        //SetSelectedFeed(f2);
-        // 81: depth<3-5*t.d;
-        // normal: 5*t.d
-        // 83 peck:5-7
-        // ha hőre lágyul az anyag, homlokmarónál előfúrásnál kell a peck
-        //bool is_peck = t.type==Tool::Milling&&_last_cut.z>3;
         qreal zz = _lastHoleP.z-m.cut.z;
 
        g.append(L("(predrill)"));
        GoToCutposition(&g, p, feed_predrill);
-       //g.append(TravelXYToGCode(feed_predrill.feed(), p)); //TRAVEL
-       //auto sp = SpindleStartToGCode(feed_predrill.spindleSpeed());
-       //if(!sp.isEmpty()) g.append(sp);
-       //QString gcode_feed;
-       //bool ok_feed = SetFeedToGCode(feed_predrill.feed(), &gcode_feed);
-       //if(ok_feed) g.append(gcode_feed);
-
-       //g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
        // zz: mélység
        // r: visszahúzás z-je
        // q: mélység inkrement per peck
@@ -1339,16 +1325,9 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
        }
 
        _last_position.z = p.z;
-
-
-
     }
 
-    //SetSelectedFeed(m.feed);
     if(!drillOnly){
-
-
-
        if(pre_mill){
            g.append(L("(premill)"));
            //int s0_max = _pre_mill_steps;

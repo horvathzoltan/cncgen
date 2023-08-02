@@ -1314,12 +1314,13 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         qreal zz = _lastHoleP.z-m.cut.z;
 
        g.append(L("(predrill)"));
-       g.append(TravelXYToGCode(feed_predrill.feed(), p)); //TRAVEL
-       auto sp = SpindleStartToGCode(feed_predrill.spindleSpeed());
-       if(!sp.isEmpty()) g.append(sp);
-       QString gcode_feed;
-       bool ok_feed = SetFeedToGCode(feed_predrill.feed(), &gcode_feed);
-       if(ok_feed) g.append(gcode_feed);
+       GoToCutposition(&g, p, feed_predrill);
+       //g.append(TravelXYToGCode(feed_predrill.feed(), p)); //TRAVEL
+       //auto sp = SpindleStartToGCode(feed_predrill.spindleSpeed());
+       //if(!sp.isEmpty()) g.append(sp);
+       //QString gcode_feed;
+       //bool ok_feed = SetFeedToGCode(feed_predrill.feed(), &gcode_feed);
+       //if(ok_feed) g.append(gcode_feed);
 
        //g.append(L("G98 G81")+" z"+GCode::r(zz)+" r"+GCode::r(p.z));
        // zz: mélység

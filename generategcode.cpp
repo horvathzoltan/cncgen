@@ -939,6 +939,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 
     qreal l = GeoMath::Distance(_lastLine.p0, _lastLine.p1);
 
+
     CompensateModel c = Compensate2(l,  o_cut, o_feed);
     Feed feed = o_feed;
     Cut cut = o_cut;
@@ -961,8 +962,21 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 //        zInfo("hutty");
 //    }
 
+    Tool t = _tools[_selected_tool_ix];
+    qreal peck_z = qMax(p.z, _lastLine.p1.z);
+    bool isPeck = false;//l<=t.d*5;
+    bool isDwell = false;//l<=t.d*10;
+
+    if(l<=t.d*3){
+        isPeck = true;
+    } else if(l<=t.d*6){
+        isDwell = true;
+    }
 
 
+    if(isPeck){
+        g.append("(peck)");
+    }
     int steps_0 = cut.steps();
 
     msg+= "cut:"+_lastLine.p0.ToString()+"->"+_lastLine.p1.ToString();
@@ -997,6 +1011,19 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
         auto g0 = GoToXYZ(GMode::Linear, p, d, feed.feed());
         AppendGCode(&g, g0);
 
+        qreal peck_l = qAbs(peck_z-p.z);
+        if(isPeck){
+            g0 = GoToZ(GMode::Rapid,{0,0,peck_z}, peck_l, feed.feed());
+            AppendGCode(&g, g0);
+            g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
+            AppendGCode(&g, g0);
+        }
+        if(isDwell){
+            int tdwell = 300;
+            g0 = "G4 P"+QString::number(tdwell);
+            AppendGCode(&g, g0);
+            _total_time+=tdwell/1000;// ennyi sec
+        }
         //if(d<=10) AppendGCode(&g, Dwell(100));//250
     }
 
@@ -1041,6 +1068,10 @@ void GenerateGcode::CompensateModel::ToGCode(QStringList* g, const Cut& o_cut, c
 //    if(c_z!=-1){
 //        _last_cut.z0 = c_z;
 //    }
+//}
+//auto GenerateGcode::PeckingDrill(qreal path_r, const Feed& o_feed,const Cut& o_cut) -> QStringList{
+
+
 //}
 
 auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut) -> QStringList{
@@ -1136,6 +1167,17 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
     msg+= " total_depth:"+QString::number(cut.z);
     msg+= " steps:"+QString::number(steps);
 
+    Tool t = _tools[_selected_tool_ix];
+    qreal peck_z = qMax(_lastArc.p0.z, _lastArc.p1.z);
+    bool isPeck = false;//l<=t.d*5;
+    bool isDwell = false;//l<=t.d*10;
+
+    if(l<=t.d*3){
+        isPeck = true;
+    } else if(l<=t.d*6){
+        isDwell = true;
+    }
+
     Point p = _lastArc.p0;
     qreal dt=0;
     for(int step=0;step<steps;step++){
@@ -1166,7 +1208,22 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
         qreal d=GeoMath::ArcLength(pp,p, _lastArc.o);
 
         dt+=d;
-        g.append(GoToXYZ(mode, p, d, feed.feed())+' '+ij2);
+        auto g0 = GoToXYZ(mode, p, d, feed.feed());
+        g.append(g0+' '+ij2);
+
+        qreal peck_l = qAbs(peck_z-p.z);
+        if(isPeck){
+            g0 = GoToZ(GMode::Rapid,{0,0,peck_z}, peck_l, feed.feed());
+            AppendGCode(&g, g0);
+            g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
+            AppendGCode(&g, g0);
+        }
+        if(isDwell){
+            int tdwell = 300;
+            g0 = "G4 P"+QString::number(tdwell);
+            AppendGCode(&g, g0);
+            _total_time+=tdwell/1000;// ennyi sec
+        }
     }
 
 //    if(isc){
@@ -1282,8 +1339,6 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
         _lastHoleP.z+=m.rp.z;
     }
 
-
-
     QString nameComment = m.GetComment();
     QStringList g(nameComment);
     g.append(QStringLiteral("(helical interpolation)"));
@@ -1302,6 +1357,9 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     msg+= " steps:"+QString::number(steps);
     zInfo(msg);
 
+    // zz: mélység
+    // r: visszahúzás z-je
+    // q: mélység inkrement per peck
     if(pre_drill){
         Feed feed_predrill = m.feed;
         feed_predrill.setFeed(_fmin);
@@ -1309,9 +1367,6 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
        g.append(L("(predrill)"));
        GoToCutposition(&g, p, feed_predrill);
-       // zz: mélység
-       // r: visszahúzás z-je
-       // q: mélység inkrement per peck
        g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z+1)+" q"+GCode::r(m.cut.z0) );
 
        auto menet = zz/m.cut.z0;

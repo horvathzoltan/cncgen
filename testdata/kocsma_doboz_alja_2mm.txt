@@ -1,13 +1,13 @@
 (kocsma alsó szerelőlap)
-(cmd line: -i kocsma_doboz_alja_1mm.txt -t)
-(plot cmd: -i kocsma_doboz_alja_1mm.txt -t -p)
+(cmd line: -i kocsma_doboz_alja_2mm.txt -t)
+(plot cmd: -i kocsma_doboz_alja_2mm.txt -t -p)
 
 movz5
 maxz20
 
 (szerszám beállítás)
 
-t1 m d1 h19
+t1 m d2 h19
 
 yxz
 t1
@@ -17,7 +17,7 @@ f900
 #felületi egyenetlenség és túllógás
 safetop0.125
 safebottom0.125
-overcut0.2
+overcut0.3
 
 pre_mill_steps2
 
@@ -26,23 +26,23 @@ pre_mill_steps2
 #emax0.001  #8:56
 #emax0.002  #05:23
 #emax0.0025 #04:29
-emax0.0035
+#emax0.0035
 #emax0.004  #02:53 - 02:07
 #emax0.0045 #02:43 - 01:56
 #emax0.005  #02:36 02:19 01:47
-#emax0.007  #02:20
+emax0.007  #02:20
 #emax0.01   #2:13
 
 fmax900
-fmin650
+fmin600
 fratio0.80
 
 z1 = 2
 zh1 = 2
 (vágás fogásmélység egy menetben)
-c1 = 0.040 #0.025 #furatok
-c2 = 0.047 #0.050 #letörések
-c3 = 0.060 #keret
+c1 = 0.050 #0.025 #furatok
+c2 = 0.075 #0.050 #letörések
+c3 = 0.100 #keret
 ujg = 0.2
 
 (pi4b furatok)
@@ -53,23 +53,23 @@ b corners 81,7 size58,49 z$zh1 c$c1 d2.75 n"pi_furatok"
 b inline 77.5,3.5 size65,56 z$z1 c$c2 g3,1,0.3 jg0.5 vy7.5 vx7 nl0,1,1,0 n"pi_keret_1"
 b inline 52.5,3.5 size20.5,56 z$z1 c$c2 g1,1,0.3 jg0.5 vy0 vx0 nl1,1,0,1 n"pi_keret_2"
 (kártya)
-b inline 142.5,22.5 size16,17 z$z1 c$c2 g1,1,0.3 jg0.5 r4 rj0 nl0,1,1,1 n"pi_kártya"
+b inline 141.5,22.5 size16,17 z$z1 c$c2 g1,1,0.3 jg0.5 r4 rj0 nl0,1,1,1 n"pi_kártya"
 (hálókábel)
-b inline 30,39 size22.5,20.5 z$z1 c$c2 g1,1,0.3 jg0.5 r4 rj0 nl1,1,0,1 n"pi_hálózat"
+b inline 30,39 size23.5,20.5 z$z1 c$c2 g1,1,0.3 jg0.5 r4 rj0 nl1,1,0,1 n"pi_hálózat"
 
 # pi
 #ja sarok
-b outline 76.5,4 size8,6 z$z1 c$c2   r3 rj2  nl1,1,1,0  nr1,1,0,1 n"pi_sarok_ja"
+b outline 76.5,5 size8,5 z$z1 c$c2   r3 rj2  nl1,1,1,0  nr1,1,0,1 n"pi_sarok_ja"
 
 # ba sarok
-b outline 135.5,3.5 size6.8,6.5 z$z1 c$c2 ng r3 rj0 nl1,1,0,0 n"pi_sarok_ba"
+b outline 135.5,4.5 size6.2,5.5 z$z1 c$c2 ng r3 rj0 nl1,1,0,0 n"pi_sarok_ba"
 
 #jf
-b outline 76.5,52.5 size7.5,6.5 z$z1 c$c2 r3 rj2 nl1,0,1,1 nr1,0,1,1 n"pi_sarok_jf"
+b outline 76.5,52.5 size7.5,5.5 z$z1 c$c2 r3 rj2 nl1,0,1,1 nr1,0,1,1 n"pi_sarok_jf"
 #l 85,59.5 85,56.5 z$z1 c$c1 n"pi_sarok_jf2"
 
 #bf
-b outline 135.5,53 size6.8,6.5 z$z1 c$c2 r3 rj0 nl1,0,0,1 n"pi_sarok_bf"
+b outline 135.5,53 size6.2,5.5 z$z1 c$c2 r3 rj0 nl1,0,0,1 n"pi_sarok_bf"
 
 (táp 12V - furat táv 55mm)
 h 130,87 size161,111 z$zh1 c$c1 d3 jg0.1
@@ -89,7 +89,7 @@ b corners 16.5,12 size132,91 z$zh1 c$c1 d3 jg0.5
 
 
 (körvonal)
-b outline 0,0 size165,115 z$z1 c$c3 g4,1,0.3 jg0.75 vy13 vx21.5
+b outline 0,0 size165,115 z$z1 c$c3 g4,1,0.3 jg0.75 vy13.5 vx22
 #g1,1,2.5
 
 b outline 0,0 size10,18.5 z$z1 c$c2 g1,1,0.3 jg0.75 r4 rj2 nl0,1,1,0
@@ -132,9 +132,9 @@ h 38.15,114.25 z$zh1 c$c1 d3
 (megrág)
 
 &ja
-l 85,7 85,3.5 z$z1 c$c2 n"kivágás_ja_1"
-l 85,3.5 85,2 z1.5 c$c2 n"kivágás_ja_2"
+l 85.5,6 85.5,1 z$z1 c$c2 n"kivágás_ja_1"
+l 85.5,3 85.5,1 z1.5 c$c2 n"kivágás_ja_2"
 
 #ba
-l 135,5 135,2 z$z1 c$c2 n"kivágás_ba_1"
-l 135,2 135,0.5 z1.5 c$c2 n"kivágás_ba_2"
+l 134.5,4.5 134.5,1 z$z1 c$c2 n"kivágás_ba_1"
+l 134.5,3 134.5,1 z1.5 c$c2 n"kivágás_ba_2"

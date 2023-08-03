@@ -752,7 +752,7 @@ auto GenerateGcode::LiftDownToGCode(qreal feed, qreal z)-> QString
     QStringList g;
     QString err;
 
-    qreal safez = (_safez!=0)?_safez:1;
+    qreal safez = _safez+1;//(_safez!=0)?_safez:1;
     if(_last_position.z==z){ return {};}
     auto z2 = z+safez; // z2-ig gyorsan megyünk
     qreal l = _last_position.z-z2;
@@ -969,10 +969,11 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 
     bool isPeck = false;//l<=t.d*5;
     bool isDwell = false;//l<=t.d*10;
+    bool isDwell2 = false;//l<=t.d*10;
 
-    if(l<=t.d*3){
+    if(l<=t.d*15){
         isPeck = true;
-    } else if(l<=t.d*6){
+    } else if(l<=t.d*25){
         isDwell = true;
     }
 
@@ -983,12 +984,15 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 
 
     if(isPeck){
-        feed.setFeed(feed.feed()/2);
-    } else if (isDwell){
-        feed.setFeed(feed.feed()/1.5);
+        if(l<=t.d*5){
+            feed.setFeed(feed.feed()/2);
+            isDwell2 = true;
+        } else if(l<=t.d*10){
+            isDwell2 = true;
+        }
     }
 
-    qreal safez = (_safez!=0)?_safez:1;
+    qreal safez = _safez+1;//(_safez!=0)?_safez:1;
 
     GoToCutposition(&g, p, feed);
 
@@ -1030,11 +1034,17 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
         if(isPeck){
             g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
             AppendGCode(&g, g0);
+            if(isDwell2){
+                int tdwell = 300;
+                g0 = "G4 P"+QString::number(tdwell);
+                AppendGCode(&g, g0);
+                _total_time+=tdwell/1000;// ennyi sec
+            }
             g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
             AppendGCode(&g, g0);
         }
         if(isDwell){
-            int tdwell = 300;
+            int tdwell = 500;
             g0 = "G4 P"+QString::number(tdwell);
             AppendGCode(&g, g0);
             _total_time+=tdwell/1000;// ennyi sec
@@ -1186,12 +1196,32 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
     qreal peck_z = qMax(_lastArc.p0.z, _lastArc.p1.z);
     bool isPeck = false;//l<=t.d*5;
     bool isDwell = false;//l<=t.d*10;
+    bool isDwell2 = false;
 
-    if(l<=t.d*3){
+    if(l<=t.d*15){
         isPeck = true;
-    } else if(l<=t.d*6){
+    } else if(l<=t.d*25){
         isDwell = true;
     }
+
+
+    if(isPeck){
+        g.append("(peck)");
+    }
+
+
+    if(isPeck){
+        if(l<=t.d*5){
+            feed.setFeed(feed.feed()/2);
+            isDwell2 = true;
+        } else if(l<=t.d*10){
+            isDwell2 = true;
+        }
+    }
+
+
+    qreal safez = _safez+1;
+
 
     Point p = _lastArc.p0;
     qreal dt=0;
@@ -1228,13 +1258,20 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
 
         qreal peck_l = qAbs(peck_z-p.z);
         if(isPeck){
-            g0 = GoToZ(GMode::Rapid,{0,0,peck_z}, peck_l, feed.feed());
+            g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
             AppendGCode(&g, g0);
+            if(isDwell2){
+                int tdwell = 300;
+                g0 = "G4 P"+QString::number(tdwell);
+                AppendGCode(&g, g0);
+                _total_time+=tdwell/1000;// ennyi sec
+            }
+
             g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
             AppendGCode(&g, g0);
         }
         if(isDwell){
-            int tdwell = 300;
+            int tdwell = 500;
             g0 = "G4 P"+QString::number(tdwell);
             AppendGCode(&g, g0);
             _total_time+=tdwell/1000;// ennyi sec
@@ -1372,7 +1409,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     msg+= " steps:"+QString::number(steps);
     zInfo(msg);
 
-    qreal safez = (_safez!=0)?_safez:1;
+    qreal safez = _safez+1;//(_safez!=0)?_safez:1;
     // zz: mélység
     // r: visszahúzás z-je
     // q: mélység inkrement per peck

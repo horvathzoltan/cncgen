@@ -64,7 +64,7 @@ public:
     void Init();
     auto Generate(const QStringList& g) -> QStringList;
     auto AppendGCode(QStringList* gs, const QString &g, const QString& err={},const QString& comment={}) -> bool;
-    qreal _total_time;
+    qreal _total_minutes; //mm per perc
     qreal _total_length;
     qreal _total_cut;
     void SetIsPlot(bool v){_isPlot = v;}
@@ -190,6 +190,8 @@ public:
     auto CircularArcCut(const Feed& feed,const Cut& cut) -> QStringList;
 
     QString TotalTimeToGCode();
+    static qreal MinToMilliSec(qreal a);
+    static qreal MilliSecToMin(qreal a);
 };
 
 #endif // GENERATEGCODE_H

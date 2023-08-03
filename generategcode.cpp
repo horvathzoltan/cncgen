@@ -132,7 +132,7 @@ void GenerateGcode::Init(){
     _last_position = {};
     _last_gmode=GMode::Undefined;
 
-    _total_time=0;
+    _total_minutes=0;
     _total_length=0;
     _total_cut=0;
     _ratio=1;
@@ -914,7 +914,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
 
 auto GenerateGcode::TotalTimeToGCode() -> QString
 {
-    return "(time: "+QString::number(_total_time)+")";
+    return "(time[min]: "+QString::number(_total_minutes)+")";
 }
 
 
@@ -931,6 +931,14 @@ void GenerateGcode::GoToCutposition(QStringList *g, const Point& p, const Feed& 
     }
 
     AppendGCode(g, LiftDownToGCode(feed.feed(), p.z));
+}
+
+qreal GenerateGcode::MinToMilliSec(qreal a){
+    return a*60000;
+}
+
+qreal GenerateGcode::MilliSecToMin(qreal a){
+    return a/60000;
 }
 
 // koordináták minden paraméter be van állítva
@@ -1031,23 +1039,29 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
         AppendGCode(&g, g0);
 
         qreal peck_l = qAbs(peck_z-p.z);
+        qreal t0_ms = MinToMilliSec(peck_l/1500);
+        qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
+        qreal t2_ms = t0_ms+t1_ms;
+
         if(isPeck){
             g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
             AppendGCode(&g, g0);
             if(isDwell2){
-                int tdwell = 300;
-                g0 = "G4 P"+QString::number(tdwell);
-                AppendGCode(&g, g0);
-                _total_time+=tdwell/1000;// ennyi sec
+                int tdwell_ms = (t2_ms<500)?500-t2_ms:0;
+                if(tdwell_ms>100){
+                    g0 = "G4 P"+QString::number(tdwell_ms);
+                    AppendGCode(&g, g0);
+                    _total_minutes+=MilliSecToMin(tdwell_ms);
+                }
             }
             g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
             AppendGCode(&g, g0);
         }
         if(isDwell){
-            int tdwell = 500;
-            g0 = "G4 P"+QString::number(tdwell);
+            int tdwell_ms = 500;
+            g0 = "G4 P"+QString::number(tdwell_ms);
             AppendGCode(&g, g0);
-            _total_time+=tdwell/1000;// ennyi sec
+            _total_minutes+=MilliSecToMin(tdwell_ms);
         }
         //if(d<=10) AppendGCode(&g, Dwell(100));//250
     }
@@ -1257,24 +1271,30 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
         g.append(g0+' '+ij2);
 
         qreal peck_l = qAbs(peck_z-p.z);
+        qreal t0_ms = MinToMilliSec(peck_l/1500);
+        qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
+        qreal t2_ms = t0_ms+t1_ms;
+
         if(isPeck){
             g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
             AppendGCode(&g, g0);
             if(isDwell2){
-                int tdwell = 300;
-                g0 = "G4 P"+QString::number(tdwell);
-                AppendGCode(&g, g0);
-                _total_time+=tdwell/1000;// ennyi sec
+                int tdwell_ms = (t2_ms<500)?500-t2_ms:0;
+                if(tdwell_ms>100){
+                    g0 = "G4 P"+QString::number(tdwell_ms);
+                    AppendGCode(&g, g0);
+                    _total_minutes+=MilliSecToMin(tdwell_ms);
+                }
             }
 
             g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
             AppendGCode(&g, g0);
         }
         if(isDwell){
-            int tdwell = 500;
-            g0 = "G4 P"+QString::number(tdwell);
+            int tdwell_ms = 500;
+            g0 = "G4 P"+QString::number(tdwell_ms);
             AppendGCode(&g, g0);
-            _total_time+=tdwell/1000;// ennyi sec
+            _total_minutes+=MilliSecToMin(tdwell_ms);
         }
     }
 
@@ -1428,8 +1448,8 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
             qreal l0 = m.cut.z0*menet;
             qreal l1 = (p.z+safez+zz*menet*2)-l0;
 
-           qreal t0 = l0/m.feed.feed()+l1/1500;
-           _total_time+=t0;
+           qreal t0_mins = l0/m.feed.feed()+l1/1500;
+            _total_minutes+=t0_mins;
        }
 
        _last_position.z = p.z;
@@ -1670,7 +1690,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     auto msg = G1+m.ToString();
     StringHelper::Tabulate(&msg, G2);
     zInfo(msg);
-    msg = "(time: "+QString::number(_total_time)+")";
+    msg = "(time[min]: "+QString::number(_total_minutes)+")";
     zInfo(msg);
 
     /*BOXTYPE*/
@@ -2468,8 +2488,8 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length, qreal fee
         if(v<=0){
             zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
         } else{
-            qreal t0 = length/v;
-            _total_time+=t0;
+            qreal t0_mins = length/v;
+            _total_minutes+=t0_mins;
         }
     } else {
         zInfo(Messages::zero_spindleSpeed)
@@ -2527,8 +2547,8 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length, qreal fe
             if(v<=0){
                 zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
             } else{
-                qreal t0 = length/v;
-                _total_time+=t0;
+                qreal t0_mins = length/v;
+                _total_minutes+=t0_mins;
             }
         }
     } else {
@@ -2542,8 +2562,8 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length, qreal fe
 
 auto GenerateGcode::Dwell(int p) -> QString
 {
-    qreal t0 = p/1500;
-    _total_time+=t0;
+    qreal t0_mins = p/1500;
+    _total_minutes+=t0_mins;
     auto str =  "G04 P"+QString::number(p);
     //QString str;
     return str;
@@ -2586,8 +2606,8 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length, qreal f
         } else{
             if(i!=GMode::Rapid){
                 _total_cut+=length;
-                qreal t0 = length/v;
-                _total_time+=t0;
+                qreal t0_mins = length/v;
+                _total_minutes+=t0_mins;
             }
         }
     } else {

@@ -42,8 +42,8 @@ z1 = 2
 zh1 = 2
 (vágás fogásmélység egy menetben)
 c1 = 0.025 #0.025 #furatok
-c2 = 0.038 #0.050 #letörések
-c3 = 0.05 #keret
+c2 = 0.05 #0.038 #letörések
+c3 = 0.075 #0.050keret
 ujg = 0.2
 
 (pi4b furatok)

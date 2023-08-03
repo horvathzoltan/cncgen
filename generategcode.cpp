@@ -981,7 +981,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 
     if(l<=t.d*15){
         isPeck = true;
-    } else if(l<=t.d*25){
+    } else if(l<=t.d*30){
         isDwell = true;
     }
 
@@ -993,7 +993,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 
     if(isPeck){
         if(l<=t.d*5){
-            feed.setFeed(feed.feed()/2);
+            feed.setFeed(feed.feed()/1.5);
             isDwell2 = true;
         } else if(l<=t.d*10){
             isDwell2 = true;
@@ -1043,11 +1043,12 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
         qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
         qreal t2_ms = t0_ms+t1_ms;
 
+        int maxdwellmillis = 700;
         if(isPeck){
             g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
             AppendGCode(&g, g0);
             if(isDwell2){
-                int tdwell_ms = (t2_ms<500)?500-t2_ms:0;
+                int tdwell_ms = (t2_ms<maxdwellmillis)?maxdwellmillis-t2_ms:0;
                 if(tdwell_ms>100){
                     g0 = "G4 P"+QString::number(tdwell_ms);
                     AppendGCode(&g, g0);
@@ -1058,7 +1059,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
             AppendGCode(&g, g0);
         }
         if(isDwell){
-            int tdwell_ms = 500;
+            int tdwell_ms = maxdwellmillis;
             g0 = "G4 P"+QString::number(tdwell_ms);
             AppendGCode(&g, g0);
             _total_minutes+=MilliSecToMin(tdwell_ms);
@@ -1214,7 +1215,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
 
     if(l<=t.d*15){
         isPeck = true;
-    } else if(l<=t.d*25){
+    } else if(l<=t.d*30){
         isDwell = true;
     }
 
@@ -1226,7 +1227,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
 
     if(isPeck){
         if(l<=t.d*5){
-            feed.setFeed(feed.feed()/2);
+            feed.setFeed(feed.feed()/1.5);
             isDwell2 = true;
         } else if(l<=t.d*10){
             isDwell2 = true;
@@ -1274,12 +1275,13 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
         qreal t0_ms = MinToMilliSec(peck_l/1500);
         qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
         qreal t2_ms = t0_ms+t1_ms;
+        int maxdwellmillis = 700;
 
         if(isPeck){
             g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
             AppendGCode(&g, g0);
             if(isDwell2){
-                int tdwell_ms = (t2_ms<500)?500-t2_ms:0;
+                int tdwell_ms = (t2_ms<maxdwellmillis)?maxdwellmillis-t2_ms:0;
                 if(tdwell_ms>100){
                     g0 = "G4 P"+QString::number(tdwell_ms);
                     AppendGCode(&g, g0);
@@ -1291,7 +1293,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
             AppendGCode(&g, g0);
         }
         if(isDwell){
-            int tdwell_ms = 500;
+            int tdwell_ms = maxdwellmillis;
             g0 = "G4 P"+QString::number(tdwell_ms);
             AppendGCode(&g, g0);
             _total_minutes+=MilliSecToMin(tdwell_ms);

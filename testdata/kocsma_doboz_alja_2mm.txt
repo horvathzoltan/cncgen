@@ -25,8 +25,8 @@ pre_mill_steps2
 #emax0.0005 #19:34
 #emax0.001  #8:56
 #emax0.002  #05:23
-#emax0.0025 #04:29
-emax0.003 #04:29
+emax0.0025 #
+#emax0.003 #04:29
 #emax0.0035
 #emax0.004  #02:53 - 02:07
 #emax0.0045 #02:43 - 01:56
@@ -35,15 +35,15 @@ emax0.003 #04:29
 #emax0.01   #2:13
 
 fmax900
-fmin450
+fmin600
 fratio0.80
 
 z1 = 2
 zh1 = 2
 (vágás fogásmélység egy menetben)
 c1 = 0.025 #0.025 #furatok
-c2 = 0.05 #0.038 #letörések
-c3 = 0.075 #0.050keret
+c2 = 0.037 #0.038 #letörések
+c3 = 0.050 #0.050keret
 ujg = 0.2
 
 (pi4b furatok)

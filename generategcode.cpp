@@ -752,8 +752,9 @@ auto GenerateGcode::LiftDownToGCode(qreal feed, qreal z)-> QString
     QStringList g;
     QString err;
 
+    qreal safez = (_safez!=0)?_safez:1;
     if(_last_position.z==z){ return {};}
-    auto z2 = z+1; // z2-ig gyorsan megyünk
+    auto z2 = z+safez; // z2-ig gyorsan megyünk
     qreal l = _last_position.z-z2;
     auto gcode = GoToZ(GMode::Rapid,{0,0,z2},l, feed);//+ " (lift down)";
     AppendGCode(&g, gcode, err, L("lift down"));
@@ -955,7 +956,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
    //     p.z+=_safez;
    //     total_depth+=_safez;
     //}
-    GoToCutposition(&g, p, feed);
+
 
 
 //    if(_last_feed.feed()==513 && c_f==486){
@@ -964,6 +965,8 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 
     Tool t = _tools[_selected_tool_ix];
     qreal peck_z = qMax(p.z, _lastLine.p1.z);
+    //qreal zz = peck_z-cut.z;
+
     bool isPeck = false;//l<=t.d*5;
     bool isDwell = false;//l<=t.d*10;
 
@@ -977,6 +980,18 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
     if(isPeck){
         g.append("(peck)");
     }
+
+
+    if(isPeck){
+        feed.setFeed(feed.feed()/2);
+    } else if (isDwell){
+        feed.setFeed(feed.feed()/1.5);
+    }
+
+    qreal safez = (_safez!=0)?_safez:1;
+
+    GoToCutposition(&g, p, feed);
+
     int steps_0 = cut.steps();
 
     msg+= "cut:"+_lastLine.p0.ToString()+"->"+_lastLine.p1.ToString();
@@ -1013,7 +1028,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 
         qreal peck_l = qAbs(peck_z-p.z);
         if(isPeck){
-            g0 = GoToZ(GMode::Rapid,{0,0,peck_z}, peck_l, feed.feed());
+            g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
             AppendGCode(&g, g0);
             g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
             AppendGCode(&g, g0);
@@ -1357,23 +1372,24 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     msg+= " steps:"+QString::number(steps);
     zInfo(msg);
 
+    qreal safez = (_safez!=0)?_safez:1;
     // zz: mélység
     // r: visszahúzás z-je
     // q: mélység inkrement per peck
     if(pre_drill){
         Feed feed_predrill = m.feed;
-        feed_predrill.setFeed(_fmin);
+        feed_predrill.setFeed(m.feed.feed()/3);
         qreal zz = _lastHoleP.z-m.cut.z;
 
        g.append(L("(predrill)"));
        GoToCutposition(&g, p, feed_predrill);
-       g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z+1)+" q"+GCode::r(m.cut.z0) );
+       g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z+safez)+" q"+GCode::r(m.cut.z0) );
 
        auto menet = zz/m.cut.z0;
 
        if(m.feed.feed()>0){
             qreal l0 = m.cut.z0*menet;
-            qreal l1 = (p.z+1+zz*menet*2)-l0;
+            qreal l1 = (p.z+safez+zz*menet*2)-l0;
 
            qreal t0 = l0/m.feed.feed()+l1/1500;
            _total_time+=t0;

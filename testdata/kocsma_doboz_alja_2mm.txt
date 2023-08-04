@@ -22,17 +22,17 @@ overcut0.300
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-#emax0.0005 #19:34
-#emax0.001  #8:56
-#emax0.002  #05:23
-emax0.0025 #
-#emax0.003 #04:29
-#emax0.0035
-#emax0.004  #02:53 - 02:07
-#emax0.0045 #02:43 - 01:56
-#emax0.005  #02:36 02:19 01:47
-#emax0.007  #02:20
-#emax0.01   #2:13
+#emax0.0005 #
+#emax0.001  #
+#emax0.002  #
+#emax0.0025 #
+#emax0.003 #
+#emax0.0035 #04:16
+#emax0.004  # 03:38
+emax0.0045 # 03:19
+#emax0.005  #
+#emax0.007  #
+#emax0.01   #
 
 fmax900
 fmin600
@@ -41,9 +41,9 @@ fratio0.80
 z1 = 2
 zh1 = 2
 (vágás fogásmélység egy menetben)
-c1 = 0.025 #0.025 #furatok
-c2 = 0.037 #0.038 #letörések
-c3 = 0.050 #0.050keret
+c1 = 0.03 #0.025 #furatok
+c2 = 0.04 #0.038 #letörések
+c3 = 0.060 #0.050keret
 ujg = 0.2
 
 (pi4b furatok)
@@ -133,9 +133,9 @@ h 38.15,114.25 z$zh1 c$c1 d3
 (megrág)
 
 &ja
-l 85.5,6 85.5,1 z$z1 c$c2 n"kivágás_ja_1"
-l 85.5,3 85.5,1 z1.5 c$c2 n"kivágás_ja_2"
+l 85.5,5 85.5,0 z1.5 c$c2 n"kivágás_ja_1"
+l 85.5,2,-1.5 85.5,0,-1.5 z0.5 c$c2 n"kivágás_ja_2"
 
 #ba
-l 134.5,4.5 134.5,1 z$z1 c$c2 n"kivágás_ba_1"
-l 134.5,3 134.5,1 z1.5 c$c2 n"kivágás_ba_2"
+l 134.5,4.5 134.5,0 z1.5 c$c2 n"kivágás_ba_1"
+l 134.5,2,-1.5 134.5,0,-1.5 z0.5 c$c2 n"kivágás_ba_2"

@@ -1435,7 +1435,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
     if(pre_drill){
 
-        qreal d_l = t.d*M_PI;
+        qreal d_l = (t.d*M_PI)/2; // a belső átmérőn is vág, kevesebbet
         CompensateModel d_c = Compensate2(d_l,  m.cut, m.feed);
         Feed d_feed = m.feed;
         Cut d_cut = m.cut;

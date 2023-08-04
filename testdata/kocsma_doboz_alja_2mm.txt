@@ -47,7 +47,7 @@ c3 = 0.050 #0.050keret
 ujg = 0.2
 
 (pi4b furatok)
-b corners 81,7 size58,49 z$zh1 c$c1 d2.75 n"pi_furatok"
+b corners 81,7 size58,49 z$zh1 c$c1 d2.75 n"pi_furatok" df150
 
 (pi4b keret)
 # 82.6+58+3.5-85  ,6-3.5

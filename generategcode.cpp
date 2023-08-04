@@ -1432,27 +1432,37 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
     zInfo(msg);
 
     qreal safez = _safez+1;//(_safez!=0)?_safez:1;
-    // zz: mélység
-    // r: visszahúzás z-je
-    // q: mélység inkrement per peck
+
     if(pre_drill){
-        Feed feed_predrill = m.feed;
-        feed_predrill.setFeed(m.feed.feed()/3);
-        qreal zz = _lastHoleP.z-m.cut.z;
 
-       g.append(L("(predrill)"));
-       GoToCutposition(&g, p, feed_predrill);
-       g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(p.z+safez)+" q"+GCode::r(m.cut.z0) );
+        qreal d_l = t.d*M_PI;
+        CompensateModel d_c = Compensate2(d_l,  m.cut, m.feed);
+        Feed d_feed = m.feed;
+        Cut d_cut = m.cut;
+        if(d_c.isCompensated){
+            d_feed.setFeed(d_c.c_f);
+            d_cut.z0=d_c.c_z;
 
-       auto menet = zz/m.cut.z0;
+            d_c.ToGCode(&g, m.cut, m.feed);
+        }
 
-       if(m.feed.feed()>0){
+        qreal zz = _lastHoleP.z-m.cut.z; // zz: mélység
+        qreal r = p.z+safez; // r: visszahúzás z-je
+        qreal q = d_cut.z0;  // q: mélység inkrement per peck
+
+        g.append(L("(predrill)"));
+        GoToCutposition(&g, p, d_feed);
+        g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(r)+" q"+GCode::r(q));
+
+        auto menet = zz/m.cut.z0;
+
+        if(m.feed.feed()>0){
             qreal l0 = m.cut.z0*menet;
             qreal l1 = (p.z+safez+zz*menet*2)-l0;
 
-           qreal t0_mins = l0/m.feed.feed()+l1/1500;
+            qreal t0_mins = l0/m.feed.feed()+l1/1500;
             _total_minutes+=t0_mins;
-       }
+        }
 
        _last_position.z = p.z;
     }
@@ -2338,7 +2348,15 @@ auto GenerateGcode::SetToolToGCode(Tool m, QString *err) -> QString
 bool GenerateGcode::SetFeedToGCode(qreal feed, QString *g, QString* err)
 {
     bool ok = Feed::Check(feed, _fmin, _fmax, err);
-    if(!ok) return false;
+    if(!ok) {
+        if(feed>_fmax){
+            zInfo("feed is too high:"+QString::number(feed));
+            feed=_fmax;
+        } else {
+            zInfo("feed is too low:"+QString::number(feed));
+            //feed=_fmax;
+        }
+    }
     if(_last_feed3.feed() != feed)
     {
         _last_feed3.setFeed(feed);

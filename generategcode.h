@@ -60,6 +60,7 @@ public:
     static const QString fmaxKey;
     static const QString fminKey;
     static const QString fratioKey;
+    static const QString pdwellKey;
 
     void Init();
     auto Generate(const QStringList& g) -> QStringList;
@@ -110,6 +111,7 @@ private:
     qreal _fmax=500;
     qreal _fmin=200;
     qreal _fratio =0.7;
+    int _pdwell=500;
 
     struct LastBox{
         Point p0;

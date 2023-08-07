@@ -206,6 +206,7 @@ DISTFILES += \
     testdata/kocsma_doboz_alja_1mm.txt \
     testdata/kocsma_doboz_alja_1mm_keret.txt \
     testdata/kocsma_doboz_alja_2mm.txt \
+    testdata/kocsma_doboz_alja_2mm2.txt \
     testdata/kocsma_doboz_oldala.txt \
     testdata/kocsma_doboz_oldala_csakhdmi.txt \
     testdata/linetest.txt \

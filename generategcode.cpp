@@ -33,6 +33,7 @@ const QString GenerateGcode::emaxKey = L("emax");
 const QString GenerateGcode::fmaxKey = L("fmax");
 const QString GenerateGcode::fminKey = L("fmin");
 const QString GenerateGcode::fratioKey = L("fratio");
+const QString GenerateGcode::pdwellKey = L("pdwell");
 
 
 const QString GenerateGcode::nameKey = L("_");
@@ -280,6 +281,13 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             qreal r;
             bool isok = GCode::ParseValue(l, fratioKey, &r);
             if(isok) _fratio = r;
+            continue;
+        }
+
+        if(l.startsWith(pdwellKey)){
+            int r;
+            bool isok = GCode::ParseValue(l, pdwellKey, &r);
+            if(isok) _pdwell = r;
             continue;
         }
 
@@ -1043,7 +1051,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
         qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
         qreal t2_ms = t0_ms+t1_ms;
 
-        int maxdwellmillis = 700;
+        int maxdwellmillis = _pdwell;
         if(isPeck){
             g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
             AppendGCode(&g, g0);
@@ -1275,7 +1283,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
         qreal t0_ms = MinToMilliSec(peck_l/1500);
         qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
         qreal t2_ms = t0_ms+t1_ms;
-        int maxdwellmillis = 700;
+        int maxdwellmillis = _pdwell;
 
         if(isPeck){
             g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());

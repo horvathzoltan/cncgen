@@ -22,10 +22,10 @@ overcut0.75 # fúrószár hegye
 pre_mill_steps2
 
 #max meredekség polikarbonát
-emax0.04 #
+emax0.02 #
 
-fmax900
-fmin600
+fmax600
+fmin400
 fratio0.80
 
 pdwell350
@@ -33,9 +33,9 @@ pdwell350
 z1 = 2
 zh1 = 2
 (vágás fogásmélység egy menetben)
-c1 = 0.2 #0.025 #furatok
-c2 = 0.4 #0.038 #letörések
-c3 = 0.60 #0.050keret
+c1 = 0.10 #0.025 #furatok
+c2 = 0.15 #0.038 #letörések
+c3 = 0.20 #0.050keret
 ujg = 0.2
 
 (pi4b furatok)
@@ -82,7 +82,7 @@ b corners 16.5,12 size132,91 z$zh1 c$c1 d3 jg0.5
 
 
 (körvonal)
-b outline 0,0 size165,115 z$z1 c$c3 g4,1,0.3 jg0.75 vy13.5 vx22
+b outline 0,0 size165,115 z$z1 c$c3 g4,1,0.3 jg0.75 vy13.5 vx22 n"körvonal"
 #g1,1,2.5
 
 b outline 0,0 size10,18.5 z$z1 c$c2 g1,1,0.3 jg0.75 r4 rj2 nl0,1,1,0

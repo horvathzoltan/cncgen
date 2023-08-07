@@ -52,7 +52,7 @@ b inline 30,39 size23.5,20.5 z$z1 c$c2 g1,1,0.3 jg0.5 r4 rj0 nl1,1,0,1 n"pi_hál
 
 # pi
 #ja sarok
-b outline 76.5,5 size8,5 z$z1 c$c2   r3 rj2  nl1,1,1,0  nr1,1,0,1 n"pi_sarok_ja"
+b outline 76.5,5 size8,5 z$z1 c$c2 r3 rj2  nl1,1,1,0  nr1,1,0,1 n"pi_sarok_ja"
 
 # ba sarok
 b outline 135.5,4.5 size6.2,5.5 z$z1 c$c2 ng r3 rj0 nl1,1,0,0 n"pi_sarok_ba"
@@ -126,8 +126,8 @@ h 38.15,114.25 z$zh1 c$c1 d3
 
 &ja
 l 85.5,5 85.5,0 z1.5 c$c2 n"kivágás_ja_1"
-l 85.5,2,-1.5 85.5,0,-1.5 z0.5 c$c2 n"kivágás_ja_2"
+#l 85.5,2,-1.5 85.5,0,-1.5 z0.5 c$c2 n"kivágás_ja_2"
 
 #ba
 l 134.5,4.5 134.5,0 z1.5 c$c2 n"kivágás_ba_1"
-l 134.5,2,-1.5 134.5,0,-1.5 z0.5 c$c2 n"kivágás_ba_2"
+#l 134.5,2,-1.5 134.5,0,-1.5 z0.5 c$c2 n"kivágás_ba_2"

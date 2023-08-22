@@ -33,7 +33,7 @@ fmin600
 fratio0.80
 
 (hdmi0)
-b inline 100,5.15 size11.8,7.6 ng z$z1 c$c1 jg0.25
+b inline 100.5,5.15 size11.8,7.6 ng z$z1 c$c1 jg0.25
 
 (hdmi1)
-b inline 113.8,5.15 size11.8,7.6 ng z$z1 c$c1 jg0.25
+b inline 114.2,5.15 size11.8,7.6 ng z$z1 c$c1 jg0.25

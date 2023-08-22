@@ -1,0 +1,39 @@
+(kocsma_doboz_oldala_csakhdmi_2)
+#(cmd line: -i kocsma_doboz_oldala_csakhdmi_2.txt -t)
+#(plot cmd: -i kocsma_doboz_oldala_csakhdmi_2.txt -t -p)
+
+movz5
+maxz20
+
+(szerszám beállítás)
+t1 m d2 h19
+
+yxz
+t1
+s50
+f700
+
+#felületi egyenetlenség és túllógás
+safetop0.5
+safebottom0.5
+overcut0.2
+
+pre_mill_steps2
+
+#max meredekség abs 0.05/100mm
+emax0.1
+
+
+z1 = 3.8
+#(vágás fogásmélység egy menetben)
+c1 = 0.1
+
+fmax900
+fmin600
+fratio0.80
+
+(hdmi0)
+b inline 100,5.15 size11.8,7.6 ng z$z1 c$c1 jg0.25
+
+(hdmi1)
+b inline 113.8,5.15 size11.8,7.6 ng z$z1 c$c1 jg0.25

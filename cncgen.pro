@@ -209,6 +209,7 @@ DISTFILES += \
     testdata/kocsma_doboz_alja_2mm2.txt \
     testdata/kocsma_doboz_oldala.txt \
     testdata/kocsma_doboz_oldala_csakhdmi.txt \
+    testdata/kocsma_doboz_oldala_csakhdmi_2.txt \
     testdata/linetest.txt \
     testdata/luk.txt \
     testdata/mestercipo_doboz_felso.txt \

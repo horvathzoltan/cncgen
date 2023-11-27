@@ -1,0 +1,35 @@
+(mestercipo_csatlakozo_belezes.txt)
+(cmd line: -i mestercipo_csatlakozo_belezes.txt -t)
+(plot cmd: -i mestercipo_csatlakozo_belezes.txt -t -p)
+
+movz5
+maxz20
+
+(szerszám beállítás)
+
+t1 m d3 h19
+
+yxz
+t1
+s50
+f50
+
+#felületi egyenetlenség és túllógás
+safetop0.5
+safebottom0.0
+overcut0.0
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax1  #02:53
+
+fmax90
+fmin45
+fratio0.8
+
+z1 = 5
+(vágás fogásmélység egy menetben)
+c1 = 1
+
+b inline 0,0 size12,25 ng z$z1 c$c1 jg0.1

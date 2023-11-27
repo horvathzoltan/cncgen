@@ -212,6 +212,7 @@ DISTFILES += \
     testdata/kocsma_doboz_oldala_csakhdmi_2.txt \
     testdata/linetest.txt \
     testdata/luk.txt \
+    testdata/mestercipo_csatlakozo_belezes.txt \
     testdata/mestercipo_doboz_felso.txt \
     testdata/mestercipo_doboz_felso_szerelolap.txt \
     testdata/mestercipo_doboz_hatlap_felso.txt \

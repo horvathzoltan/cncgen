@@ -247,6 +247,7 @@ DISTFILES += \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_doboz_hatlap_2.txt \
     testdata/uniturn_felso.txt \
+    testdata/uniturn_pizero_bolcso.txt \
     testdata/uniturn_relay_doboz_hatlap.txt \
     testdata/uniturn_relay_felso_szerelolap.txt \
     testdata/uniturn_relay_relays.txt \

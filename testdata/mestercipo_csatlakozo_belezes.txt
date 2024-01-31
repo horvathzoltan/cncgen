@@ -5,31 +5,33 @@
 movz5
 maxz20
 
+safe3,3,10
+
 (szerszám beállítás)
 
 t1 m d3 h19
 
-yxz
 t1
 s50
-f50
+f100
 
 #felületi egyenetlenség és túllógás
-safetop0.5
+safetop0.1
 safebottom0.0
 overcut0.0
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax1  #02:53
+emax5  #02:53
 
-fmax90
-fmin45
+fmax200
+fmin100
+
 fratio0.8
 
-z1 = 5
+z1 = 3
 (vágás fogásmélység egy menetben)
 c1 = 1
 
-b inline 0,0 size12,25 ng z$z1 c$c1 jg0.1
+b inline 0,-1 size15,24 jg-0.90 ng z$z1 c$c1 jg0 nl1,1,0,1

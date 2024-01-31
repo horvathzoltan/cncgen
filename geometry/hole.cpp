@@ -20,7 +20,8 @@ Hole::Hole(const Point &_p,
            const Point &_rp,
            bool _np,
            bool _ng,
-           const QString& _name)
+           const QString& _name,
+           int _mode)
 {
     p = _p;
     diameter =_diameter;
@@ -32,6 +33,7 @@ Hole::Hole(const Point &_p,
     ng=_ng;
     jointGap=_jg;
     name = _name;
+    mode = _mode;
    // _isValid = true;
 }
 
@@ -53,6 +55,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     bool no_predrill = false;
     bool no_gaps = false;
     qreal jointGap=0;
+    int mode = 0;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -82,6 +85,9 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
         }
         if(p.startsWith('d')){
             GCode::ParseValue(p, L("d"), &diameter); continue;
+        }
+        if(p.startsWith('m')){
+            GCode::ParseValue(p, L("m"), &mode); continue;
         }
         if(cut.ParseInto(p,&st)) continue;
         if(Feed::Parse(p, &feed).state()!=ParseState::NoData){
@@ -137,7 +143,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     if(positionErr){st.addError(L("no position data"));}
     if(st.state()== ParseState::ParseError) return st;   
 
-    *m= {point, diameter, cut, feed, gap, jointGap, rpoint, no_predrill, no_gaps, ""};
+    *m= {point, diameter, cut, feed, gap, jointGap, rpoint, no_predrill, no_gaps, "", mode};
     st.setState(ParseState::Parsed);
     return st;
 }

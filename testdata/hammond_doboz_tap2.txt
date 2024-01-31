@@ -11,34 +11,71 @@ t1
 s50
 f700
 
-c1 = 0.1
-z1 = 2.5
+safetop0.2
+safebottom0.2
+# fúró-maró
+overcut0.9
+# maró
+# overcut0.3
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+#emax0.0005 #19:34
+#emax0.001  #8:56
+#emax0.002  #05:23
+#emax0.0025 #04:29
+#emax0.003  #03:30
+#emax0.004  #02:53 maró
+emax0.008
+#emax0.0045 #02:43
+#emax0.005  #02:36
+#emax0.007  #02:20
+#emax0.01   #2:13
+
+fmax900
+fmin450
+fratio0.8
+
+(fúrás fogásmélység egy menetben)
+c1 = 0.07 #furat
 (vágás fogásmélység egy menetben)
-c2 = 0.15
+c2 = 0.15 #körvonal
+(anyagvastagság)
+z1 = 2.0
 ujg = 0.2
 
+(gap méretek)
+gw = 0.3
+gh = 0.5
+
 (körvonal)
-b outline 0,0 159,109 z$z1 c$c2 g3,2,1 jg1.2
+b outline 0,0 159,109 z$z1 c$c2 g2,$gw,$gh jg1.2
 (bekarcolás)
 #b outline 0,0 159,109 z0.1 c0.1  jg1.2
 
 b corners -1,-1 size161,111 z$z1 c$c2 d12 jg0.5
-h 79.5,-1 size161,111 z$z1 c$c2 d12 jg0.5
-h 79.5,110 size161,111 z$z1 c$c2 d12 jg0.5
+h 79.5,-1 size161,111 z$z1 c$c2 d12 jg0.5 m1
+h 79.5,110 size161,111 z$z1 c$c2 d12 jg0.5 m1
 
 (rögzítő furatok)
-b corners 5,14 154,96 z$z1 c$c1 d3 jg0.1
-h 94,14 size161,111 z$z1 c$c1 d3 jg0.1
-h 94,96 size161,111 z$z1 c$c1 d3 jg0.1
+#b corners 5,14 154,96 z$z1 c$c1 d3 jg0.2 m1
+#h 94,14 size161,111 z$z1 c$c1 d3 jg0.2 m1
+#h 94,96 size161,111 z$z1 c$c1 d3 jg0.2 m1
 
 (táp 12V - furat táv 55mm)
-h 49,28.8 size161,111 z$z1 c$c1 d3 jg0.1
-h 49,83.8 size161,111 z$z1 c$c1 d3 jg0.1
+h 49,28.8 size161,111 z$z1 c$c1 d3 jg0.2 m1
+h 49,83.8 size161,111 z$z1 c$c1 d3 jg0.2 m1
 
+(táp 5vV - furat táv 55mm)
+h 122,20 size161,111 z$z1 c$c1 d3 jg0.2 m1
+h 122,35.9 size161,111 z$z1 c$c1 d3 jg0.2 m1
+h 122,75 size161,111 z$z1 c$c1 d3 jg0.2 m1
 
-h 125,35 size161,111 z$z1 c$c1 d3 jg0.1
-h 125,90 size161,111 z$z1 c$c1 d3 jg0.1
-
+(táp 5vV - furat táv 55mm)
+#h 125,35 size161,111 z$z1 c$c1 d3 jg0.2 m1
+#h 125,50.9 size161,111 z$z1 c$c1 d3 jg0.2 m1
+#h 125,90 size161,111 z$z1 c$c1 d3 jg0.2 m1
 
 (körbevágás)
 #t2

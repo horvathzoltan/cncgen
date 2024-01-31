@@ -1,6 +1,6 @@
 (M3 alatet 6 db)
-(cmd line: -i M3x9_alatet_6db.txt -t)
-(plot cmd: -i M3x9_alatet_6db.txt -t -p)
+(cmd line: -i M3x7_alatet_6db.txt -t)
+(plot cmd: -i M3x7_alatet_6db.txt -t -p)
 
 (szerszám beállítás)
 t1 m d2 h19
@@ -10,10 +10,10 @@ t1
 s50
 f700
 
-safetop0.5
-safebottom0.5
+safetop0.2
+safebottom0.2
 # fúró-maró
-overcut0.878
+overcut0.7
 # maró
 # overcut0.3
 
@@ -26,7 +26,8 @@ pre_mill_steps2
 #emax0.002  #05:23
 #emax0.0025 #04:29
 #emax0.003  #03:30
-emax0.004  #02:53 maró
+#emax0.004  #02:53 maró
+emax0.008  #02:53 maró
 #emax0.0045 #02:43
 #emax0.005  #02:36
 #emax0.007  #02:20
@@ -41,14 +42,14 @@ th = 2
 (belső átmérő)
 db = 3
 (külső átmérő)
-dk = sum(9,2,2)
+dk = sum(7,2,2)
 print "dk: $dk"
 
 c = 0.1
 c2 = 0.05
 j1 = 0.1
 gw = 0.3
-gh = 2
+gh = 0.5
 
 (h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
 (h 4,4 d5 z1.2 c0.175 g0,0,0 np)
@@ -59,33 +60,33 @@ o = add($dk,3)
 
 (1.sor)
 
-h $x,$y d$db z$th c$c2 jg$j1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np
+h $x,$y d$db z$th c$c2 jg$j1 m1
+h $x,$y d$dk z$th c$c g2,0.3,$gh np m1
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np
+h $x,$y d$db z$th c$c2 jg$j1 m1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np
+h $x,$y d$db z$th c$c2 jg$j1 m1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np
+h $x,$y d$db z$th c$c2 jg$j1 m1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np
+h $x,$y d$db z$th c$c2 jg$j1 m1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np
+h $x,$y d$db z$th c$c2 jg$j1 m1
+h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
 
 
 

@@ -1122,7 +1122,8 @@ void GenerateGcode::CompensateModel::ToGCode(QStringList* g, const Cut& o_cut, c
 
 //}
 
-auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut) -> QStringList{
+// a true => csigába lemegy, false: oda-vissza megy le
+auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool a) -> QStringList{
     QStringList g(QStringLiteral("(helical cut)"));
     QString msg;
 
@@ -1163,10 +1164,15 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
 
 
         QString g0;
-        if(i%2==0){
+
+        if(a){
             g0 = GoToZ(GMode::Circular, p, l1, feed.feed()) + " i" + GCode::r(path_r);
         } else{
-            g0 = GoToZ(GMode::Circular_ccw, p, l1, feed.feed()) + " i" + GCode::r(path_r);
+            if(i%2==0){
+                g0 = GoToZ(GMode::Circular, p, l1, feed.feed()) + " i" + GCode::r(path_r);
+            } else{
+                g0 = GoToZ(GMode::Circular_ccw, p, l1, feed.feed()) + " i" + GCode::r(path_r);
+            }
         }
 
         g.append(g0);
@@ -1475,6 +1481,8 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
        _last_position.z = p.z;
     }
 
+    bool helicalMode = m.mode==1;
+
     if(!drillOnly){
        if(pre_mill){
            g.append(L("(premill)"));
@@ -1489,7 +1497,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                 // előmarás a kért átmérőig
                 if(path_r-td0>tdr){
                     //SetSelectedFeed(m.feed);
-                    auto g1=HelicalCut(td0, m.feed, m.cut);//m.cut.z
+                    auto g1=HelicalCut(td0, m.feed, m.cut, helicalMode);//m.cut.z
                     g.append(g1);
                 }
            }
@@ -1504,7 +1512,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
             //SetSelectedFeed(m.feed);
            Cut cut2 = m.cut;
            cut2.z = z2;
-           auto g1=HelicalCut(path_r, m.feed, cut2);
+           auto g1=HelicalCut(path_r, m.feed, cut2, helicalMode);
            g.append(g1);
         }
 
@@ -2113,10 +2121,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     if(_lastBox.type == BoxType::Corners){
 
         QVarLengthArray<Hole> holes = {
-            {ba, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":1_ba"},
-            {ja, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":2_ja"},
-            {jf, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":3_jf"},
-            {bf, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":4_bf"}
+            {ba, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":1_ba", true},
+            {ja, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":2_ja", true},
+            {jf, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":3_jf", true},
+            {bf, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":4_bf", true}
         };
 
         if(_verbose){

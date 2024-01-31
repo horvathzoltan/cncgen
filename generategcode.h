@@ -188,7 +188,7 @@ public:
     void GoToCutposition(QStringList *g, const Point& p, const Feed& feed);
     /*CUTS*/
     auto LinearCut(const Feed& feed, const Cut& cut)-> QStringList;
-    auto HelicalCut(qreal path_r, const Feed& feed,const Cut& cut) -> QStringList;
+    auto HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a) -> QStringList;
     auto CircularArcCut(const Feed& feed,const Cut& cut) -> QStringList;
 
     QString TotalTimeToGCode();

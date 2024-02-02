@@ -4,60 +4,51 @@
 (szerszám beállítás)
 
 t1 m d2 h19
-t2 m d3 h19
-t3 m d4 h19
+
 yxz
 t1
 s50
-f700
+f900
 
-safetop0.2
-safebottom0.2
-# fúró-maró
-overcut0.7
-# maró
-# overcut0.3
+safetop0.250
+safebottom0.250
+overcut0.300
 
 pre_mill_steps2
 
-
 #max meredekség polikarbonát 0.05/100mm
-#emax0.0005 #19:34
-#emax0.001  #8:56
-#emax0.002  #05:23
-#emax0.0025 #04:29
-#emax0.003  #03:30
-#emax0.004  #02:53 maró
-emax0.008  #02:53 maró
-#emax0.0045 #02:43
-#emax0.005  #02:36
-#emax0.007  #02:20
-#emax0.01   #2:13
+emax0.0045
 
 fmax900
-fmin450
-fratio0.8
+fmin600
+fratio0.6
 
-c1 = 0.07
+
 z1 = 2
-c2 = 0.1
+c1 = 0.03 #furatok
+c2 = 0.04 #letörések
+c3 = 0.060 #keret
 
 (pi3b furatok)
-b corners 4.5,77 size49,58 z$z1 c$c1 d2.5
+b corners 4.5,77 size49,58 z$z1 c$c1 d2.75 jg0.05
+
+(pi bolcso furatok)
+h 62,77 z$z1 c$c1 d3 m1 jg0.2
+h 62,135 z$z1 c$c1 d3 m1 jg0.2
 
 (relé furatok)
 #b corners 144,12 size44.8,33.1 z$z1 c$c1 d3
 
 (rfid furatok)
 #b corners 130,100 size50,15 z$z1 c$c1 d3
-h 108.5,147 d3 z$z1 c$c1 m1
+h 113.5,147 d3 z$z1 c$c1 m1 jg0.2
 
 (piZero furatok)
-#b corners 70.5,123 size58,23 d3 z$z1 c$c1 d2.5
+#b corners 70.5,123 size58,23 d3 z$z1 c$c1 d2.75 jg0.05
 
 (alátámasztás)
-h 66,67 d3 z$z1 c$c1 m1
-h 143,80 m1
+h 66,67 d3 z$z1 c$c1 m1 jg0.2
+h 143,80 d3 z$z1 c$c1 m1 jg0.2
 
 (B3218101 - NET-BOX 220, VERS. I)
 (rögzítő furatok)
@@ -75,4 +66,4 @@ b inline 20,0 size22,22 z$z1 c$c2 g1,2,1 r5 nl1,1,0,0 rj2
 (usb hub furatai)
 
 (körvonal)
-b outline 0,0 194,152 z$z1 c$c2 g3,2,1 r5
+b outline 0,0 194,152 z$z1 c$c3 g3,2,1 r5

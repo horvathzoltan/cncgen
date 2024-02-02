@@ -38,6 +38,9 @@ const QString GenerateGcode::pdwellKey = L("pdwell");
 
 const QString GenerateGcode::nameKey = L("_");
 
+double GenerateGcode::dPeck = 25;
+double GenerateGcode::dPeck_2 = 10;
+
 //GenerateGcode::Compensation GenerateGcode::GetCompensation(qreal l, qreal z)
 //{
 //    qreal e0 = z/l;
@@ -987,9 +990,9 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
     bool isDwell = false;//l<=t.d*10;
     bool isDwell2 = false;//l<=t.d*10;
 
-    if(l<=t.d*15){
+    if(l<=t.d*dPeck){
         isPeck = true;
-    } else if(l<=t.d*30){
+    } else if(l<=t.d*dPeck*2){
         isDwell = true;
     }
 
@@ -1000,10 +1003,10 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
 
 
     if(isPeck){
-        if(l<=t.d*5){
+        if(l<=t.d*dPeck_2){
             feed.setFeed(feed.feed()/1.5);
             isDwell2 = true;
-        } else if(l<=t.d*10){
+        } else if(l<=t.d*dPeck_2*2){
             isDwell2 = true;
         }
     }
@@ -1227,9 +1230,9 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
     bool isDwell = false;//l<=t.d*10;
     bool isDwell2 = false;
 
-    if(l<=t.d*15){
+    if(l<=t.d*dPeck){
         isPeck = true;
-    } else if(l<=t.d*30){
+    } else if(l<=t.d*dPeck*2){
         isDwell = true;
     }
 
@@ -1240,10 +1243,10 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
 
 
     if(isPeck){
-        if(l<=t.d*5){
+        if(l<=t.d*dPeck_2){
             feed.setFeed(feed.feed()/1.5);
             isDwell2 = true;
-        } else if(l<=t.d*10){
+        } else if(l<=t.d*dPeck_2*2){
             isDwell2 = true;
         }
     }

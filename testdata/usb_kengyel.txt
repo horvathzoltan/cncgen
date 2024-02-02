@@ -1,17 +1,67 @@
-(UNITURN mérőállomás alsó szerelőlap 2)
+(UNITURN mérőállomás alsó szerelőlap pizero bolcso)
 (cmd line: -i usb_kengyel.txt -t)
-(plot cmd: -i usb_kengyel.txt -t -p)
 (szerszám beállítás)
 
 t1 m d2 h19
-t2 m d3 h19
-t3 m d4 h19
+
 yxz
 t1
 s50
-f200
+f900
 
-c1 = 0.1
-z1 = 1.8
+safetop0.250
+safebottom0.250
+overcut0.300
 
-l 0,0 0,160 z$z1 c$c1
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.0045
+
+fmax900
+fmin600
+fratio0.6
+
+z1 = 2
+c1 = 0.030 #furatok
+c2 = 0.040 #letörések
+c3 = 0.050 #keret
+
+(körvonal)
+b outline 0,0 size44,47 z$z1 c$c3 g2,1,0.3 r0
+
+l 11,0 11,11 z$z1 c$c3
+l 33,0 33,11 z$z1 c$c3
+
+l 0,21 6,21 z$z1 c$c3
+l 44,21 38,21 z$z1 c$c3
+
+l 0,41.5 44,41.5 z1 c$c3
+
+(2)
+b outline 46,0 size44,47 z$z1 c$c3 g2,1,0.3 r0 nl0,1,1,1
+
+l 57,0 57,11 z$z1 c$c3
+l 79,0 79,11 z$z1 c$c3
+
+l 46,21 52,21 z$z1 c$c3
+l 90,21 84,21 z$z1 c$c3
+
+l 46,42.5 90,42.5 z1 c$c3
+
+(3)
+b outline 92,0 size55.7,20 z$z1 c$c3 g2,1,0.3 r0 nl0,1,1,1
+
+l 98,0 98,11 z$z1 c$c3
+l 139.7,0 139.7,11 z$z1 c$c3
+
+(4)
+
+b outline 92,22 size55.7,20 z$z1 c$c3 g2,1,0.3 r0 nl0,1,1,0
+
+l 98,22 98,33 z$z1 c$c3
+l 139.7,22 139.7,33 z$z1 c$c3
+
+(5)
+
+b outline 92,22 size55.7,44 z$z1 c$c3 g2,1,0.3 r0 nl0,1,1,0

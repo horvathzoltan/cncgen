@@ -180,7 +180,7 @@ DISTFILES += \
     testdata/M3_dupla_alatet_20.txt \
     testdata/M3x10_alatet_5db.txt \
     testdata/M3x6_alatet_6db.txt \
-    testdata/M3x7_alatet_6db.txt \
+    testdata/M3x7_alatet_4db.txt \
     testdata/M3x9_alatet_6db.txt \
     testdata/alatet.txt \
     testdata/bekapcsolo.txt \
@@ -225,7 +225,7 @@ DISTFILES += \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
     testdata/pi_alatet_24db.txt \
     testdata/pi_alatet_4db.txt \
-    testdata/pi_alatet_8db.txt \
+    testdata/pi_alatet_5db.txt \
     testdata/pi_bolcso_15.txt \
     testdata/pi_bolcso_15_2.txt \
     testdata/pi_hatlap.txt \
@@ -240,6 +240,7 @@ DISTFILES += \
     testdata/telefontarto.txt \
     testdata/uniturn_also.txt \
     testdata/uniturn_also_2.txt \
+    testdata/uniturn_also_2_korvonal.txt \
     testdata/uniturn_also_3.txt \
     testdata/uniturn_doboz_fedlap.txt \
     testdata/uniturn_doboz_fedlap_2.txt \
@@ -247,11 +248,13 @@ DISTFILES += \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_doboz_hatlap_2.txt \
     testdata/uniturn_felso.txt \
+    testdata/uniturn_kartyaolvaso.txt \
     testdata/uniturn_pizero_bolcso.txt \
     testdata/uniturn_relay_doboz_hatlap.txt \
     testdata/uniturn_relay_felso_szerelolap.txt \
     testdata/uniturn_relay_relays.txt \
     testdata/uniturn_relay_szerelolap.txt \
+    testdata/uniturn_tavtarto_6mm.txt \
     testdata/uniturn_usb_tavtarto.txt \
     testdata/uniturn_usb_tavtarto2.txt \
     testdata/usb.txt \

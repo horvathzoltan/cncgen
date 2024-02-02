@@ -39,6 +39,8 @@ public:
 
     CompensateModel Compensate2(qreal l, const Cut& cut, const Feed& feed);
 
+    static double dPeck;
+    static double dPeck_2;
     static const QString G1;
     static const QString G2;
     static const QString T1;

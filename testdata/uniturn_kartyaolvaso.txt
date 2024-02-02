@@ -1,5 +1,5 @@
-(UNITURN mérőállomás alsó szerelőlap pizero bolcso)
-(cmd line: -i uniturn_pizero_bolcso.txt -t)
+(UNITURN mérőállomás kártyaolvasó)
+(cmd line: -i uniturn_kartyaolcvaso.txt -t)
 (szerszám beállítás)
 
 t1 m d2 h19
@@ -7,7 +7,7 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f700
 
 safetop0.250
 safebottom0.250
@@ -18,14 +18,14 @@ pre_mill_steps2
 #max meredekség polikarbonát 0.05/100mm
 emax0.0045
 
-fmax900
-fmin500
+fmax700
+fmin400
 fratio0.6
 
 z1 = 2
-c1 = 0.02 #furatok
-c2 = 0.03 #letörések
-c3 = 0.04 #keret
+c1 = 0.03 #furatok
+c2 = 0.04 #letörések
+c3 = 0.05 #keret
 
 (piZero furatok)
 b corners 3.5,13.5 size58,23 d3 z$z1 c$c1 d2.75 jg0.05

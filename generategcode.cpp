@@ -1465,7 +1465,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
         qreal zz = _lastHoleP.z-m.cut.z; // zz: mélység
         qreal r = p.z+safez; // r: visszahúzás z-je
-        qreal q = d_cut.z0;  // q: mélység inkrement per peck
+        qreal q = d_cut.z0/2;  // q: mélység inkrement per peck
 
         g.append(L("(predrill)"));
         GoToCutposition(&g, p, d_feed);

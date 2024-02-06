@@ -3,8 +3,7 @@
 (plot cmd: -i uniturn_doboz_fedlap_2.txt -t -p)
 (szerszám beállítás)
 
-t1 m d2 h19
-t2 m d3 h19
+t2 m d2 h19
 
 safe0,0,3
 
@@ -14,9 +13,21 @@ yxz
 
 t2
 s50
-f300
+f600
 
-ox = 68.05
+safetop0.250
+safebottom0.250
+overcut0.300
+
+emax0.010
+
+fmax900
+fmin400
+fratio0.6
+
+pre_mill_steps2
+
+ox =  0.05
 
 my = 26.3
 mx = 35.7
@@ -31,8 +42,9 @@ hx = 63
 hx = add($hx,$ox)
 hy = 30
 
-c2 = 0.2
-c3 = 0.1
+c1 = 0.020 #furatok
+c2 = 0.080 #keret
+
 z2 = 3
 
 print "c2=$c2"
@@ -41,68 +53,68 @@ print "z2=$z2"
 hx1 = 45
 hx1 = add($hx1,$ox)
 
-h $hx1,18 z$z2 c$c3  d3
+h $hx1,18 z$z2 c$c1 d3 m1
 
 b inline $mx,$my size12.5,5.1 z$z2 c$c2 ng
-h $hx,$hy d3 z$z2 c$c3
+h $hx,$hy d3 z$z2 c$c1 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my  z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 my = add($my,$ma)
 hy = add($hy,$ma)
 b inline $mx,$my z$z2 c$c2 size12.5,5.1 ng
-h $hx,$hy z$z2 c$c3 d3
+h $hx,$hy z$z2 c$c1 d3 m1
 
 
 
 
 (2. menet)
 
-t1
+t2
 
-f600
+f900
 
 my = 26.3
 mx = 35.7
-mx = add($mx,68.05)
+mx = add($mx,$ox)
 
 print "mx: $mx"
 print "my: $my"
@@ -118,30 +130,30 @@ print "z2=$z2"
 b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
 my = add($my,$ma)
-b inline $mx,$my size12.5,5.1 jg$j1 ng
+b inline $mx,$my size12.5,5.1 z$z2 c$c2  ng jg$j1
 
-#b outline 0,0 size220,166 z0.1 c0.1 ng
+

@@ -20,7 +20,8 @@ struct Line{
          Feed _feed,
          const Gap& _gap,
          const Point& _rp,
-         const QString& _name
+         const QString& _name,
+         bool noc
          );
     Point p0;
     Point p1;
@@ -29,6 +30,8 @@ struct Line{
     Point rp;
     Gap gap;
     QString name;
+    bool aljasimi = false;
+    bool no_overcut = false;
 
     static ParseState Parse(const QString& txt, XYMode xymode,MMode mmode, Line *l, Point *offset);
     QString ToString() const;    

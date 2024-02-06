@@ -21,7 +21,8 @@ Line::Line(const Point &_p0,
            Feed _feed,
            const Gap& _gap,
            const Point& _rp,
-           const QString& _name
+           const QString& _name,
+           bool _noc
            )
 {
     p0 = _p0;
@@ -32,7 +33,7 @@ Line::Line(const Point &_p0,
     gap=_gap;
     _isValid = true;
     name = _name;
-
+    no_overcut = _noc;
 }
 
 auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point *offset) -> ParseState
@@ -51,6 +52,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
     Point rpoint;
     Gap gap;
     QString name;
+    bool noc=false;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -82,6 +84,10 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             continue;
         }
 
+        if(p.toUpper()=="noc"){
+            noc = true;
+            }
+
         if(Gap::Parse(p, nullptr).state()!=ParseState::NoData){
             Gap gp;
             if(Gap::Parse(p, &gp).state()==ParseState::Parsed){
@@ -103,7 +109,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         cut,
         feed, gap,
         rpoint,
-    name};
+        name, noc};
 
     st.setState(ParseState::Parsed);
     return st;
@@ -127,7 +133,9 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
     qreal length = GeoMath::Distance(p0, p1);
     if(length<=g.n*g.length) return {};
     int slices = g.n+1;
-    if((length-g.n*g.length)/slices<tool_d) return {}; // ha a gapek közti részben nem fér el a szerszám
+    qreal gl = (length - (g.n * g.length)) / slices;
+
+    if(gl< tool_d) return {}; // ha a gapek közti részben nem fér el a szerszám
 
     QList<Line> m;
 
@@ -147,7 +155,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
 
     for(int i=1;i<slices;i++){
         //zInfo("i:"+GCode::r(i));
-        auto o = static_cast<qreal>(i)/(slices);
+        qreal o = static_cast<qreal>(i) / (slices);
         //zInfo("o:"+GCode::r(o));
         Point op ={0,0,0};
         bool isok = GeoMath::Divider(p0,p1,o,&op);
@@ -157,7 +165,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
         bool isok2 = GeoMath::Divider(kp,op,o1,&op1);
         if(!isok2) continue;
         // line:kp2->op1
-        Line l = {kp2, op1, cut, feed,{}, {}, name+" slice:"+QString::number(i)};
+        Line l = {kp2, op1, cut, feed,{}, {}, name+" slice:"+QString::number(i), false};
         m.append(l);
         Point op2 ={0,0,0};
         bool isok3 = GeoMath::Divider(kp,op,o2,&op2);
@@ -168,7 +176,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
 //        Line gap = {op1, op2, z-g.h, s, sp, f};
 //        m.append(gap);
     }
-    Line lx = {kp2, p1, cut, feed,{},{}, name + " slice:last"};
+    Line lx = {kp2, p1, cut, feed,{},{}, name + " slice:last", false};
     m.append(lx);
     zInfo(L("gap_")+": " + ToString());
     for(int i=0;i<m.length();i++){

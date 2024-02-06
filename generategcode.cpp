@@ -38,8 +38,9 @@ const QString GenerateGcode::pdwellKey = L("pdwell");
 
 const QString GenerateGcode::nameKey = L("_");
 
-double GenerateGcode::dPeck = 25;
-double GenerateGcode::dPeck_2 = 10;
+double GenerateGcode::dPeck = 15;
+double GenerateGcode::dPeck2 = 6;
+//double GenerateGcode::dPeck_2 = 10;
 
 //GenerateGcode::Compensation GenerateGcode::GetCompensation(qreal l, qreal z)
 //{
@@ -149,6 +150,7 @@ void GenerateGcode::Init(){
 auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 {
 
+    static const QString G1;
     //_lastBox.type = BoxType::Undefined;
 
     for(auto l:g){
@@ -466,13 +468,13 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
               //  m.rp.z+=_safez;
                 m.cut.z += _safez;
             }
-            if(_safeb>0){
+            if(_safeb>0 && !m.no_overcut){
                 m.cut.z+=_safeb;
                 if(m.gap.isValid()){
                     m.gap.height+=_safeb;
                 }
             }
-            if(_overcut>0){
+            if(_overcut>0 && !m.no_overcut){
                 m.cut.z+=_overcut;
                 if(m.gap.isValid()){
                     m.gap.height+=_overcut;
@@ -865,13 +867,13 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
     }
 
     qreal distance = GeoMath::Distance(_lastLine.p0, _lastLine.p1);
-    if(distance<t.d) {
-        if(err){*err=L("line too short: ")+QString::number(distance)+"mm";}
-        return {};
-    }
+    // if(distance<t.d) {
+    //     if(err){*err=L("line too short: ")+QString::number(distance)+"mm";}
+    //     return {};
+    // }
 
     Gap mgap; // megvalósítandó gap
-    if(m.gap.isValid()){//gapeket akar
+    if(m.gap.isValid()){//gapeket akarGMode::Rapid
         //if(mgap.height<_last_cut.z0){if(err)*err=L("gap he"); return{};}
         int gapn = qFloor(distance/(t.d+m.gap.length)); // hány gap fér ki
         if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
@@ -891,26 +893,30 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
     zInfo(msg);
     /*CUT*/
     qreal z2 = mgap.isValid()?m.cut.z-mgap.height:m.cut.z;
+
     if(z2>0){
          Cut cut2 = m.cut;
          cut2.z=z2;
-         auto g0 = LinearCut(m.feed, cut2);
+         auto g0 = LinearCut(m.feed, cut2, m.aljasimi);
          g.append(g0);
     }
+
     if(mgap.isValid()){
         Point ba1=GeoMath::Translation(_lastLine.p0, 0, 0, -z2);
         Point ja1=GeoMath::Translation(_lastLine.p1, 0, 0, -z2);
         Cut cut_gap{mgap.height, m.cut.z0};
-        Line l_gap={ba1,ja1, cut_gap, m.feed,{}, {}, m.name+" gap"};
+        Line l_gap={ba1,ja1, cut_gap, m.feed,{}, {}, m.name+" gap", false};
         auto segments = l_gap.Divide(m.gap, t.d);
-        for(auto&segment:segments){
+        //auto&segment:segments
+        for(auto&segment:segments)
+        {
             auto px0 = _lastLine.p0;
             auto px1 = _lastLine.p1;
-            _lastLine.p0=segment.p0;
-            _lastLine.p1=segment.p1;
+            _lastLine.p0 = segment.p0;
+            _lastLine.p1 = segment.p1;
             Cut cut3 = m.cut;
-            cut3.z=segment.cut.z;
-            auto g01 = LinearCut(m.feed, cut3);
+            cut3.z = segment.cut.z;
+            auto g01 = LinearCut(m.feed, cut3, false);
             g.append(g01);
             _lastLine.p0 = px0; // azonnal vissza is állítjuk
             _lastLine.p1 = px1;
@@ -953,7 +959,7 @@ qreal GenerateGcode::MilliSecToMin(qreal a){
 }
 
 // koordináták minden paraméter be van állítva
-auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringList{
+auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool simi) -> QStringList{
     QStringList g(QStringLiteral("(linear cut)"));
     QString msg;
 
@@ -987,13 +993,18 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
     //qreal zz = peck_z-cut.z;
 
     bool isPeck = false;//l<=t.d*5;
-    bool isDwell = false;//l<=t.d*10;
-    bool isDwell2 = false;//l<=t.d*10;
+    bool isPeck2 = false;//l<=t.d*5;
+    //bool isDwell = false;//l<=t.d*10;
+    //bool isDwell2 = false;//l<=t.d*10;
 
-    if(l<=t.d*dPeck){
+    auto lpeck = t.d*dPeck;
+    auto lpeck2 = t.d*dPeck2;
+
+    if(l<=lpeck){
         isPeck = true;
-    } else if(l<=t.d*dPeck*2){
-        isDwell = true;
+        if(l<=lpeck2){
+            isPeck2 = true;
+        }
     }
 
 
@@ -1002,18 +1013,20 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
     }
 
 
-    if(isPeck){
-        if(l<=t.d*dPeck_2){
-            feed.setFeed(feed.feed()/1.5);
-            isDwell2 = true;
-        } else if(l<=t.d*dPeck_2*2){
-            isDwell2 = true;
-        }
-    }
+    //if(isPeck2){
+    //     if(l<=t.d*dPeck_2){
+    //         feed.setFeed(feed.feed()/1.5);
+    //         isDwell2 = true;
+    //     } else if(l<=t.d*dPeck_2*2){
+    //         isDwell2 = true;
+    //     }
+    //}
 
     qreal safez = _safez+1;//(_safez!=0)?_safez:1;
 
     GoToCutposition(&g, p, feed);
+
+    qreal zo = p.z;
 
     int steps_0 = cut.steps();
 
@@ -1022,62 +1035,159 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut) -> QStringLi
     msg+= " steps:"+QString::number(steps_0);
 
     qreal dt = 0;
-    for(int i=0;i<steps_0;i++){
-        Point pd=p;
-        if(!(i%2))
-        {
-            p=_lastLine.p1;
-        }
-        else
-        {
-            p=_lastLine.p0;
-        }
+    //p=_lastLine.p0;
 
-        qreal z = p.z-(i+1)*cut.z0;
-        qreal zz = p.z-cut.z;
-        if(z<zz){
-            p.z = zz;
-        } else {
-            p.z = z;
-        }
-        //if(safety){
-        //    p.z+=_safez;
-       // }
+    if(!isPeck){
+        for(int i=0;i<steps_0;i++){
+            if(i==steps_0-1 && !simi) continue;
 
-        qreal d = GeoMath::Distance(pd,p);
-        dt+=d;
-        auto g0 = GoToXYZ(GMode::Linear, p, d, feed.feed());
-        AppendGCode(&g, g0);
+            Point pd=p;
 
-        qreal peck_l = qAbs(peck_z-p.z);
-        qreal t0_ms = MinToMilliSec(peck_l/1500);
-        qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
-        qreal t2_ms = t0_ms+t1_ms;
-
-        int maxdwellmillis = _pdwell;
-        if(isPeck){
-            g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
-            AppendGCode(&g, g0);
-            if(isDwell2){
-                int tdwell_ms = (t2_ms<maxdwellmillis)?maxdwellmillis-t2_ms:0;
-                if(tdwell_ms>100){
-                    g0 = "G4 P"+QString::number(tdwell_ms);
-                    AppendGCode(&g, g0);
-                    _total_minutes+=MilliSecToMin(tdwell_ms);
-                }
+            if(!(i%2))
+            {
+                p=_lastLine.p1;
             }
-            g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
-            AppendGCode(&g, g0);
-        }
-        if(isDwell){
-            int tdwell_ms = maxdwellmillis;
-            g0 = "G4 P"+QString::number(tdwell_ms);
-            AppendGCode(&g, g0);
-            _total_minutes+=MilliSecToMin(tdwell_ms);
-        }
-        //if(d<=10) AppendGCode(&g, Dwell(100));//250
-    }
+            else
+            {
+                p=_lastLine.p0;
+            }
 
+            qreal z = p.z-(i+1)*cut.z0;
+            qreal zz = p.z-cut.z;
+            if(z<zz){
+                p.z = zz;
+            } else {
+                p.z = z;
+            }
+            //if(safety){
+            //    p.z+=_safez;
+           // }
+
+            qreal d = GeoMath::Distance(pd,p);
+            dt+=d;
+            auto g0 = GoToXYZ(GMode::Linear, p, d, feed.feed());
+            AppendGCode(&g, g0);
+
+    //         qreal peck_l = qAbs(peck_z-p.z);
+    //         qreal t0_ms = MinToMilliSec(peck_l/1500);
+    //         qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
+    //         qreal t2_ms = t0_ms+t1_ms;
+
+    //         int maxdwellmillis = _pdwell;
+    //         if(isPeck){
+    //             g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
+    //             AppendGCode(&g, g0);
+    //             if(isDwell2){
+    //                 int tdwell_ms = (t2_ms<maxdwellmillis)?maxdwellmillis-t2_ms:0;
+    //                 if(tdwell_ms>100){
+    //                     g0 = "G4 P"+QString::number(tdwell_ms);
+    //                     AppendGCode(&g, g0);
+    //                     _total_minutes+=MilliSecToMin(tdwell_ms);
+    //                 }
+    //             }
+    //             g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
+    //             AppendGCode(&g, g0);
+    //         }
+    //         if(isDwell){
+    //             int tdwell_ms = maxdwellmillis;
+    //             g0 = "G4 P"+QString::number(tdwell_ms);
+    //             AppendGCode(&g, g0);
+    //             _total_minutes+=MilliSecToMin(tdwell_ms);
+    //         }
+
+
+            //if(d<=10) AppendGCode(&g, Dwell(100));//250
+            }
+        }
+    else{
+        //p=_lastLine.p1;
+
+        // qreal pz = _safez+1;
+        // if(zo>0) pz+= zo;
+        qreal last_z = p.z;
+        for(int i=0;i<steps_0;i++){
+            if(i==steps_0-1 && !simi) continue;
+
+            Point pd=p;
+
+            //if(!(i%2))
+            //{
+                p=_lastLine.p1;
+            //}
+            //else
+            //{
+                //p=_lastLine.p0;
+            //}
+
+            qreal z = p.z-(i+1)*cut.z0;
+            qreal zz = p.z-cut.z;
+            if(z<zz){
+                p.z = zz;
+            } else {
+                p.z = z;
+            }
+
+
+            //if(safety){
+            //    p.z+=_safez;
+            // }
+
+            qreal d = GeoMath::Distance(pd,p);
+            dt+=d;
+            auto g0 = GoToXYZ(GMode::Linear, p, d, feed.feed());
+            AppendGCode(&g, g0);
+
+            qreal peck_l = qAbs(peck_z-p.z);
+
+
+            // if(isDwell){
+            //     Point pu = _lastLine.p0;
+            //     pu.z = _movZ;
+            //     g0 = GoToZ(GMode::Rapid,{0,0,pu.z}, peck_l, feed.feed());
+            //     AppendGCode(&g, g0);
+
+            //     g0 = GoToXYZ(GMode::Rapid, pu, d, feed.feed());
+            //     AppendGCode(&g, g0);
+
+            //    // g0 = GoToZ(GMode::Rapid,{0,0,p.z-_safez}, peck_l, feed.feed());
+            //    // AppendGCode(&g, g0);
+
+            //     g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
+            //     AppendGCode(&g, g0);
+            // }
+            // else{
+            if(i<steps_0-2 && ! simi){
+
+                Point pu = _lastLine.p0;
+                pu.z = _movZ;
+                //g0 = GoToZ(GMode::Rapid,{0,0,peck_z+safez}, peck_l, feed.feed());
+                //g0 = GoToZ(GMode::Rapid,{0,0,pz}, peck_l, feed.feed());
+                //AppendGCode(&g, g0);
+                if(isPeck2){
+                    g0 = GoToZ(GMode::Rapid,{0,0,pu.z}, peck_l, feed.feed());
+                    AppendGCode(&g, g0);
+
+                    g0 = GoToXYZ(GMode::Rapid, pu, d, feed.feed());
+                    AppendGCode(&g, g0);
+
+                } else{
+
+                    g0 = GoToXYZ(GMode::Rapid, pu, d, feed.feed());
+                    AppendGCode(&g, g0);
+
+                    g0 = GoToZ(GMode::Rapid,{0,0,last_z}, peck_l, feed.feed());
+                    AppendGCode(&g, g0);
+                }
+
+
+                g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
+                AppendGCode(&g, g0);
+            //}
+
+            }
+            last_z = p.z;
+        }
+    }
 //    if(isc){
 //        DeCompensate2(c_z, c_f);
 //    }
@@ -1232,7 +1342,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
 
     if(l<=t.d*dPeck){
         isPeck = true;
-    } else if(l<=t.d*dPeck*2){
+    } else if(l<=t.d*dPeck/3){
         isDwell = true;
     }
 
@@ -1242,14 +1352,14 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
     }
 
 
-    if(isPeck){
-        if(l<=t.d*dPeck_2){
-            feed.setFeed(feed.feed()/1.5);
-            isDwell2 = true;
-        } else if(l<=t.d*dPeck_2*2){
-            isDwell2 = true;
-        }
-    }
+    // if(isPeck){
+    //     if(l<=t.d*dPeck_2){
+    //         feed.setFeed(feed.feed()/1.5);
+    //         isDwell2 = true;
+    //     } else if(l<=t.d*dPeck_2*2){
+    //         isDwell2 = true;
+    //     }
+    // }
 
 
     qreal safez = _safez+1;
@@ -2178,10 +2288,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             }
 
             lines_border= {
-                {ba1,ja1, cut_border, m.feed,{}, {}, m.name+" border 1 ba1,ja1"},
-                {ja2,jf2, cut_border, m.feed,{}, {}, m.name+" border 2 ja2,jf2"},
-                {jf3,bf3, cut_border, m.feed,{}, {}, m.name+" border 3 jf3,bf3"},
-                {bf4,ba4, cut_border, m.feed,{}, {}, m.name+" border 4 bf4,ba4"}};
+                {ba1,ja1, cut_border, m.feed,{}, {}, m.name+" border 1 ba1,ja1", false},
+                {ja2,jf2, cut_border, m.feed,{}, {}, m.name+" border 2 ja2,jf2", false},
+                {jf3,bf3, cut_border, m.feed,{}, {}, m.name+" border 3 jf3,bf3", false},
+                {bf4,ba4, cut_border, m.feed,{}, {}, m.name+" border 4 bf4,ba4", false}};
             }
 
         if(isRounding){
@@ -2232,10 +2342,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             Cut cut_gap{m.gap.height,  cz0};
 
             lines_gap = {
-                {ba1,ja1, cut_gap, m.feed,{},{}, m.name+" gap 1 ba1,ja1"},
-                {ja2,jf2, cut_gap, m.feed,{},{}, m.name+" gap 2 ja2,jf2"},
-                {jf3,bf3, cut_gap, m.feed,{},{}, m.name+" gap 3 jf3,bf3"},
-                {bf4,ba4, cut_gap, m.feed,{},{}, m.name+" gap 4 bf4,ba4"}
+                {ba1,ja1, cut_gap, m.feed,{},{}, m.name+" gap 1 ba1,ja1", false},
+                {ja2,jf2, cut_gap, m.feed,{},{}, m.name+" gap 2 ja2,jf2", false},
+                {jf3,bf3, cut_gap, m.feed,{},{}, m.name+" gap 3 jf3,bf3", false},
+                {bf4,ba4, cut_gap, m.feed,{},{}, m.name+" gap 4 bf4,ba4", false}
             };
         }
         zInfo(L("(segments)"));
@@ -2256,12 +2366,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             for(int i=0;i<4;i++){
                 if(m.nl[i]==0) continue;
                 auto&l_border=lines_border[i];
-                if(lines_border.length()>i){
 
-                    //l_border.length();
-                    //if(cut_border.z>0){ segments.append(l_border);}
-                    segments.append(l_border);
-                }
+                QList<Line> gapSegments;
+                bool hasGapSegments = false;
+                Line l_gap;
                 if(hasGaps){
                     qreal l = l_border.Length();
                     auto gap2 = m.gap;
@@ -2270,13 +2378,42 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                     } else{
                         gap2.n = m.gap.n;
                     }
-                    auto&l_gap=lines_gap[i];
-                    auto s = l_gap.Divide(gap2, t.d);
-                    if(s.isEmpty()){
+
+                    l_gap = lines_gap[i];
+                    gapSegments = l_gap.Divide(gap2, t.d);
+                    hasGapSegments = !gapSegments.isEmpty();
+
+                    if(!hasGapSegments){
                         zInfo(QStringLiteral("cannot divide line"));
-                        segments.append(l_gap);
+                    } else{
+                        qreal distance = GeoMath::Distance(gapSegments[0].p0, gapSegments[0].p1);
+                        if(distance<t.d) {
+                            if(err){*err=L("line too short: ")+QString::number(distance)+"mm";}
+                           // return {};
+                        }
+                    }
+
+                }
+
+                // if(lines_border.length()>i){
+
+                //     //l_border.length();
+                //     //if(cut_border.z>0){ segments.append(l_border);}
+
+                //     segments.append(l_border);
+                // }
+
+                if(lines_border.length()>i){
+                    if(hasGapSegments){
+                        l_border.aljasimi = false;
+                        segments.append(l_border);
+
+                        segments.append(gapSegments);
                     }else{
-                        segments.append(s);
+                        l_border.aljasimi = true;
+                        segments.append(l_border);
+
+                        segments.append(l_gap);
                     }
                 }
             }
@@ -2295,13 +2432,17 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             auto px0 = _lastLine.p0;
             auto px1 = _lastLine.p1;
             auto g0 = LineToGCode(bl,&e0);
-            if(!g0.isEmpty()){
+
+            bool hasGcode = !g0.isEmpty();
+
+            if(hasGcode){
                 g.append(g0);
             } else{
                 if(err){
                     if(!err->isEmpty()) *err+=",";
                     *err+=bl.name+": "+e0;
                 }
+                // ki van számolva a gap, de túl kicsi, hiányozni fog
                 zInfo("segment gcode error");
             }
             _lastLine.p0 = px0; // azonnal vissza is állítjuk

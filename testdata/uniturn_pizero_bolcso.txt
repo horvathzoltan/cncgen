@@ -16,7 +16,7 @@ overcut0.300
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.0045
+emax0.012
 
 fmax900
 fmin500
@@ -24,8 +24,8 @@ fratio0.6
 
 z1 = 2
 c1 = 0.02 #furatok
-c2 = 0.03 #letörések
-c3 = 0.04 #keret
+c2 = 0.04 #letörések
+c3 = 0.08 #keret
 
 (piZero furatok)
 b corners 3.5,13.5 size58,23 d3 z$z1 c$c1 d2.75 jg0.05

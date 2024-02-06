@@ -40,7 +40,8 @@ public:
     CompensateModel Compensate2(qreal l, const Cut& cut, const Feed& feed);
 
     static double dPeck;
-    static double dPeck_2;
+    static double dPeck2;
+
     static const QString G1;
     static const QString G2;
     static const QString T1;
@@ -189,7 +190,7 @@ public:
     /*moves*/
     void GoToCutposition(QStringList *g, const Point& p, const Feed& feed);
     /*CUTS*/
-    auto LinearCut(const Feed& feed, const Cut& cut)-> QStringList;
+    auto LinearCut(const Feed& feed, const Cut& cut, bool simi)-> QStringList;
     auto HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a) -> QStringList;
     auto CircularArcCut(const Feed& feed,const Cut& cut) -> QStringList;
 

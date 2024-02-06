@@ -259,4 +259,5 @@ DISTFILES += \
     testdata/uniturn_usb_tavtarto2.txt \
     testdata/usb.txt \
     testdata/usb_kengyel.txt \
+    testdata/usb_kengyel_rogzito.txt \
     testdata/usb_tavtarto.txt

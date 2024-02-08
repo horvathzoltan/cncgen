@@ -48,7 +48,17 @@ h 113.5,147 d3 z$z1 c$c1 m1 jg0.2
 
 (alátámasztás)
 h 66,67 d3 z$z1 c$c1 m1 jg0.2
-h 143,80 d3 z$z1 c$c1 m1 jg0.2
+#h 143,80 d3 z$z1 c$c1 m1 jg0.2
+
+(usb furatok)
+h 157,110 d3 z$z1 c$c1 m1
+h 157,45 d3 z$z1 c$c1 m1
+
+(alátámasztás)
+h 157,130 d3 z$z1 c$c1 m1
+h 157,77.5 d3 z$z1 c$c1 m1
+h 157,25 d3 z$z1 c$c1 m1
+
 
 (B3218101 - NET-BOX 220, VERS. I)
 (rögzítő furatok)

@@ -29,7 +29,7 @@ Box::Box(const Point &_p0,
          qreal _vcorner_x,
          qreal _vcorner_y,
          const QString & _name,
-         bool _nr[4])
+         bool _nr[4], bool nc, int _menet)
 {
     p0=_p0;
     p1=_p1;
@@ -51,12 +51,15 @@ Box::Box(const Point &_p0,
     vcorner_x=_vcorner_x;
     vcorner_y=_vcorner_y;
     name = _name;
+    menet = _menet;
 
     //nincs lekerekítés ezeken a sarkokon:
     nr[0]=_nr[0];
     nr[1]=_nr[1];
     nr[2]=_nr[2];
     nr[3]=_nr[3];
+
+    no_compensate = nc;
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -85,6 +88,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     qreal vcorner_x = 0;
     qreal vcorner_y = 0;
     QString name;
+    bool nc = false;
+    int menet = -1;
 
     bool nl[]={1,1,1,1};
     bool nr[]={1,1,1,1};
@@ -140,6 +145,14 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             if(ok) corner_diameter=a;
             continue;
         }
+
+        if(p.startsWith('m')){
+            int a;
+            bool ok = GCode::ParseValue(p, L("m"), &a);
+            if(ok) menet=a;
+            continue;
+        }
+
         if(p.startsWith("n\"")){
             QString a;
             bool ok = GCode::ParseValue(p, L("n"), &a);
@@ -192,6 +205,12 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             }
             continue;
         }
+
+        if(p.toLower()=="nc"){
+            nc = true;
+            continue;
+        }
+
 
 //        if(p.startsWith('z')){
 //            GCode::ParseValue(p, L("z"), &cut.z);
@@ -250,7 +269,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         rounding, rjoin,
         vcorner_x, vcorner_y,
         name,
-        nr
+        nr, nc, menet
     };
 
     st.setState(ParseState::Parsed);

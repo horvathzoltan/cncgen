@@ -7,7 +7,7 @@ t1 m d2 h19
 yxz
 t1
 s50
-f800
+f900
 
 safetop0.250
 safebottom0.250
@@ -16,11 +16,17 @@ overcut0.300
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.004
+emax0.012
 
-fmax800
-fmin400
+fmax900
+fmin500
 fratio0.6
+
+z1 = 2
+c1 = 0.02 #furatok
+c2 = 0.04 #letörések
+c3 = 0.08 #keret
+
 
 (mélység)
 th = 2
@@ -29,10 +35,6 @@ db = 3
 (külső átmérő)
 dk = sum(7,2,2)
 print "dk: $dk"
-
-c1 = 0.010 #furatok
-c2 = 0.015 #letörések
-c3 = 0.020 #keret
 
 j1 = 0.2
 gw = 0.3

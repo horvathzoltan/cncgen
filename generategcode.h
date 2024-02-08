@@ -190,9 +190,9 @@ public:
     /*moves*/
     void GoToCutposition(QStringList *g, const Point& p, const Feed& feed);
     /*CUTS*/
-    auto LinearCut(const Feed& feed, const Cut& cut, bool simi)-> QStringList;
-    auto HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a) -> QStringList;
-    auto CircularArcCut(const Feed& feed,const Cut& cut) -> QStringList;
+    QStringList LinearCut(const Feed& feed, const Cut& cut, bool no_compensate, int menet);
+    QStringList HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a);
+    QStringList CircularArcCut(const Feed& feed,const Cut& cut);
 
     QString TotalTimeToGCode();
     static qreal MinToMilliSec(qreal a);

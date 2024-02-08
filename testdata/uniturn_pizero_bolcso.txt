@@ -1,8 +1,9 @@
 (UNITURN mérőállomás alsó szerelőlap pizero bolcso)
 (cmd line: -i uniturn_pizero_bolcso.txt -t)
-(szerszám beállítás)
 
+(szerszám beállítás)
 t1 m d2 h19
+
 
 yxz
 t1
@@ -30,18 +31,13 @@ c3 = 0.08 #keret
 (piZero furatok)
 b corners 3.5,13.5 size58,23 d3 z$z1 c$c1 d2.75 jg0.05
 
+(rögzítő furatok y-8.5mm)
 h 3.5,5 z$z1 c$c1 d3 m1 jg0.2
 h 61.5,5 z$z1 c$c1 d3 m1 jg0.2
 
-#h 70,5 z$z1 c$c1 d3 m1 jg0.2
-#h 70,13.5 z$z1 c$c1 d3 m1 jg0.2
-
-#h 70,36.5 z$z1 c$c1 d3 m1 jg0.2
-
 (körvonal)
-#b outline 0,0 size75,40 z$z1 c$c3 g2,1,0.3 r3
+b inline 7,0 size51.5,10 z$z1 c$c3 g2,1,0.3 r4 rj2 nl1,1,1,0
 b outline 0,0 size65,40 z$z1 c$c3 g2,1,0.3 r3
 
-b inline 7,0 size51.5,10 z$z1 c$c3 g2,1,0.3 r4 rj2 nl1,1,1,0
 
-#b inline 65,17 size10,16 z$z1 c$c3 g2,1,0.3 r4 rj2 nl1,1,0,1
+

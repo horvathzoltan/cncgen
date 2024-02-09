@@ -468,12 +468,12 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
               //  m.rp.z+=_safez;
                 m.cut.z += _safez;
             }
-            if(_safeb>0 && !m.no_overcut){
-                m.cut.z+=_safeb;
-                if(m.gap.isValid()){
-                    m.gap.height+=_safeb;
-                }
-            }
+             if(_safeb>0 && !m.no_overcut){
+                 m.cut.z+=_safeb;
+                 if(m.gap.isValid()){
+                     m.gap.height+=_safeb;
+                 }
+             }
             if(_overcut>0 && !m.no_overcut){
                 m.cut.z+=_overcut;
                 if(m.gap.isValid()){
@@ -484,9 +484,12 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
                 if(_selected_feed3.Check(_fmin, _fmax, err)){
                     m.feed = _selected_feed3;
                 }
-            }
+            }            
         }
 
+        // if(m.name=="brekk"){
+        //     zInfo("brekk")
+        // }
         if(gcode)*gcode=LineToGCode(m,err);
     }
     QString msg;
@@ -1002,7 +1005,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool no_comp
     auto lpeck = t.d*dPeck;
     auto lpeck2 = t.d*dPeck2;
 
-    if(l<=lpeck){
+    if(l<=lpeck && l>t.d*2 ){
         isPeck = true;
         if(l<=lpeck2){
             isPeck2 = true;
@@ -1059,7 +1062,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool no_comp
         AppendGCode(&g, g0);
 
     }
-    else if (steps_0>1){
+    else if (steps_0>1){        
         if(!isPeck){
             for(int i=0;i<steps_0;i++){
                 //if(i==steps_0-1 && !simi) continue;

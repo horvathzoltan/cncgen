@@ -241,10 +241,7 @@ DISTFILES += \
     testdata/uniturn_also_2.txt \
     testdata/uniturn_also_2_korvonal.txt \
     testdata/uniturn_also_3.txt \
-    testdata/uniturn_doboz_fedlap.txt \
     testdata/uniturn_doboz_fedlap_2.txt \
-    testdata/uniturn_doboz_fedlap_22.txt \
-    testdata/uniturn_doboz_fedlap_3.txt \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_doboz_hatlap_2.txt \
     testdata/uniturn_felso.txt \
@@ -259,6 +256,4 @@ DISTFILES += \
     testdata/uniturn_usb_tavtarto.txt \
     testdata/uniturn_usb_tavtarto2.txt \
     testdata/usb.txt \
-    testdata/usb_kengyel.txt \
-    testdata/usb_kengyel_rogzito.txt \
-    testdata/usb_tavtarto.txt
+    testdata/usb_kengyel.txt

@@ -22,7 +22,7 @@ Line::Line(const Point &_p0,
            const Gap& _gap,
            const Point& _rp,
            const QString& _name,
-           bool _noc,
+           bool _no_overcut,
            bool _no_compensate,
            int _menet
            )
@@ -35,7 +35,7 @@ Line::Line(const Point &_p0,
     gap=_gap;
     _isValid = true;
     name = _name;
-    no_overcut = _noc;
+    no_overcut = _no_overcut;
     no_compensate = _no_compensate;
     menet = _menet;
 }
@@ -56,8 +56,8 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
     Point rpoint;
     Gap gap;
     QString name;
-    bool noc=false;
-    bool nc = false;
+    bool no_overcut = false;
+    bool no_compensate = false;
     int menet = -1;
 
     for(int i=1;i<params.length();i++){
@@ -90,8 +90,8 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             continue;
         }
 
-        if(p.toUpper()=="noc"){
-            noc = true;
+        if(p.toLower()=="noc"){
+            no_overcut = true;
             }
 
         if(Gap::Parse(p, nullptr).state()!=ParseState::NoData){
@@ -105,7 +105,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         }
 
         if(p.toLower()=="nc"){
-            nc = true;
+            no_compensate = true;
             continue;
         }
 
@@ -128,7 +128,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         cut,
         feed, gap,
         rpoint,
-        name, noc, nc, menet};
+        name, no_overcut, no_compensate, menet};
 
     st.setState(ParseState::Parsed);
     return st;

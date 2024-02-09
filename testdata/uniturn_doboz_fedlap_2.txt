@@ -17,9 +17,9 @@ f600
 
 safetop0.250
 safebottom0.250
-overcut0.300
+overcut0.700
 
-emax0.040
+emax0.050
 
 fmax900
 fmin400
@@ -55,7 +55,7 @@ print "z2=$z2"
 hx1 = 45
 hx1 = add($hx1,$ox)
 
-j1 = 0.200
+j1 = 0
 j2 = 0.125
 
 (zöld led)

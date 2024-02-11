@@ -1116,7 +1116,7 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool no_comp
                 auto g0 = GoToXYZ(GMode::Linear, p, d, feed.feed());
                 AppendGCode(&g, g0);
 
-                qreal peck_l = qAbs(peck_z-p.z);
+                //qreal peck_l = qAbs(peck_z-p.z);
 
 
                 //if(i<steps_0-2)
@@ -1124,23 +1124,30 @@ auto GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool no_comp
                     Point pu = _lastLine.p0;
                     pu.z = _movZ;
 
+                    qreal mz = 0;
+
                     if(isPeck2){
+                        qreal peck_l = qAbs(pu.z-p.z);
                         g0 = GoToZ(GMode::Rapid,{0,0,pu.z}, peck_l, feed.feed());
                         AppendGCode(&g, g0);
 
                         g0 = GoToXYZ(GMode::Rapid, pu, d, feed.feed());
                         AppendGCode(&g, g0);
 
+                        mz=pu.z;
+
                     } else{
 
                         g0 = GoToXYZ(GMode::Rapid, pu, d, feed.feed());
                         AppendGCode(&g, g0);
 
+                        qreal peck_l = qAbs(pu.z-last_z);
                         g0 = GoToZ(GMode::Rapid,{0,0,last_z}, peck_l, feed.feed());
                         AppendGCode(&g, g0);
+                        mz = last_z;
                     }
 
-
+                    qreal peck_l = qAbs(p.z-mz);
                     g0 = GoToZ(GMode::Linear,{0,0,p.z}, peck_l, feed.feed());
                     AppendGCode(&g, g0);
                 //}
@@ -1235,8 +1242,6 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
 
         qreal lz = pp.z-p.z;
         qreal l1 = qSqrt(l*l+lz*lz); // út hossz
-
-
 
         QString g0;
 
@@ -2685,7 +2690,7 @@ auto GenerateGcode::SpindleStopToGCode() ->QString
 }
 
 /*Move*/
-auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length, qreal feed) -> QString
+auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal bength, qreal feed) -> QString
 {
     if(!p.isValid()){
         zInfo(Messages::invalid_point);
@@ -2709,7 +2714,6 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length, qreal fee
         }
         else{
             v = feed;
-            _total_cut+=length;
         }
 //        if(feed.spindleSpeed()<=0){
 //            zInfo(Messages::zero_spindleSpeed);
@@ -2717,8 +2721,10 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length, qreal fee
 //        }
     }
     else if(i==GMode::Rapid){
-        v=1500;
+        v=1000;
     }
+
+    qreal length = GetLength(i, p, bength, LengthMode::Z);
 
     _last_position.z = p.z;
     _last_gmode=i;
@@ -2728,6 +2734,9 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length, qreal fee
         if(v<=0){
             zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
         } else{
+            if(i!=GMode::Rapid){
+                _total_cut+=length;
+            }
             qreal t0_mins = length/v;
             _total_minutes+=t0_mins;
         }
@@ -2738,18 +2747,19 @@ auto GenerateGcode::GoToZ(GMode::Mode i, const Point& p, qreal length, qreal fee
     return GMode::ToGCcode(i)+' '+p.ToStringZ();
 }
 
-auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length, qreal feed) -> QString
+auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal bength, qreal feed) -> QString
 {
     if(!p.isValid()){
         zInfo(Messages::invalid_point);
         return {};
     }
+
     if(i==GMode::Undefined){ return {};}
 
     if((i==GMode::Mode::Linear||i==GMode::Mode::Rapid) &&
         _last_gmode==i &&
-        _last_position.x==p.x &&
-        _last_position.y==p.y){return {};}
+        _last_position==p
+        ){return {};}
 
     qreal v = 0;
 
@@ -2762,10 +2772,10 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length, qreal fe
         }
         else{
             v = feed;
-            if(i==GMode::Mode::Linear)
-            {
-                _total_cut+=length;
-            }
+            // if(i==GMode::Mode::Linear)
+            // {
+            //     _total_cut+=length;
+            // }
         }
 //        if(feed.spindleSpeed()<=0){
 //            zInfo(Messages::zero_spindleSpeed);
@@ -2773,24 +2783,28 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length, qreal fe
 //        }
     }
     else if(i==GMode::Rapid){
-        v=1500;
+        v=1000;
     }
+
+    qreal length = GetLength(i, p, bength, LengthMode::XY);
 
     _last_position.x = p.x;
     _last_position.y = p.y;
     _last_gmode=i;
 
 
-    if(length>0){
-        if(i==GMode::Mode::Linear){
-            _total_length+=length;
-            if(v<=0){
-                zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
-            } else{
-                qreal t0_mins = length/v;
-                _total_minutes+=t0_mins;
+    if(length>0){        
+        _total_length+=length;
+        if(v<=0){
+            zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
+        } else{
+            if(i!=GMode::Rapid){
+                _total_cut+=length;
             }
+            qreal t0_mins = length/v;
+            _total_minutes+=t0_mins;
         }
+
     } else {
         zInfo(Messages::no_calc_length)
     }
@@ -2802,24 +2816,77 @@ auto GenerateGcode::GoToXY(GMode::Mode i, const Point& p, qreal length, qreal fe
 
 auto GenerateGcode::Dwell(int p) -> QString
 {
-    qreal t0_mins = p/1500;
+    qreal t0_mins = p/1000;
     _total_minutes+=t0_mins;
     auto str =  "G04 P"+QString::number(p);
     //QString str;
     return str;
 }
 
-auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length, qreal feed) -> QString
+qreal GenerateGcode::GetLength(GMode::Mode i, const Point& p, qreal bength, LengthMode lm){
+    qreal length;
+    switch (i){
+    case GMode::Mode::Linear:
+    case GMode::Mode::Rapid:
+        switch(lm){
+        case LengthMode::XYZ:
+            length = GeoMath::Distance(_last_position,p);
+            break;
+        case LengthMode::XY:
+            length = GeoMath::Distance(
+                {_last_position.x, _last_position.y, 0},
+                {p.y, p.y, 0});
+            break;
+        case LengthMode::Z:
+            length = GeoMath::Distance(
+                {0, 0, _last_position.z},
+                {0, 0, p.z});
+            break;
+        default: length = 0;
+        }
+        break;
+    case GMode::Mode::Circular:
+    case GMode::Mode::Circular_ccw:
+        switch(lm){
+        case LengthMode::XYZ:
+            length = bength;
+            break;
+        case LengthMode::XY:
+            length = bength;
+            break;
+        case LengthMode::Z:
+            length = GeoMath::Distance(
+                {0, 0, _last_position.z},
+                {0, 0, p.z});
+            break;
+        default: length = 0;
+        }
+        break;
+        break;
+    default:
+        length = 0;
+        break;
+    }
+
+    return length;
+}
+
+auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal bength, qreal feed) -> QString
 {
     if(!p.isValid()){
         zInfo(Messages::invalid_point);
         return {};
     }
+
     if(i==GMode::Undefined){ return {};}
+
     if((i==GMode::Mode::Linear||i==GMode::Mode::Rapid) &&
-        _last_gmode==i && _last_position==p){return {};}
+        _last_gmode==i &&
+        _last_position==p
+        ){return {};}
 
     qreal v = 0;
+
     if((i==GMode::Mode::Linear||
          i==GMode::Mode::Circular||
          i==GMode::Mode::Circular_ccw)){
@@ -2833,11 +2900,13 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length, qreal f
 //            zInfo(Messages::zero_spindleSpeed);
 //        }
     } else if(i==GMode::Rapid){
-        v=1500;
+        v=1000;
     }
 
+    qreal length = GetLength(i, p, bength, LengthMode::XYZ);
+
     _last_position = p;
-    _last_gmode=i;
+    _last_gmode=i;        
 
     if(length>0){
         _total_length+=length;
@@ -2845,10 +2914,10 @@ auto GenerateGcode::GoToXYZ(GMode::Mode i, const Point& p, qreal length, qreal f
             zInfo(Messages::cannot_calculate+' '+Messages::movement_time+": "+Messages::no_speed)
         } else{
             if(i!=GMode::Rapid){
-                _total_cut+=length;
-                qreal t0_mins = length/v;
-                _total_minutes+=t0_mins;
+                _total_cut+=length;                
             }
+            qreal t0_mins = length/v;
+            _total_minutes+=t0_mins;
         }
     } else {
         zInfo(Messages::no_calc_length)

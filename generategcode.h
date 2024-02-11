@@ -25,6 +25,9 @@ public:
         none=0, speed=1, depth=2
     };
 
+    enum LengthMode:int{XYZ,XY,Z
+    };
+
 //    Compensation GetCompensation(qreal l, qreal z);
 //    qreal CompensateSpeed(qreal l, qreal z);
     bool Compensate(qreal l, qreal z, qreal *s3, qreal *f3, qreal f_in);
@@ -184,6 +187,8 @@ private:
     auto ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetXYModeToGcode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetMModeToGcode(const QString &str, QString *gcode, QString *err) -> bool;
+
+    qreal GetLength(GMode::Mode i, const Point& p, qreal bength, LengthMode lm);
 public:
     void setWorkingFolder(const QDir &a){ _workingFolder = a; }
 

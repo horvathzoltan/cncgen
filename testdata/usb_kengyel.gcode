@@ -2,10 +2,10 @@
 (type: GCode from geometry)
 (input file: usb_kengyel.txt)
 (output file: usb_kengyel.gcode)
-(created on: P febr. 9 18:28:33 2024)
-(total time: 00:48:16.000)
-(total cut: 39111.9mm)
-(total length: 43326.2mm)
+(created on: V febr. 11 19:41:49 2024)
+(total time: 01:46:23.000)
+(total cut: 58636.7mm)
+(total length: 97186.4mm)
 G21 (metric units)
 G90 (absolute mode)
 G17 (select XY plane)
@@ -27,6 +27,7 @@ G0 x0.000y0.000 (travel)
 (change tool)
 m5 (spindle stop)
 G0 z2.000 (lift up)
+G0 x0.000y0.000 (travel)
 g0 z4.000
 t1 (tool select)
 m6 (tool change)
@@ -35,9 +36,9 @@ m0 (machine stop)
 g0 z4.000
 (1 tartó elem kicsi)
 (box)
-(time[min]: 0.00133333)
+(time[min]: 0.002)
 (line: border 1 ba1,ja1)
-(time[min]: 0.00133333)
+(time[min]: 0.002)
 (linear cut)
 (peck)
 G0 x0.000y-1.000 (travel)
@@ -138,12 +139,13 @@ G0 x0.000y-1.000z2.000
 G0 z-1.500
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 0.0685424)
+(time[min]: 1.04669)
 (line: gap 1 ba1,ja1 slice:1)
-(time[min]: 0.0685424)
+(time[min]: 1.04669)
 (linear cut)
 (peck)
 (peck2)
+G0 x0.000y-1.000 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x8.750y-1.000z-1.580
@@ -207,9 +209,9 @@ G0 z2.000
 G0 x0.000y-1.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 0.101941)
+(time[min]: 1.4636)
 (line: gap 1 ba1,ja1 slice:last)
-(time[min]: 0.101941)
+(time[min]: 1.4636)
 (linear cut)
 (peck)
 (peck2)
@@ -277,9 +279,9 @@ G0 z2.000
 G0 x11.250y-1.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 0.135339)
+(time[min]: 1.88051)
 (line: border 2 ja2,jf2)
-(time[min]: 0.135339)
+(time[min]: 1.88051)
 (linear cut)
 G0 x21.000y0.000 (travel)
 G0 z1.500 (lift down)
@@ -308,9 +310,9 @@ G1 x21.000y109.000z-1.430
 G1 x21.000y0.000z-1.500
 G1 x21.000y109.000z-1.500
 G0 z2.000 (lift up)
-(time[min]: 2.92495)
+(time[min]: 4.68275)
 (line: gap 2 ja2,jf2 slice:1)
-(time[min]: 2.92495)
+(time[min]: 4.68275)
 (linear cut)
 G0 x21.000y0.000 (travel)
 G0 z-0.250 (lift down)
@@ -331,9 +333,9 @@ G1 x21.000y35.083z-2.540
 G1 x21.000y0.000z-2.550
 G1 x21.000y35.083z-2.550
 G0 z2.000 (lift up)
-(time[min]: 3.5156)
+(time[min]: 5.38667)
 (line: gap 2 ja2,jf2 slice:2)
-(time[min]: 3.5156)
+(time[min]: 5.38667)
 (linear cut)
 G0 x21.000y37.583 (travel)
 G0 z-0.250 (lift down)
@@ -354,9 +356,9 @@ G1 x21.000y71.417z-2.540
 G1 x21.000y37.583z-2.550
 G1 x21.000y71.417z-2.550
 G0 z2.000 (lift up)
-(time[min]: 4.08541)
+(time[min]: 5.97552)
 (line: gap 2 ja2,jf2 slice:last)
-(time[min]: 4.08541)
+(time[min]: 5.97552)
 (linear cut)
 G0 x21.000y73.917 (travel)
 G0 z-0.250 (lift down)
@@ -377,9 +379,9 @@ G1 x21.000y109.000z-2.540
 G1 x21.000y73.917z-2.550
 G1 x21.000y109.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 4.67605)
+(time[min]: 6.62141)
 (line: border 3 jf3,bf3)
-(time[min]: 4.67605)
+(time[min]: 6.62141)
 (linear cut)
 (peck)
 G0 x20.000y110.000 (travel)
@@ -478,12 +480,13 @@ G0 x20.000y110.000z2.000
 G0 z-1.500
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 4.74326)
+(time[min]: 7.75368)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 4.74326)
+(time[min]: 7.75368)
 (linear cut)
 (peck)
 (peck2)
+G0 x20.000y110.000 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x11.250y110.000z-1.580
@@ -547,9 +550,9 @@ G0 z2.000
 G0 x20.000y110.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 4.77666)
+(time[min]: 8.2596)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 4.77666)
+(time[min]: 8.2596)
 (linear cut)
 (peck)
 (peck2)
@@ -617,9 +620,9 @@ G0 z2.000
 G0 x8.750y110.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 4.81006)
+(time[min]: 8.76551)
 (line: border 4 bf4,ba4)
-(time[min]: 4.81006)
+(time[min]: 8.76551)
 (linear cut)
 G0 x-1.000y109.000 (travel)
 G0 z1.500 (lift down)
@@ -648,9 +651,9 @@ G1 x-1.000y0.000z-1.430
 G1 x-1.000y109.000z-1.500
 G1 x-1.000y0.000z-1.500
 G0 z2.000 (lift up)
-(time[min]: 7.59967)
+(time[min]: 11.6567)
 (line: gap 4 bf4,ba4 slice:1)
-(time[min]: 7.59967)
+(time[min]: 11.6567)
 (linear cut)
 G0 x-1.000y109.000 (travel)
 G0 z-0.250 (lift down)
@@ -671,9 +674,9 @@ G1 x-1.000y73.917z-2.540
 G1 x-1.000y109.000z-2.550
 G1 x-1.000y73.917z-2.550
 G0 z2.000 (lift up)
-(time[min]: 8.19032)
+(time[min]: 12.4045)
 (line: gap 4 bf4,ba4 slice:2)
-(time[min]: 8.19032)
+(time[min]: 12.4045)
 (linear cut)
 G0 x-1.000y71.417 (travel)
 G0 z-0.250 (lift down)
@@ -694,9 +697,9 @@ G1 x-1.000y37.583z-2.540
 G1 x-1.000y71.417z-2.550
 G1 x-1.000y37.583z-2.550
 G0 z2.000 (lift up)
-(time[min]: 8.76013)
+(time[min]: 13.049)
 (line: gap 4 bf4,ba4 slice:last)
-(time[min]: 8.76013)
+(time[min]: 13.049)
 (linear cut)
 G0 x-1.000y35.083 (travel)
 G0 z-0.250 (lift down)
@@ -717,10 +720,10 @@ G1 x-1.000y0.000z-2.540
 G1 x-1.000y35.083z-2.550
 G1 x-1.000y0.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 9.35078)
-(time[min]: 9.35078)
+(time[min]: 13.6781)
+(time[min]: 13.6781)
 (line)
-(time[min]: 9.35078)
+(time[min]: 13.6781)
 (linear cut)
 (peck)
 (peck2)
@@ -872,9 +875,9 @@ G0 z2.000
 G0 x0.000y11.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 9.46002)
+(time[min]: 14.4174)
 (line)
-(time[min]: 9.46002)
+(time[min]: 14.4174)
 (linear cut)
 (peck)
 (peck2)
@@ -1026,9 +1029,9 @@ G0 z2.000
 G0 x0.000y33.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 9.56927)
+(time[min]: 15.18)
 (line)
-(time[min]: 9.56927)
+(time[min]: 15.18)
 (linear cut)
 (peck)
 (peck2)
@@ -1180,9 +1183,9 @@ G0 z2.000
 G0 x0.000y55.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 9.67851)
+(time[min]: 15.9622)
 (line)
-(time[min]: 9.67851)
+(time[min]: 15.9622)
 (linear cut)
 (peck)
 (peck2)
@@ -1334,9 +1337,9 @@ G0 z2.000
 G0 x0.000y77.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 9.78776)
+(time[min]: 16.7652)
 (line)
-(time[min]: 9.78776)
+(time[min]: 16.7652)
 (linear cut)
 (peck)
 (peck2)
@@ -1488,9 +1491,9 @@ G0 z2.000
 G0 x0.000y99.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 9.897)
+(time[min]: 17.5896)
 (line)
-(time[min]: 9.897)
+(time[min]: 17.5896)
 (linear cut)
 G0 x13.700y0.000 (travel)
 G0 z1.500 (lift down)
@@ -1513,12 +1516,12 @@ G1 x13.700y109.000z-0.950
 G1 x13.700y0.000z-1.000
 G1 x13.700y109.000z-1.000
 G0 z2.000 (lift up)
-(time[min]: 11.9596)
+(time[min]: 19.7524)
 (2 tartó elem nagy)
 (box)
-(time[min]: 11.9596)
+(time[min]: 19.7524)
 (line: border 1 ba1,ja1)
-(time[min]: 11.9596)
+(time[min]: 19.7524)
 (linear cut)
 (peck)
 G0 x22.000y-1.000 (travel)
@@ -1617,12 +1620,13 @@ G0 x22.000y-1.000z2.000
 G0 z-1.500
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 12.0302)
+(time[min]: 21.0518)
 (line: gap 1 ba1,ja1 slice:1)
-(time[min]: 12.0302)
+(time[min]: 21.0518)
 (linear cut)
 (peck)
 (peck2)
+G0 x22.000y-1.000 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x32.250y-1.000z-1.580
@@ -1686,9 +1690,9 @@ G0 z2.000
 G0 x22.000y-1.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 12.0652)
+(time[min]: 21.5382)
 (line: gap 1 ba1,ja1 slice:last)
-(time[min]: 12.0652)
+(time[min]: 21.5382)
 (linear cut)
 (peck)
 (peck2)
@@ -1756,9 +1760,9 @@ G0 z2.000
 G0 x34.750y-1.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 12.1003)
+(time[min]: 22.0246)
 (line: border 2 ja2,jf2)
-(time[min]: 12.1003)
+(time[min]: 22.0246)
 (linear cut)
 G0 x46.000y0.000 (travel)
 G0 z1.500 (lift down)
@@ -1787,9 +1791,9 @@ G1 x46.000y109.000z-1.430
 G1 x46.000y0.000z-1.500
 G1 x46.000y109.000z-1.500
 G0 z2.000 (lift up)
-(time[min]: 14.8899)
+(time[min]: 24.8503)
 (line: gap 2 ja2,jf2 slice:1)
-(time[min]: 14.8899)
+(time[min]: 24.8503)
 (linear cut)
 G0 x46.000y0.000 (travel)
 G0 z-0.250 (lift down)
@@ -1810,9 +1814,9 @@ G1 x46.000y35.083z-2.540
 G1 x46.000y0.000z-2.550
 G1 x46.000y35.083z-2.550
 G0 z2.000 (lift up)
-(time[min]: 15.4805)
+(time[min]: 25.5615)
 (line: gap 2 ja2,jf2 slice:2)
-(time[min]: 15.4805)
+(time[min]: 25.5615)
 (linear cut)
 G0 x46.000y37.583 (travel)
 G0 z-0.250 (lift down)
@@ -1833,9 +1837,9 @@ G1 x46.000y71.417z-2.540
 G1 x46.000y37.583z-2.550
 G1 x46.000y71.417z-2.550
 G0 z2.000 (lift up)
-(time[min]: 16.0504)
+(time[min]: 26.1424)
 (line: gap 2 ja2,jf2 slice:last)
-(time[min]: 16.0504)
+(time[min]: 26.1424)
 (linear cut)
 G0 x46.000y73.917 (travel)
 G0 z-0.250 (lift down)
@@ -1856,9 +1860,9 @@ G1 x46.000y109.000z-2.540
 G1 x46.000y73.917z-2.550
 G1 x46.000y109.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 16.641)
+(time[min]: 26.7633)
 (line: border 3 jf3,bf3)
-(time[min]: 16.641)
+(time[min]: 26.7633)
 (linear cut)
 (peck)
 G0 x45.000y110.000 (travel)
@@ -1957,12 +1961,13 @@ G0 x45.000y110.000z2.000
 G0 z-1.500
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 16.7115)
+(time[min]: 28.0157)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 16.7115)
+(time[min]: 28.0157)
 (linear cut)
 (peck)
 (peck2)
+G0 x45.000y110.000 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x34.750y110.000z-1.580
@@ -2026,9 +2031,9 @@ G0 z2.000
 G0 x45.000y110.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 16.7466)
+(time[min]: 28.5441)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 16.7466)
+(time[min]: 28.5441)
 (linear cut)
 (peck)
 (peck2)
@@ -2096,10 +2101,10 @@ G0 z2.000
 G0 x32.250y110.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 16.7817)
-(time[min]: 16.7817)
+(time[min]: 29.0725)
+(time[min]: 29.0725)
 (line)
-(time[min]: 16.7817)
+(time[min]: 29.0725)
 (linear cut)
 (peck)
 (peck2)
@@ -2251,9 +2256,9 @@ G0 z2.000
 G0 x22.000y11.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 16.8909)
+(time[min]: 29.8967)
 (line)
-(time[min]: 16.8909)
+(time[min]: 29.8967)
 (linear cut)
 (peck)
 (peck2)
@@ -2405,9 +2410,9 @@ G0 z2.000
 G0 x22.000y33.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 17.0002)
+(time[min]: 30.6443)
 (line)
-(time[min]: 17.0002)
+(time[min]: 30.6443)
 (linear cut)
 (peck)
 (peck2)
@@ -2559,9 +2564,9 @@ G0 z2.000
 G0 x22.000y55.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 17.1094)
+(time[min]: 31.4069)
 (line)
-(time[min]: 17.1094)
+(time[min]: 31.4069)
 (linear cut)
 (peck)
 (peck2)
@@ -2713,9 +2718,9 @@ G0 z2.000
 G0 x22.000y77.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 17.2187)
+(time[min]: 32.1892)
 (line)
-(time[min]: 17.2187)
+(time[min]: 32.1892)
 (linear cut)
 (peck)
 (peck2)
@@ -2867,9 +2872,9 @@ G0 z2.000
 G0 x22.000y99.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 17.3279)
+(time[min]: 32.9922)
 (line)
-(time[min]: 17.3279)
+(time[min]: 32.9922)
 (linear cut)
 G0 x39.700y0.000 (travel)
 G0 z1.500 (lift down)
@@ -2892,12 +2897,12 @@ G1 x39.700y109.000z-0.950
 G1 x39.700y0.000z-1.000
 G1 x39.700y109.000z-1.000
 G0 z2.000 (lift up)
-(time[min]: 19.3905)
+(time[min]: 35.1574)
 (3 tartó elem összekötő)
 (box)
-(time[min]: 19.3905)
+(time[min]: 35.1574)
 (line: border 1 ba1,ja1)
-(time[min]: 19.3905)
+(time[min]: 35.1574)
 (linear cut)
 (peck)
 G0 x47.000y-1.000 (travel)
@@ -2996,12 +3001,13 @@ G0 x47.000y-1.000z2.000
 G0 z-1.500
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 19.4499)
+(time[min]: 35.9804)
 (line: gap 1 ba1,ja1 slice:1)
-(time[min]: 19.4499)
+(time[min]: 35.9804)
 (linear cut)
 (peck)
 (peck2)
+G0 x47.000y-1.000 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x52.250y-1.000z-1.580
@@ -3065,9 +3071,9 @@ G0 z2.000
 G0 x47.000y-1.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 19.4794)
+(time[min]: 36.3334)
 (line: gap 1 ba1,ja1 slice:last)
-(time[min]: 19.4794)
+(time[min]: 36.3334)
 (linear cut)
 (peck)
 (peck2)
@@ -3135,9 +3141,9 @@ G0 z2.000
 G0 x54.750y-1.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 19.509)
+(time[min]: 36.6865)
 (line: border 2 ja2,jf2)
-(time[min]: 19.509)
+(time[min]: 36.6865)
 (linear cut)
 G0 x61.000y0.000 (travel)
 G0 z1.500 (lift down)
@@ -3166,9 +3172,9 @@ G1 x61.000y109.000z-1.430
 G1 x61.000y0.000z-1.500
 G1 x61.000y109.000z-1.500
 G0 z2.000 (lift up)
-(time[min]: 22.2986)
+(time[min]: 39.5322)
 (line: gap 2 ja2,jf2 slice:1)
-(time[min]: 22.2986)
+(time[min]: 39.5322)
 (linear cut)
 G0 x61.000y0.000 (travel)
 G0 z-0.250 (lift down)
@@ -3189,9 +3195,9 @@ G1 x61.000y35.083z-2.540
 G1 x61.000y0.000z-2.550
 G1 x61.000y35.083z-2.550
 G0 z2.000 (lift up)
-(time[min]: 22.8892)
+(time[min]: 40.2501)
 (line: gap 2 ja2,jf2 slice:2)
-(time[min]: 22.8892)
+(time[min]: 40.2501)
 (linear cut)
 G0 x61.000y37.583 (travel)
 G0 z-0.250 (lift down)
@@ -3212,9 +3218,9 @@ G1 x61.000y71.417z-2.540
 G1 x61.000y37.583z-2.550
 G1 x61.000y71.417z-2.550
 G0 z2.000 (lift up)
-(time[min]: 23.459)
+(time[min]: 40.8457)
 (line: gap 2 ja2,jf2 slice:last)
-(time[min]: 23.459)
+(time[min]: 40.8457)
 (linear cut)
 G0 x61.000y73.917 (travel)
 G0 z-0.250 (lift down)
@@ -3235,9 +3241,9 @@ G1 x61.000y109.000z-2.540
 G1 x61.000y73.917z-2.550
 G1 x61.000y109.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 24.0497)
+(time[min]: 41.4518)
 (line: border 3 jf3,bf3)
-(time[min]: 24.0497)
+(time[min]: 41.4518)
 (linear cut)
 (peck)
 G0 x60.000y110.000 (travel)
@@ -3336,12 +3342,13 @@ G0 x60.000y110.000z2.000
 G0 z-1.500
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 24.1091)
+(time[min]: 42.2064)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 24.1091)
+(time[min]: 42.2064)
 (linear cut)
 (peck)
 (peck2)
+G0 x60.000y110.000 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x54.750y110.000z-1.580
@@ -3405,9 +3412,9 @@ G0 z2.000
 G0 x60.000y110.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 24.1386)
+(time[min]: 42.5615)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 24.1386)
+(time[min]: 42.5615)
 (linear cut)
 (peck)
 (peck2)
@@ -3475,12 +3482,12 @@ G0 z2.000
 G0 x52.250y110.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 24.1681)
-(time[min]: 24.1681)
+(time[min]: 42.9166)
+(time[min]: 42.9166)
 (error:  rounding 1 ja2,ja1: chord of arc too short: 1.41421mm, rounding 2 jf3,jf2: chord of arc too short: 1.41421mm)
 (hole)
 (helical interpolation)
-(time[min]: 24.1681)
+(time[min]: 42.9166)
 (predrill)
 G0 x53.500y22.000 (travel)
 G0 z1.500 (lift down)
@@ -3589,10 +3596,10 @@ G2 z-2.550 i0.600
 G2 z-2.550 i0.600
 G1 z0.250 (pull)
 G0 z2.000 (lift up)
-(time[min]: 24.8638)
+(time[min]: 43.3435)
 (hole)
 (helical interpolation)
-(time[min]: 24.8638)
+(time[min]: 43.3435)
 (predrill)
 G0 x53.500y44.000 (travel)
 G0 z1.500 (lift down)
@@ -3701,10 +3708,10 @@ G2 z-2.550 i0.600
 G2 z-2.550 i0.600
 G1 z0.250 (pull)
 G0 z2.000 (lift up)
-(time[min]: 25.5595)
+(time[min]: 43.6791)
 (hole)
 (helical interpolation)
-(time[min]: 25.5595)
+(time[min]: 43.6791)
 (predrill)
 G0 x53.500y66.000 (travel)
 G0 z1.500 (lift down)
@@ -3813,10 +3820,10 @@ G2 z-2.550 i0.600
 G2 z-2.550 i0.600
 G1 z0.250 (pull)
 G0 z2.000 (lift up)
-(time[min]: 26.2552)
+(time[min]: 44.0196)
 (hole)
 (helical interpolation)
-(time[min]: 26.2552)
+(time[min]: 44.0196)
 (predrill)
 G0 x53.500y88.000 (travel)
 G0 z1.500 (lift down)
@@ -3925,12 +3932,12 @@ G2 z-2.550 i0.600
 G2 z-2.550 i0.600
 G1 z0.250 (pull)
 G0 z2.000 (lift up)
-(time[min]: 26.9509)
+(time[min]: 44.3979)
 (3.1)
 (box)
-(time[min]: 26.9509)
+(time[min]: 44.3979)
 (line: border 1 ba1,ja1)
-(time[min]: 26.9509)
+(time[min]: 44.3979)
 (linear cut)
 (peck)
 (peck2)
@@ -4030,12 +4037,13 @@ G0 z2.000
 G0 x62.000y-1.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 27.002)
+(time[min]: 44.9058)
 (line: gap 1 ba1,ja1 slice:1)
-(time[min]: 27.002)
+(time[min]: 44.9058)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x62.000y-1.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -4070,9 +4078,9 @@ G1 x62.000y-1.000z-2.550
 G1 x63.500y-1.000z-2.550
 G1 x62.000y-1.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 27.0708)
+(time[min]: 45.0398)
 (line: gap 1 ba1,ja1 slice:last)
-(time[min]: 27.0708)
+(time[min]: 45.0398)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -4110,9 +4118,9 @@ G1 x66.000y-1.000z-2.550
 G1 x67.500y-1.000z-2.550
 G1 x66.000y-1.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 27.1396)
+(time[min]: 45.1739)
 (line: border 3 jf3,bf3)
-(time[min]: 27.1396)
+(time[min]: 45.1739)
 (linear cut)
 (peck)
 (peck2)
@@ -4213,12 +4221,13 @@ G0 z2.000
 G0 x67.500y12.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 27.1907)
+(time[min]: 45.6333)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 27.1907)
+(time[min]: 45.6333)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x67.500y12.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -4253,9 +4262,9 @@ G1 x67.500y12.000z-2.550
 G1 x66.000y12.000z-2.550
 G1 x67.500y12.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 27.2595)
+(time[min]: 45.7598)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 27.2595)
+(time[min]: 45.7598)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -4293,11 +4302,11 @@ G1 x63.500y12.000z-2.550
 G1 x62.000y12.000z-2.550
 G1 x63.500y12.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 27.3283)
-(time[min]: 27.3283)
+(time[min]: 45.8864)
+(time[min]: 45.8864)
 (error: line too short: 1.5mm)
 (line)
-(time[min]: 27.3283)
+(time[min]: 45.8864)
 (linear cut)
 (compensate feed: 900 -> 607.5)
 G0 x62.000y5.500 (travel)
@@ -4341,9 +4350,9 @@ G1 x62.000y5.500z-2.470
 G1 x64.700y5.500z-2.550
 G1 x62.000y5.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 27.4938)
+(time[min]: 46.1119)
 (line)
-(time[min]: 27.4938)
+(time[min]: 46.1119)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y7.850 (travel)
@@ -4387,9 +4396,9 @@ G1 x71.000y7.850z-2.470
 G1 x67.500y7.850z-2.550
 G1 x71.000y7.850z-2.550
 G0 z2.000 (lift up)
-(time[min]: 27.6588)
+(time[min]: 46.3328)
 (line)
-(time[min]: 27.6588)
+(time[min]: 46.3328)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y11.000 (travel)
@@ -4433,9 +4442,9 @@ G1 x68.000y11.000z-2.470
 G1 x68.000y7.850z-2.550
 G1 x68.000y11.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 27.824)
+(time[min]: 46.5597)
 (line)
-(time[min]: 27.824)
+(time[min]: 46.5597)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y3.150 (travel)
@@ -4479,9 +4488,9 @@ G1 x71.000y3.150z-2.470
 G1 x67.500y3.150z-2.550
 G1 x71.000y3.150z-2.550
 G0 z2.000 (lift up)
-(time[min]: 27.9889)
+(time[min]: 46.7917)
 (line)
-(time[min]: 27.9889)
+(time[min]: 46.7917)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y0.000 (travel)
@@ -4525,9 +4534,9 @@ G1 x68.000y0.000z-2.470
 G1 x68.000y3.150z-2.550
 G1 x68.000y0.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 28.1541)
+(time[min]: 47.0297)
 (line)
-(time[min]: 28.1541)
+(time[min]: 47.0297)
 (linear cut)
 G0 x72.500y3.500 (travel)
 f900.000 (set feed)
@@ -4570,12 +4579,12 @@ G1 x72.500y3.500z-2.470
 G1 x72.500y7.500z-2.550
 G1 x72.500y3.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 28.3189)
+(time[min]: 47.2607)
 (3.2)
 (box)
-(time[min]: 28.3189)
+(time[min]: 47.2607)
 (line: border 3 jf3,bf3)
-(time[min]: 28.3189)
+(time[min]: 47.2607)
 (linear cut)
 (peck)
 (peck2)
@@ -4675,12 +4684,13 @@ G0 z2.000
 G0 x67.500y25.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 28.37)
+(time[min]: 47.7167)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 28.37)
+(time[min]: 47.7167)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x67.500y25.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -4715,9 +4725,9 @@ G1 x67.500y25.000z-2.550
 G1 x66.000y25.000z-2.550
 G1 x67.500y25.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 28.4388)
+(time[min]: 47.8303)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 28.4388)
+(time[min]: 47.8303)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -4755,11 +4765,11 @@ G1 x63.500y25.000z-2.550
 G1 x62.000y25.000z-2.550
 G1 x63.500y25.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 28.5076)
-(time[min]: 28.5076)
+(time[min]: 47.9438)
+(time[min]: 47.9438)
 (error: line too short: 1.5mm)
 (line)
-(time[min]: 28.5076)
+(time[min]: 47.9438)
 (linear cut)
 (compensate feed: 900 -> 607.5)
 G0 x62.000y18.500 (travel)
@@ -4803,9 +4813,9 @@ G1 x62.000y18.500z-2.470
 G1 x64.700y18.500z-2.550
 G1 x62.000y18.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 28.6731)
+(time[min]: 48.1564)
 (line)
-(time[min]: 28.6731)
+(time[min]: 48.1564)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y20.850 (travel)
@@ -4849,9 +4859,9 @@ G1 x71.000y20.850z-2.470
 G1 x67.500y20.850z-2.550
 G1 x71.000y20.850z-2.550
 G0 z2.000 (lift up)
-(time[min]: 28.8381)
+(time[min]: 48.3643)
 (line)
-(time[min]: 28.8381)
+(time[min]: 48.3643)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y24.000 (travel)
@@ -4895,9 +4905,9 @@ G1 x68.000y24.000z-2.470
 G1 x68.000y20.850z-2.550
 G1 x68.000y24.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 29.0033)
+(time[min]: 48.5783)
 (line)
-(time[min]: 29.0033)
+(time[min]: 48.5783)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y16.150 (travel)
@@ -4941,9 +4951,9 @@ G1 x71.000y16.150z-2.470
 G1 x67.500y16.150z-2.550
 G1 x71.000y16.150z-2.550
 G0 z2.000 (lift up)
-(time[min]: 29.1683)
+(time[min]: 48.7974)
 (line)
-(time[min]: 29.1683)
+(time[min]: 48.7974)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y13.000 (travel)
@@ -4987,9 +4997,9 @@ G1 x68.000y13.000z-2.470
 G1 x68.000y16.150z-2.550
 G1 x68.000y13.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 29.3334)
+(time[min]: 49.0224)
 (line)
-(time[min]: 29.3334)
+(time[min]: 49.0224)
 (linear cut)
 G0 x72.500y16.500 (travel)
 f900.000 (set feed)
@@ -5032,12 +5042,12 @@ G1 x72.500y16.500z-2.470
 G1 x72.500y20.500z-2.550
 G1 x72.500y16.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 29.4982)
+(time[min]: 49.2405)
 (3.3)
 (box)
-(time[min]: 29.4982)
+(time[min]: 49.2405)
 (line: border 3 jf3,bf3)
-(time[min]: 29.4982)
+(time[min]: 49.2405)
 (linear cut)
 (peck)
 (peck2)
@@ -5137,12 +5147,13 @@ G0 z2.000
 G0 x67.500y38.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 29.5493)
+(time[min]: 49.685)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 29.5493)
+(time[min]: 49.685)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x67.500y38.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -5177,9 +5188,9 @@ G1 x67.500y38.000z-2.550
 G1 x66.000y38.000z-2.550
 G1 x67.500y38.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 29.6181)
+(time[min]: 49.7855)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 29.6181)
+(time[min]: 49.7855)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -5217,11 +5228,11 @@ G1 x63.500y38.000z-2.550
 G1 x62.000y38.000z-2.550
 G1 x63.500y38.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 29.6869)
-(time[min]: 29.6869)
+(time[min]: 49.8861)
+(time[min]: 49.8861)
 (error: line too short: 1.5mm)
 (line)
-(time[min]: 29.6869)
+(time[min]: 49.8861)
 (linear cut)
 (compensate feed: 900 -> 607.5)
 G0 x62.000y31.500 (travel)
@@ -5265,9 +5276,9 @@ G1 x62.000y31.500z-2.470
 G1 x64.700y31.500z-2.550
 G1 x62.000y31.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 29.8524)
+(time[min]: 50.0859)
 (line)
-(time[min]: 29.8524)
+(time[min]: 50.0859)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y33.850 (travel)
@@ -5311,9 +5322,9 @@ G1 x71.000y33.850z-2.470
 G1 x67.500y33.850z-2.550
 G1 x71.000y33.850z-2.550
 G0 z2.000 (lift up)
-(time[min]: 30.0174)
+(time[min]: 50.2808)
 (line)
-(time[min]: 30.0174)
+(time[min]: 50.2808)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y37.000 (travel)
@@ -5357,9 +5368,9 @@ G1 x68.000y37.000z-2.470
 G1 x68.000y33.850z-2.550
 G1 x68.000y37.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 30.1826)
+(time[min]: 50.4818)
 (line)
-(time[min]: 30.1826)
+(time[min]: 50.4818)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y29.150 (travel)
@@ -5403,9 +5414,9 @@ G1 x71.000y29.150z-2.470
 G1 x67.500y29.150z-2.550
 G1 x71.000y29.150z-2.550
 G0 z2.000 (lift up)
-(time[min]: 30.3476)
+(time[min]: 50.6881)
 (line)
-(time[min]: 30.3476)
+(time[min]: 50.6881)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y26.000 (travel)
@@ -5449,9 +5460,9 @@ G1 x68.000y26.000z-2.470
 G1 x68.000y29.150z-2.550
 G1 x68.000y26.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 30.5127)
+(time[min]: 50.9001)
 (line)
-(time[min]: 30.5127)
+(time[min]: 50.9001)
 (linear cut)
 G0 x72.500y29.500 (travel)
 f900.000 (set feed)
@@ -5494,12 +5505,12 @@ G1 x72.500y29.500z-2.470
 G1 x72.500y33.500z-2.550
 G1 x72.500y29.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 30.6775)
+(time[min]: 51.1052)
 (3.4)
 (box)
-(time[min]: 30.6775)
+(time[min]: 51.1052)
 (line: border 3 jf3,bf3)
-(time[min]: 30.6775)
+(time[min]: 51.1052)
 (linear cut)
 (peck)
 (peck2)
@@ -5599,12 +5610,13 @@ G0 z2.000
 G0 x67.500y51.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 30.7286)
+(time[min]: 51.5395)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 30.7286)
+(time[min]: 51.5395)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x67.500y51.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -5639,9 +5651,9 @@ G1 x67.500y51.000z-2.550
 G1 x66.000y51.000z-2.550
 G1 x67.500y51.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 30.7974)
+(time[min]: 51.627)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 30.7974)
+(time[min]: 51.627)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -5679,11 +5691,11 @@ G1 x63.500y51.000z-2.550
 G1 x62.000y51.000z-2.550
 G1 x63.500y51.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 30.8662)
-(time[min]: 30.8662)
+(time[min]: 51.7146)
+(time[min]: 51.7146)
 (error: line too short: 1.5mm)
 (line)
-(time[min]: 30.8662)
+(time[min]: 51.7146)
 (linear cut)
 (compensate feed: 900 -> 607.5)
 G0 x62.000y44.500 (travel)
@@ -5727,9 +5739,9 @@ G1 x62.000y44.500z-2.470
 G1 x64.700y44.500z-2.550
 G1 x62.000y44.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 31.0317)
+(time[min]: 51.9018)
 (line)
-(time[min]: 31.0317)
+(time[min]: 51.9018)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y46.850 (travel)
@@ -5773,9 +5785,9 @@ G1 x71.000y46.850z-2.470
 G1 x67.500y46.850z-2.550
 G1 x71.000y46.850z-2.550
 G0 z2.000 (lift up)
-(time[min]: 31.1967)
+(time[min]: 52.0839)
 (line)
-(time[min]: 31.1967)
+(time[min]: 52.0839)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y50.000 (travel)
@@ -5819,9 +5831,9 @@ G1 x68.000y50.000z-2.470
 G1 x68.000y46.850z-2.550
 G1 x68.000y50.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 31.3619)
+(time[min]: 52.272)
 (line)
-(time[min]: 31.3619)
+(time[min]: 52.272)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y42.150 (travel)
@@ -5865,9 +5877,9 @@ G1 x71.000y42.150z-2.470
 G1 x67.500y42.150z-2.550
 G1 x71.000y42.150z-2.550
 G0 z2.000 (lift up)
-(time[min]: 31.5269)
+(time[min]: 52.4656)
 (line)
-(time[min]: 31.5269)
+(time[min]: 52.4656)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y39.000 (travel)
@@ -5911,9 +5923,9 @@ G1 x68.000y39.000z-2.470
 G1 x68.000y42.150z-2.550
 G1 x68.000y39.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 31.692)
+(time[min]: 52.6647)
 (line)
-(time[min]: 31.692)
+(time[min]: 52.6647)
 (linear cut)
 G0 x72.500y42.500 (travel)
 f900.000 (set feed)
@@ -5956,12 +5968,12 @@ G1 x72.500y42.500z-2.470
 G1 x72.500y46.500z-2.550
 G1 x72.500y42.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 31.8568)
+(time[min]: 52.8569)
 (3.5)
 (box)
-(time[min]: 31.8568)
+(time[min]: 52.8569)
 (line: border 3 jf3,bf3)
-(time[min]: 31.8568)
+(time[min]: 52.8569)
 (linear cut)
 (peck)
 (peck2)
@@ -6061,12 +6073,13 @@ G0 z2.000
 G0 x67.500y64.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 31.9079)
+(time[min]: 53.2838)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 31.9079)
+(time[min]: 53.2838)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x67.500y64.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -6101,9 +6114,9 @@ G1 x67.500y64.000z-2.550
 G1 x66.000y64.000z-2.550
 G1 x67.500y64.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 31.9767)
+(time[min]: 53.3584)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 31.9767)
+(time[min]: 53.3584)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -6141,11 +6154,11 @@ G1 x63.500y64.000z-2.550
 G1 x62.000y64.000z-2.550
 G1 x63.500y64.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 32.0455)
-(time[min]: 32.0455)
+(time[min]: 53.4329)
+(time[min]: 53.4329)
 (error: line too short: 1.5mm)
 (line)
-(time[min]: 32.0455)
+(time[min]: 53.4329)
 (linear cut)
 (compensate feed: 900 -> 607.5)
 G0 x62.000y57.500 (travel)
@@ -6189,9 +6202,9 @@ G1 x62.000y57.500z-2.470
 G1 x64.700y57.500z-2.550
 G1 x62.000y57.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 32.211)
+(time[min]: 53.609)
 (line)
-(time[min]: 32.211)
+(time[min]: 53.609)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y59.850 (travel)
@@ -6235,9 +6248,9 @@ G1 x71.000y59.850z-2.470
 G1 x67.500y59.850z-2.550
 G1 x71.000y59.850z-2.550
 G0 z2.000 (lift up)
-(time[min]: 32.376)
+(time[min]: 53.7788)
 (line)
-(time[min]: 32.376)
+(time[min]: 53.7788)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y63.000 (travel)
@@ -6281,9 +6294,9 @@ G1 x68.000y63.000z-2.470
 G1 x68.000y59.850z-2.550
 G1 x68.000y63.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 32.5412)
+(time[min]: 53.9543)
 (line)
-(time[min]: 32.5412)
+(time[min]: 53.9543)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y55.150 (travel)
@@ -6327,9 +6340,9 @@ G1 x71.000y55.150z-2.470
 G1 x67.500y55.150z-2.550
 G1 x71.000y55.150z-2.550
 G0 z2.000 (lift up)
-(time[min]: 32.7062)
+(time[min]: 54.136)
 (line)
-(time[min]: 32.7062)
+(time[min]: 54.136)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y52.000 (travel)
@@ -6373,9 +6386,9 @@ G1 x68.000y52.000z-2.470
 G1 x68.000y55.150z-2.550
 G1 x68.000y52.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 32.8713)
+(time[min]: 54.3221)
 (line)
-(time[min]: 32.8713)
+(time[min]: 54.3221)
 (linear cut)
 G0 x72.500y55.500 (travel)
 f900.000 (set feed)
@@ -6418,12 +6431,12 @@ G1 x72.500y55.500z-2.470
 G1 x72.500y59.500z-2.550
 G1 x72.500y55.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 33.0361)
+(time[min]: 54.5016)
 (3.6)
 (box)
-(time[min]: 33.0361)
+(time[min]: 54.5016)
 (line: border 3 jf3,bf3)
-(time[min]: 33.0361)
+(time[min]: 54.5016)
 (linear cut)
 (peck)
 (peck2)
@@ -6523,12 +6536,13 @@ G0 z2.000
 G0 x67.500y77.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 33.0872)
+(time[min]: 54.9274)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 33.0872)
+(time[min]: 54.9274)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x67.500y77.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -6563,9 +6577,9 @@ G1 x67.500y77.000z-2.550
 G1 x66.000y77.000z-2.550
 G1 x67.500y77.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 33.156)
+(time[min]: 55.0079)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 33.156)
+(time[min]: 55.0079)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -6603,11 +6617,11 @@ G1 x63.500y77.000z-2.550
 G1 x62.000y77.000z-2.550
 G1 x63.500y77.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 33.2248)
-(time[min]: 33.2248)
+(time[min]: 55.0885)
+(time[min]: 55.0885)
 (error: line too short: 1.5mm)
 (line)
-(time[min]: 33.2248)
+(time[min]: 55.0885)
 (linear cut)
 (compensate feed: 900 -> 607.5)
 G0 x62.000y70.500 (travel)
@@ -6651,9 +6665,9 @@ G1 x62.000y70.500z-2.470
 G1 x64.700y70.500z-2.550
 G1 x62.000y70.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 33.3903)
+(time[min]: 55.2652)
 (line)
-(time[min]: 33.3903)
+(time[min]: 55.2652)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y72.850 (travel)
@@ -6697,9 +6711,9 @@ G1 x71.000y72.850z-2.470
 G1 x67.500y72.850z-2.550
 G1 x71.000y72.850z-2.550
 G0 z2.000 (lift up)
-(time[min]: 33.5553)
+(time[min]: 55.443)
 (line)
-(time[min]: 33.5553)
+(time[min]: 55.443)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y76.000 (travel)
@@ -6743,9 +6757,9 @@ G1 x68.000y76.000z-2.470
 G1 x68.000y72.850z-2.550
 G1 x68.000y76.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 33.7205)
+(time[min]: 55.6158)
 (line)
-(time[min]: 33.7205)
+(time[min]: 55.6158)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y68.150 (travel)
@@ -6789,9 +6803,9 @@ G1 x71.000y68.150z-2.470
 G1 x67.500y68.150z-2.550
 G1 x71.000y68.150z-2.550
 G0 z2.000 (lift up)
-(time[min]: 33.8855)
+(time[min]: 55.7903)
 (line)
-(time[min]: 33.8855)
+(time[min]: 55.7903)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y65.000 (travel)
@@ -6835,9 +6849,9 @@ G1 x68.000y65.000z-2.470
 G1 x68.000y68.150z-2.550
 G1 x68.000y65.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 34.0506)
+(time[min]: 55.964)
 (line)
-(time[min]: 34.0506)
+(time[min]: 55.964)
 (linear cut)
 G0 x72.500y68.500 (travel)
 f900.000 (set feed)
@@ -6880,12 +6894,12 @@ G1 x72.500y68.500z-2.470
 G1 x72.500y72.500z-2.550
 G1 x72.500y68.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 34.2154)
+(time[min]: 56.134)
 (3.7)
 (box)
-(time[min]: 34.2154)
+(time[min]: 56.134)
 (line: border 3 jf3,bf3)
-(time[min]: 34.2154)
+(time[min]: 56.134)
 (linear cut)
 (peck)
 (peck2)
@@ -6985,12 +6999,13 @@ G0 z2.000
 G0 x67.500y90.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 34.2665)
+(time[min]: 56.5655)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 34.2665)
+(time[min]: 56.5655)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x67.500y90.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -7025,9 +7040,9 @@ G1 x67.500y90.000z-2.550
 G1 x66.000y90.000z-2.550
 G1 x67.500y90.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 34.3353)
+(time[min]: 56.6591)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 34.3353)
+(time[min]: 56.6591)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -7065,11 +7080,11 @@ G1 x63.500y90.000z-2.550
 G1 x62.000y90.000z-2.550
 G1 x63.500y90.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 34.4041)
-(time[min]: 34.4041)
+(time[min]: 56.7526)
+(time[min]: 56.7526)
 (error: line too short: 1.5mm)
 (line)
-(time[min]: 34.4041)
+(time[min]: 56.7526)
 (linear cut)
 (compensate feed: 900 -> 607.5)
 G0 x62.000y83.500 (travel)
@@ -7113,9 +7128,9 @@ G1 x62.000y83.500z-2.470
 G1 x64.700y83.500z-2.550
 G1 x62.000y83.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 34.5696)
+(time[min]: 56.9408)
 (line)
-(time[min]: 34.5696)
+(time[min]: 56.9408)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y85.850 (travel)
@@ -7159,9 +7174,9 @@ G1 x71.000y85.850z-2.470
 G1 x67.500y85.850z-2.550
 G1 x71.000y85.850z-2.550
 G0 z2.000 (lift up)
-(time[min]: 34.7346)
+(time[min]: 57.1315)
 (line)
-(time[min]: 34.7346)
+(time[min]: 57.1315)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y89.000 (travel)
@@ -7205,9 +7220,9 @@ G1 x68.000y89.000z-2.470
 G1 x68.000y85.850z-2.550
 G1 x68.000y89.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 34.8998)
+(time[min]: 57.3166)
 (line)
-(time[min]: 34.8998)
+(time[min]: 57.3166)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y81.150 (travel)
@@ -7251,9 +7266,9 @@ G1 x71.000y81.150z-2.470
 G1 x67.500y81.150z-2.550
 G1 x71.000y81.150z-2.550
 G0 z2.000 (lift up)
-(time[min]: 35.0648)
+(time[min]: 57.4986)
 (line)
-(time[min]: 35.0648)
+(time[min]: 57.4986)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y78.000 (travel)
@@ -7297,9 +7312,9 @@ G1 x68.000y78.000z-2.470
 G1 x68.000y81.150z-2.550
 G1 x68.000y78.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 35.2299)
+(time[min]: 57.6731)
 (line)
-(time[min]: 35.2299)
+(time[min]: 57.6731)
 (linear cut)
 G0 x72.500y81.500 (travel)
 f900.000 (set feed)
@@ -7342,12 +7357,12 @@ G1 x72.500y81.500z-2.470
 G1 x72.500y85.500z-2.550
 G1 x72.500y81.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 35.3947)
+(time[min]: 57.8536)
 (3.8)
 (box)
-(time[min]: 35.3947)
+(time[min]: 57.8536)
 (line: border 3 jf3,bf3)
-(time[min]: 35.3947)
+(time[min]: 57.8536)
 (linear cut)
 (peck)
 (peck2)
@@ -7447,12 +7462,13 @@ G0 z2.000
 G0 x67.500y103.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 35.4458)
+(time[min]: 58.2947)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 35.4458)
+(time[min]: 58.2947)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
+G0 x67.500y103.000 (travel)
 f720.000 (set feed)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
@@ -7487,9 +7503,9 @@ G1 x67.500y103.000z-2.550
 G1 x66.000y103.000z-2.550
 G1 x67.500y103.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 35.5146)
+(time[min]: 58.4013)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 35.5146)
+(time[min]: 58.4013)
 (linear cut)
 (compensate cut: 0.08 -> 0.0375)
 (compensate feed: 900 -> 720)
@@ -7527,11 +7543,11 @@ G1 x63.500y103.000z-2.550
 G1 x62.000y103.000z-2.550
 G1 x63.500y103.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 35.5834)
-(time[min]: 35.5834)
+(time[min]: 58.5078)
+(time[min]: 58.5078)
 (error: line too short: 1.5mm)
 (line)
-(time[min]: 35.5834)
+(time[min]: 58.5078)
 (linear cut)
 (compensate feed: 900 -> 607.5)
 G0 x62.000y96.500 (travel)
@@ -7575,9 +7591,9 @@ G1 x62.000y96.500z-2.470
 G1 x64.700y96.500z-2.550
 G1 x62.000y96.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 35.7489)
+(time[min]: 58.7086)
 (line)
-(time[min]: 35.7489)
+(time[min]: 58.7086)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y98.850 (travel)
@@ -7621,9 +7637,9 @@ G1 x71.000y98.850z-2.470
 G1 x67.500y98.850z-2.550
 G1 x71.000y98.850z-2.550
 G0 z2.000 (lift up)
-(time[min]: 35.9139)
+(time[min]: 58.9122)
 (line)
-(time[min]: 35.9139)
+(time[min]: 58.9122)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y102.000 (travel)
@@ -7667,9 +7683,9 @@ G1 x68.000y102.000z-2.470
 G1 x68.000y98.850z-2.550
 G1 x68.000y102.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 36.0791)
+(time[min]: 59.1103)
 (line)
-(time[min]: 36.0791)
+(time[min]: 59.1103)
 (linear cut)
 (compensate feed: 900 -> 787.5)
 G0 x71.000y94.150 (travel)
@@ -7713,9 +7729,9 @@ G1 x71.000y94.150z-2.470
 G1 x67.500y94.150z-2.550
 G1 x71.000y94.150z-2.550
 G0 z2.000 (lift up)
-(time[min]: 36.2441)
+(time[min]: 59.3042)
 (line)
-(time[min]: 36.2441)
+(time[min]: 59.3042)
 (linear cut)
 (compensate feed: 900 -> 708.75)
 G0 x68.000y91.000 (travel)
@@ -7759,9 +7775,9 @@ G1 x68.000y91.000z-2.470
 G1 x68.000y94.150z-2.550
 G1 x68.000y91.000z-2.550
 G0 z2.000 (lift up)
-(time[min]: 36.4093)
+(time[min]: 59.4913)
 (line)
-(time[min]: 36.4093)
+(time[min]: 59.4913)
 (linear cut)
 G0 x72.500y94.500 (travel)
 f900.000 (set feed)
@@ -7804,12 +7820,12 @@ G1 x72.500y94.500z-2.470
 G1 x72.500y98.500z-2.550
 G1 x72.500y94.500z-2.550
 G0 z2.000 (lift up)
-(time[min]: 36.574)
+(time[min]: 59.6845)
 (3)
 (box)
-(time[min]: 36.574)
+(time[min]: 59.6845)
 (line: border 2 ja2,jf2)
-(time[min]: 36.574)
+(time[min]: 59.6845)
 (linear cut)
 G0 x13.000y111.000 (travel)
 G0 z1.500 (lift down)
@@ -7838,9 +7854,9 @@ G1 x13.000y166.700z-1.430
 G1 x13.000y111.000z-1.500
 G1 x13.000y166.700z-1.500
 G0 z2.000 (lift up)
-(time[min]: 38.0015)
+(time[min]: 61.1553)
 (line: gap 2 ja2,jf2 slice:1)
-(time[min]: 38.0015)
+(time[min]: 61.1553)
 (linear cut)
 (peck)
 G0 x13.000y111.000 (travel)
@@ -7907,9 +7923,9 @@ G0 x13.000y111.000z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 38.0445)
+(time[min]: 61.8938)
 (line: gap 2 ja2,jf2 slice:2)
-(time[min]: 38.0445)
+(time[min]: 61.8938)
 (linear cut)
 (peck)
 G0 x13.000y130.817 (travel)
@@ -7976,9 +7992,9 @@ G0 x13.000y130.817z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 38.086)
+(time[min]: 62.6001)
 (line: gap 2 ja2,jf2 slice:last)
-(time[min]: 38.086)
+(time[min]: 62.6001)
 (linear cut)
 (peck)
 G0 x13.000y149.383 (travel)
@@ -8045,9 +8061,9 @@ G0 x13.000y149.383z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 38.1289)
+(time[min]: 63.3636)
 (line: border 3 jf3,bf3)
-(time[min]: 38.1289)
+(time[min]: 63.3636)
 (linear cut)
 (peck)
 (peck2)
@@ -8147,12 +8163,13 @@ G0 z2.000
 G0 x12.000y167.700z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 38.1872)
+(time[min]: 64.2389)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 38.1872)
+(time[min]: 64.2389)
 (linear cut)
 (peck)
 (peck2)
+G0 x12.000y167.700 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x7.250y167.700z-1.580
@@ -8216,9 +8233,9 @@ G0 z2.000
 G0 x12.000y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 38.2162)
+(time[min]: 64.6838)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 38.2162)
+(time[min]: 64.6838)
 (linear cut)
 (peck)
 (peck2)
@@ -8286,9 +8303,9 @@ G0 z2.000
 G0 x4.750y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 38.2451)
+(time[min]: 65.1288)
 (line: border 4 bf4,ba4)
-(time[min]: 38.2451)
+(time[min]: 65.1288)
 (linear cut)
 G0 x-1.000y166.700 (travel)
 G0 z1.500 (lift down)
@@ -8317,9 +8334,9 @@ G1 x-1.000y111.000z-1.430
 G1 x-1.000y166.700z-1.500
 G1 x-1.000y111.000z-1.500
 G0 z2.000 (lift up)
-(time[min]: 39.6726)
+(time[min]: 66.7196)
 (line: gap 4 bf4,ba4 slice:1)
-(time[min]: 39.6726)
+(time[min]: 66.7196)
 (linear cut)
 (peck)
 G0 x-1.000y166.700 (travel)
@@ -8386,9 +8403,9 @@ G0 x-1.000y166.700z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 39.7155)
+(time[min]: 67.5221)
 (line: gap 4 bf4,ba4 slice:2)
-(time[min]: 39.7155)
+(time[min]: 67.5221)
 (linear cut)
 (peck)
 G0 x-1.000y146.883 (travel)
@@ -8455,9 +8472,9 @@ G0 x-1.000y146.883z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 39.7571)
+(time[min]: 68.2582)
 (line: gap 4 bf4,ba4 slice:last)
-(time[min]: 39.7571)
+(time[min]: 68.2582)
 (linear cut)
 (peck)
 G0 x-1.000y128.317 (travel)
@@ -8524,10 +8541,10 @@ G0 x-1.000y128.317z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 39.8)
-(time[min]: 39.8)
+(time[min]: 69.0147)
+(time[min]: 69.0147)
 (line)
-(time[min]: 39.8)
+(time[min]: 69.0147)
 (linear cut)
 (peck)
 (peck2)
@@ -8679,9 +8696,9 @@ G0 z2.000
 G0 x0.000y118.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 39.909)
+(time[min]: 69.8426)
 (line)
-(time[min]: 39.909)
+(time[min]: 69.8426)
 (linear cut)
 (peck)
 (peck2)
@@ -8833,9 +8850,9 @@ G0 z2.000
 G0 x0.000y158.950z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 40.018)
+(time[min]: 70.7143)
 (line)
-(time[min]: 40.018)
+(time[min]: 70.7143)
 (linear cut)
 (peck)
 (peck2)
@@ -8987,12 +9004,12 @@ G0 z2.000
 G0 x6.000y132.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 40.1337)
+(time[min]: 72.0134)
 (4)
 (box)
-(time[min]: 40.1337)
+(time[min]: 72.0134)
 (line: border 2 ja2,jf2)
-(time[min]: 40.1337)
+(time[min]: 72.0134)
 (linear cut)
 G0 x27.000y111.000 (travel)
 G0 z1.500 (lift down)
@@ -9021,9 +9038,9 @@ G1 x27.000y166.700z-1.430
 G1 x27.000y111.000z-1.500
 G1 x27.000y166.700z-1.500
 G0 z2.000 (lift up)
-(time[min]: 41.5612)
+(time[min]: 73.5494)
 (line: gap 2 ja2,jf2 slice:1)
-(time[min]: 41.5612)
+(time[min]: 73.5494)
 (linear cut)
 (peck)
 G0 x27.000y111.000 (travel)
@@ -9090,9 +9107,9 @@ G0 x27.000y111.000z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 41.6041)
+(time[min]: 74.2761)
 (line: gap 2 ja2,jf2 slice:2)
-(time[min]: 41.6041)
+(time[min]: 74.2761)
 (linear cut)
 (peck)
 G0 x27.000y130.817 (travel)
@@ -9159,9 +9176,9 @@ G0 x27.000y130.817z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 41.6457)
+(time[min]: 74.9686)
 (line: gap 2 ja2,jf2 slice:last)
-(time[min]: 41.6457)
+(time[min]: 74.9686)
 (linear cut)
 (peck)
 G0 x27.000y149.383 (travel)
@@ -9228,9 +9245,9 @@ G0 x27.000y149.383z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 41.6886)
+(time[min]: 75.7182)
 (line: border 3 jf3,bf3)
-(time[min]: 41.6886)
+(time[min]: 75.7182)
 (linear cut)
 (peck)
 (peck2)
@@ -9330,12 +9347,13 @@ G0 z2.000
 G0 x26.000y167.700z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 41.7469)
+(time[min]: 76.5796)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 41.7469)
+(time[min]: 76.5796)
 (linear cut)
 (peck)
 (peck2)
+G0 x26.000y167.700 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x21.250y167.700z-1.580
@@ -9399,9 +9417,9 @@ G0 z2.000
 G0 x26.000y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 41.7759)
+(time[min]: 77.0105)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 41.7759)
+(time[min]: 77.0105)
 (linear cut)
 (peck)
 (peck2)
@@ -9469,10 +9487,10 @@ G0 z2.000
 G0 x18.750y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 41.8048)
-(time[min]: 41.8048)
+(time[min]: 77.4415)
+(time[min]: 77.4415)
 (line)
-(time[min]: 41.8048)
+(time[min]: 77.4415)
 (linear cut)
 (peck)
 (peck2)
@@ -9624,9 +9642,9 @@ G0 z2.000
 G0 x14.000y118.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 41.9138)
+(time[min]: 78.2606)
 (line)
-(time[min]: 41.9138)
+(time[min]: 78.2606)
 (linear cut)
 (peck)
 (peck2)
@@ -9778,9 +9796,9 @@ G0 z2.000
 G0 x14.000y158.950z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 42.0229)
+(time[min]: 79.1188)
 (line)
-(time[min]: 42.0229)
+(time[min]: 79.1188)
 (linear cut)
 (peck)
 (peck2)
@@ -9932,12 +9950,12 @@ G0 z2.000
 G0 x20.000y132.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 42.1385)
+(time[min]: 80.4041)
 (5)
 (box)
-(time[min]: 42.1385)
+(time[min]: 80.4041)
 (line: border 2 ja2,jf2)
-(time[min]: 42.1385)
+(time[min]: 80.4041)
 (linear cut)
 G0 x41.000y111.000 (travel)
 G0 z1.500 (lift down)
@@ -9966,9 +9984,9 @@ G1 x41.000y166.700z-1.430
 G1 x41.000y111.000z-1.500
 G1 x41.000y166.700z-1.500
 G0 z2.000 (lift up)
-(time[min]: 43.5661)
+(time[min]: 81.9265)
 (line: gap 2 ja2,jf2 slice:1)
-(time[min]: 43.5661)
+(time[min]: 81.9265)
 (linear cut)
 (peck)
 G0 x41.000y111.000 (travel)
@@ -10035,9 +10053,9 @@ G0 x41.000y111.000z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 43.609)
+(time[min]: 82.6418)
 (line: gap 2 ja2,jf2 slice:2)
-(time[min]: 43.609)
+(time[min]: 82.6418)
 (linear cut)
 (peck)
 G0 x41.000y130.817 (travel)
@@ -10104,9 +10122,9 @@ G0 x41.000y130.817z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 43.6505)
+(time[min]: 83.3206)
 (line: gap 2 ja2,jf2 slice:last)
-(time[min]: 43.6505)
+(time[min]: 83.3206)
 (linear cut)
 (peck)
 G0 x41.000y149.383 (travel)
@@ -10173,9 +10191,9 @@ G0 x41.000y149.383z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 43.6934)
+(time[min]: 84.0565)
 (line: border 3 jf3,bf3)
-(time[min]: 43.6934)
+(time[min]: 84.0565)
 (linear cut)
 (peck)
 (peck2)
@@ -10275,12 +10293,13 @@ G0 z2.000
 G0 x40.000y167.700z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 43.7517)
+(time[min]: 84.9039)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 43.7517)
+(time[min]: 84.9039)
 (linear cut)
 (peck)
 (peck2)
+G0 x40.000y167.700 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x35.250y167.700z-1.580
@@ -10344,9 +10363,9 @@ G0 z2.000
 G0 x40.000y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 43.7807)
+(time[min]: 85.3209)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 43.7807)
+(time[min]: 85.3209)
 (linear cut)
 (peck)
 (peck2)
@@ -10414,10 +10433,10 @@ G0 z2.000
 G0 x32.750y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 43.8096)
-(time[min]: 43.8096)
+(time[min]: 85.7378)
+(time[min]: 85.7378)
 (line)
-(time[min]: 43.8096)
+(time[min]: 85.7378)
 (linear cut)
 (peck)
 (peck2)
@@ -10569,9 +10588,9 @@ G0 z2.000
 G0 x28.000y118.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 43.9187)
+(time[min]: 86.5446)
 (line)
-(time[min]: 43.9187)
+(time[min]: 86.5446)
 (linear cut)
 (peck)
 (peck2)
@@ -10723,9 +10742,9 @@ G0 z2.000
 G0 x28.000y158.950z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 44.0277)
+(time[min]: 87.3893)
 (line)
-(time[min]: 44.0277)
+(time[min]: 87.3893)
 (linear cut)
 (peck)
 (peck2)
@@ -10877,12 +10896,12 @@ G0 z2.000
 G0 x34.000y132.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 44.1434)
+(time[min]: 88.661)
 (6)
 (box)
-(time[min]: 44.1434)
+(time[min]: 88.661)
 (line: border 2 ja2,jf2)
-(time[min]: 44.1434)
+(time[min]: 88.661)
 (linear cut)
 G0 x55.000y111.000 (travel)
 G0 z1.500 (lift down)
@@ -10911,9 +10930,9 @@ G1 x55.000y166.700z-1.430
 G1 x55.000y111.000z-1.500
 G1 x55.000y166.700z-1.500
 G0 z2.000 (lift up)
-(time[min]: 45.5709)
+(time[min]: 90.1699)
 (line: gap 2 ja2,jf2 slice:1)
-(time[min]: 45.5709)
+(time[min]: 90.1699)
 (linear cut)
 (peck)
 G0 x55.000y111.000 (travel)
@@ -10980,9 +10999,9 @@ G0 x55.000y111.000z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 45.6138)
+(time[min]: 90.8747)
 (line: gap 2 ja2,jf2 slice:2)
-(time[min]: 45.6138)
+(time[min]: 90.8747)
 (linear cut)
 (peck)
 G0 x55.000y130.817 (travel)
@@ -11049,9 +11068,9 @@ G0 x55.000y130.817z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 45.6553)
+(time[min]: 91.5399)
 (line: gap 2 ja2,jf2 slice:last)
-(time[min]: 45.6553)
+(time[min]: 91.5399)
 (linear cut)
 (peck)
 G0 x55.000y149.383 (travel)
@@ -11118,9 +11137,9 @@ G0 x55.000y149.383z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 45.6982)
+(time[min]: 92.262)
 (line: border 3 jf3,bf3)
-(time[min]: 45.6982)
+(time[min]: 92.262)
 (linear cut)
 (peck)
 (peck2)
@@ -11220,12 +11239,13 @@ G0 z2.000
 G0 x54.000y167.700z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 45.7566)
+(time[min]: 93.0956)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 45.7566)
+(time[min]: 93.0956)
 (linear cut)
 (peck)
 (peck2)
+G0 x54.000y167.700 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x49.250y167.700z-1.580
@@ -11289,9 +11309,9 @@ G0 z2.000
 G0 x54.000y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 45.7855)
+(time[min]: 93.4985)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 45.7855)
+(time[min]: 93.4985)
 (linear cut)
 (peck)
 (peck2)
@@ -11359,10 +11379,10 @@ G0 z2.000
 G0 x46.750y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 45.8145)
-(time[min]: 45.8145)
+(time[min]: 93.9015)
+(time[min]: 93.9015)
 (line)
-(time[min]: 45.8145)
+(time[min]: 93.9015)
 (linear cut)
 (peck)
 (peck2)
@@ -11514,9 +11534,9 @@ G0 z2.000
 G0 x42.000y118.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 45.9235)
+(time[min]: 94.6963)
 (line)
-(time[min]: 45.9235)
+(time[min]: 94.6963)
 (linear cut)
 (peck)
 (peck2)
@@ -11668,9 +11688,9 @@ G0 z2.000
 G0 x42.000y158.950z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 46.0325)
+(time[min]: 95.5278)
 (line)
-(time[min]: 46.0325)
+(time[min]: 95.5278)
 (linear cut)
 (peck)
 (peck2)
@@ -11822,12 +11842,12 @@ G0 z2.000
 G0 x48.000y132.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 46.1482)
+(time[min]: 96.786)
 (7)
 (box)
-(time[min]: 46.1482)
+(time[min]: 96.786)
 (line: border 1 ba1,ja1)
-(time[min]: 46.1482)
+(time[min]: 96.786)
 (linear cut)
 (peck)
 (peck2)
@@ -11927,12 +11947,13 @@ G0 z2.000
 G0 x56.000y110.000z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 46.2065)
+(time[min]: 97.5715)
 (line: gap 1 ba1,ja1 slice:1)
-(time[min]: 46.2065)
+(time[min]: 97.5715)
 (linear cut)
 (peck)
 (peck2)
+G0 x56.000y110.000 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x60.750y110.000z-1.580
@@ -11996,9 +12017,9 @@ G0 z2.000
 G0 x56.000y110.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 46.2355)
+(time[min]: 97.9147)
 (line: gap 1 ba1,ja1 slice:last)
-(time[min]: 46.2355)
+(time[min]: 97.9147)
 (linear cut)
 (peck)
 (peck2)
@@ -12066,9 +12087,9 @@ G0 z2.000
 G0 x63.250y110.000z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 46.2644)
+(time[min]: 98.258)
 (line: border 2 ja2,jf2)
-(time[min]: 46.2644)
+(time[min]: 98.258)
 (linear cut)
 G0 x69.000y111.000 (travel)
 G0 z1.500 (lift down)
@@ -12097,9 +12118,9 @@ G1 x69.000y166.700z-1.430
 G1 x69.000y111.000z-1.500
 G1 x69.000y166.700z-1.500
 G0 z2.000 (lift up)
-(time[min]: 47.6919)
+(time[min]: 99.7346)
 (line: gap 2 ja2,jf2 slice:1)
-(time[min]: 47.6919)
+(time[min]: 99.7346)
 (linear cut)
 (peck)
 G0 x69.000y111.000 (travel)
@@ -12166,9 +12187,9 @@ G0 x69.000y111.000z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 47.7348)
+(time[min]: 100.43)
 (line: gap 2 ja2,jf2 slice:2)
-(time[min]: 47.7348)
+(time[min]: 100.43)
 (linear cut)
 (peck)
 G0 x69.000y130.817 (travel)
@@ -12235,9 +12256,9 @@ G0 x69.000y130.817z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 47.7764)
+(time[min]: 101.082)
 (line: gap 2 ja2,jf2 slice:last)
-(time[min]: 47.7764)
+(time[min]: 101.082)
 (linear cut)
 (peck)
 G0 x69.000y149.383 (travel)
@@ -12304,9 +12325,9 @@ G0 x69.000y149.383z2.000
 G0 z-2.550
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 47.8193)
+(time[min]: 101.79)
 (line: border 3 jf3,bf3)
-(time[min]: 47.8193)
+(time[min]: 101.79)
 (linear cut)
 (peck)
 (peck2)
@@ -12406,12 +12427,13 @@ G0 z2.000
 G0 x68.000y167.700z2.000
 G1 z-1.500
 G0 z2.000 (lift up)
-(time[min]: 47.8776)
+(time[min]: 102.61)
 (line: gap 3 jf3,bf3 slice:1)
-(time[min]: 47.8776)
+(time[min]: 102.61)
 (linear cut)
 (peck)
 (peck2)
+G0 x68.000y167.700 (travel)
 G0 z-0.250 (lift down)
 G1 z-1.500 (push)
 G1 x63.250y167.700z-1.580
@@ -12475,9 +12497,9 @@ G0 z2.000
 G0 x68.000y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 47.9066)
+(time[min]: 102.999)
 (line: gap 3 jf3,bf3 slice:last)
-(time[min]: 47.9066)
+(time[min]: 102.999)
 (linear cut)
 (peck)
 (peck2)
@@ -12545,10 +12567,10 @@ G0 z2.000
 G0 x60.750y167.700z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 47.9355)
-(time[min]: 47.9355)
+(time[min]: 103.388)
+(time[min]: 103.388)
 (line)
-(time[min]: 47.9355)
+(time[min]: 103.388)
 (linear cut)
 (peck)
 (peck2)
@@ -12700,9 +12722,9 @@ G0 z2.000
 G0 x56.000y118.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 48.0445)
+(time[min]: 104.172)
 (line)
-(time[min]: 48.0445)
+(time[min]: 104.172)
 (linear cut)
 (peck)
 (peck2)
@@ -12854,9 +12876,9 @@ G0 z2.000
 G0 x56.000y158.950z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 48.1536)
+(time[min]: 104.99)
 (line)
-(time[min]: 48.1536)
+(time[min]: 104.99)
 (linear cut)
 (peck)
 (peck2)
@@ -13008,7 +13030,7 @@ G0 z2.000
 G0 x62.000y132.750z2.000
 G1 z-2.550
 G0 z2.000 (lift up)
-(time[min]: 48.2693)
+(time[min]: 106.235)
 G0 z2.000 (lift up)
 G0 x0.000y0.000 (travel)
 (travel to safe place)

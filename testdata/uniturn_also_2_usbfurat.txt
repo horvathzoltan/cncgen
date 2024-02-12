@@ -1,0 +1,49 @@
+(UNITURN mérőállomás alsó szerelőlap 2)
+(cmd line: -i uniturn_also_2.txt -t)
+(plot cmd: -i uniturn_also_2_usbfurat.txt -t -p)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.250
+safebottom0.250
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.005
+
+fmax900
+fmin600
+fratio0.8
+
+
+z1 = 2
+c1 = 0.02 #furatok
+c2 = 0.04 #letörések
+c3 = 0.08 #keret
+
+jg1 = 0.1
+
+(ja:-1,-1)
+
+(usb kengyel rögzítőfuratok)
+h 157,110 d3 z$z1 c$c1 m1 jg$jg1
+h 157,88 d3 z$z1 c$c1 m1 jg$jg1
+h 157,66 d3 z$z1 c$c1 m1 jg$jg1
+h 157,44 d3 z$z1 c$c1 m1 jg$jg1
+
+(usb kengyel alátámasztás)
+h 170,130 d3 z$z1 c$c1 m1
+h 170,87 d3 z$z1 c$c1 m1
+h 170,24 d3 z$z1 c$c1 m1
+
+(usb kengyel alátámasztás 2)
+h 130,110 d3 z$z1 c$c1 m1
+h 130,66 d3 z$z1 c$c1 m1

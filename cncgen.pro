@@ -240,7 +240,7 @@ DISTFILES += \
     testdata/telefontarto.txt \
     testdata/uniturn_also_2.txt \
     testdata/uniturn_also_2_korvonal.txt \
-    testdata/uniturn_also_3.txt \
+    testdata/uniturn_also_2_usbfurat.txt \
     testdata/uniturn_doboz_fedlap_2.txt \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_doboz_hatlap_2.txt \
@@ -253,7 +253,6 @@ DISTFILES += \
     testdata/uniturn_relay_szerelolap.txt \
     testdata/uniturn_tavtarto_5mm.txt \
     testdata/uniturn_tavtarto_6mm.txt \
-    testdata/uniturn_usb_tavtarto.txt \
-    testdata/uniturn_usb_tavtarto2.txt \
-    testdata/usb.txt \
-    testdata/usb_kengyel.txt
+    testdata/uniturn_usb_kengyel.txt \
+    testdata/uniturn_usb_kengyel_rogzito.txt \
+    testdata/usb.txt

@@ -42,6 +42,7 @@ public:
 
     CompensateModel Compensate2(qreal l, const Cut& cut, const Feed& feed);
 
+    static qreal t_muvelet;
     static double dPeck;
     static double dPeck2;
 
@@ -168,9 +169,15 @@ private:
     auto LiftUpToGCode(qreal feed, const QVariant& z) -> QString;
     auto TravelXYToGCode(qreal feed, const Point& p) -> QString;
     auto SetXYModeToGCode() -> QString;
-    auto GoToXY(GMode::Mode, const Point& p, qreal length, qreal feed) -> QString;
-    auto GoToZ(GMode::Mode, const Point& p, qreal length,qreal feed) -> QString;
-    auto GoToXYZ(GMode::Mode, const Point& p, qreal length, qreal feed) -> QString;
+
+    struct ij { qreal i; qreal j;};
+
+    QString GoToXY(GMode::Mode, const Point& p, qreal feed, ij = {});
+    QString GoToZ(GMode::Mode, const Point& p, qreal feed, ij = {});
+    QString GoToXYZ(GMode::Mode, const Point& p, qreal feed, ij = {});
+
+    qreal GetLength(GMode::Mode i, const Point& p, LengthMode lm);
+
     auto Dwell(int p) -> QString;
     /*Parse*/
     auto ParseCommentToGCode(const QString &str, QString *gcode, QString *err) -> bool;
@@ -186,9 +193,7 @@ private:
     auto ParseSetFeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetSpindleSpeedToGCode(const QString& str, QString *gcode, QString *err) -> bool;
     auto ParseSetXYModeToGcode(const QString& str, QString *gcode, QString *err) -> bool;
-    auto ParseSetMModeToGcode(const QString &str, QString *gcode, QString *err) -> bool;
-
-    qreal GetLength(GMode::Mode i, const Point& p, qreal bength, LengthMode lm);
+    auto ParseSetMModeToGcode(const QString &str, QString *gcode, QString *err) -> bool;    
 public:
     void setWorkingFolder(const QDir &a){ _workingFolder = a; }
 
@@ -202,6 +207,8 @@ public:
     QString TotalTimeToGCode();
     static qreal MinToMilliSec(qreal a);
     static qreal MilliSecToMin(qreal a);
+
+    QStringList GapSegmentsCut(QList<Line> gap_segments);
 };
 
 #endif // GENERATEGCODE_H

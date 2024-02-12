@@ -50,16 +50,22 @@ h 113.5,147 d3 z$z1 c$c1 m1 jg0.2
 h 66,67 d3 z$z1 c$c1 m1 jg0.2
 #h 143,80 d3 z$z1 c$c1 m1 jg0.2
 
+jg1 = 0.1
+
 (usb kengyel rögzítőfuratok)
-h 157,110 d3 z$z1 c$c1 m1
-h 157,88 d3 z$z1 c$c1 m1
-h 157,66 d3 z$z1 c$c1 m1
-h 157,44 d3 z$z1 c$c1 m1
+h 157,110 d3 z$z1 c$c1 m1 jg$jg1
+h 157,88 d3 z$z1 c$c1 m1 jg$jg1
+h 157,66 d3 z$z1 c$c1 m1 jg$jg1
+h 157,44 d3 z$z1 c$c1 m1 jg$jg1
 
 (usb kengyel alátámasztás)
-h 157,130 d3 z$z1 c$c1 m1
-h 157,77 d3 z$z1 c$c1 m1
-h 157,24 d3 z$z1 c$c1 m1
+h 170,130 d3 z$z1 c$c1 m1
+h 170,87 d3 z$z1 c$c1 m1
+h 170,24 d3 z$z1 c$c1 m1
+
+(usb kengyel alátámasztás 2)
+h 130,110 d3 z$z1 c$c1 m1
+h 130,66 d3 z$z1 c$c1 m1
 
 (B3218101 - NET-BOX 220, VERS. I)
 (rögzítő furatok)

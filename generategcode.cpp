@@ -917,25 +917,166 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
         QList<Line> gap_segments = l_gap.Divide(m.gap, t.d);
 
         QList<Cut> gap_cuts;
-        //auto&segment:segments
-        for(auto&segment:gap_segments)
+
+        for(auto&gap_segment:gap_segments)
         {
             auto px0 = _lastLine.p0;
             auto px1 = _lastLine.p1;
-            _lastLine.p0 = segment.p0;
-            _lastLine.p1 = segment.p1;
-            Cut cut3 = m.cut;
-            cut3.z = segment.cut.z;
-            auto g01 = LinearCut(m.feed, cut3, m.no_compensate, m.menet);
+            _lastLine.p0 = gap_segment.p0;
+            _lastLine.p1 = gap_segment.p1;
+            Cut gap_cut = m.cut;
+            gap_cut.z = gap_segment.cut.z;
+            gap_cuts.append(gap_cut);
+            auto g01 = LinearCut(m.feed, gap_cut, m.no_compensate, m.menet);
             g.append(g01);
             _lastLine.p0 = px0; // azonnal vissza is állítjuk
             _lastLine.p1 = px1;
         }
-
     }
 
 
     g.append(TotalTimeToGCode());
+    return g.join('\n');
+}
+
+QString GenerateGcode::LinesToGCode(const QList<Line>& m2, QString *err){
+    //_lasterr.clear();/*LINE*/
+
+    Line m = m2[0];
+
+    QString msg = G1+m.ToString();
+    StringHelper::Tabulate(&msg, G2);
+    zInfo(msg);
+
+    /*CUT*/
+    if(!m.cut.Check(err)){
+        return{};
+    }
+    /*FEED*/
+    if(!m.feed.Check(_fmin, _fmax, err)){
+        return{};
+    }
+    /*TOOL*/
+    if(!ValidateTool()) {if(err)*err=L("no tool"); return {};}
+    Tool t = _tools[_selected_tool_ix];
+
+
+    /**/
+    if(m.p0.isValid()){
+        _lastLine.p0=m.p0;
+    }
+    if(m.rp.isValid()){
+        if(_lastLine.p0.isValid()){
+            _lastLine.p0.x+=m.rp.x;
+            _lastLine.p0.y+=m.rp.y;
+            _lastLine.p0.z+=m.rp.z;
+        } else{
+            if(err){*err=L("p0 not valid");}
+            return {};
+        }
+    }
+    if(m.p1.isValid()){
+        _lastLine.p1=m.p1;
+    }
+    if(m.rp.isValid()){
+        if(_lastLine.p1.isValid()){
+            _lastLine.p1.x+=m.rp.x;
+            _lastLine.p1.y+=m.rp.y;
+            _lastLine.p1.z+=m.rp.z;
+        } else {
+            if(err){*err=L("p1 not valid");}
+            return {};
+        }
+    }
+
+    if(_lastLine.p0==_lastLine.p1){
+        if(err){*err=L("start and end points are equal");}
+        return{};
+    }
+
+    qreal distance = GeoMath::Distance(_lastLine.p0, _lastLine.p1);
+    // if(distance<t.d) {
+    //     if(err){*err=L("line too short: ")+QString::number(distance)+"mm";}
+    //     return {};
+    // }
+
+
+
+    QString nameComment = m.GetComment();
+    QStringList g(nameComment);
+
+    g.append(TotalTimeToGCode());
+    msg=G2+ _lastLine.p0.ToString()+' '+_lastLine.p1.ToString();
+    msg+=' '+m.cut.ToString();
+    msg+=' '+m.feed.ToString();
+   // if(mgap.isValid()) msg+= " gaps:"+QString::number(mgap.n);
+    zInfo(msg);
+    /*CUT*/
+    qreal z2 = m.cut.z;
+
+    // a gapig egyet vágunk
+    if(z2>0){
+        Cut cut2 = m.cut;
+        cut2.z=z2;
+
+        //    qreal zo = p.z;
+
+
+        int steps_0 = 0;
+
+        steps_0 = m.cut.steps();
+
+        qreal l = GeoMath::Distance(m.p0, m.p1);
+        Feed feed = m2[0].feed;
+        Cut cut = m2[0].cut;
+
+        if(!m.no_compensate){
+            CompensateModel c = Compensate2(l,  m2[0].cut, m2[0].feed);
+            if(c.isCompensated){
+                feed.setFeed(c.c_f);
+                cut.z0=c.c_z;
+
+                c.ToGCode(&g, m2[0].cut, m2[0].feed);
+            }
+        } else{
+            zInfo("no_compensate")
+        }
+
+        GoToCutposition(&g, m.p0, feed);
+
+        qreal last_z = m.p0.z;
+        //qreal mov_z = m.p0.z+_safeb;
+
+        for(int i=0;i<steps_0;i++){
+            //if(i==steps_0-1 && !simi) continue;
+
+            Point p = m2[0].p0;
+
+            qreal z = p.z-(i+1)*cut.z0;
+            qreal zz = p.z-cut.z;
+            if(z<zz){
+                p.z = zz;
+            } else {
+                p.z = z;
+            }
+
+            for(auto&mm:m2){
+                auto g0 = GoToXY(GMode::Rapid, mm.p0, feed.feed());
+                AppendGCode(&g, g0);
+
+                g0 = GoToZ(GMode::Rapid, {mm.p0.x, mm.p0.y, last_z }, feed.feed());
+                AppendGCode(&g, g0);
+
+                g0 = GoToXYZ(GMode::Linear, {mm.p1.x, mm.p1.y, p.z }, feed.feed());
+                AppendGCode(&g, g0);
+
+                g0 = GoToZ(GMode::Rapid,{0,0,_movZ}, feed.feed());
+                AppendGCode(&g, g0);
+            }
+            last_z = p.z;
+        }
+    }
+
     return g.join('\n');
 }
 
@@ -1106,7 +1247,7 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
             for(int i=0;i<steps_0;i++){
                 //if(i==steps_0-1 && !simi) continue;
 
-                Point pd=p;
+                //Point pd=p;
 
                 p=_lastLine.p1;
 
@@ -2497,13 +2638,28 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             }
         }
         else{
+            QList<Line> gaps;
             for(auto&bl:segments){
                 QString e0;
                 auto px0 = _lastLine.p0;
                 auto px1 = _lastLine.p1;
-                auto g0 = LineToGCode(bl,&e0);
+                QString g0;
+
+                if(bl.name.startsWith(" border"))
+                {
+                    // QString gg;
+                    // if(!gaps.isEmpty()){
+                    //     gg = LinesToGCode(gaps, &e0);
+                    //     gaps.clear();
+                    // }
+                    //g0 = gg+"\n"+LineToGCode(bl, &e0);
+                    g0 = LineToGCode(bl, &e0);
+                } else if( bl.name.startsWith(" gap")){
+                    gaps.append(bl);
+                }
 
                 bool hasGcode = !g0.isEmpty();
+
 
                 if(hasGcode){
                     g.append(g0);
@@ -2517,6 +2673,14 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                 }
                 _lastLine.p0 = px0; // azonnal vissza is állítjuk
                 _lastLine.p1 = px1;
+            }
+
+            QString gg;
+            if(!gaps.isEmpty()){
+                QString e0;
+                gg = LinesToGCode(gaps, &e0);
+                gaps.clear();
+                g.append(gg);
             }
         }
 

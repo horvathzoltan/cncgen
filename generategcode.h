@@ -155,6 +155,8 @@ private:
     //auto CheckCut(const Cut& cut, QString*err) -> bool;
     /*Geomerty*/
     auto LineToGCode(const Line& m,QString *err) -> QString;
+    auto LinesToGCode(const QList<Line>& m,QString *err) -> QString;
+
     auto HoleToGCode(const Hole& m,QString*err) -> QString;
     auto BoxToGCode(const Box& m,QString*err) -> QString;
     auto ArcToGCode(const Arc& m,QString*err) -> QString;
@@ -208,7 +210,6 @@ public:
     static qreal MinToMilliSec(qreal a);
     static qreal MilliSecToMin(qreal a);
 
-    QStringList GapSegmentsCut(QList<Line> gap_segments);
 };
 
 #endif // GENERATEGCODE_H

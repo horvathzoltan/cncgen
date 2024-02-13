@@ -9,38 +9,40 @@ t1
 s50
 f900
 
-safetop0.250
-safebottom0.250
-overcut0.300
+safetop0.10
+safebottom0.10
+overcut0.200
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.012
+emax0.015
 
 fmax900
 fmin700
 fratio0.6
 
 z1 = 2
-c1 = 0.020 #furatok
-c2 = 0.040 #letörések
-c3 = 0.080 #keret
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.100 #keret
 
 (1)
-b outline 0,0 size11,6.5 z$z1 c$c3 g1,0.5,0.5 r0 rj2 nl1,0,1,1
+l 5.5,0 5.5,3.5 z$z1 c$c2
 
-l 7.85,10 7.85,6.5 z$z1 c$c3
-l 11,7 7.85,7 z$z1 c$c3
+l 3.15,10 3.15,6.5 z$z1 c$c2
+l 0,7 3.25,7 z$z1 c$c2
 
-l 3.15,10 3.15,6.5 z$z1 c$c3
-l 0,7 3.15,7 z$z1 c$c3
+l 7.85,10 7.85,6.5 z$z1 c$c2
+l 11,7 7.75,7 z$z1 c$c2
 
-l 5.5,0 5.5,3.5 z$z1 c$c3
+l 3.5,11 7.5,11 z$z1 c$c2
 
-l 3.5,11 7.5,11 z$z1 c$c3
+b outline 0,0 size11,6.5 z$z1 c$c3 g1,0.5,0.5 r0 rj2 nl1,0,0,1
 
 (2)
-b outline 13,0 size11,6 z$z1 c$c3 g1,0.5,0.5 r0 rj2 nl0,1,1,1
-l 18.5,0 18.5,3.5 z$z1 c$c3
+
+l 18.5,0 18.5,3.5 z$z1 c$c2
+
+b outline 13,0 size11,6 z$z1 c$c3 g1,0.5,0.5 r0 rj2 nl1,1,1,1
 

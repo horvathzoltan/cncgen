@@ -252,6 +252,7 @@ DISTFILES += \
     testdata/uniturn_relay_relays.txt \
     testdata/uniturn_relay_szerelolap.txt \
     testdata/uniturn_tavtarto_5mm.txt \
+    testdata/uniturn_tavtarto_5mm_2oldalas.txt \
     testdata/uniturn_tavtarto_6mm.txt \
     testdata/uniturn_usb_kengyel.txt \
     testdata/uniturn_usb_kengyel_rogzito.txt \

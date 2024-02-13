@@ -1,0 +1,55 @@
+(UNITURN mérőállomás alsó szerelőlap távtartó 6mm)
+(cmd line: -i uniturn_tavtarto_5mm_2oldalas.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.10
+safebottom0.10
+overcut0.500
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.015
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+z2 = 2.5
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.100 #keret
+
+(1)
+l 5.5,0 5.5,2.6 z$z2 c$c2
+
+l 7.85,9 7.85,5.5 z$z2 c$c2
+l 11,6 7.60,6 z$z1 c$c2
+
+l 3.15,9 3.15,5.5 z$z2 c$c2
+l 0,6 3.40,6 z$z1 c$c3
+
+l 3.5,10 7.5,10 z$z1 c$c2
+
+b outline 0,0 size11,5 z$z1 c$c3 g1,0.7,0.7 r0 rj2 nl1,0,0,1
+
+(2)
+l 18.5,0 18.5,2.6 z$z2 c$c2
+
+l 20.85,9 20.85,5.5 z$z2 c$c2
+l 24,6 20.60,6 z$z1 c$c2
+
+l 16.15,9 16.15,5.5 z$z2 c$c2
+l 13,6 16.40,6 z$z1 c$c2
+
+l 16.5,10 20.5,10 z$z1 c$c2
+
+b outline 13,0 size11,5 z$z1 c$c3 g1,0.7,0.7 r0 rj2 nl1,0,1,1

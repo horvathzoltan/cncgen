@@ -1,5 +1,5 @@
 (UNITURN mérőállomás)
-(cmd line: -i uniturn_usb_kengyel_rogzito.txt.txt -t)
+(cmd line: -i uniturn_usb_kengyel_rogzito.txt -t)
 (szerszám beállítás)
 
 t1 m d2 h19
@@ -9,14 +9,14 @@ t1
 s50
 f900
 
-safetop0.250
-safebottom0.250
-overcut0.300
+safetop0.10
+safebottom0.10
+overcut0.200
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.03
+emax0.02
 
 fmax900
 fmin500
@@ -29,41 +29,47 @@ c3 = 0.100 #keret
 
 offset-111,0,0
 
+x1 = 118.75
+x2 = 158.95
+
+x1 = sub($x1, .6)
+x2 = add($x2, .6)
+
 (3)
-l 118.75,0 118.75,6.5 z$z1 c$c2
-l 158.95,0 158.95,6.5 z$z1 c$c2
+l $x1,0 $x1,6.5 z$z1 c$c2
+l $x2,0 $x2,6.5 z$z1 c$c2
 
 l 130.75,6 146.75,6 z$z1 c$c3
 
 b outline 111,0 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,1
 
 (4)
-l 118.75,14 118.75,20.5 z$z1 c$c2
-l 158.95,14 158.95,20.5 z$z1 c$c2
+l $x1,14 $x1,20.5 z$z1 c$c2
+l $x2,14 $x2,20.5 z$z1 c$c2
 
 l 130.75,20 146.75,20 z$z1 c$c3
 
 b outline 111,14 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,0
 
 (5)
-l 118.75,28 118.75,34.5 z$z1 c$c2
-l 158.95,28 158.95,34.5 z$z1 c$c2
+l $x1,28 $x1,34.5 z$z1 c$c2
+l $x2,28 $x2,34.5 z$z1 c$c2
 
 l 130.75,34 146.75,34 z$z1 c$c3
 
 b outline 111,28 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,0
 
 (6)
-l 118.75,42 118.75,48.5 z$z1 c$c2
-l 158.95,42 158.95,48.5 z$z1 c$c2
+l $x1,42 $x1,48.5 z$z1 c$c2
+l $x2,42 $x2,48.5 z$z1 c$c2
 
 l 130.75,48 146.75,48 z$z1 c$c3
 
 b outline 111,42 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,0
 
 (7)
-l 118.75,56 118.75,62.5 z$z1 c$c2
-l 158.95,56 158.95,62.5 z$z1 c$c2
+l $x1,56 $x1,62.5 z$z1 c$c2
+l $x2,56 $x2,62.5 z$z1 c$c2
 
 l 130.75,62 146.75,62 z$z1 c$c3
 

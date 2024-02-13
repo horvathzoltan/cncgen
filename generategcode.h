@@ -68,6 +68,7 @@ public:
     static const QString fminKey;
     static const QString fratioKey;
     static const QString pdwellKey;
+    static const qreal RFEED;
 
     void Init();
     auto Generate(const QStringList& g) -> QStringList;

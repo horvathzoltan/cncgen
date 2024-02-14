@@ -9,9 +9,9 @@ t1
 s50
 f900
 
-safetop0.250
-safebottom0.250
-overcut0.300
+safetop0.20
+safebottom0.20
+overcut0.500
 
 pre_mill_steps2
 
@@ -19,10 +19,11 @@ pre_mill_steps2
 emax0.012
 
 fmax900
-fmin500
-fratio0.6
+fmin700
+fratio0.8
 
 z1 = 2
+z2 = 2.2
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
 c3 = 0.100 #keret
@@ -36,10 +37,10 @@ dk = sum(7,2,2)
 print "dk: $dk"
 
 (perem átmérő)
-dk2 = sub($dk,1)
+dk2 = sum(6,2,2)
 print "dk2: $dk2"
 
-th2 = 1.5 #perem mélység
+th2 = 0.500 #perem mélység
 
 j1 = 0.2
 gw = 0.5
@@ -52,34 +53,52 @@ x = div($dk,2)
 y = div($dk,2)
 o = add($dk,3)
 
-y1 = add($y, 2.6);
-y2 = sub($y, 2.6);
+y1 = add($y, 1.85);
+y2 = sub($y, 1.85);
 
-(1.sor)
+x1 = add($x,0.25)
+x2 = sub($x,0.25)
 
+jg2 = -0.5
+
+(1)
 #h $x,$y d$db z$th c$c1 jg$j1 m1
-l $x,$y1 $x,$y2 z$z1 c$c2
-h $x,$y d$dk2 z$th2 c$c3 np m1
+
+l $x1,$y1 $x1,$y2 z$z2 c$c2
+l $x2,$y1 $x2,$y2 z$z2 c$c2
+
+h $x,$y d$dk2 z$th2 c$c3 np m1 jg$jg2
 h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
 
-x = add($x,$o)
+(2)
+offset10,0,0
 
 #h $x,$y d$db z$th c$c1 jg$j1 m1
-l $x,$y1 $x,$y2 z$z1 c$c2
-h $x,$y d$dk2 z$th2 c$c3 np m1
+
+l $x1,$y1 $x1,$y2 z$z2 c$c2
+l $x2,$y1 $x2,$y2 z$z2 c$c2
+
+h $x,$y d$dk2 z$th2 c$c3 np m1 jg$jg2
 h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
 
-x = add($x,$o)
+(3)
+offset20,0,0
 
 #h $x,$y d$db z$th c$c1 jg$j1 m1
-l $x,$y1 $x,$y2 z$z1 c$c2
-h $x,$y d$dk2 z$th2 c$c3 np m1
+
+l $x1,$y1 $x1,$y2 z$z2 c$c2
+l $x2,$y1 $x2,$y2 z$z2 c$c2
+
+h $x,$y d$dk2 z$th2 c$c3 np m1 jg$jg2
 h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
 
-x = add($x,$o)
+(4)
+offset30,0,0
 
 #h $x,$y d$db z$th c$c1 jg$j1 m1
-l $x,$y1 $x,$y2 z$z1 c$c2
-h $x,$y d$dk2 z$th2 c$c3 np m1
-h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
 
+l $x1,$y1 $x1,$y2 z$z2 c$c2
+l $x2,$y1 $x2,$y2 z$z2 c$c2
+
+h $x,$y d$dk2 z$th2 c$c3 np m1 jg$jg2
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1

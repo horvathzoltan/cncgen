@@ -245,6 +245,7 @@ DISTFILES += \
     testdata/uniturn_doboz_hatlap.txt \
     testdata/uniturn_doboz_hatlap_2.txt \
     testdata/uniturn_felso.txt \
+    testdata/uniturn_kartyalovaso_rogzito.txt \
     testdata/uniturn_kartyaolvaso.txt \
     testdata/uniturn_kartyaolvaso_alatet.txt \
     testdata/uniturn_kartyaolvaso_patent.txt \

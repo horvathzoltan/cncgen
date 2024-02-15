@@ -884,8 +884,9 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
         int gapn = qFloor(distance/(t.d+m.gap.length)); // hány gap fér ki
         if(gapn<1) {if(err)*err=L("cannot any create gaps"); return{};}
          if(m.gap.n>gapn) { gapn=m.gap.n;} // ha több is kifér, annyit kap amennyit kér
-         mgap = {(m.gap.n>gapn)?gapn:m.gap.n,// ha többet kért, mint ami kifér
-                 m.gap.length,m.gap.height};
+
+         // ha többet kért, mint ami kifér
+         mgap = {(m.gap.n>gapn)?gapn:m.gap.n, m.gap.length,m.gap.height};
     }
 
     QString nameComment = m.GetComment();
@@ -914,8 +915,11 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
         Point ba1=GeoMath::Translation(_lastLine.p0, 0, 0, -z2);
         Point ja1=GeoMath::Translation(_lastLine.p1, 0, 0, -z2);
         Cut cut_gap{mgap.height, m.cut.z0};
-        Line l_gap={ba1,ja1, cut_gap, m.feed,{}, {}, m.name+" gap", false, m.no_compensate, m.menet};
-        QList<Line> gap_segments = l_gap.Divide(m.gap, t.d);
+        //auto gap_length = GeoMath::Distance(ba1, ja1);
+        QString gap_name = m.name+" gap";//: "+QString::number(gap_length);
+
+        Line l_gap={ba1,ja1, cut_gap, m.feed,{}, {}, gap_name, false, m.no_compensate, m.menet};
+        QList<Line> gap_segments = l_gap.Divide(mgap, t.d);
 
         QList<Cut> gap_cuts;
 

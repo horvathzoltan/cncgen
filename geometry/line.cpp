@@ -126,9 +126,13 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         hasPoints?points[0]:Point(),
         hasPoints?points[1]:Point(),
         cut,
-        feed, gap,
+        feed,
+        gap,
         rpoint,
-        name, no_overcut, no_compensate, menet};
+        name,
+        no_overcut,
+        no_compensate,
+        menet};
 
     st.setState(ParseState::Parsed);
     return st;
@@ -191,6 +195,9 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
         if(!isok3) continue;
         kp = op;
         kp2 = op2;
+
+        qreal gap_length = GeoMath::Distance(op1, op2);
+        zInfo("gap_length:"+QString::number(gap_length))
         //gap:op1->op2
 //        Line gap = {op1, op2, z-g.h, s, sp, f};
 //        m.append(gap);

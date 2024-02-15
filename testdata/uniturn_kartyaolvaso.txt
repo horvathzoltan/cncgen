@@ -7,45 +7,53 @@ t1 m d2 h19
 yxz
 t1
 s50
-f700
+f900
 
 safetop0.200
 safebottom0.200
-overcut0.500
+overcut0.600
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
 emax0.0045
 
-fmax700
-fmin400
-fratio0.6
+fmax900
+fmin600
+fratio0.8
 
 z1 = 2
-z2 = 0.500 # tekercs bemélyítés
+z_tekercs = 0.500 # tekercs bemélyítés
+
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
 c3 = 0.100 #keret
+c4 = 0.500 #gyors
 
 
 (olvasóhurok rögzítő)
-b outline 0,0 size56,52 z$z1 c$c3 g2,0.7,0.7 r3
 
-h 28,26 z$z2 c$c1 d48 m1 np
-h 28,26 z$z2 c$c1 d47 m1 np
+h 28,31 z$z_tekercs c$c3 d48.5 jg0.5 m1 np
+h 28,31 z$z_tekercs c$c4 d48.5 jg-0.5 m1 np
 
-h 5,47, z$z2 c$c1 d3 jg0.2 m1
-h 51,47 z$z2 c$c1 d3 jg0.2 m1
+(rögzítőfuratok)
+h 5,51, z$z1 c$c1 d3 jg0.2 m1
+h 51,51 z$z1 c$c1 d3 jg0.2 m1
 
 (kábel bevezető)
-l 28,53 28,47 z$z1 c$c2
+l 28,58 28,53 z$z1 c$c2
 
 (led)
-l 8,2.5 16,2.5 z$z1 c$c2
+ljg = 0.9
+ljg2 = div($ljg, 2)
+ly0 = 3.5
+ly1 = add($ly0, $ljg2);
+ly2 = sub($ly0, $ljg2);
 
+l 8,$ly1 16,$ly1 z$z1 c$c1
+l 8,$ly2 16,$ly2 z$z1 c$c4
 
-y = 3.3
+y = 4.3
 ox = 50
 oy = 15.925
 
@@ -58,16 +66,16 @@ y11 = add($y, 1.85);
 y12 = sub($y, 1.85);
 x11 = add($x,0.25)
 x12 = sub($x,0.25)
-l $x11,$y11 $x11,$y12 z$z2 c$c2
-l $x12,$y11 $x12,$y12 z$z2 c$c2
+l $x11,$y11 $x11,$y12 z$z1 c$c1
+l $x12,$y11 $x12,$y12 z$z1 c$c4
 
 x = add($x, $ox);
 y11 = add($y, 1.85);
 y12 = sub($y, 1.85);
 x11 = add($x,0.25)
 x12 = sub($x,0.25)
-l $x11,$y11 $x11,$y12 z$z2 c$c2
-l $x12,$y11 $x12,$y12 z$z2 c$c2
+l $x11,$y11 $x11,$y12 z$z1 c$c1
+l $x12,$y11 $x12,$y12 z$z1 c$c4
 
 y = add($y, $oy);
 y1 = add($y, $d2);
@@ -77,23 +85,15 @@ y11 = add($y, 1.85);
 y12 = sub($y, 1.85);
 x11 = add($x,0.25)
 x12 = sub($x,0.25)
-l $x11,$y11 $x11,$y12 z$z2 c$c2
-l $x12,$y11 $x12,$y12 z$z2 c$c2
+l $x11,$y11 $x11,$y12 z$z1 c$c1
+l $x12,$y11 $x12,$y12 z$z1 c$c4
 x = add($x, $ox);
 y11 = add($y, 1.85);
 y12 = sub($y, 1.85);
 x11 = add($x,0.25)
 x12 = sub($x,0.25)
-l $x11,$y11 $x11,$y12 z$z2 c$c2
-l $x12,$y11 $x12,$y12 z$z2 c$c2
+l $x11,$y11 $x11,$y12 z$z1 c$c1
+l $x12,$y11 $x12,$y12 z$z1 c$c4
 
-#b corners 5,5 size$ox,$oy z$z1 c$c1 d2.75 jg0.05
-
-#h 5,5 z$z1 c$c1 d3 m1 jg0.2
-#h 61.5,5 z$z1 c$c1 d3 m1 jg0.2
-
-#h 70,5 z$z1 c$c1 d3 m1 jg0.2
-#h 70,13.5 z$z1 c$c1 d3 m1 jg0.2
-
-#h 70,36.5 z$z1 c$c1 d3 m1 jg0.2
-
+(körvonal)
+b outline 0,0 size56,56 z$z1 c$c3 g2,0.3,0.7 r3

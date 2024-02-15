@@ -1,0 +1,59 @@
+(UNITURN mérőállomás)
+(cmd line: -i uniturn_kartyalovaso_rogzito.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.20
+safebottom0.20
+overcut0.600
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.100 #keret
+
+x1 = 7
+x2 = 39
+
+h1 = 8.5 # a bevágás hossza
+
+x1 = sub($x1, .6)
+x2 = add($x2, .6)
+
+gw = 0.3
+gh = 0.7
+
+(1)
+l $x1,0 $x1,$h1 z$z1 c$c2
+l $x2,0 $x2,$h1 z$z1 c$c2
+
+#l 16,6 30,6 z$z1 c$c3
+
+b outline 0,0 size46,12 z$z1 c$c3 g1,$gw,$gh r0 nl1,1,1,1
+
+(2)
+offset0,14,0
+
+l $x1,0 $x1,$h1 z$z1 c$c2
+l $x2,0 $x2,$h1 z$z1 c$c2
+
+#l 16,6 30,6 z$z1 c$c3
+
+b outline 0,0 size46,12 z$z1 c$c3 g1,$gw,$gh r0 nl1,1,1,0
+
+

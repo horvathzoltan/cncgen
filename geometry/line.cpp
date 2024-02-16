@@ -25,6 +25,7 @@ Line::Line(const Point &_p0,
            bool _no_overcut,
            bool _no_compensate,
            int _menet
+           //bool _aljasimi
            )
 {
     p0 = _p0;
@@ -38,6 +39,7 @@ Line::Line(const Point &_p0,
     no_overcut = _no_overcut;
     no_compensate = _no_compensate;
     menet = _menet;
+   // aljasimi = _aljasimi;
 }
 
 auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point *offset) -> ParseState
@@ -90,7 +92,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             continue;
         }
 
-        if(p.toLower()=="noc"){
+        if(p.toLower()=="no_overcut"){
             no_overcut = true;
             }
 
@@ -104,7 +106,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             continue;
         }
 
-        if(p.toLower()=="nc"){
+        if(p.toLower()=="no_comp"){
             no_compensate = true;
             continue;
         }
@@ -132,7 +134,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         name,
         no_overcut,
         no_compensate,
-        menet};
+        menet};//, true};
 
     st.setState(ParseState::Parsed);
     return st;

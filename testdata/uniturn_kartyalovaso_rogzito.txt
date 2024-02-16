@@ -11,7 +11,7 @@ f900
 
 safetop0.20
 safebottom0.20
-overcut0.600
+overcut0.500
 
 pre_mill_steps2
 
@@ -25,35 +25,54 @@ fratio0.8
 z1 = 2
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
-c3 = 0.100 #keret
+c3 = 0.075 #keret
+c4 = 0.500 #gyors
 
 x1 = 7
-x2 = 39
+x2 = 40
+x3 = 39
 
-h1 = 8.5 # a bevágás hossza
+h1 = 10 # a bevágás hossza
 
-x1 = sub($x1, .6)
-x2 = add($x2, .6)
 
 gw = 0.3
 gh = 0.7
 
 (1)
+(alsó tartó)
 l $x1,0 $x1,$h1 z$z1 c$c2
-l $x2,0 $x2,$h1 z$z1 c$c2
 
+x22 = add($x1, 0.15)
+l $x22,3 $x22,8 z$z1 c$c4 no_comp
+
+x4 = add($x1,.7)
+x5 = sub($x1,.7)
+l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
+
+(felső tartó)
+l $x2,0 $x2,3.2 z$z1 c$c2
+
+l $x2,5.8 $x2,10 z$z1 c$c2
+x22 = sub($x2, 0.15)
+#l $x22,5.8 $x22,10 z$z1 c$c4 no_comp
+
+l $x3,3 $x3,5.5 z$z1 c$c2
+
+l $x3,5.5 $x2,8 z$z1 c$c2
+
+
+x4 = add($x2,.7)
+x5 = sub($x2,.7)
+l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
+
+(tartó átvezető)
 #l 16,6 30,6 z$z1 c$c3
 
-b outline 0,0 size46,12 z$z1 c$c3 g1,$gw,$gh r0 nl1,1,1,1
+b outline 0,0 size46,15 z$z1 c$c3 g1,$gw,$gh r0 nl1,1,1,1
 
 (2)
-offset0,14,0
+#offset0,16,0
 
-l $x1,0 $x1,$h1 z$z1 c$c2
-l $x2,0 $x2,$h1 z$z1 c$c2
 
-#l 16,6 30,6 z$z1 c$c3
-
-b outline 0,0 size46,12 z$z1 c$c3 g1,$gw,$gh r0 nl1,1,1,0
 
 

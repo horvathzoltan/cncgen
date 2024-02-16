@@ -22,7 +22,7 @@ struct Line{
          const Point& _rp,
          const QString& _name,
          bool noc,
-         bool _no_compensate, int menet
+         bool _no_compensate, int menet//, bool _aljasimi
          );
     Point p0;
     Point p1;
@@ -31,7 +31,7 @@ struct Line{
     Point rp;
     Gap gap;
     QString name;
-    //bool aljasimi = false;
+    //bool aljasimi = true;
     bool no_overcut = false;
     bool no_compensate = false;
     int menet = -1;

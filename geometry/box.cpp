@@ -29,7 +29,9 @@ Box::Box(const Point &_p0,
          qreal _vcorner_x,
          qreal _vcorner_y,
          const QString & _name,
-         bool _nr[4], bool nc, int _menet)
+         bool _nr[4],
+         bool _no_compensate,
+         int _menet)
 {
     p0=_p0;
     p1=_p1;
@@ -59,7 +61,7 @@ Box::Box(const Point &_p0,
     nr[2]=_nr[2];
     nr[3]=_nr[3];
 
-    no_compensate = nc;
+    no_compensate = _no_compensate;
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -88,7 +90,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     qreal vcorner_x = 0;
     qreal vcorner_y = 0;
     QString name;
-    bool nc = false;
+    bool _no_compensate = false;
     int menet = -1;
 
     bool nl[]={1,1,1,1};
@@ -206,8 +208,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             continue;
         }
 
-        if(p.toLower()=="nc"){
-            nc = true;
+        if(p.toLower()=="no_comp"){
+            _no_compensate = true;
             continue;
         }
 
@@ -269,7 +271,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         rounding, rjoin,
         vcorner_x, vcorner_y,
         name,
-        nr, nc, menet
+        nr, _no_compensate, menet
     };
 
     st.setState(ParseState::Parsed);

@@ -43,6 +43,13 @@ double GenerateGcode::dPeck2 = 6;
 
 qreal GenerateGcode::t_muvelet = 0.07/60;
 const qreal GenerateGcode::RFEED = 1500;
+const qreal GenerateGcode::SIMI = 5;
+
+const int GenerateGcode::PECKSTEPS_2 = 2; // minden második után hűt
+const int GenerateGcode::PECKSTEPS = 5; // ritkábban hűt
+
+const qreal GenerateGcode::PECKSTEP_MILLISEC = 500;
+
 //double GenerateGcode::dPeck_2 = 10;
 
 //GenerateGcode::Compensation GenerateGcode::GetCompensation(qreal l, qreal z)
@@ -493,7 +500,7 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
         // if(m.name=="brekk"){
         //     zInfo("brekk")
         // }
-        if(gcode)*gcode=LineToGCode(m,err);
+        if(gcode)*gcode=LineToGCode(m,err, true);
     }
     QString msg;
     StringHelper::Append(&msg, s.ToString(), '\n');
@@ -819,7 +826,7 @@ auto GenerateGcode::ValidateTool()->bool
 //}
 
 /*LINE*/
-auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
+auto GenerateGcode::LineToGCode(const Line& m,QString *err, bool aljasimi0) -> QString
 {
     //_lasterr.clear();/*LINE*/
     QString msg = G1+m.ToString();
@@ -905,7 +912,11 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
     if(z2>0){
          Cut cut2 = m.cut;
          cut2.z=z2;
-         auto g0 = LinearCut(m.feed, cut2, m.no_compensate, m.menet);
+
+         bool nogap = !mgap.isValid();
+         bool aljasimi = aljasimi0 && nogap;
+
+         auto g0 = LinearCut(m.feed, cut2, m.no_compensate, m.menet, aljasimi);
          g.append(g0);
     }
 
@@ -932,7 +943,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
             Cut gap_cut = m.cut;
             gap_cut.z = gap_segment.cut.z;
             gap_cuts.append(gap_cut);
-            auto g01 = LinearCut(m.feed, gap_cut, m.no_compensate, m.menet);
+            auto g01 = LinearCut(m.feed, gap_cut, m.no_compensate, m.menet, true);
             g.append(g01);
             _lastLine.p0 = px0; // azonnal vissza is állítjuk
             _lastLine.p1 = px1;
@@ -1031,6 +1042,12 @@ QString GenerateGcode::LinesToGCode(const QList<Line>& m2, QString *err){
 
         steps_0 = m.cut.steps();
 
+        bool aljasimi = true;
+
+        if(aljasimi){
+            steps_0 += SIMI;
+        }
+        steps_0 += SIMI;
 
 
 
@@ -1141,7 +1158,7 @@ qreal GenerateGcode::MilliSecToMin(qreal a){
 }
 
 // koordináták minden paraméter be van állítva
-QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool no_compensate, int menet) {
+QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool no_compensate, int menet, bool aljasimi) {
     QStringList g(QStringLiteral("(linear cut)"));
     QString msg;
 
@@ -1180,15 +1197,25 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
 
     bool isPeck = false;
     bool isPeck2 = false;
+    bool isPeck3 = true;//false;
+    bool isPeck4 = false;
 
     auto lpeck = t.d*dPeck;
     auto lpeck2 = t.d*dPeck2;
 
-    if(l<=lpeck && l>t.d*2 ){
-        isPeck = true;
-        if(l<=lpeck2){
-            isPeck2 = true;
+    if(l>t.d*2){
+        /*if(l<=lpeck){
+            isPeck = true;
+            if(l<=lpeck2){
+                isPeck2 = true;
+            }
+        }*/
+        if(l<=lpeck){
+            isPeck4 = true;
         }
+    } else{
+        isPeck3 = true;
+        isPeck4 = true;
     }
 
 
@@ -1214,6 +1241,10 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
         steps_0 = 1;
     } else{
         steps_0 = menet;
+    }
+
+    if(aljasimi){
+        steps_0 += SIMI;
     }
 
     msg+= "cut:"+_lastLine.p0.ToString()+"->"+_lastLine.p1.ToString();
@@ -1243,6 +1274,7 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
     }
     else if (steps_0>1){        
         if(!isPeck){
+            qreal last_z = p.z;
             for(int i=0;i<steps_0;i++){
                 //if(i==steps_0-1 && !simi) continue;
 
@@ -1265,12 +1297,43 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
                     p.z = z;
                 }
 
+                if(aljasimi && last_z==p.z){
+                    isPeck3 = false;
+                    feed.setFeed(_fmin*0.75);
+                    QString g1;
+                    bool ok = SetFeedToGCode(feed.feed(), &g1);
+                    if(ok && !g1.isEmpty()){
+                        g1+= L(" (set feed)");
+                        AppendGCode(&g, g1);
+                    }
+                }
 
                 //qreal d = GeoMath::Distance(pd,p);
                 //dt+=d;
                 auto g0 = GoToXYZ(GMode::Linear, p, feed.feed());
                 AppendGCode(&g, g0);
 
+                bool do_peck = false;
+                if(isPeck3 && !no_compensate){
+                    bool isPeck0 = !(i % (isPeck4?PECKSTEPS_2:PECKSTEPS));
+                    if(i>0 && isPeck0){
+                        do_peck = true;
+                    }
+                }
+
+                if(do_peck){
+                    auto g0 = GoToZ(GMode::Rapid, {0,0,_movZ}, feed.feed());
+                    AppendGCode(&g, g0);
+
+                    g0 = "G4 P"+QString::number(PECKSTEP_MILLISEC);
+                    AppendGCode(&g, g0);
+                    _total_minutes+=MilliSecToMin(PECKSTEP_MILLISEC);
+
+                    g0 = GoToZ(GMode::Rapid, p, feed.feed());
+                    AppendGCode(&g, g0);
+                }
+
+                last_z = p.z;
                 }
             }
         else{
@@ -1384,7 +1447,7 @@ void GenerateGcode::CompensateModel::ToGCode(QStringList* g, const Cut& o_cut, c
 //}
 
 // a true => csigába lemegy, false: oda-vissza megy le
-auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool a) -> QStringList{
+auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool a, bool aljasimi) -> QStringList{
     QStringList g(QStringLiteral("(helical cut)"));
     QString msg;
 
@@ -1405,9 +1468,49 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
 
     int steps_0 = cut.steps();
 
+    if(aljasimi){
+        steps_0 += SIMI;
+    }
+
     msg+= "cut:"+_lastHoleP.ToString()+"r="+GCode::r(path_r);
     msg+= " total_depth:"+QString::number(cut.z);//total_depth
     msg+= " steps:"+QString::number(steps_0);
+
+    qreal last_z = p.z;
+
+    bool isPeck = false;
+    bool isPeck2 = false;
+    bool isPeck3 = true;//false;
+    bool isPeck4 = false;
+
+    Tool t = _tools[_selected_tool_ix];
+
+    auto lpeck = t.d*dPeck/10;
+    auto lpeck2 = t.d*dPeck2/10;
+
+    if(l>t.d*2){
+        /*  if(l<=lpeck){
+            isPeck = true;
+            if(l<=lpeck2){
+                isPeck2 = true;
+            }
+        }*/
+        if(l<=lpeck){
+            isPeck4 = true;
+        }
+    } else{
+        isPeck3 = true;
+        isPeck4 = true;
+    }
+
+
+    if(isPeck){
+        g.append("(peck)");
+    }
+
+    if(isPeck2){
+        g.append("(peck2)");
+    }
 
     for(int i=0;i<steps_0;i++){
         Point pp=p;
@@ -1422,6 +1525,18 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
         qreal lz = pp.z-p.z;
         qreal l1 = qSqrt(l*l+lz*lz); // út hossz
 
+        if(aljasimi && last_z==p.z){
+            isPeck3 = false;
+            feed.setFeed(_fmin*0.75);
+            QString g1;
+            bool ok = SetFeedToGCode(feed.feed(), &g1);
+            if(ok && !g1.isEmpty()){
+                g1+= L(" (set feed)");
+                AppendGCode(&g, g1);
+            }
+        }
+
+
         QString g0;
 
         if(a){
@@ -1435,6 +1550,29 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
         }
 
         g.append(g0);
+
+        bool do_peck = false;
+        if(isPeck3){
+            bool isPeck0 = !(i % (isPeck4?PECKSTEPS_2:PECKSTEPS));
+            if(i>0 && isPeck0){
+                do_peck = true;
+            }
+        }
+
+        if(do_peck){
+            auto g0 = GoToZ(GMode::Rapid, {0,0,_movZ}, feed.feed());
+            AppendGCode(&g, g0);
+
+            g0 = "G4 P"+QString::number(PECKSTEP_MILLISEC);
+            AppendGCode(&g, g0);
+            _total_minutes+=MilliSecToMin(PECKSTEP_MILLISEC);
+
+            g0 = GoToZ(GMode::Rapid, p, feed.feed());
+            AppendGCode(&g, g0);
+        }
+
+        last_z = p.z;
+
     }
 
 
@@ -1449,7 +1587,7 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
     return g;
 }
 
-auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStringList{
+auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut, bool aljasimi) -> QStringList{
     QStringList g(QStringLiteral("(circular_arc cut)"));
     QString msg;
 
@@ -1476,6 +1614,10 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
 
     int steps = cut.steps();
 
+    if(aljasimi){
+        steps += SIMI;
+    }
+
     msg+= "cut:"+_lastArc.p0.ToString()+"->"+_lastArc.p1.ToString()+"o="+_lastArc.o.ToString();
     msg+= " total_depth:"+QString::number(cut.z);
     msg+= " steps:"+QString::number(steps);
@@ -1485,15 +1627,25 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
 
     bool isPeck = false;
     bool isPeck2 = false;
+    bool isPeck3 = true;//false;
+    bool isPeck4 = false;
 
-    auto lpeck = t.d*dPeck;
-    auto lpeck2 = t.d*dPeck2;
+    auto lpeck = t.d*dPeck/10;
+    auto lpeck2 = t.d*dPeck2/10;
 
-    if(l<=lpeck){
-        isPeck = true;
-        if(l<=lpeck2){
-            isPeck2 = true;
-        }
+    if(l>t.d*2){
+      /*  if(l<=lpeck){
+            isPeck = true;
+            if(l<=lpeck2){
+                isPeck2 = true;
+            }
+        }*/
+        if(l<=lpeck){
+          isPeck4 = true;
+      }
+    } else{
+        isPeck3 = true;
+        isPeck4 = true;
     }
 
 
@@ -1505,13 +1657,13 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
         g.append("(peck2)");
     }
 
-    qreal safez = _safez+1;
-
+    //qreal safez = _safez+1;
 
     Point p = _lastArc.p0;
     //qreal dt=0;
     if(!isPeck)
     {
+        qreal last_z = p.z;
         for(int step=0;step<steps;step++){
             Point pp = p;
             if(!(step%2))
@@ -1528,6 +1680,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
                 i=i0;
                 j=j0;
             }
+
             QString ij2 = "i"+GCode::r(i)+" j"+GCode::r(j);
             qreal z = p.z-(step+1)*cut.z0;
             qreal zz = p.z-cut.z;
@@ -1537,12 +1690,45 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut) -> QStri
                 p.z = z;
             }
 
+
+            if(aljasimi && last_z==p.z){
+                isPeck3 = false;
+                feed.setFeed(_fmin*0.75);
+                QString g1;
+                bool ok = SetFeedToGCode(feed.feed(), &g1);
+                if(ok && !g1.isEmpty()){
+                    g1+= L(" (set feed)");
+                    AppendGCode(&g, g1);
+                }
+            }
+
             //qreal d=GeoMath::ArcLength(pp,p, _lastArc.o);
 
             //dt+=d;
             auto g0 = GoToXYZ(mode, p, feed.feed(), {i, j});
             g.append(g0+' '+ij2);
 
+            bool do_peck = false;
+            if(isPeck3){
+                bool isPeck0 = !(step % (isPeck4?PECKSTEPS_2:PECKSTEPS));
+                if(step>0 && isPeck0){
+                    do_peck = true;
+                }
+            }
+
+            if(do_peck){
+                auto g0 = GoToZ(GMode::Rapid, {0,0,_movZ}, feed.feed());
+                AppendGCode(&g, g0);
+
+                g0 = "G4 P"+QString::number(PECKSTEP_MILLISEC);
+                AppendGCode(&g, g0);
+                _total_minutes+=MilliSecToMin(PECKSTEP_MILLISEC);
+
+                g0 = GoToZ(GMode::Rapid, p, feed.feed());
+                AppendGCode(&g, g0);
+            }
+
+            last_z = p.z;
            // qreal peck_l = qAbs(peck_z-p.z);
             //qreal t0_ms = MinToMilliSec(peck_l/1500);
            // qreal t1_ms = MinToMilliSec(peck_l/feed.feed());
@@ -1823,7 +2009,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                 // előmarás a kért átmérőig
                 if(path_r-td0>tdr){
                     //SetSelectedFeed(m.feed);
-                    auto g1=HelicalCut(td0, m.feed, m.cut, helicalMode);//m.cut.z
+                    auto g1=HelicalCut(td0, m.feed, m.cut, helicalMode, true);//m.cut.z
                     g.append(g1);
                 }
            }
@@ -1838,7 +2024,8 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
             //SetSelectedFeed(m.feed);
            Cut cut2 = m.cut;
            cut2.z = z2;
-           auto g1=HelicalCut(path_r, m.feed, cut2, helicalMode);
+           bool aljasimi = !hasGaps;
+           auto g1=HelicalCut(path_r, m.feed, cut2, helicalMode, aljasimi);
            g.append(g1);
         }
 
@@ -1868,7 +2055,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
 
                 Cut cut_gap = m.cut;
                 cut_gap.z = mgap.height;
-                auto g0 = CircularArcCut(m.feed, cut_gap);
+                auto g0 = CircularArcCut(m.feed, cut_gap, true);
                 g.append(g0);
 
                 _lastArc.p0=q1;
@@ -1982,7 +2169,7 @@ auto GenerateGcode::ArcToGCode(const Arc& m ,QString* err) -> QString
     QString nameComment = m.GetComment();
     QStringList g(nameComment);
 
-    auto g2 = CircularArcCut(m.feed, m.cut);
+    auto g2 = CircularArcCut(m.feed, m.cut, true);
     g.append(g2);
 
     g.append(TotalTimeToGCode());
@@ -2602,6 +2789,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                         qreal distance = GeoMath::Distance(gapSegments[0].p0, gapSegments[0].p1);
                         if(distance<t.d) {
                             if(err){*err=L("line too short: ")+QString::number(distance)+"mm";}
+
                            // return {};
                         }
                     }
@@ -2680,7 +2868,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                     auto px1 = _lastLine.p1;
                     QString g0;
 
-                    g0 = LineToGCode(segment, &e0);
+                    g0 = LineToGCode(segment, &e0, false);
 
                     bool hasGcode = !g0.isEmpty();
                     if(hasGcode){

@@ -11,7 +11,7 @@ f900
 
 safetop0.20
 safebottom0.20
-overcut0.600
+overcut0.500
 
 pre_mill_steps2
 
@@ -23,10 +23,11 @@ fmin600
 fratio0.8
 
 z1 = 2
-z2 = 2.5
+z2 = 2
+z3=1.5
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
-c3 = 0.100 #keret
+c3 = 0.075 #keret
 
 (mélység)
 th = 2
@@ -41,8 +42,8 @@ dk2 = sub($dk,1)
 print "dk2: $dk2"
 
 j1 = 0.2
-gw = 0.3
-gh = 0.7
+gw = 0.7
+gh = 0.5
 
 (h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
 (h 4,4 d5 z1.2 c0.175 g0,0,0 np)
@@ -56,24 +57,25 @@ y2 = sub($y, 2);
 
 (1)
 
-(felső bevágás)
-l 3,9.5 3,2.5 z$z2 c$c2
-
-(felső élletörés b)
-l 7.5,5.5 4.5,9.5 z$z1 c$c2
-
-(felső élletörés j)
-l -1.5,5.5 1.5,9.5 z$z1 c$c2
-
 (körvonal)
-b outline 0,0 size6,6.5 z$z1 c$c3 g1,$gw,$gh nl1,0,1,1
+b outline 0,0 size6,5 z$z1 c$c3 g1,$gw,$gh nl1,0,1,1
 
 (oldalsó bevágás)
 l 0,1.6 0,4.6 z$z2 c$c1
 l 6,1.6 6,4.6 z$z2 c$c1
 
+(felső bevágás)
+l 3,9 3,2.5 z$z2 c$c2
+
+(felső élletörés b)
+l 7.5,5 5,9 z$z1 c$c2
+
+(felső élletörés j)
+l -1.5,5 1,9 z$z1 c$c2
+
 (felső él)
-l 5,9 1,9 z$z1 c$c1
+l 5,9.3 1,9.3 z0.8 c$c1
+
 
 (2)
 

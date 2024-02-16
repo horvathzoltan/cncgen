@@ -29,7 +29,7 @@ public:
         qreal _vcorner_x,
         qreal _vcorner_y,
         const QString& _name,
-        bool _nr[4], bool nc, int _menet
+        bool _nr[4], bool _no_compensate, int _menet
         );
 
     QList<Line> lines;

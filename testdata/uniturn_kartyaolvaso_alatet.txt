@@ -11,7 +11,7 @@ f900
 
 safetop0.20
 safebottom0.20
-overcut0.600
+overcut0.500
 
 pre_mill_steps2
 
@@ -23,10 +23,11 @@ fmin700
 fratio0.8
 
 z1 = 2
-z2 = 2.2
+z2 = 2
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
-c3 = 0.100 #keret
+c3 = 0.075 #keret
+c4 = 0.500 #keret
 
 (mélység)
 th = 2
@@ -40,11 +41,11 @@ print "dk: $dk"
 dk2 = sum(6,2,2)
 print "dk2: $dk2"
 
-th2 = 0.750 #perem mélység
+th2 = 0.850 #perem mélység
 
 j1 = 0.2
-gw = 0.3
-gh = 0.5
+gw = 0.4
+gh = 0.3
 
 (h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
 (h 4,4 d5 z1.2 c0.175 g0,0,0 np)
@@ -64,10 +65,14 @@ jg2 = -0.6
 (1)
 #h $x,$y d$db z$th c$c1 jg$j1 m1
 
-l $x1,$y1 $x1,$y2 z$z2 c$c1
-l $x2,$y1 $x2,$y2 z$z2 c$c2
+(patent helye)
+l $x1,$y1 $x1,$y2 z$z2 c$c2
+l $x2,$y1 $x2,$y2 z$z2 c$c4 no_comp
 
+(pcb furat perem)
 h $x,$y d$dk2 z$th2 c$c2 np m1 jg$jg2
+
+(kivágás)
 h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
 
 (2)

@@ -69,6 +69,12 @@ public:
     static const QString fratioKey;
     static const QString pdwellKey;
     static const qreal RFEED;
+    static const qreal SIMI;
+
+    static const int PECKSTEPS;
+    static const int PECKSTEPS_2;
+    static const qreal PECKSTEP_MILLISEC;
+
 
     void Init();
     auto Generate(const QStringList& g) -> QStringList;
@@ -155,7 +161,7 @@ private:
     auto ValidateTool() -> bool;
     //auto CheckCut(const Cut& cut, QString*err) -> bool;
     /*Geomerty*/
-    auto LineToGCode(const Line& m,QString *err) -> QString;
+    auto LineToGCode(const Line& m,QString *err, bool aljasimi) -> QString;
     auto LinesToGCode(const QList<Line>& m,QString *err) -> QString;
 
     auto HoleToGCode(const Hole& m,QString*err) -> QString;
@@ -203,9 +209,9 @@ public:
     /*moves*/
     void GoToCutposition(QStringList *g, const Point& p, const Feed& feed);
     /*CUTS*/
-    QStringList LinearCut(const Feed& feed, const Cut& cut, bool no_compensate, int menet);
-    QStringList HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a);
-    QStringList CircularArcCut(const Feed& feed,const Cut& cut);
+    QStringList LinearCut(const Feed& feed, const Cut& cut, bool no_compensate, int menet, bool aljasimi);
+    QStringList HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a, bool aljasimi);
+    QStringList CircularArcCut(const Feed& feed,const Cut& cut, bool aljasimi);
 
     QString TotalTimeToGCode();
     static qreal MinToMilliSec(qreal a);

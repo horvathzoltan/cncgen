@@ -29,7 +29,7 @@ c3 = 0.075 #keret
 c4 = 0.500 #gyors
 
 x1 = 7
-x2 = 37
+x2 = 32
 x3 = sub($x2,1)
 
 h1 = 10 # a bevágás hossza
@@ -41,8 +41,8 @@ gh = 0.3
 (alsó tartó)
 l $x1,0 $x1,$h1 z$z1 c$c3
 
-x22 = add($x1, 0.2)
-l $x22,3 $x22,8 z$z1 c$c4 no_comp
+x22 = add($x1, 0.05)
+l $x22,1.8 $x22,7.3 z$z1 c$c4 no_comp
 
 x4 = add($x1,.7)
 x5 = sub($x1,.7)
@@ -52,21 +52,22 @@ l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
 l $x2,0 $x2,2.5 z$z1 c$c3
 
 (felső tartó vége)
-l $x2,7.5 $x2,$h1 z$z1 c$c3
-x22 = sub($x2, 0.2)
-l $x22,7.5 $x22,$h1 z$z1 c$c4 no_comp
+l $x2,8.3 $x2,$h1 z$z1 c$c3
+x22 = sub($x2, 0.05)
+l $x22,8.3 $x22,$h1 z$z1 c$c4 no_comp
 
 (patent alja)
-l $x3,2.8 $x3,5 z$z1 c$c3
+x4 = add($x3,.2)
+l $x4,2.8 $x3,5 z$z1 c$c3
 
 (ferde bevágás)
-l $x3,5 $x2,8 z$z1 c$c3 no_comp
+l $x3,5 $x2,8.3 z$z1 c$c3 no_comp
 
 (patent oldalai)
-x4 = add($x2,.5)
-x5 = sub($x2,.5)
+x4 = add($x2,.6)
+x5 = sub($x2,.2)
 l $x4,2.8 $x5,2.8 z$z1 c$c3 no_comp
-l $x4,7 $x5,7 z$z1 c$c3 no_comp
+l $x4,7.3 $x5,7.3 z$z1 c$c3 no_comp
 
 x4 = add($x2,.7)
 x5 = sub($x2,.7)
@@ -75,7 +76,7 @@ l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
 (tartó átvezető)
 #l 16,6 30,6 z$z1 c$c3
 
-b outline 0,0 size41,15 z$z1 c$c3 g1,$gw,$gh r0 nl1,1,1,1
+b outline 0,0 size37,15 z$z1 c$c3 g1,$gw,$gh r0 nl1,1,1,1
 
 (2)
 #offset0,16,0

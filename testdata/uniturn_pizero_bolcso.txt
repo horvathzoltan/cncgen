@@ -10,34 +10,39 @@ t1
 s50
 f900
 
-safetop0.250
-safebottom0.250
-overcut0.300
+safetop0.20
+safebottom0.20
+overcut0.500
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.005
+emax0.015
 
 fmax900
-fmin600
+fmin700
 fratio0.8
 
 z1 = 2
-c1 = 0.02 #furatok
-c2 = 0.04 #letörések
-c3 = 0.08 #keret
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.075 #keret
+c4 = 0.500 #gyors
 
 (piZero furatok)
 b corners 3.5,13.5 size58,23 d3 z$z1 c$c1 d2.75 jg0.05
+
+(tüskesor bemélyítés)
+b inline 7,33.5 size51,7 z1.2 c$c3 ng
+b inline 8,35.25 size49,3.5 z1.2 c$c3 ng nl0,1,0,1
 
 (rögzítő furatok y-8.5mm)
 h 3.5,5 z$z1 c$c1 d3 m1 jg0.2
 h 61.5,5 z$z1 c$c1 d3 m1 jg0.2
 
 (körvonal)
-b inline 7,0 size51.5,10 z$z1 c$c3 g2,1,0.3 r4 rj2 nl1,1,1,0
-b outline 0,0 size65,40 z$z1 c$c3 g2,1,0.3 r3
+b inline 7,0 size51.5,10 z$z1 c$c3 g2,0.3,0.3 r4 rj2 nl1,1,1,0
+b outline 0,0 size65,40 z$z1 c$c3 g2,0.3,0.3 r3
 
 
 

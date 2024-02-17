@@ -1195,8 +1195,8 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
     qreal peck_z = qMax(p.z, _lastLine.p1.z);
     //qreal zz = peck_z-cut.z;
 
-    bool isPeck = false;
-    bool isPeck2 = false;
+    bool isPeck = false; // a hideg oldalon kezd
+    bool isPeck2 = false; // a hideg oldalon kezd lasssabban
     bool isPeck3 = true;//false;
     bool isPeck4 = false;
 
@@ -1204,12 +1204,12 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
     auto lpeck2 = t.d*dPeck2;
 
     if(l>t.d*2){
-        /*if(l<=lpeck){
+        if(l<=lpeck && !no_compensate){
             isPeck = true;
             if(l<=lpeck2){
                 isPeck2 = true;
             }
-        }*/
+        }
         if(l<=lpeck){
             isPeck4 = true;
         }
@@ -1315,8 +1315,8 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
 
                 bool do_peck = false;
                 if(isPeck3 && !no_compensate){
-                    bool isPeck0 = !(i % (isPeck4?PECKSTEPS_2:PECKSTEPS));
-                    if(i>0 && isPeck0){
+                    bool isPeck0 = (i % (isPeck4?PECKSTEPS_2:PECKSTEPS)) == (isPeck4?PECKSTEPS_2:PECKSTEPS)-1;
+                    if(isPeck0){
                         do_peck = true;
                     }
                 }

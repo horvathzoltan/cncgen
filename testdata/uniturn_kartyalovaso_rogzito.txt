@@ -35,11 +35,11 @@ x3 = sub($x2,1)
 h1 = 10 # a bevágás hossza
 
 gw = 0.3
-gh = 0.5
+gh = 0.3
 
 (1)
 (alsó tartó)
-l $x1,0 $x1,$h1 z$z1 c$c2
+l $x1,0 $x1,$h1 z$z1 c$c3
 
 x22 = add($x1, 0.15)
 l $x22,3 $x22,8 z$z1 c$c4 no_comp
@@ -49,15 +49,22 @@ x5 = sub($x1,.7)
 l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
 
 (felső tartó)
-l $x2,0 $x2,3.2 z$z1 c$c2
+l $x2,0 $x2,3 z$z1 c$c3
 
-l $x2,5.8 $x2,$h1 z$z1 c$c2
+
+l $x2,6 $x2,$h1 z$z1 c$c3
 x22 = sub($x2, 0.15)
 l $x22,5.8 $x22,$h1 z$z1 c$c4 no_comp
 
-l $x3,3 $x3,5.5 z$z1 c$c2
+l $x3,3 $x3,5.5 z$z1 c$c3
 
-l $x3,5.5 $x2,8 z$z1 c$c2
+l $x3,5.5 $x2,8 z$z1 c$c3
+
+x4 = add($x2,.5)
+x5 = sub($x2,.5)
+
+l $x4,3 $x5,3 z$z1 c$c4 no_comp
+l $x4,6 $x5,6 z$z1 c$c4 no_comp
 
 
 x4 = add($x2,.7)

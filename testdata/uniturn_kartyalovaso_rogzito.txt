@@ -41,7 +41,7 @@ gh = 0.3
 (alsó tartó)
 l $x1,0 $x1,$h1 z$z1 c$c3
 
-x22 = add($x1, 0.15)
+x22 = add($x1, 0.2)
 l $x22,3 $x22,8 z$z1 c$c4 no_comp
 
 x4 = add($x1,.7)
@@ -50,25 +50,27 @@ l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
 
 (felső tartó)
 l $x2,0 $x2,2.5 z$z1 c$c3
-l $x2,6 $x2,$h1 z$z1 c$c3
 
-x22 = sub($x2, 0.15)
-l $x22,5.8 $x22,$h1 z$z1 c$c4 no_comp
+(felső tartó vége)
+l $x2,7.5 $x2,$h1 z$z1 c$c3
+x22 = sub($x2, 0.2)
+l $x22,7.5 $x22,$h1 z$z1 c$c4 no_comp
 
-l $x3,3 $x3,5.5 z$z1 c$c3
+(patent alja)
+l $x3,2.8 $x3,5 z$z1 c$c3
 
-l $x3,5.5 $x2,8 z$z1 c$c3
+(ferde bevágás)
+l $x3,5 $x2,8 z$z1 c$c3 no_comp
 
+(patent oldalai)
+x4 = add($x2,.5)
+x5 = sub($x2,.5)
+l $x4,2.8 $x5,2.8 z$z1 c$c3 no_comp
+l $x4,7 $x5,7 z$z1 c$c3 no_comp
 
 x4 = add($x2,.7)
 x5 = sub($x2,.7)
 l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
-
-x4 = add($x2,.5)
-x5 = sub($x2,.5)
-
-l $x4,2.8 $x5,3 z$z1 c$c3 no_comp
-l $x4,5.5 $x5,5.5 z$z1 c$c3 no_comp
 
 (tartó átvezető)
 #l 16,6 30,6 z$z1 c$c3

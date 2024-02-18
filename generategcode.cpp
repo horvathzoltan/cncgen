@@ -1391,6 +1391,8 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
             }
         else{
             qreal last_z = p.z;
+                bool as = false;
+            int s=0;
             for(int i=0;i<steps_0;i++){
                 //if(i==steps_0-1 && !simi) continue;
 
@@ -1406,6 +1408,18 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
                     p.z = z;
                 }
 
+                if(aljasimi && last_z==p.z){
+                    as=true;
+                    isPeck3 = false;
+                    feed.setFeed(_fmin);
+                    QString g1;
+                    bool ok = SetFeedToGCode(feed.feed(), &g1);
+                    if(ok && !g1.isEmpty()){
+                        g1+= L(" (set feed)");
+                        AppendGCode(&g, g1);
+                    }
+                }
+
                 //qreal d = GeoMath::Distance(pd,p);
                 //dt+=d;
                 auto g0 = GoToXYZ(GMode::Linear, p, feed.feed());
@@ -1414,8 +1428,8 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
                 //qreal peck_l = qAbs(peck_z-p.z);
 
 
-                //if(i<steps_0-2)
-                //{
+                if(!as)
+                {
                     Point pu = _lastLine.p0;
                     pu.z = _movZ;
 
@@ -1445,7 +1459,20 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
                     //qreal peck_l = qAbs(p.z-mz);
                     g0 = GoToZ(GMode::Linear,{0,0,p.z}, feed.feed());
                     AppendGCode(&g, g0);
-                //}
+                } else{
+                    if(!(s%2))
+                    {
+                        p=_lastLine.p1;
+                    }
+                    else
+                    {
+                        p=_lastLine.p0;
+                    }
+                    s++;
+                    auto g0 = GoToXYZ(GMode::Linear, p, feed.feed());
+                    AppendGCode(&g, g0);
+
+                }
 
                 //}
                 last_z = p.z;

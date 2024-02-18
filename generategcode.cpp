@@ -1047,7 +1047,7 @@ QString GenerateGcode::LinesToGCode(const QList<Line>& m2, QString *err){
         if(aljasimi){
             steps_0 += SIMI;
         }
-        steps_0 += SIMI;
+        //steps_0 += SIMI;
 
 
 
@@ -1074,13 +1074,53 @@ QString GenerateGcode::LinesToGCode(const QList<Line>& m2, QString *err){
         qreal lastz[m2.count()];
         for(int j=0;j<m2.count();j++){ lastz[j] = m.p0.z;}
 
-        for(int i=0;i<steps_0;i++){
+        int steps_m[m2.count()];
+        qreal f_m[m2.count()];
+        qreal c_m[m2.count()];
+
+        int steps_x =0;
+        for(int j=0;j<m2.count();j++){
+            Line mm = m2[j];
+
+            Cut cuta=mm.cut;
+            f_m[j] = mm.feed.feed();
+            c_m[j] = mm.cut.z0;
+            if (!m.no_compensate) {
+                qreal l = GeoMath::Distance(mm.p0, mm.p1);
+                CompensateModel c = Compensate2(l, mm.cut, mm.feed);
+                if (c.isCompensated) {
+                    f_m[j] = c.c_f;
+                    c_m[j] = c.c_z;
+                    cuta.z0=c.c_z;
+
+                    c.ToGCode(&g, mm.cut, mm.feed);
+                }
+            } else{
+                zInfo("no_compensate")
+            }
+
+            int steps_a = cuta.steps();
+            if(aljasimi){
+                steps_a += SIMI;
+            }
+
+            steps_m[j]=steps_a;
+
+            if(steps_a>steps_x)steps_x=steps_a;
+        }
+
+        for(int i=0;i<steps_x;i++){
 
             for(int j=0;j<m2.count();j++){
+                if(i>steps_m[j]) continue;
                 Line mm = m2[j];
 
                 feed = mm.feed;
                 cut = mm.cut;
+
+                feed.setFeed(f_m[j]);
+                cut.z0=c_m[j];
+
 /*
                 if (!m.no_compensate) {
                     qreal l = GeoMath::Distance(mm.p0, mm.p1);
@@ -1099,6 +1139,19 @@ QString GenerateGcode::LinesToGCode(const QList<Line>& m2, QString *err){
                 qreal z = m2[0].p0.z-(i+1)*cut.z0;
                 qreal zz = m2[0].p0.z-cut.z;
                 qreal zzz = (z<zz)?zz:z;
+
+
+                if(aljasimi && lastz[j]==zzz){
+                    //isPeck3 = false;
+                    AppendGCode(&g, "(simitás)");
+                    feed.setFeed(_fmin);
+                    QString g1;
+                    bool ok = SetFeedToGCode(feed.feed(), &g1);
+                    if(ok && !g1.isEmpty()){
+                        g1+= L(" (set feed)");
+                        AppendGCode(&g, g1);
+                    }
+                }
 
                 QString g0;
                 bool ok = SetFeedToGCode(feed.feed(), &g0);
@@ -1299,7 +1352,7 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
 
                 if(aljasimi && last_z==p.z){
                     isPeck3 = false;
-                    feed.setFeed(_fmin*0.75);
+                    feed.setFeed(_fmin);
                     QString g1;
                     bool ok = SetFeedToGCode(feed.feed(), &g1);
                     if(ok && !g1.isEmpty()){
@@ -1527,7 +1580,7 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
 
         if(aljasimi && last_z==p.z){
             isPeck3 = false;
-            feed.setFeed(_fmin*0.75);
+            feed.setFeed(_fmin);
             QString g1;
             bool ok = SetFeedToGCode(feed.feed(), &g1);
             if(ok && !g1.isEmpty()){
@@ -1553,7 +1606,8 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
 
         bool do_peck = false;
         if(isPeck3){
-            bool isPeck0 = !(i % (isPeck4?PECKSTEPS_2:PECKSTEPS));
+            //bool isPeck0 = !(i % (isPeck4?PECKSTEPS_2:PECKSTEPS));
+            bool isPeck0 = (i % (isPeck4?PECKSTEPS_2:PECKSTEPS)) == (isPeck4?PECKSTEPS_2:PECKSTEPS)-1;
             if(i>0 && isPeck0){
                 do_peck = true;
             }
@@ -1693,7 +1747,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut, bool alj
 
             if(aljasimi && last_z==p.z){
                 isPeck3 = false;
-                feed.setFeed(_fmin*0.75);
+                feed.setFeed(_fmin);
                 QString g1;
                 bool ok = SetFeedToGCode(feed.feed(), &g1);
                 if(ok && !g1.isEmpty()){
@@ -1710,7 +1764,8 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut, bool alj
 
             bool do_peck = false;
             if(isPeck3){
-                bool isPeck0 = !(step % (isPeck4?PECKSTEPS_2:PECKSTEPS));
+                //bool isPeck0 = !(step % (isPeck4?PECKSTEPS_2:PECKSTEPS));
+                bool isPeck0 = (step % (isPeck4?PECKSTEPS_2:PECKSTEPS)) == (isPeck4?PECKSTEPS_2:PECKSTEPS)-1;
                 if(step>0 && isPeck0){
                     do_peck = true;
                 }

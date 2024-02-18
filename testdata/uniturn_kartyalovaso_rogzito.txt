@@ -16,7 +16,7 @@ overcut0.500
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+emax0.025
 
 fmax900
 fmin700
@@ -25,8 +25,9 @@ fratio0.8
 z1 = 2
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
-c3 = 0.075 #keret
+c3 = 0.075
 c4 = 0.500 #gyors
+c5 = 0.150 #keret
 
 x1 = 7
 x2 = 32
@@ -76,7 +77,8 @@ l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
 (tartó átvezető)
 #l 16,6 30,6 z$z1 c$c3
 
-b outline 0,0 size37,15 z$z1 c$c3 g1,$gw,$gh r0 nl1,1,1,1
+(keret)
+b outline 0,0 size37,15 z$z1 c$c5 g1,$gw,$gh r0 nl1,1,1,1
 
 (2)
 #offset0,16,0

@@ -17,7 +17,7 @@ overcut0.500
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.025
+emax0.020
 
 fmax900
 fmin700
@@ -33,6 +33,6 @@ c5 = 0.150 #keret
 
 
 (tüskesor bemélyítés)
-b inline 7,33.5 size51,7 z1.2 c$c5 ng
-b inline 8,35.25 size49,3.5 z1.2 c$c5 ng nl0,1,0,1
+b inline 7,33.5 size51,7 z0.7 c$c5 ng no_overcut
+b inline 8,35.25 size49,3.5 z0.7 c$c5 ng nl0,1,0,1 no_overcut
 

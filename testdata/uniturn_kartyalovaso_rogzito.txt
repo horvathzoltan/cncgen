@@ -16,7 +16,7 @@ overcut0.500
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.025
+emax0.020
 
 fmax900
 fmin700
@@ -42,9 +42,11 @@ gh = 0.3
 (alsó tartó)
 l $x1,0 $x1,$h1 z$z1 c$c3
 
+(alsó tartó illesztés)
 x22 = add($x1, 0.05)
 l $x22,1.8 $x22,7.3 z$z1 c$c4 no_comp
 
+(alsó tartó rugó)
 x4 = add($x1,.7)
 x5 = sub($x1,.7)
 l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
@@ -54,7 +56,7 @@ l $x2,0 $x2,2.5 z$z1 c$c3
 
 (felső tartó vége)
 l $x2,8.3 $x2,$h1 z$z1 c$c3
-x22 = sub($x2, 0.05)
+x22 = sub($x2, 0.1)
 l $x22,8.3 $x22,$h1 z$z1 c$c4 no_comp
 
 (patent alja)
@@ -62,16 +64,17 @@ x4 = add($x3,.2)
 l $x4,2.8 $x3,5 z$z1 c$c3
 
 (ferde bevágás)
-l $x3,5 $x2,8.3 z$z1 c$c3 no_comp
+l $x3,5 $x2,8.3 z$z1 c$c3
 
 (patent oldalai)
 x4 = add($x2,.6)
-x5 = sub($x2,.2)
-l $x4,2.8 $x5,2.8 z$z1 c$c3 no_comp
-l $x4,7.3 $x5,7.3 z$z1 c$c3 no_comp
+x5 = sub($x2,.35)
+l $x4,3 $x5,3 z$z1 c$c3 no_comp
+l $x4,7.1 $x5,7.1 z$z1 c$c3 no_comp
 
-x4 = add($x2,.7)
-x5 = sub($x2,.7)
+(rugó bevágás)
+x4 = add($x2,.6)
+x5 = sub($x2,1)
 l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
 
 (tartó átvezető)

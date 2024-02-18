@@ -210,7 +210,7 @@ public:
     void GoToCutposition(QStringList *g, const Point& p, const Feed& feed);
     /*CUTS*/
     QStringList LinearCut(const Feed& feed, const Cut& cut, bool no_compensate, int menet, bool aljasimi);
-    QStringList HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a, bool aljasimi);
+    QStringList HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a, bool aljasimi, bool isPeck);
     QStringList CircularArcCut(const Feed& feed,const Cut& cut, bool aljasimi);
 
     QString TotalTimeToGCode();

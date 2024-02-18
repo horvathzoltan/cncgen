@@ -1469,7 +1469,7 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
                         p=_lastLine.p0;
                     }
                     s++;
-                    auto g0 = GoToXYZ(GMode::Linear, p, feed.feed());
+                    auto g0 = GoToXYZ(GMode::Linear, {p.x, p.y, zz}, feed.feed());
                     AppendGCode(&g, g0);
 
                 }
@@ -1527,7 +1527,7 @@ void GenerateGcode::CompensateModel::ToGCode(QStringList* g, const Cut& o_cut, c
 //}
 
 // a true => csigába lemegy, false: oda-vissza megy le
-auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool a, bool aljasimi) -> QStringList{
+auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool a, bool aljasimi, bool isPeca) -> QStringList{
     QStringList g(QStringLiteral("(helical cut)"));
     QString msg;
 
@@ -1568,28 +1568,35 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
     auto lpeck = t.d*dPeck/10;
     auto lpeck2 = t.d*dPeck2/10;
 
-    if(l>t.d*2){
-        /*  if(l<=lpeck){
-            isPeck = true;
-            if(l<=lpeck2){
-                isPeck2 = true;
+    if(isPeca)
+    {
+        if(l>t.d*2){
+            /*  if(l<=lpeck){
+                isPeck = true;
+                if(l<=lpeck2){
+                    isPeck2 = true;
+                }
+            }*/
+            if(l<=lpeck){
+                isPeck4 = true;
             }
-        }*/
-        if(l<=lpeck){
+        } else{
+            isPeck3 = true;
             isPeck4 = true;
         }
-    } else{
-        isPeck3 = true;
-        isPeck4 = true;
-    }
 
 
-    if(isPeck){
-        g.append("(peck)");
-    }
+        if(isPeck){
+            g.append("(peck)");
+        }
 
-    if(isPeck2){
-        g.append("(peck2)");
+        if(isPeck2){
+            g.append("(peck2)");
+        }
+    } else {
+        g.append("(no_peck)");
+        isPeck3 = false;
+        isPeck4 = false;
     }
 
     for(int i=0;i<steps_0;i++){
@@ -2091,7 +2098,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
                 // előmarás a kért átmérőig
                 if(path_r-td0>tdr){
                     //SetSelectedFeed(m.feed);
-                    auto g1=HelicalCut(td0, m.feed, m.cut, helicalMode, true);//m.cut.z
+                    auto g1=HelicalCut(td0, m.feed, m.cut, helicalMode, true, false);//m.cut.z
                     g.append(g1);
                 }
            }
@@ -2107,7 +2114,7 @@ auto GenerateGcode::HoleToGCode(const Hole &m, QString*err) -> QString
            Cut cut2 = m.cut;
            cut2.z = z2;
            bool aljasimi = !hasGaps;
-           auto g1=HelicalCut(path_r, m.feed, cut2, helicalMode, aljasimi);
+           auto g1=HelicalCut(path_r, m.feed, cut2, helicalMode, aljasimi, false);
            g.append(g1);
         }
 

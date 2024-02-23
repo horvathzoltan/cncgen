@@ -1,0 +1,98 @@
+(villaskulcs.txt)
+(cmd line: -i villaskulcs_22.txt -t)
+
+(szerszám beállítás)
+t1 m d2 h19
+
+
+yxz
+t1
+s50
+f900
+
+safetop0.20
+safebottom0.20
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.020
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.075
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
+
+l = 22
+
+(nyílás)
+x = div($l, 3.364)
+y = div($l, 1.732)
+l1 = sub($y,1)
+
+b inline 0,0 size$l1,$l z$z1 c$c3 jg0.05 nl0,1,0,1
+
+l2 = div($l, 2)
+y2 = add($y, $x)
+
+l8 = sub($l,1)
+l9 = add(0,1)
+
+y1 = sub($y,1)
+y21 = sub($y2,1)
+
+l $y21,$l2 $y1,$l9 z$z1 c$c3 g1,0.5,0.5
+l $y21,$l2 $y1,$l8 z$z1 c$c3 g1,0.5,0.5
+
+lx2 = div($x, .75)
+l5 = add($l,$lx2)
+l6 = sub(0,$lx2)
+l15 = add($l5,1)
+l16 = sub($l6,1)
+
+lx3 = div($x, 7)
+
+l3 = add($l,$lx3)
+l4 = sub(0,$lx3)
+
+l3 = add($l3,2)
+l4 = sub($l4,2)
+
+(fej külső körvonal ejeje)
+y11 = add($y,2)
+l $y11,$l16 0,$l4 z$z1 c$c3
+l $y11,$l15 0,$l3 z$z1 c$c3
+
+lx4 = div($x, 1.5)
+a1 = add($l2,$lx4)
+a2 = sub($l2,$lx4)
+a1 = add($l2,$x)
+a2 = sub($l2,$x)
+a11 = add($a1,1)
+a12 = sub($a2,1)
+
+(fej külső körvonal hátulja)
+
+y3 = sum($y2,$x,$x)
+
+l $y11,$l16 $y3,$a12  z$z1 c$c3 g1,0.5,0.5
+l $y11,$l15 $y3,$a11 z$z1 c$c3 g1,0.5,0.5
+
+(nyél)
+
+w = mul($l,2)
+lx5 = sub($a1, $a2)
+
+b outline $y3,$a2 size$w,$lx5 z$z1 c$c5 nl0,1,1,1 r$lx4 g2,0.5,0.5
+
+(levág)
+l 0,0 0,$l4 z$z1 c$c5 no_comp
+l 0,$l 0,$l3 z$z1 c$c5 no_comp
+

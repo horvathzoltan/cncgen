@@ -1,0 +1,85 @@
+UNITURN mérőállomás doboz hátlap 2)
+(cmd line: -i uniturn_doboz_hatlap_sablon.txt -t)
+
+(szerszám beállítás)
+t1 m d2 h19
+
+
+yxz
+t1
+s50
+f900
+
+safetop0.20
+safebottom0.20
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.020
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.075
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
+
+z2 = 0.1
+y1 = 19.25 # (31.5/2)+0.5+3.00
+xr = 31.5
+x1 = 11 # 6.5
+x1 = add($x1, 8.75)
+d1 = 4
+
+(tápcsatlakozó)
+print "x1:$x1"
+h $x1,$y1 d$d1 z$z1 c$c1 m1
+h $x1,$y1 d12 z$z2 c$c1 m1 np
+
+(hdmi)
+xr1 = 25.5
+x1 = add($x1, $xr1)
+print "x1:$x1"
+h $x1,$y1 d$d1 z$z1 c$c2 m1
+h $x1,$y1 d24 z$z2 c$c1 m1 np
+#h 110.6,19.7 d23.8 z4.5 c0.1 s70 f300 g2,.5,1
+#h r-11.95,9.35 z5 d3
+#h r23.9,-18.7 z5 d3
+
+
+(usb)
+x1 = add($x1, $xr)
+print "x1:$x1"
+h $x1,$y1 d$d1 z$z1 c$c1 m1
+h $x1,$y1 d24 z$z2 c$c1 m1 np
+#b inline 57.4,18 size13.1,14.00 z4.5 c0.1 g1,0.5,1 jg0.5
+#b inline 39.4,18 size13.1,14.00 z4.5 c0.1 g1,0.5,1 jg0.5
+
+(ethernet)
+print "x1:$x1"
+x1 = add($x1, $xr)
+h $x1,$y1 d$d1 z$z1 c$c1 m1
+h $x1,$y1 d24 z$z2 c$c1 m1 np
+#b inline 74.80,16.5 size15.9,13.5 z4.5 c0.1 g1,0.5,1 jg0.1
+
+
+(pedal)
+xr2 = 20
+x1 = add($x1, $xr2)
+print "x1:$x1"
+h $x1,$y1 d$d1 z$z1 c$c1 m1
+h $x1,$y1 d6 z$z2 c$c1 m1 np
+
+(körvonal)
+# 164
+# 1.6
+l -1,-1 0.6,30 z$z1 c$c3
+l 168.2,-1 166.6,30 z$z1 c$c3
+b outline 0,0 size167.2,30 z$z1 c$c3 g2,0.3,0.7 nl0,1,0,1
+

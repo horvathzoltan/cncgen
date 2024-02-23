@@ -238,26 +238,27 @@ DISTFILES += \
     testdata/tapdugo2.txt \
     testdata/tapdugo3.txt \
     testdata/telefontarto.txt \
-    testdata/uniturn_also_2.txt \
-    testdata/uniturn_also_2_korvonal.txt \
-    testdata/uniturn_also_2_usbfurat.txt \
     testdata/uniturn_doboz_fedlap_2.txt \
-    testdata/uniturn_doboz_hatlap.txt \
-    testdata/uniturn_doboz_hatlap_2.txt \
-    testdata/uniturn_felso.txt \
+    testdata/uniturn_doboz_hatlap_sablon.txt \
+    testdata/uniturn_doboz_szerelolap.txt \
     testdata/uniturn_kartyalovaso_rogzito.txt \
     testdata/uniturn_kartyaolvaso.txt \
     testdata/uniturn_kartyaolvaso_alatet.txt \
     testdata/uniturn_kartyaolvaso_patent.txt \
     testdata/uniturn_pizero_bolcso.txt \
-    testdata/uniturn_pizero_bolcso_tuske.txt \
     testdata/uniturn_relay_doboz_hatlap.txt \
     testdata/uniturn_relay_felso_szerelolap.txt \
     testdata/uniturn_relay_relays.txt \
     testdata/uniturn_relay_szerelolap.txt \
+    testdata/uniturn_tap_panel_rogzito.txt \
     testdata/uniturn_tavtarto_5mm.txt \
     testdata/uniturn_tavtarto_5mm_2oldalas.txt \
     testdata/uniturn_tavtarto_6mm.txt \
     testdata/uniturn_usb_kengyel.txt \
     testdata/uniturn_usb_kengyel_rogzito.txt \
-    testdata/usb.txt
+    testdata/usb.txt \
+    testdata/villaskulcs_16.txt \
+    testdata/villaskulcs_22.txt \
+    testdata/villaskulcs_22_2.txt \
+    testdata/villaskulcs_27.txt \
+    testdata/villaskulcs_27_2.txt

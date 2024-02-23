@@ -46,8 +46,9 @@ auto Point::Parse(const QString &txt,
     st.setState(ParseState::NotParsed);
     if(!p) return st;
 
-    double _x, _y, _z;        
-    if(!GCode::ParseValueXYZ(a, &_x, &_y, &_z, xymode, mmode)){
+    double _x, _y, _z;
+    bool parsed = GCode::ParseValueXYZ(a, &_x, &_y, &_z, xymode, mmode);
+    if(!parsed){
          st.addError(L("nincs pozíció adat"));
     };
     if(st.state()== ParseState::ParseError) return st;

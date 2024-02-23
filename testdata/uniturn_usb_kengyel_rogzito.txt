@@ -9,9 +9,9 @@ t1
 s50
 f900
 
-safetop0.10
-safebottom0.10
-overcut0.200
+safetop0.20
+safebottom0.20
+overcut0.300
 
 pre_mill_steps2
 
@@ -19,58 +19,133 @@ pre_mill_steps2
 emax0.02
 
 fmax900
-fmin500
+fmin700
 fratio0.8
 
 z1 = 2
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
-c3 = 0.100 #keret
+c3 = 0.075
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
 
-offset-111,0,0
+w = 55.7
+hh = 12
+lt = 15
+l = 41.5
+h = 6
+ht = 5
 
-x1 = 118.75
-x2 = 158.95
+w2 = div($w,2)
+hh1 = add($hh, 2)
 
-x1 = sub($x1, .6)
-x2 = add($x2, .6)
+l2 = div($l,2)
+
+x1 = sub($w2,$l2)
+x2 = add($w2,$l2)
+
+x1 = sub($x1,1)
+x2 = add($x2,1)
+
+
+xa1 = sub($x1, 0.1)
+xa2 = add($x2, 0.1)
+
+xb1 = sub($xa1, 0.7)
+xb2 = add($xa1, 0.7)
+
+xc1 = sub($xa2, 0.7)
+xc2 = add($xa2, 0.7)
+
+h1 = add($h,.5)
+
+lt2 = div($lt,2)
+xt1 = sub($w2,$lt2)
+xt2 = add($w2,$lt2)
+
+ht1 = add($ht,1)
+ht1a = add($ht1,0.1)
+
+(1)
+l $x1,-1 $x1,$h1 z$z1 c$c3
+l $x2,-1 $x2,$h1 z$z1 c$c3
+
+l $xa1,-1 $xa1,$h1 z$z1 c$c4 no_comp
+l $xa2,-1 $xa2,$h1 z$z1 c$c4 no_comp
+
+l $xb1,$h1 $xb2,$h1 z$z1 c$c4 no_comp
+l $xc1,$h1 $xc2,$h1 z$z1 c$c4 no_comp
+
+l $xt1,$ht1 $xt2,$ht1 z$z1 c$c3
+l $xt1,$ht1a $xt2,$ht1a z$z1 c$c4 no_comp
+
+b outline 0,0 size$w,$hh z$z1 c$c5 g2,0.3,0.3 r0 nl1,1,1,1
+
+hh2 = 0
+(2)
+hh2 = add($hh2, $hh1)
+offset0,$hh2,0
+l $x1,-1 $x1,$h1 z$z1 c$c3
+l $x2,-1 $x2,$h1 z$z1 c$c3
+
+l $xa1,-1 $xa1,$h1 z$z1 c$c4 no_comp
+l $xa2,-1 $xa2,$h1 z$z1 c$c4 no_comp
+
+l $xb1,$h1 $xb2,$h1 z$z1 c$c4 no_comp
+l $xc1,$h1 $xc2,$h1 z$z1 c$c4 no_comp
+
+l $xt1,$ht1 $xt2,$ht1 z$z1 c$c3
+l $xt1,$ht1a $xt2,$ht1a z$z1 c$c4 no_comp
+
+b outline 0,0 size$w,$hh z$z1 c$c5 g2,0.3,0.3 r0 nl1,1,1,0
 
 (3)
-l $x1,0 $x1,6.5 z$z1 c$c2
-l $x2,0 $x2,6.5 z$z1 c$c2
+hh2 = add($hh2, $hh1)
+offset0,$hh2,0
+l $x1,-1 $x1,$h1 z$z1 c$c3
+l $x2,-1 $x2,$h1 z$z1 c$c3
 
-l 130.75,6 146.75,6 z$z1 c$c3
+l $xa1,-1 $xa1,$h1 z$z1 c$c4 no_comp
+l $xa2,-1 $xa2,$h1 z$z1 c$c4 no_comp
 
-b outline 111,0 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,1
+l $xb1,$h1 $xb2,$h1 z$z1 c$c4 no_comp
+l $xc1,$h1 $xc2,$h1 z$z1 c$c4 no_comp
+
+l $xt1,$ht1 $xt2,$ht1 z$z1 c$c3
+l $xt1,$ht1a $xt2,$ht1a z$z1 c$c4 no_comp
+
+b outline 0,0 size$w,$hh z$z1 c$c5 g2,0.3,0.3 r0 nl1,1,1,0
 
 (4)
-l $x1,14 $x1,20.5 z$z1 c$c2
-l $x2,14 $x2,20.5 z$z1 c$c2
+hh2 = add($hh2, $hh1)
+offset0,$hh2,0
+l $x1,-1 $x1,$h1 z$z1 c$c3
+l $x2,-1 $x2,$h1 z$z1 c$c3
 
-l 130.75,20 146.75,20 z$z1 c$c3
+l $xa1,-1 $xa1,$h1 z$z1 c$c4 no_comp
+l $xa2,-1 $xa2,$h1 z$z1 c$c4 no_comp
 
-b outline 111,14 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,0
+l $xb1,$h1 $xb2,$h1 z$z1 c$c4 no_comp
+l $xc1,$h1 $xc2,$h1 z$z1 c$c4 no_comp
+
+l $xt1,$ht1 $xt2,$ht1 z$z1 c$c3
+l $xt1,$ht1a $xt2,$ht1a z$z1 c$c4 no_comp
+
+b outline 0,0 size$w,$hh z$z1 c$c5 g2,0.3,0.3 r0 nl1,1,1,0
 
 (5)
-l $x1,28 $x1,34.5 z$z1 c$c2
-l $x2,28 $x2,34.5 z$z1 c$c2
+hh2 = add($hh2, $hh1)
+offset0,$hh2,0
+l $x1,-1 $x1,$h1 z$z1 c$c3
+l $x2,-1 $x2,$h1 z$z1 c$c3
 
-l 130.75,34 146.75,34 z$z1 c$c3
+l $xa1,-1 $xa1,$h1 z$z1 c$c4 no_comp
+l $xa2,-1 $xa2,$h1 z$z1 c$c4 no_comp
 
-b outline 111,28 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,0
+l $xb1,$h1 $xb2,$h1 z$z1 c$c4 no_comp
+l $xc1,$h1 $xc2,$h1 z$z1 c$c4 no_comp
 
-(6)
-l $x1,42 $x1,48.5 z$z1 c$c2
-l $x2,42 $x2,48.5 z$z1 c$c2
+l $xt1,$ht1 $xt2,$ht1 z$z1 c$c3
+l $xt1,$ht1a $xt2,$ht1a z$z1 c$c4 no_comp
 
-l 130.75,48 146.75,48 z$z1 c$c3
-
-b outline 111,42 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,0
-
-(7)
-l $x1,56 $x1,62.5 z$z1 c$c2
-l $x2,56 $x2,62.5 z$z1 c$c2
-
-l 130.75,62 146.75,62 z$z1 c$c3
-
-b outline 111,56 size55.7,12 z$z1 c$c3 g2,0.7,0.7 r0 nl1,1,1,0
+b outline 0,0 size$w,$hh z$z1 c$c5 g2,0.3,0.3 r0 nl1,1,1,0

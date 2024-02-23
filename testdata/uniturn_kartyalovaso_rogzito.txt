@@ -11,7 +11,7 @@ f900
 
 safetop0.20
 safebottom0.20
-overcut0.500
+overcut0.300
 
 pre_mill_steps2
 

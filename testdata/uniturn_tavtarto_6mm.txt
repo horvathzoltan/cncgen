@@ -1,5 +1,5 @@
 (UNITURN mérőállomás alsó szerelőlap távtartó 6mm)
-(cmd line: -i uniturn_tavtarto_6mm.txt.txt -t)
+(cmd line: -i uniturn_tavtarto_6mm.txt -t)
 (szerszám beállítás)
 
 t1 m d2 h19
@@ -9,9 +9,9 @@ t1
 s50
 f900
 
-safetop0.10
-safebottom0.10
-overcut0.200
+safetop0.20
+safebottom0.20
+overcut0.500
 
 pre_mill_steps2
 
@@ -20,12 +20,14 @@ emax0.015
 
 fmax900
 fmin700
-fratio0.6
+fratio0.7
 
 z1 = 2
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
-c3 = 0.100 #keret
+c3 = 0.075
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
 
 (1)
 l 5.5,0 5.5,3.5 z$z1 c$c2

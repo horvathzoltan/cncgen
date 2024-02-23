@@ -1,6 +1,6 @@
 (UNITURN mérőállomás alsó szerelőlap 2)
-(cmd line: -i uniturn_also_2.txt -t)
-(plot cmd: -i uniturn_also_2.txt -t -p)
+(cmd line: -i uniturn_doboz_szerelolap.txt -t)
+
 (szerszám beállítás)
 
 t1 m d2 h19
@@ -10,47 +10,59 @@ t1
 s50
 f900
 
-safetop0.250
-safebottom0.250
+safetop0.200
+safebottom0.200
 overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.005
+emax0.020
 
 fmax900
-fmin600
+fmin700
 fratio0.8
 
 
 z1 = 2
-c1 = 0.02 #furatok
-c2 = 0.04 #letörések
-c3 = 0.08 #keret
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.075
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
+jg1 = 0.1
 
 (pi3b furatok)
 b corners 4.5,77 size49,58 z$z1 c$c1 d2.75 jg0.05
+
+#(piZero furatok)
+#b corners 70.5,123 size58,23 d3 z$z1 c$c1 d2.75 jg0.05
 
 (pi bolcso furatok)
 h 62,77 z$z1 c$c1 d3 m1 jg0.2
 h 62,135 z$z1 c$c1 d3 m1 jg0.2
 
-(relé furatok)
+(rfid rögzítő bevágás)
+l 80,153 80,146 z$z1 c$c3
+l 126,153 126,146 z$z1 c$c3
+
+(tápelosztó alátámasztás)
+h 112,129 z$z1 c$c1 d3 m1
+
+#(relé furatok)
 #b corners 144,12 size44.8,33.1 z$z1 c$c1 d3
 
-(rfid furatok)
+#(rfid furatok)
 #b corners 130,100 size50,15 z$z1 c$c1 d3
-h 113.5,147 d3 z$z1 c$c1 m1 jg0.2
-
-(piZero furatok)
-#b corners 70.5,123 size58,23 d3 z$z1 c$c1 d2.75 jg0.05
+#h 113.5,147 d3 z$z1 c$c1 m1 jg0.2
 
 (alátámasztás)
+h 29,35 d3 z$z1 c$c1 m1 jg0.2
+h 29,87 d3 z$z1 c$c1 m1 jg0.2
+h 29,130 d3 z$z1 c$c1 m1 jg0.2
+
 h 66,67 d3 z$z1 c$c1 m1 jg0.2
 #h 143,80 d3 z$z1 c$c1 m1 jg0.2
-
-jg1 = 0.1
 
 (usb kengyel rögzítőfuratok)
 h 157,110 d3 z$z1 c$c1 m1 jg$jg1
@@ -62,6 +74,9 @@ h 157,44 d3 z$z1 c$c1 m1 jg$jg1
 h 170,130 d3 z$z1 c$c1 m1
 h 170,87 d3 z$z1 c$c1 m1
 h 170,24 d3 z$z1 c$c1 m1
+
+(usb kengyel szélső alátámasztás)
+h 189,64 d3 z$z1 c$c1 m1
 
 (usb kengyel alátámasztás 2)
 h 130,110 d3 z$z1 c$c1 m1
@@ -77,10 +92,12 @@ h 189,124 d3 z$z1 c$c1 m1
 h 189,4 d3 z$z1 c$c1 m1
 
 (dugó kivágások)
-b inline 42,0 size96,30 z$z1 c$c2 g2,0.5,0.5 r5 nl1,1,1,0 rj2
-b inline 20,0 size22,22 z$z1 c$c2 g1,0.5,0.5 r5 nl1,1,0,0 rj2
+#b inline 42,0 size96,30 z$z1 c$c3 g2,0.5,0.5 r5 nl1,1,1,0 rj2
+#b inline 20,0 size22,22 z$z1 c$c3 g1,0.5,0.5 r5 nl1,1,0,0 rj2
+
+b inline 42,0 size92,27 z$z1 c$c3 g2,0.5,0.5 r5 nl1,1,1,0 rj2
 
 (usb hub furatai)
 
 (körvonal)
-b outline 0,0 194,152 z$z1 c$c3 g3,0.5,0.5 r5
+b outline 0,0 194,152 z$z1 c$c5 g3,0.5,0.5 r5

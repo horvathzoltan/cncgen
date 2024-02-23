@@ -1,0 +1,84 @@
+(UNITURN mérőállomás alsó szerelőlap pizero bolcso)
+(cmd line: -i uniturn_tap_panel_rogzito.txt -t)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.10
+safebottom0.10
+overcut0.200
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.020
+
+fmax900
+fmin700
+fratio0.7
+
+z1 = 2
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.075
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
+
+gw = 0.3
+gh = 0.3
+
+(1)
+ph = 2.5
+th=14.5
+
+wb = 19
+w = sum($wb,3,3)
+
+y11 = sum($ph,$th,2)
+
+wb2 = div($wb,2)
+x10 = div($w,2)
+x11 = add($x10,$wb2)
+x12 = sub($x10,$wb2)
+
+# 14.70
+(tartó horony)
+l $x11,$y11 $x12,$y11 z$z1 c$c3
+
+(patent)
+wp = 2.7
+wp0 = add($wp,2)
+wp2 = div($wp0,2)
+xp1 = sub($x10,$wp2)
+xp2 = add($x10,$wp2)
+print "xp1: $xp1"
+print "xp2: $xp2"
+
+(bevágás a patent széléig)
+xp11 = sub($xp1,1)
+xp21 = add($xp2,1)
+l 0,$ph $xp1,$ph z$z1 c$c3
+l $xp2,$ph $w,$ph z$z1 c$c3
+
+ph2 = add($ph,.5)
+(patent oldalai)
+l $xp1,0 $xp1,$ph2 z$z1 c$c3 no_comp
+l $xp2,0 $xp2,$ph2 z$z1 c$c3 no_comp
+
+(patent alja)
+l $xp1,0 $xp2,0 z$z1 c$c3 no_comp
+
+(keret)
+h = sum($th,5)
+b outline 0,$ph size$w,$h z$z1 c$c5 g1,$gw,$gh r0 rj2 nl1,1,1,0
+
+(2)
+
+#l 18.5,0 18.5,3.5 z$z1 c$c2
+
+#b outline 13,0 size11,6 z$z1 c$c3 g1,0.5,0.5 r0 rj2 nl1,1,1,1
+

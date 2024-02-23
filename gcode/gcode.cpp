@@ -140,7 +140,8 @@ auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode 
         //bool isok_a, isok_b, isok_c=false;
         //double a = ns[0].toDouble(&isok_a);
         double a,b,c;
-        bool isok_a = GCode::ToDouble(ns[0], &a);
+        QString aa = ns[0];
+        bool isok_a = GCode::ToDouble(aa, &a);
         bool isok_b = GCode::ToDouble(ns[1], &b);
         //double b = ns[1].toDouble(&isok_b);
         bool has_c = (ns.length()>=3&&!ns[2].isEmpty());
@@ -191,11 +192,16 @@ auto GCode::ToDouble(const QString& a, qreal *v) -> bool
 //    if(a=="$m1"){
 //        zInfo(L("$m1:")+a);
 //    }
-    QVariant variable;
-    if(a.startsWith('$')&&a.length()>1 &&(variable = GCode::_variables.value(a.mid(1))).isValid())
+
+    if(a.startsWith('$')&&a.length()>1)
     {
-        *v=variable.toDouble();
-        return true;
+        QString ami = a.mid(1);
+        QVariant variable = GCode::_variables.value(ami);
+        bool isValid = variable.isValid();
+        if(isValid){
+            *v=variable.toDouble();
+            return true;
+            }
     }
     return false;
 }

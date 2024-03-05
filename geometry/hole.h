@@ -37,7 +37,7 @@ struct Hole{
     bool ng=false;
     qreal jointGap=0; // illesztési hézag
     QString name;
-    int mode=0;
+    int mode=1;
 
     static ParseState Parse(const QString& txt, XYMode xymode,
                             MMode mmode, Hole*, Point *offset);

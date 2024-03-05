@@ -1,0 +1,52 @@
+(ms kamera tartó plottolashoz)
+(cmd line: -i ms_kamera_tarto.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+
+t1
+s50
+f900
+
+safetop0.20
+safebottom0.20
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+z2 = 0.7
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.075
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
+
+
+b outline -10,25 10,70 z$z1 c$c5 g1,2,0.7 nl1,0,1,0
+
+l 0,86 0,65 z$z1 c$c2
+
+l 10,56 -10,56 z$z2 c$c2
+l 10,26 -10,26 z$z2 c$c2
+
+h 0,16 d9 z$z1 c$c2 jg0.5
+h 22,16 d6.8 z$z1 c$c2 jg0.5
+
+b outline -25,23 25,3 z$z1 c$c5 g1,2,0.7 nl1,0,1,1
+l -25,23 -11,25 z$z2 c$c2
+l 25,23 11,25 z$z2 c$c2
+
+h 0,98 d25.8 z$z1 c$c2
+a 11,70 -11,70 0,98 z$z1 c$c5
+
+

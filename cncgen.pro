@@ -223,7 +223,9 @@ DISTFILES += \
     testdata/mestercipo_tap_szerelolap_1.txt \
     testdata/mestercipo_tap_szerelolap_also.txt \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
+    testdata/meton_doboz_also_szerelolap.txt \
     testdata/meton_doboz_felso_szerelolap.txt \
+    testdata/ms_kamera_tarto.txt \
     testdata/pi_alatet_24db.txt \
     testdata/pi_alatet_4db.txt \
     testdata/pi_alatet_5db.txt \

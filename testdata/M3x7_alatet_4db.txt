@@ -9,23 +9,32 @@ t1
 s50
 f900
 
-safetop0.250
-safebottom0.250
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.20
+safebottom0.20
 overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.012
+emax0.02
 
 fmax900
-fmin500
-fratio0.6
+fmin700
+fratio0.8
 
 z1 = 2
-c1 = 0.02 #furatok
-c2 = 0.04 #letörések
-c3 = 0.08 #keret
+c1 = 0.025
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
 
 
 (mélység)
@@ -49,21 +58,21 @@ o = add($dk,3)
 
 (1.sor)
 
-h $x,$y d$db z$th c$c1 jg$j1 m1
-h $x,$y d$dk z$th c$c3 g2,0.3,$gh np m1
-
-x = add($x,$o)
-
-h $x,$y d$db z$th c$c1 jg$j1 m1
+h $x,$y d$db z$th c$c2 jg$j1 m1
 h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c1 jg$j1 m1
+h $x,$y d$db z$th c$c2 jg$j1 m1
 h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c1 jg$j1 m1
+h $x,$y d$db z$th c$c2 jg$j1 m1
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c2 jg$j1 m1
 h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
 

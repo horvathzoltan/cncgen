@@ -55,7 +55,7 @@ auto Hole::Parse(const QString &txt, XYMode xymode, MMode mmode, Hole* m, Point 
     bool no_predrill = false;
     bool no_gaps = false;
     qreal jointGap=0;
-    int mode = 0;
+    int mode = 1;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];

@@ -161,7 +161,7 @@ private:
     auto ValidateTool() -> bool;
     //auto CheckCut(const Cut& cut, QString*err) -> bool;
     /*Geomerty*/
-    auto LineToGCode(const Line& m,QString *err, bool aljasimi) -> QString;
+    auto LineToGCode(const Line& m,QString *err) -> QString;
     auto LinesToGCode(const QList<Line>& m,QString *err) -> QString;
 
     auto HoleToGCode(const Hole& m,QString*err) -> QString;
@@ -209,9 +209,9 @@ public:
     /*moves*/
     void GoToCutposition(QStringList *g, const Point& p, const Feed& feed);
     /*CUTS*/
-    QStringList LinearCut(const Feed& feed, const Cut& cut, bool no_compensate, int menet, bool aljasimi);
+    QStringList LinearCut(const Feed& feed, const Cut& cut, bool no_compensate, int menet, bool no_simi);
     QStringList HelicalCut(qreal path_r, const Feed& feed,const Cut& cut, bool a, bool aljasimi, bool isPeck);
-    QStringList CircularArcCut(const Feed& feed,const Cut& cut, bool aljasimi);
+    QStringList CircularArcCut(const Feed& feed,const Cut& cut, bool no_simi);
 
     QString TotalTimeToGCode();
     static qreal MinToMilliSec(qreal a);

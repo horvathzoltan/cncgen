@@ -1,0 +1,146 @@
+(METON panel rögzítő)
+(cmd line: -i meton_panel_rogzito.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.20
+safebottom0.20
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+c1 = 0.025
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
+
+gw = 0.6
+gh = 0.4
+
+offset1,1,0
+(1)
+ph = 2.5
+th = 2 # tartó horony távolsága az alaplaptól
+
+wb = 86
+w = sum($wb,3,3)
+
+y11 = sum($ph,$th,2)
+
+wb2 = div($wb,2)
+
+w2 = div($w,2)
+
+
+
+(patent)
+x10 = 21
+wp = 2.5
+wp0 = add($wp,2)
+wp2 = div($wp0,2)
+xp1 = sub($x10,$wp2)
+xp2 = add($x10,$wp2)
+print "xp1: $xp1"
+print "xp2: $xp2"
+
+wr = 3.2
+wr0 = add($wr,2)
+wr2 = div($wr0,2)
+xr1 = sub($x10,$wr2)
+xr2 = add($x10,$wr2)
+print "xr1: $xr1"
+print "xr2: $xr2"
+
+(bevágás a patent széléig)
+xp11 = add($xr1, .3)
+xp12 = sub($xr2, .3)
+(alsó_1)
+l 0,$ph $xp11,$ph z$z1 c$c5 g1,$gw,$gh ns
+
+ph11 = sub($ph,0.3)
+ph12 = add($ph,0.3)
+l $xp11,$ph11 $xp11,$ph12 z$z1 c$c4 ns no_comp
+
+ph2 = sub($ph, 0.5)
+ph3 = sub($ph, 3.0)
+ph4 = sub($ph, 3.5)
+
+(patent oldalai)
+l $xp1,$ph3 $xr1,$ph2 z$z1 c$c2 ns no_comp
+l $xp2,$ph3 $xr2,$ph2 z$z1 c$c2 ns no_comp
+
+(patent alja)
+l $xp1,$ph4 $xp2,$ph4 z$z1 c$c2 ns no_comp
+
+xu = $xp12
+
+(patent)
+x10 = 71
+wp = 2.5
+wp0 = add($wp,2)
+wp2 = div($wp0,2)
+xp1 = sub($x10,$wp2)
+xp2 = add($x10,$wp2)
+print "xp1: $xp1"
+print "xp2: $xp2"
+
+wr = 3.2
+wr0 = add($wr,2)
+wr2 = div($wr0,2)
+xr1 = sub($x10,$wr2)
+xr2 = add($x10,$wr2)
+print "xr1: $xr1"
+print "xr2: $xr2"
+
+(bevágás a patent széléig)
+xp11 = add($xr1, .3)
+xp12 = sub($xr2, .3)
+
+#ph11 = sub($ph,0.2)
+#ph12 = add($ph,0.2)
+l $xu,$ph $xp11,$ph z$z1 c$c5 ns g1,$gw,$gh
+l $xu,$ph11 $xu,$ph12 z$z1 c$c4 ns no_comp
+l $xp11,$ph11 $xp11,$ph12 z$z1 c$c4 ns no_comp
+
+l $xp12,$ph $w,$ph z$z1 c$c5 ns g1,$gw,$gh
+l $xp12,$ph11 $xp12,$ph12 z$z1 c$c4 ns no_comp
+
+ph2 = sub($ph, 0.5)
+ph3 = sub($ph, 3.0)
+ph4 = sub($ph, 3.5)
+
+(patent oldalai)
+l $xp1,$ph3 $xr1,$ph2 z$z1 c$c2 ns no_comp
+l $xp2,$ph3 $xr2,$ph2 z$z1 c$c2 ns no_comp
+
+(patent alja)
+l $xp1,$ph4 $xp2,$ph4 z$z1 c$c2 ns no_comp
+
+
+(tartó horony)
+x11 = add($w2,$wb2)
+x12 = sub($w2,$wb2)
+l $x11,$y11 $x12,$y11 z$z1 c$c3 ns
+
+
+(keret)
+h = sum($th,2,10)
+b outline 0,$ph size$w,$h z$z1 c$c5 ns g3,$gw,$gh r0 rj2 nl1,1,1,0
+
+
+

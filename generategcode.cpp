@@ -500,7 +500,7 @@ auto  GenerateGcode::ParseLineToGCode(const QString& str, QString *gcode, QStrin
         // if(m.name=="brekk"){
         //     zInfo("brekk")
         // }
-        if(gcode)*gcode=LineToGCode(m,err, true);
+        if(gcode)*gcode=LineToGCode(m,err);
     }
     QString msg;
     StringHelper::Append(&msg, s.ToString(), '\n');
@@ -826,7 +826,7 @@ auto GenerateGcode::ValidateTool()->bool
 //}
 
 /*LINE*/
-auto GenerateGcode::LineToGCode(const Line& m,QString *err, bool aljasimi0) -> QString
+auto GenerateGcode::LineToGCode(const Line& m,QString *err) -> QString
 {
     //_lasterr.clear();/*LINE*/
     QString msg = G1+m.ToString();
@@ -913,10 +913,10 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err, bool aljasimi0) -> Q
          Cut cut2 = m.cut;
          cut2.z=z2;
 
-         bool nogap = !mgap.isValid();
-         bool aljasimi = aljasimi0 && nogap;
+         //bool nogap = !mgap.isValid();
+         //bool aljasimi = (!m.no_simi) && nogap;
 
-         auto g0 = LinearCut(m.feed, cut2, m.no_compensate, m.menet, aljasimi);
+         auto g0 = LinearCut(m.feed, cut2, m.no_compensate, m.menet, m.no_simi);
          g.append(g0);
     }
 
@@ -929,7 +929,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err, bool aljasimi0) -> Q
         //auto gap_length = GeoMath::Distance(ba1, ja1);
         QString gap_name = m.name+" gap";//: "+QString::number(gap_length);
 
-        Line l_gap={ba1,ja1, cut_gap, m.feed,{}, {}, gap_name, false, m.no_compensate, m.menet};
+        Line l_gap={ba1,ja1, cut_gap, m.feed,{}, {}, gap_name, false, m.no_compensate, m.menet, m.no_simi};
         QList<Line> gap_segments = l_gap.Divide(mgap, t.d);
 
         QList<Cut> gap_cuts;
@@ -943,7 +943,7 @@ auto GenerateGcode::LineToGCode(const Line& m,QString *err, bool aljasimi0) -> Q
             Cut gap_cut = m.cut;
             gap_cut.z = gap_segment.cut.z;
             gap_cuts.append(gap_cut);
-            auto g01 = LinearCut(m.feed, gap_cut, m.no_compensate, m.menet, true);
+            auto g01 = LinearCut(m.feed, gap_cut, m.no_compensate, m.menet,  m.no_simi);
             g.append(g01);
             _lastLine.p0 = px0; // azonnal vissza is állítjuk
             _lastLine.p1 = px1;
@@ -1038,15 +1038,17 @@ QString GenerateGcode::LinesToGCode(const QList<Line>& m2, QString *err){
         //    qreal zo = p.z;
 
 
-        int steps_0 = 0;
+      //  int steps_0 = 0;
 
-        steps_0 = m.cut.steps();
+        //steps_0 = m.cut.steps();
 
-        bool aljasimi = true;
+        /*bool aljasimi = !m.no_simi;
 
         if(aljasimi){
             steps_0 += SIMI;
-        }
+        } else{
+            zInfo("no_simi");
+        }*/
         //steps_0 += SIMI;
 
 
@@ -1100,7 +1102,7 @@ QString GenerateGcode::LinesToGCode(const QList<Line>& m2, QString *err){
             }
 
             int steps_a = cuta.steps();
-            if(aljasimi){
+            if(!m.no_simi){
                 steps_a += SIMI;
             }
 
@@ -1141,7 +1143,7 @@ QString GenerateGcode::LinesToGCode(const QList<Line>& m2, QString *err){
                 qreal zzz = (z<zz)?zz:z;
 
 
-                if(aljasimi && lastz[j]==zzz){
+                if((!m.no_simi) && lastz[j]==zzz){
                     //isPeck3 = false;
                     AppendGCode(&g, "(simitás)");
                     feed.setFeed(_fmin);
@@ -1211,7 +1213,7 @@ qreal GenerateGcode::MilliSecToMin(qreal a){
 }
 
 // koordináták minden paraméter be van állítva
-QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool no_compensate, int menet, bool aljasimi) {
+QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool no_compensate, int menet, bool no_simi) {
     QStringList g(QStringLiteral("(linear cut)"));
     QString msg;
 
@@ -1296,7 +1298,7 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
         steps_0 = menet;
     }
 
-    if(aljasimi){
+    if(!no_simi){
         steps_0 += SIMI;
     }
 
@@ -1350,7 +1352,7 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
                     p.z = z;
                 }
 
-                if(aljasimi && last_z==p.z){
+                if((!no_simi) && last_z==p.z){
                     isPeck3 = false;
                     feed.setFeed(_fmin);
                     QString g1;
@@ -1408,7 +1410,7 @@ QStringList GenerateGcode::LinearCut(const Feed& o_feed, const Cut& o_cut, bool 
                     p.z = z;
                 }
 
-                if(aljasimi && last_z==p.z){
+                if((!no_simi) && last_z==p.z){
                     as=true;
                     isPeck3 = false;
                     feed.setFeed(_fmin);
@@ -1675,7 +1677,7 @@ auto GenerateGcode::HelicalCut(qreal path_r, const Feed& o_feed,const Cut& o_cut
     return g;
 }
 
-auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut, bool aljasimi) -> QStringList{
+auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut, bool no_simi) -> QStringList{
     QStringList g(QStringLiteral("(circular_arc cut)"));
     QString msg;
 
@@ -1702,7 +1704,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut, bool alj
 
     int steps = cut.steps();
 
-    if(aljasimi){
+    if(!no_simi){
         steps += SIMI;
     }
 
@@ -1779,7 +1781,7 @@ auto GenerateGcode::CircularArcCut(const Feed& o_feed,const Cut& o_cut, bool alj
             }
 
 
-            if(aljasimi && last_z==p.z){
+            if((!no_simi) && last_z==p.z){
                 isPeck3 = false;
                 feed.setFeed(_fmin);
                 QString g1;
@@ -2777,10 +2779,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             }
 
             lines_border= {
-                {ba1,ja1, cut_border, m.feed,{}, {}, m.name+" border 1 ba1,ja1", false, m.no_compensate, m.menet},
-                {ja2,jf2, cut_border, m.feed,{}, {}, m.name+" border 2 ja2,jf2", false, m.no_compensate, m.menet},
-                {jf3,bf3, cut_border, m.feed,{}, {}, m.name+" border 3 jf3,bf3", false, m.no_compensate, m.menet},
-                {bf4,ba4, cut_border, m.feed,{}, {}, m.name+" border 4 bf4,ba4", false, m.no_compensate, m.menet}};
+                {ba1,ja1, cut_border, m.feed,{}, {}, m.name+" border 1 ba1,ja1", false, m.no_compensate, m.menet, m.no_simi},
+                {ja2,jf2, cut_border, m.feed,{}, {}, m.name+" border 2 ja2,jf2", false, m.no_compensate, m.menet, m.no_simi},
+                {jf3,bf3, cut_border, m.feed,{}, {}, m.name+" border 3 jf3,bf3", false, m.no_compensate, m.menet, m.no_simi},
+                {bf4,ba4, cut_border, m.feed,{}, {}, m.name+" border 4 bf4,ba4", false, m.no_compensate, m.menet, m.no_simi}};
             }
 
         if(isRounding){
@@ -2831,10 +2833,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
             Cut cut_gap{m.gap.height,  cz0};
 
             lines_gap = {
-                {ba1,ja1, cut_gap, m.feed,{},{}, m.name+" gap 1 ba1,ja1", false, m.no_compensate, m.menet},
-                {ja2,jf2, cut_gap, m.feed,{},{}, m.name+" gap 2 ja2,jf2", false, m.no_compensate, m.menet},
-                {jf3,bf3, cut_gap, m.feed,{},{}, m.name+" gap 3 jf3,bf3", false, m.no_compensate, m.menet},
-                {bf4,ba4, cut_gap, m.feed,{},{}, m.name+" gap 4 bf4,ba4", false, m.no_compensate, m.menet}
+                {ba1,ja1, cut_gap, m.feed,{},{}, m.name+" gap 1 ba1,ja1", false, m.no_compensate, m.menet, m.no_simi},
+                {ja2,jf2, cut_gap, m.feed,{},{}, m.name+" gap 2 ja2,jf2", false, m.no_compensate, m.menet, m.no_simi},
+                {jf3,bf3, cut_gap, m.feed,{},{}, m.name+" gap 3 jf3,bf3", false, m.no_compensate, m.menet, m.no_simi},
+                {bf4,ba4, cut_gap, m.feed,{},{}, m.name+" gap 4 bf4,ba4", false, m.no_compensate, m.menet, m.no_simi}
             };
         }
         zInfo(L("(segments)"));
@@ -2861,7 +2863,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                 Line line_gap;
                 if(hasGaps){
                     qreal l = l_border.Length();
-                    auto gap2 = m.gap;
+                    Gap gap2 = m.gap;
                     if(l<gap_max_l){
                         gap2.n = 1;
                     } else{
@@ -2874,7 +2876,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
                     if(!hasGapSegments){
                         zInfo(QStringLiteral("cannot divide line"));
-                    } else{
+                    } else{                        
                         qreal distance = GeoMath::Distance(gapSegments[0].p0, gapSegments[0].p1);
                         if(distance<t.d) {
                             if(err){*err=L("line too short: ")+QString::number(distance)+"mm";}
@@ -2957,7 +2959,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                     auto px1 = _lastLine.p1;
                     QString g0;
 
-                    g0 = LineToGCode(segment, &e0, false);
+                    g0 = LineToGCode(segment, &e0);
 
                     bool hasGcode = !g0.isEmpty();
                     if(hasGcode){

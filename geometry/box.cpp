@@ -31,7 +31,8 @@ Box::Box(const Point &_p0,
          const QString & _name,
          bool _nr[4],
          bool _no_compensate,
-         int _menet)
+         int _menet,
+         bool ns)
 {
     p0=_p0;
     p1=_p1;
@@ -62,6 +63,7 @@ Box::Box(const Point &_p0,
     nr[3]=_nr[3];
 
     no_compensate = _no_compensate;
+    no_simi = ns;
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -92,6 +94,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     QString name;
     bool _no_compensate = false;
     int menet = -1;
+    bool _no_simi = false;
 
     bool nl[]={1,1,1,1};
     bool nr[]={1,1,1,1};
@@ -213,6 +216,10 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             continue;
         }
 
+        if(p.toLower()=="ns"){
+            _no_simi = true;
+            continue;
+        }
 
 //        if(p.startsWith('z')){
 //            GCode::ParseValue(p, L("z"), &cut.z);
@@ -271,7 +278,10 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         rounding, rjoin,
         vcorner_x, vcorner_y,
         name,
-        nr, _no_compensate, menet
+        nr,
+        _no_compensate,
+        menet,
+        _no_simi
     };
 
     st.setState(ParseState::Parsed);

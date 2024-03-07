@@ -24,8 +24,8 @@ Line::Line(const Point &_p0,
            const QString& _name,
            bool _no_overcut,
            bool _no_compensate,
-           int _menet
-           //bool _aljasimi
+           int _menet,
+           bool ns
            )
 {
     p0 = _p0;
@@ -39,7 +39,7 @@ Line::Line(const Point &_p0,
     no_overcut = _no_overcut;
     no_compensate = _no_compensate;
     menet = _menet;
-   // aljasimi = _aljasimi;
+    no_simi = ns;
 }
 
 auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point *offset) -> ParseState
@@ -60,7 +60,8 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
     QString name;
     bool no_overcut = false;
     bool no_compensate = false;
-    int menet = -1;
+    int menet = -1;    
+    bool _no_simi = false;
 
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
@@ -111,6 +112,11 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
             continue;
         }
 
+        if(p.toLower()=="ns"){
+            _no_simi = true;
+            continue;
+        }
+
         if(p.startsWith('m')){
             int a;
             bool ok = GCode::ParseValue(p, L("m"), &a);
@@ -122,7 +128,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
     bool hasPoints = points.length()>=2;
     bool positionErr = !hasPoints&&!rpoint.isValid();
     if(positionErr){st.addError(L("no position data"));}
-    if(st.state()== ParseState::ParseError) return st;
+    if(st.state()== ParseState::ParseError) return st;    
 
     *m= {
         hasPoints?points[0]:Point(),
@@ -134,7 +140,8 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         name,
         no_overcut,
         no_compensate,
-        menet};//, true};
+        menet,
+        _no_simi};
 
     st.setState(ParseState::Parsed);
     return st;
@@ -190,7 +197,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
         bool isok2 = GeoMath::Divider(kp,op,o1,&op1);
         if(!isok2) continue;
         // line:kp2->op1
-        Line l = {kp2, op1, cut, feed,{}, {}, name+" slice:"+QString::number(i), false, false, -1};
+        Line l = {kp2, op1, cut, feed,{}, {}, name+" slice:"+QString::number(i), no_overcut, no_compensate, menet, no_simi};
         m.append(l);
         Point op2 ={0,0,0};
         bool isok3 = GeoMath::Divider(kp,op,o2,&op2);
@@ -204,7 +211,7 @@ auto Line::Divide(const Gap& g, qreal tool_d) -> QList<Line>
 //        Line gap = {op1, op2, z-g.h, s, sp, f};
 //        m.append(gap);
     }
-    Line lx = {kp2, p1, cut, feed,{},{}, name + " slice:last", false, false, -1};
+    Line lx = {kp2, p1, cut, feed,{},{}, name + " slice:last", no_overcut, no_compensate, menet, no_simi};
     m.append(lx);
     zInfo(L("gap_")+": " + ToString());
     for(int i=0;i<m.length();i++){

@@ -21,8 +21,10 @@ struct Line{
          const Gap& _gap,
          const Point& _rp,
          const QString& _name,
-         bool noc,
-         bool _no_compensate, int menet//, bool _aljasimi
+         bool _no_overcut,
+         bool _no_compensate,
+         int menet,
+         bool ns
          );
     Point p0;
     Point p1;
@@ -31,10 +33,11 @@ struct Line{
     Point rp;
     Gap gap;
     QString name;
-    //bool aljasimi = true;
+
     bool no_overcut = false;
     bool no_compensate = false;
     int menet = -1;
+    bool no_simi = false;
 
     static ParseState Parse(const QString& txt, XYMode xymode,MMode mmode, Line *l, Point *offset);
     QString ToString() const;    

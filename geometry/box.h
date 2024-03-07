@@ -29,7 +29,10 @@ public:
         qreal _vcorner_x,
         qreal _vcorner_y,
         const QString& _name,
-        bool _nr[4], bool _no_compensate, int _menet
+        bool _nr[4],
+        bool _no_compensate,
+        int _menet,
+        bool ns
         );
 
     QList<Line> lines;
@@ -49,7 +52,8 @@ public:
     qreal vcorner_y=0;
     QString name;
     bool no_compensate = false;
-    int menet=-1;
+    int menet=-1;    
+    bool no_simi = false;
 
     static constexpr ushort keyUniCode= key.unicode();
 

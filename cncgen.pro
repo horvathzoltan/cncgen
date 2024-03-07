@@ -225,6 +225,7 @@ DISTFILES += \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
     testdata/meton_doboz_also_szerelolap.txt \
     testdata/meton_doboz_felso_szerelolap.txt \
+    testdata/meton_panel_rogzito.txt \
     testdata/ms_kamera_tarto.txt \
     testdata/pi_alatet_24db.txt \
     testdata/pi_alatet_4db.txt \
@@ -237,6 +238,7 @@ DISTFILES += \
     testdata/tamaszto.txt \
     testdata/tamaszto2.txt \
     testdata/tamaszto3.txt \
+    testdata/tap_fesu.txt \
     testdata/tapdugo.txt \
     testdata/tapdugo2.txt \
     testdata/tapdugo3.txt \

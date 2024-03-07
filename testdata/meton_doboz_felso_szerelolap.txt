@@ -23,38 +23,48 @@ fmin700
 fratio0.8
 
 z1 = 2
-c1 = 0.025 #furatok
-c2 = 0.050 #letörések
-c3 = 0.075
+c1 = 0.025
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
 c4 = 0.500 #gyors
 c5 = 0.150 #keret
 
 (touch)
-b outline 20,35 size10,40 z$z1 c$c3 g1,0.3,0.3 r0
+b outline 20,35 size10,40 z$z1 c$c3 g1,0.3,0.3 r0 ns
 
 (lvds)
-b outline 155,55 size10,40 z$z1 c$c3 g1,0.3,0.3 r0
+b outline 155,55 size10,40 z$z1 c$c3 g1,0.3,0.3 r0 ns
 
 (pcb)
-h 50,5 d3 jg0.2 z$z1 c$c1 m1
-h 116.8,5 d3 jg0.2 z$z1 c$c1 m1
+h 50,5 d3 jg0.2 z$z1 c$c2 m1
+h 116.8,5 d3 jg0.2 z$z1 c$c2 m1
 
-(hátsó pcb sín)
-h 36.5,115 d3 jg0.2 z$z1 c$c1 m1
-h 36.5,135 d3 jg0.2 z$z1 c$c1 m1
+#(hátsó pcb sín)
+#h 36.5,115 d3 z$z1 c$c2 m1
+#h 36.5,135 d3 z$z1 c$c2 m1
 
-h 121.5,115 d3 jg0.2 z$z1 c$c1 m1
-h 121.5,135 d3 jg0.2 z$z1 c$c1 m1
+#h 121.5,115 d3 z$z1 c$c2 m1
+#h 121.5,135 d3 z$z1 c$c2 m1
 
-#79 középvonal
-h 54,135 d3 jg0.2 z$z1 c$c1 m1
-h 104,135 d3 jg0.2 z$z1 c$c1 m1
+(pcb támasztó patent furatai)
+h 54,135 d3 z$z1 c$c2 m1
+h 104,135 d3 z$z1 c$c2 m1
 
-(pi3b furatok)
-b corners 60,200 size58,49 z$z1 c$c1 d2.75 jg0.05
+#(pi3b furatok)
+#b corners 60,200 size58,49 z$z1 c$c2 d2.75 jg0.05
 
 (furatok)
-b corners 3,5 size204,254 z$z1 c$c1 d3 jg0.2
+b corners 3,5 size204,254 z$z1 c$c2 d3 jg0.2
+
+(képernyő támasztékok)
+h 61.25,75 d3  z$z1 c$c2 m1
+h 123.75,75 d3  z$z1 c$c2 m1
+
+h 61.25,132.5 d3 z$z1 c$c2 m1
+h 123.75,132.5 d3  z$z1 c$c2 m1
+
+h 61.25,190 d3 z$z1 c$c2 m1
+h 123.75,190 d3 z$z1 c$c2 m1
 
 (körvonal)
-b outline 0,0 size210,264 z$z1 c$c5 g3,0.3,0.3 r3
+b outline 0,0 size210,264 z$z1 c$c5 g3,0.3,0.3 r3 ns

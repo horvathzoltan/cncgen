@@ -11,7 +11,7 @@ f900
 
 safetop0.20
 safebottom0.20
-overcut0.300
+overcut0.100
 
 pre_mill_steps2
 
@@ -23,15 +23,17 @@ fmin700
 fratio0.8
 
 z1 = 3.5
-c1 = 0.025 #furatok
-c2 = 0.050 #letörések
-c3 = 0.075
-c4 = 0.500 #gyors
-c5 = 0.150 #keret
 
-b inline 34,37 size149,228.5 z4.5 c$c3 g2,1,1.2 jg0.5
-b inline 29.5,195 size3.75,50 z4.5 c$c5 ng nl1,0,1,0
-b inline 28,195 size7,50 z4.5 c$c5 ng
+c3 = 0.150
+c5 = 0.250 #keret
+
+offset1,1,0
+
+movz=3
+maxzz=5
+
+b inline 34.2,34.7 size149,228.5 z$z1 c$c5 g2,0.5,0.5 jg0.5 ns
+b inline 30.2,195 size5,50 z$z1 c$c3 g1,0.5,0.5 nl1,1,0,1 ns
 
 
 

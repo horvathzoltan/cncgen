@@ -1,0 +1,61 @@
+(METON panel rögzítő)
+(cmd line: -i meton_kepernyobeulteto_.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.20
+safebottom0.20
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+c1 = 0.025
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
+
+gw = 0.3
+gh = 0.3
+
+offset1,1,0
+
+h = 13.25
+h1 = add($h,1)
+
+l = 4.25
+l1 = add($l,1)
+
+m = 30
+
+
+b outline $l1,0 size$m,$h z$z1 c$c5 ns g1,$gw,$gh nl0,1,1,1
+b outline 0,$h1 size$l,$m z$z1 c$c5 ns g1,$gw,$gh nl1,1,1,0
+b outline 0,0 size$l,$h z$z1 c$c5 ns g1,$gw,$gh nl1,0,0,1
+
+y1 = div($h,2)
+x1 = div($l,2)
+
+m1 = add($m,$l)
+m2 = div($m1,2)
+
+n1 = add($m,$h)
+n2 = div($n1,2)
+
+#h $x1,$y1 z$z1 c$c2 m1 d3
+#h $x1,$n2 z$z1 c$c2 m1 d3
+#h $m2,$y1 z$z1 c$c2 m1 d3

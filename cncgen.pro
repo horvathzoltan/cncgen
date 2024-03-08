@@ -216,6 +216,7 @@ DISTFILES += \
     testdata/luk.txt \
     testdata/mestercipo_csatlakozo_belezes.txt \
     testdata/mestercipo_doboz_felso.txt \
+    testdata/mestercipo_doboz_felso_furat.txt \
     testdata/mestercipo_doboz_felso_szerelolap.txt \
     testdata/mestercipo_doboz_hatlap_felso.txt \
     testdata/mestercipo_doboz_hatlap_hp.txt \
@@ -225,6 +226,7 @@ DISTFILES += \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
     testdata/meton_doboz_also_szerelolap.txt \
     testdata/meton_doboz_felso_szerelolap.txt \
+    testdata/meton_kepernyobeulteto.txt \
     testdata/meton_panel_rogzito.txt \
     testdata/ms_kamera_tarto.txt \
     testdata/pi_alatet_24db.txt \

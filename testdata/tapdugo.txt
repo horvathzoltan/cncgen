@@ -1,23 +1,42 @@
 (Nagisz UWP terminal)
+(cmd line: -i tapdugo.txt -t)
 (szerszám beállítás)
-t1 m d2 h19
-t2 m d3 h19
-t3 m d4 h19
-yxz
 
+t1 m d2 h19
+
+yxz
 t1
 s50
-f300
+f900
 
-h 17.1,13.6 d14 z2.7 c0.07
+safetop0.20
+safebottom0.20
+overcut0.300
 
-a 0,6 6,0 6,6 z2.7 c0.15
-l 6,0 27.2,0 z2.7 c0.15 g1,1,0.75
-a 27.2,0 34.2,6 27.2,6 z2.7 c0.15
-l 34.2,6 34.2,20
-l 34.2,20 28,27.2
-l 28,27.2 6,27.2 g1,1,0.75
-l 6,27.2 0,20
-l 0,20 0,6
+pre_mill_steps2
 
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
 
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+c1 = 0.025
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
+c4 = 0.500 #gyors
+c5 = 0.150 #keret
+
+gw = 0.3
+gh = 0.3
+(tápcsati)
+offset17.65,11.75,0
+
+b inline 0,0 size26.7,9.25 jg0.5 z$z1 c$c3 g1,$gw,$gh r5.0 b1 nl1,0,1,1 ns
+b inline 0,8.25 size26.7,10.25 jg0.5 z$z1 c$c3 g1,$gw,$gh r3.5 nl1,1,1,0 ns
+h -6.525,9.49 d3 jg0.2 z$z1 c$c2 ns
+h 33.225,9.49 d3 jg0.2 z$z1 c$c2 ns
+
+b outline -16.65,-10.75 size60,40 z$z1 c$c5 g1,$gw,$gh ns

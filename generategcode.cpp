@@ -2435,19 +2435,19 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 
     g.append(TotalTimeToGCode());
 
-    if(m.jointGap!=0){
+    if(m.joinGap!=0){
         switch(_lastBox.type){
         case BoxType::Outline:
-            ba.x+=m.jointGap;
-            ba.y+=m.jointGap;
-            jf.x-=m.jointGap;
-            jf.y-=m.jointGap;
+            ba.x+=m.joinGap;
+            ba.y+=m.joinGap;
+            jf.x-=m.joinGap;
+            jf.y-=m.joinGap;
             break;
         case BoxType::Inline:
-            ba.y-=m.jointGap;
-            ba.x-=m.jointGap;
-            jf.y+=m.jointGap;
-            jf.x+=m.jointGap;
+            ba.y-=m.joinGap;
+            ba.x-=m.joinGap;
+            jf.y+=m.joinGap;
+            jf.x+=m.joinGap;
             break;
         default: break;
         }
@@ -2521,9 +2521,21 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         jf2.y=bf4.y=jf.y;
         break;
     default: break;
-    }       
+    }
 
-    bool isRounding = _lastBox.type!=BoxType::Corners && m.rounding>0;
+    bool bevOrRound = _lastBox.type!=BoxType::Corners && m.rounding>0;
+
+    bool isRounding = false;//_lastBox.type!=BoxType::Corners && m.rounding>0;
+    bool isBevelling = false;//_lastBox.type!=BoxType::Corners && m.bevelling>0;
+    if(bevOrRound){
+        if(m.bevelling>0){
+            isBevelling = true;
+            isRounding = false;
+        } else{
+            isBevelling = false;
+            isRounding = true;
+        }
+    }
 
     bool isR0 = m.nl[0]!=0&&m.nl[1]!=0;//0
     bool isR1 = m.nl[1]!=0&&m.nl[2]!=0;//1
@@ -2540,8 +2552,8 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
 //            zInfo("hutty");
 //        }
 //    }
-    if(isRounding){
-        qreal rounding_r = m.rounding-tool_r;        
+    if(isRounding || isBevelling){
+        qreal rounding_r = m.rounding-tool_r;
         //0
         if(isR0){
             ja1.x-=rounding_r;
@@ -2725,10 +2737,10 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
     if(_lastBox.type == BoxType::Corners){
 
         QVarLengthArray<Hole> holes = {
-            {ba, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":1_ba", true},
-            {ja, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":2_ja", true},
-            {jf, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":3_jf", true},
-            {bf, _last_hole_diameter, m.cut, m.feed, {}, m.jointGap, {}, false,false, m.name+":4_bf", true}
+            {ba, _last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, false,false, m.name+":1_ba", true},
+            {ja, _last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, false,false, m.name+":2_ja", true},
+            {jf, _last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, false,false, m.name+":3_jf", true},
+            {bf, _last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, false,false, m.name+":4_bf", true}
         };
 
         if(_verbose){
@@ -2754,6 +2766,7 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         bool hasGaps = m.gap.isValid() && m.gap.n>0;
         qreal z2 = hasGaps?m.cut.z-m.gap.height:m.cut.z;
         QVarLengthArray<Line> lines_border;
+        QVarLengthArray<Line> lines_bevelling;
         QVarLengthArray<Arc> arcs;
         Cut cut_border;//{z2, _last_cut.z0};
         if(z2>0){
@@ -2811,7 +2824,18 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
                 else
                     arcs.append({ba1, ba4, {ba1.x, ba4.y,ba4.z}, cut, m.feed, {0,0,0}, m.name+" rounding 4 ba1,ba4"});
             }
+        } else if(isBevelling){
+            Cut cut = {m.cut.z,m.cut.z0};
+            if(isR0)
+                lines_bevelling.append({ja1, ja2, cut, m.feed,{}, {}, m.name+" bevelling 1 ba1,ja2", false, m.no_compensate, m.menet, m.no_simi});
+            if(isR1)
+                lines_bevelling.append({jf2, jf3, cut, m.feed,{}, {}, m.name+" bevelling 2 jf2,jf3", false, m.no_compensate, m.menet, m.no_simi});
+            if(isR2)
+                lines_bevelling.append({bf3, bf4, cut, m.feed,{}, {}, m.name+" bevelling 2 bf3,bf4", false, m.no_compensate, m.menet, m.no_simi});
+            if(isR3)
+                lines_bevelling.append({ba4, ba1, cut, m.feed,{}, {}, m.name+" bevelling 2 ba4,ba1", false, m.no_compensate, m.menet, m.no_simi});
         }
+
         QVarLengthArray<Line> lines_gap;
         if(hasGaps){
             //gap layer
@@ -3004,24 +3028,44 @@ auto GenerateGcode::BoxToGCode(const Box &m,QString*err) -> QString
         }
 
         if(isRounding){
-            for(auto&al:arcs){
+            for(auto&arc_rounding:arcs){
                 QString e0;
                 auto px0 = _lastArc.p0;
                 auto px1 = _lastArc.p1;
                 auto pxo = _lastArc.o;
-                auto g0 = ArcToGCode(al,&e0);
+                auto g0 = ArcToGCode(arc_rounding,&e0);
                 if(!g0.isEmpty()){
                     g.append(g0);
                 } else{
                     if(err){
                         if(!err->isEmpty()) *err+=",";
-                        *err+=al.name+": "+e0;
+                        *err+=arc_rounding.name+": "+e0;
                     }
-                    zInfo("rounding gcode error");
+                    zInfo("arc_rounding gcode error");
                 }
                 _lastArc.p0 = px0; // azonnal vissza is állítjuk
                 _lastArc.p1 = px1;
                 _lastArc.o = pxo;
+            }
+        }
+        else if(isBevelling){
+            for(auto&line_bevelling:lines_bevelling){
+                QString e0;
+                auto px0 = _lastLine.p0;
+                auto px1 = _lastLine.p1;
+
+                auto g0 = LineToGCode(line_bevelling,&e0);
+                if(!g0.isEmpty()){
+                    g.append(g0);
+                } else{
+                    if(err){
+                        if(!err->isEmpty()) *err+=",";
+                        *err+=line_bevelling.name+": "+e0;
+                    }
+                    zInfo("line_bevelling gcode error");
+                }
+                _lastLine.p0 = px0; // azonnal vissza is állítjuk
+                _lastLine.p1 = px1;
             }
         }
     }

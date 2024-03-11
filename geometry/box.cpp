@@ -32,7 +32,8 @@ Box::Box(const Point &_p0,
          bool _nr[4],
          bool _no_compensate,
          int _menet,
-         bool ns)
+         bool ns,
+         qreal _bevelling)
 {
     p0=_p0;
     p1=_p1;
@@ -43,7 +44,7 @@ Box::Box(const Point &_p0,
     feed=_feed;
     rp=_rp;
     size=_size;
-    jointGap=_jg;
+    joinGap=_jg;
     nl[0]=_nl[0];
     nl[1]=_nl[1];
     nl[2]=_nl[2];
@@ -64,6 +65,7 @@ Box::Box(const Point &_p0,
 
     no_compensate = _no_compensate;
     no_simi = ns;
+    bevelling = _bevelling;
 }
 
 auto Box::Parse(const QString &txt) -> ParseState{
@@ -83,6 +85,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
     Gap gap;
     Cut cut;
     qreal corner_diameter=-1;
+    qreal bevelling=0;
     qreal rounding=0;
     Feed feed;
     Point rpoint;
@@ -148,6 +151,13 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
             qreal a;
             bool ok = GCode::ParseValue(p, L("d"), &a);
             if(ok) corner_diameter=a;
+            continue;
+        }
+
+        if(p.startsWith('b')){
+            qreal a;
+            bool ok = GCode::ParseValue(p, L("b"), &a);
+            if(ok) bevelling=a;
             continue;
         }
 
@@ -281,7 +291,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         nr,
         _no_compensate,
         menet,
-        _no_simi
+        _no_simi,
+        bevelling
     };
 
     st.setState(ParseState::Parsed);

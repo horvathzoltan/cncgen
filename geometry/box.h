@@ -32,7 +32,8 @@ public:
         bool _nr[4],
         bool _no_compensate,
         int _menet,
-        bool ns
+        bool ns,
+        qreal bevelling
         );
 
     QList<Line> lines;
@@ -45,14 +46,15 @@ public:
     Feed feed;
     Point rp;
     Size size;
-    qreal jointGap=0; // illesztési hézag
+    qreal joinGap=0; // illesztési hézag
     qreal rounding=0; // sarkok lekerekítése
+    qreal bevelling=0; // edge bevelling - élletörés
     int rjoin=0;//szabad vég: 0 szabadon, 1: befele íves, kifele íves
-    qreal vcorner_x=0;
+    qreal vcorner_x=0; // ennyit hagy ki a cornernél
     qreal vcorner_y=0;
     QString name;
     bool no_compensate = false;
-    int menet=-1;    
+    int menet=-1;
     bool no_simi = false;
 
     static constexpr ushort keyUniCode= key.unicode();

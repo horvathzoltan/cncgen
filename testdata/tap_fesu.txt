@@ -7,28 +7,29 @@ t1 m d2 h19
 yxz
 t1
 s50
-f200
+f600
 
-safetop0.20
-safebottom0.20
+safetop0.05
+safebottom0.05
 overcut0.300
 
 pre_mill_steps2
 
-#max meredekség polikarbonát 0.05/100mm
-emax0.02
+#max meredekség FR4 0.05/100mm
+emax0.05
 
-fmax200
-fmin100
+fmax650
+fmin200
 fratio0.8
 
-z1 = 2
+z1 = 1.5
 z2 = 0.06
-c1 = 0.025
-c2 = 0.050 #furatok
-c3 = 0.075 #vonalak
-c4 = 0.500 #gyors
-c5 = 0.150 #keret
+
+c1 = 0.075
+c2 = 0.150 #furatok
+c3 = 0.300 #vonalak
+c4 = 0.600 #gyors
+c5 = 0.300 #keret
 
 
 (körvonal)
@@ -45,6 +46,38 @@ y2 = 13
 y4 = 18
 y3 = 20
 
+o0 = 7.62
+o1 = 0
+
+(1)
+(fésű)
+#l $x0,0 $x0,$y1 z$z1 c$c3 ns
+#l $x0,$y2 $x0,$y3 z$z1 c$c3 ns
+
+(fésű réz réteg)
+#l $x0,$y1 $x0,$y2 z$z2 c$c3 ns
+
+(oldalsó réz réteg)
+
+x11 = add($x1,3)
+x12 = sub($x1,3)
+l $x11,$y1 $x11,$y3 z$z2 c$c3 ns
+l $x12,$y1 $x12,$y3 z$z2 c$c3 ns
+
+(saru furat és bevágás)
+xs1 = add($x1,0.6)
+xs2 = sub($x1,0.6)
+l $xs1,0 $xs1,$h1 z$z1 c$c3 ns
+l $xs2,0 $xs2,$h1 z$z1 c$c3 ns
+l $xs1,$h1 $xs2,$h1 z$z1 c$c4 ns no_comp
+
+
+l $x1,$y4 $x1,$y3 z$z1 c$c3 ns
+h $x1,$h2 d2 z$z1 c$c2 ns
+
+(2)
+o1 = add($o1,$o0)
+offset$o1,0,0
 (fésű)
 l $x0,0 $x0,$y1 z$z1 c$c3 ns
 l $x0,$y2 $x0,$y3 z$z1 c$c3 ns
@@ -58,6 +91,32 @@ x12 = sub($x1,3)
 l $x11,$y1 $x11,$y3 z$z2 c$c3 ns
 l $x12,$y1 $x12,$y3 z$z2 c$c3 ns
 
+(saru furat és bevágás)
+#h $x1,$h1 d3.2 z$z2 c$c2 ns
+xs1 = add($x1,0.6)
+xs2 = sub($x1,0.6)
+l $xs1,0 $xs1,$h1 z$z1 c$c3 ns
+l $xs2,0 $xs2,$h1 z$z1 c$c3 ns
+l $xs1,$h1 $xs2,$h1 z$z1 c$c4 ns no_comp
+
+l $x1,$y4 $x1,$y3 z$z1 c$c3 ns
+h $x1,$h2 d2 z$z1 c$c2 ns
+
+(3)
+o1 = add($o1,$o0)
+offset$o1,0,0
+(fésű)
+l $x0,0 $x0,$y1 z$z1 c$c3 ns
+l $x0,$y2 $x0,$y3 z$z1 c$c3 ns
+
+(fésű réz réteg)
+l $x0,$y1 $x0,$y2 z$z2 c$c3 ns
+(oldalsó réz réteg)
+
+x11 = add($x1,3)
+x12 = sub($x1,3)
+l $x11,$y1 $x11,$y3 z$z2 c$c3 ns
+l $x12,$y1 $x12,$y3 z$z2 c$c3 ns
 
 (saru furat és bevágás)
 #h $x1,$h1 d3.2 z$z2 c$c2 ns
@@ -67,16 +126,67 @@ l $xs1,0 $xs1,$h1 z$z1 c$c3 ns
 l $xs2,0 $xs2,$h1 z$z1 c$c3 ns
 l $xs1,$h1 $xs2,$h1 z$z1 c$c4 ns no_comp
 
-
 l $x1,$y4 $x1,$y3 z$z1 c$c3 ns
 h $x1,$h2 d2 z$z1 c$c2 ns
 
-
-offset7.62,0,0
-
+(4)
+o1 = add($o1,$o0)
+offset$o1,0,0
 (fésű)
 l $x0,0 $x0,$y1 z$z1 c$c3 ns
 l $x0,$y2 $x0,$y3 z$z1 c$c3 ns
 
 (fésű réz réteg)
 l $x0,$y1 $x0,$y2 z$z2 c$c3 ns
+(oldalsó réz réteg)
+
+x11 = add($x1,3)
+x12 = sub($x1,3)
+l $x11,$y1 $x11,$y3 z$z2 c$c3 ns
+l $x12,$y1 $x12,$y3 z$z2 c$c3 ns
+
+(saru furat és bevágás)
+#h $x1,$h1 d3.2 z$z2 c$c2 ns
+xs1 = add($x1,0.6)
+xs2 = sub($x1,0.6)
+l $xs1,0 $xs1,$h1 z$z1 c$c3 ns
+l $xs2,0 $xs2,$h1 z$z1 c$c3 ns
+l $xs1,$h1 $xs2,$h1 z$z1 c$c4 ns no_comp
+
+l $x1,$y4 $x1,$y3 z$z1 c$c3 ns
+h $x1,$h2 d2 z$z1 c$c2 ns
+
+(5)
+o1 = add($o1,$o0)
+offset$o1,0,0
+(fésű)
+l $x0,0 $x0,$y1 z$z1 c$c3 ns
+l $x0,$y2 $x0,$y3 z$z1 c$c3 ns
+
+(fésű réz réteg)
+l $x0,$y1 $x0,$y2 z$z2 c$c3 ns
+(oldalsó réz réteg)
+
+x11 = add($x1,3)
+x12 = sub($x1,3)
+l $x11,$y1 $x11,$y3 z$z2 c$c3 ns
+l $x12,$y1 $x12,$y3 z$z2 c$c3 ns
+
+(saru furat és bevágás)
+#h $x1,$h1 d3.2 z$z2 c$c2 ns
+xs1 = add($x1,0.6)
+xs2 = sub($x1,0.6)
+l $xs1,0 $xs1,$h1 z$z1 c$c3 ns
+l $xs2,0 $xs2,$h1 z$z1 c$c3 ns
+l $xs1,$h1 $xs2,$h1 z$z1 c$c4 ns no_comp
+
+l $x1,$y4 $x1,$y3 z$z1 c$c3 ns
+h $x1,$h2 d2 z$z1 c$c2 ns
+
+
+(6)
+o1 = add($o1,$o0)
+offset0,0,0
+o1 = sub($o1,2)
+(körbevágás)
+b outline 1,0 size$o1,$y3 z$z1 c$c3 g2,0.3,0.3 ns

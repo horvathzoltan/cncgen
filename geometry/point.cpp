@@ -41,7 +41,6 @@ auto Point::Parse(const QString &txt,
 {
     ParseState st(ParseState::NoData);
     if(txt.isEmpty()) return st;
-    //if(key.isEmpty()) return st;
 
     if(!key.isEmpty() && !txt.startsWith(key)) return st;
     auto a = txt.mid(key.length());

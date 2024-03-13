@@ -50,6 +50,49 @@ h 116.8,5 d3 jg0.2 z$z1 c$c2 m1
 h 54,135 d3 z$z1 c$c2 m1
 h 104,135 d3 z$z1 c$c2 m1
 
+kl1 = 1.6
+kjg1 = 0.2
+
+
+kl2 = 6
+kjg2 = 0.2
+ky1 = 68
+ky2 = sum($ky1,$kl2,$kjg2)
+
+kl3 = 10.5
+kjg3 = 0.2
+ky3 = 96
+ky4 = sum($ky3,$kl3,$kjg3)
+
+kw = div(130,3)
+
+kx1 = 135
+
+kx1 = add($kx1,$kw)
+kx2 = sum($kx1,$kl1,$kjg1)
+
+(touch + 5V szalagkábel kötöző)
+l $ky1,$kx1 $ky1,$kx2 z$z1 c$c2
+l $ky2,$kx1 $ky2,$kx2 z$z1 c$c2
+
+(hdmi szalagkábel kötöző)
+l $ky3,$kx1 $ky3,$kx2 z$z1 c$c2
+l $ky4,$kx1 $ky4,$kx2 z$z1 c$c2
+
+
+kx1 = add($kx1,$kw)
+kx2 = sum($kx1,$kl1,$kjg1)
+
+(touch + 5V szalagkábel kötöző)
+l $ky1,$kx1 $ky1,$kx2 z$z1 c$c2
+l $ky2,$kx1 $ky2,$kx2 z$z1 c$c2
+
+(hdmi szalagkábel kötöző)
+l $ky3,$kx1 $ky3,$kx2 z$z1 c$c2
+l $ky4,$kx1 $ky4,$kx2 z$z1 c$c2
+
+
+
 #(pi3b furatok)
 #b corners 60,200 size58,49 z$z1 c$c2 d2.75 jg0.05
 

@@ -2,9 +2,18 @@
 #include "helpers/logger.h"
 
 #include <QFileInfo>
-#include <QTextCodec>
+
 #include <QTextStream>
 
+void TextFileHelper::SetUtf8Encoding(QTextStream* st)
+{
+    if(st==nullptr) return;
+#if QT_VERSION >= 0x050000 && QT_VERSION < 0x060000
+    st->setCodec("UTF-8"); //5.15.2
+#elif QT_VERSION >= 0x06
+    st->setEncoding(QStringConverter::Utf8);
+#endif
+}
 
 QString TextFileHelper::load(const QString& filename) {
     QFileInfo fi(filename);
@@ -21,7 +30,7 @@ QString TextFileHelper::load(const QString& filename) {
     }
 
     QFile f(filename);
-    QString e;
+    QString e0;
 
     // TODO ha relatív a filename, akkor abszolúttá kell tenni
     // egyébként megnyitható azaz
@@ -29,14 +38,14 @@ QString TextFileHelper::load(const QString& filename) {
     if (f.open(QFile::ReadOnly | QFile::Text))  {
         zInfo(QStringLiteral("loaded: %1").arg(filename));
         QTextStream st(&f);
-        st.setCodec("UTF-8");
-        e = st.readAll();
+        SetUtf8Encoding(&st);
+        e0 = st.readAll();
     }
     else{
-        zInfo(QStringLiteral("cannot read file (%1): %2").arg(f.errorString()).arg(filename));
-        e= QString();
+        zInfo(QStringLiteral("cannot read file (%1): %2").arg(f.errorString(),filename));
+        e0= QString();
     }
-    return e;
+    return e0;
 }
 
 QStringList TextFileHelper::loadLines(const QString& filename) {
@@ -62,7 +71,7 @@ QStringList TextFileHelper::loadLines(const QString& filename) {
     if (f.open(QFile::ReadOnly | QFile::Text))  {
         zInfo(QStringLiteral("loaded: %1").arg(filename));
         QTextStream st(&f);
-        st.setCodec("UTF-8");
+        SetUtf8Encoding(&st);
 
         while (!st.atEnd())
         {
@@ -72,7 +81,7 @@ QStringList TextFileHelper::loadLines(const QString& filename) {
 
     }
     else{
-        zInfo(QStringLiteral("cannot read file (%1): %2").arg(f.errorString()).arg(filename));
+        zInfo(QStringLiteral("cannot read file (%1): %2").arg(f.errorString(),filename));
         e= QStringList();
     }
     return e;
@@ -87,7 +96,7 @@ bool TextFileHelper::save(const QString& txt, const QString& fn, bool isAppend) 
     if(isAppend) om |= QIODevice::Append;
 
     if (!f.open(om)){
-        zInfo(QStringLiteral("cannot write file (%1): %2").arg(f.errorString()).arg(fn));
+        zInfo(QStringLiteral("cannot write file (%1): %2").arg(f.errorString(),fn));
         return false;
         }
 

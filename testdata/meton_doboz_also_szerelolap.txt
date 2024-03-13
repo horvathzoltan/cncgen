@@ -42,6 +42,10 @@ h 117,90.88 z$z1 c$c1 d3 jg0.2 m1
 h 178,32 z$z1 c$c1 d3 jg0.2 m1
 h 178,87 z$z1 c$c1 d3 jg0.2 m1
 
+(táp panel)
+h 122.25,30 z$z1 c$c1 d3 jg0.2 m1
+h 133.75,83.05 z$z1 c$c1 d3 jg0.2 m1
+
 (támasztó)
 h 61.25,57.69 z$z1 c$c1 d3 jg0 m1
 h 148,57.69 z$z1 c$c1 d3 jg0 m1

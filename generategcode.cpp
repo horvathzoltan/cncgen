@@ -3196,7 +3196,7 @@ auto GenerateGcode::SpindleStartToGCode(qreal spindle_speed) ->QString
         if(!sp.isEmpty()){ // kellett speedet állítani
             _last_feed3.setSpindleSpeed(spindle_speed);
 
-            g+=+' '+sp;
+            g+=+" "+sp;
             if(!comment.isEmpty()) comment+=", ";
             comment +="set spindle speed";
 

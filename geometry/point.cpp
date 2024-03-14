@@ -97,3 +97,10 @@ auto Point::ToStringXYZ(qreal r) const -> QString
 {
     return ToStringXY(r)+ToStringZ();
 }
+
+void Point::Translate(const Point &r)
+{
+    x+=r.x;
+    y+=r.y;
+    z+=r.z;
+}

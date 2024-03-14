@@ -29,6 +29,7 @@ struct Point{
         return x==p.x&&y==p.y&&z==p.z;
     }
 
+    void Translate(const Point& r);
     /*ISVALID*/
 public:
     [[nodiscard]] auto isValid() const -> bool {return _isValid;}

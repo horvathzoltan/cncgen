@@ -121,6 +121,7 @@ SOURCES += \
         helpers/signalhelper.cpp \
         helpers/stringhelper.cpp \
         helpers/textfilehelper.cpp \
+        lastgeom.cpp \
         main.cpp \
         messages.cpp \
         parsestate.cpp \
@@ -158,6 +159,7 @@ HEADERS += \
     helpers/signalhelper.h \
     helpers/stringhelper.h \
     helpers/textfilehelper.h \
+    lastgeom.h \
     messages.h \
     parsestate.h \
     work1.h

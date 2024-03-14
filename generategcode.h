@@ -15,6 +15,8 @@
 //#include "parsestate.h"
 #include "geometry/gmode.h"
 #include "geometry/mmode.h"
+
+#include "lastgeom.h"
 //#include "helpers/macro.h"
 #include <QDir>
 
@@ -110,12 +112,10 @@ private:
     Point _lastHoleP;
     qreal _last_hole_diameter;
 
-    struct LastLine{
-        Point p0;
-        Point p1;
-    };
 
-    LastLine _lastLine;
+    LastGeom _lastGeom;
+
+
     qreal _safez=0;
     qreal _safeb=0;
     qreal _overcut =0;
@@ -125,25 +125,8 @@ private:
     qreal _fmax=500;
     qreal _fmin=200;
     qreal _fratio =0.7;
-    int _pdwell=500;
+    int _pdwell=500;               
 
-    struct LastBox{
-        Point p0;
-        Point p1;
-        BoxType::Type type;
-    };
-
-    LastBox _lastBox;
-
-    struct LastArc{
-        Point p0;
-        Point p1;
-        Point o;
-    };
-
-    LastArc _lastArc;
-
-    Point _last_position;
     GMode::Mode _last_gmode;
 
     Point _offset_xyz;

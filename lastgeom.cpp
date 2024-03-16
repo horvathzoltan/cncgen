@@ -6,28 +6,77 @@ LastGeom::LastGeom() {}
 
 void LastGeom::Reset()
 {
-    _lastLine={};
-    _lastBox={{},{},BoxType::Undefined};
-    _lastArc={.p0={}, .p1={}, .o={}};
-    _last_position = {};
+    _lastLine.Reset();
+    _lastBox.Reset();
+    _lastArc.Reset();
+    _last_position.Reset();
+    _lastHoleP.Reset();
+}
+
+/*LINE*/
+void LastGeom::LastLine::Reset(){
+    _p0.Reset();
+    _p1.Reset();
+}
+
+void LastGeom::LastLine::Store(){
+    _stored_p0 = _p0;
+    _stored_p1 = _p1;
+}
+
+void LastGeom::LastLine::Retrieve(){
+    _p0 = _stored_p0;
+    _p1 = _stored_p1;
 }
 
 QString LastGeom::LastLine::toString()
 {
-    return p0.ToString()+' '+p1.ToString();
+    return _p0.ToString()+' '+_p1.ToString();
+}
+/*ARC*/
+
+void LastGeom::LastArc::Reset(){
+    _p0.Reset();
+    _p1.Reset();
+    _o.Reset();
+}
+
+void LastGeom::LastArc::Store(){
+    _stored_p0 = _p0;
+    _stored_p1 = _p1;
+    _stored_o = _o;
+}
+
+void LastGeom::LastArc::Retrieve(){
+    _p0 = _stored_p0;
+    _p1 = _stored_p1;
+    _o = _stored_o;
 }
 
 QString LastGeom::LastArc::toString()
 {
-    return p0.ToString()+"->"+p1.ToString()+"o="+o.ToString();
+    return _p0.ToString()+"->"+_p1.ToString()+"o="+_o.ToString();
 }
 
-qreal LastGeom::LastArc::ArcLength()
-{
-    return GeoMath::ArcLength(p0,p1, o);
+/*BOX*/
+
+void LastGeom::LastBox::Reset(){
+    _p0.Reset();
+    _p1.Reset();
+    _type = BoxType::Undefined;
 }
 
-qreal LastGeom::LastBox::Diastance()
+void LastGeom::LastBox::Store(){
+    _stored_p0 = _p0;
+    _stored_p1 = _p1;
+}
+
+void LastGeom::LastBox::Retrieve(){
+    _p0 = _stored_p0;
+    _p1 = _stored_p1;
+}
+
+void LastGeom::LastPosition::Reset()
 {
-    return GeoMath::Distance(p0, p1);
+    _p.Reset();
 }

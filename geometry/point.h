@@ -13,23 +13,28 @@ struct Point{
     Point();
     Point(qreal, qreal, qreal);
 
-    static auto Parse(const QString &txt) -> ParseState;
-    static auto Parse(const QString &txt, const QString& key) ->ParseState;
-    static auto Parse(const QString&, XYMode xmode, MMode mmode,
-                      const QString& key, Point *, Point *) -> ParseState;
+    static ParseState Parse(const QString &txt);
+    static ParseState Parse(const QString &txt, const QString& key);
+    static ParseState Parse(
+        const QString&, XYMode xmode, MMode mmode,const QString& key, Point *);
+    static ParseState Parse(
+        const QString&, XYMode xmode, MMode mmode,const QString& key, Point *,const Point& offset);
 
-    [[nodiscard]] auto ToString() const -> QString;
-    [[nodiscard]] auto ToStringZ() const -> QString;
-    [[nodiscard]] auto ToStringXY() const -> QString;
-    [[nodiscard]] auto ToStringXY(qreal r) const -> QString;
-    [[nodiscard]] auto ToStringXYZ() const -> QString;
-    [[nodiscard]] auto ToStringXYZ(qreal r) const -> QString;
+
+    [[nodiscard]] QString ToString() const;
+    [[nodiscard]] QString ToStringZ() const;
+    [[nodiscard]] QString ToStringXY() const;
+    [[nodiscard]] QString ToStringXY(qreal r) const;
+    [[nodiscard]] QString ToStringXYZ() const;
+    [[nodiscard]] QString ToStringXYZ(qreal r) const;
 
     auto operator ==(const Point& p) const -> bool {
         return x==p.x&&y==p.y&&z==p.z;
     }
 
     void Translate(const Point& r);
+    void Reset(){x=0;y=0;z=0;}
+
     /*ISVALID*/
 public:
     [[nodiscard]] auto isValid() const -> bool {return _isValid;}

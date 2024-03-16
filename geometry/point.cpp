@@ -20,24 +20,26 @@ Point::Point(qreal _x, qreal _y, qreal _z)
     _isValid=true;
 }
 
-auto Point::Parse(const QString &txt) ->ParseState {
-    return Point::Parse(txt,
-                        XYMode::Unknown, {},
-                        {},
-                        nullptr, nullptr);
+ParseState Point::Parse(const QString &txt){
+    return Point::Parse(txt, XYMode::Unknown, {},{}, nullptr, {});
 }
 
-auto Point::Parse(const QString &txt, const QString& key) ->ParseState {
-    return Point::Parse(txt,
-                        XYMode::Unknown, {},
-                        key,
-                        nullptr, nullptr);
+ParseState Point::Parse(const QString &txt, const QString& key) {
+    return Point::Parse(txt, XYMode::Unknown, {}, key,nullptr, {});
 }
 
-auto Point::Parse(const QString &txt,
+ParseState Point::Parse(const QString &txt,
+                        XYMode xymode, MMode mmode,
+                        const QString& key,
+                        Point*p)
+{
+    return Point::Parse(txt,xymode, mmode,key,p,{});
+}
+
+ParseState Point::Parse(const QString &txt,
                   XYMode xymode, MMode mmode,
                   const QString& key,
-                  Point*p, Point *offset) -> ParseState
+                  Point*p, const Point& offset)
 {
     ParseState st(ParseState::NoData);
     if(txt.isEmpty()) return st;
@@ -62,7 +64,7 @@ auto Point::Parse(const QString &txt,
     if(st.state()== ParseState::ParseError) return st;
     *p={_x,_y,_z};
 
-    if(offset){*p = GeoMath::Translation(*p, *offset);}
+    *p = GeoMath::Translation(*p, offset);
     st.setState(ParseState::Parsed);
     return st;
 }

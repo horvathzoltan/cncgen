@@ -62,8 +62,8 @@ public:
     bool nl[4]={1,1,1,1};
     bool nr[4]={1,1,1,1};
 
-    static auto Parse(const QString& txt, XYMode mode, MMode mmode, Box *m, Point *offset) -> ParseState;
-    static auto Parse(const QString& txt) -> ParseState;
+    static ParseState Parse(const QString& txt, XYMode mode, MMode mmode, Box *m, const Point& offset);
+    static ParseState Parse(const QString& txt);
     QString ToString() const;
     QString GetComment() const;
     /*ISVALID*/

@@ -68,11 +68,11 @@ Box::Box(const Point &_p0,
     bevelling = _bevelling;
 }
 
-auto Box::Parse(const QString &txt) -> ParseState{
-    return Parse(txt, XYMode::Unknown, {},nullptr, nullptr);
+ParseState Box::Parse(const QString &txt){
+    return Parse(txt, XYMode::Unknown, {}, nullptr, {});
 }
 
-auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *offset) -> ParseState
+auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m,const Point& offset) -> ParseState
 {
     ParseState st(ParseState::NoData);
     if(!txt.startsWith(key)) return st;
@@ -120,7 +120,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m, Point *of
         }
         if(p.startsWith('r')) {
             Point rp;
-            auto state = Point::Parse(p, xymode, mmode,L("r"), &rp, nullptr).state();
+            auto state = Point::Parse(p, xymode, mmode,L("r"), &rp).state();
             if(state==ParseState::Parsed)
             {
                 rpoint = rp;

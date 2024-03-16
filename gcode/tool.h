@@ -20,6 +20,7 @@ struct Tool{
     static QChar TypeToGCode(Type t);
     static QString TypeToString(Type t);
 
+    void setD(qreal v){d = v;}
     /*ISVALID*/
 //public:
 //    bool isValid() const {return _isValid;}

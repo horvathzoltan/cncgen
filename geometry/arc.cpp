@@ -35,7 +35,7 @@ Arc::Arc(const Point &_p0,
     //_isValid = true;
 }
 
-auto Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode, Point *offset) -> ParseState
+ParseState Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode,const Point& offset)
 {
     //_lasterr.clear();
     ParseState st(ParseState::NoData);
@@ -62,7 +62,7 @@ auto Arc::Parse(const QString &txt, XYMode xymode, Arc *a, MMode mmode, Point *o
         }
         if(p.startsWith('r')) {
             Point rp;
-            if(Point::Parse(p, xymode, mmode,L("r"), &rp, nullptr).state()==ParseState::Parsed)
+            if(Point::Parse(p, xymode, mmode,L("r"), &rp).state()==ParseState::Parsed)
             {
                 rpoint = rp;
             };

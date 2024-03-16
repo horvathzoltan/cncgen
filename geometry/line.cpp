@@ -42,7 +42,7 @@ Line::Line(const Point &_p0,
     no_simi = ns;
 }
 
-auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point *offset) -> ParseState
+ParseState Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, const Point&  offset)
 {
     ParseState st(ParseState::NoData);
     st.setState(ParseState::NotParsed);
@@ -74,7 +74,7 @@ auto Line::Parse(const QString &txt, XYMode xymode, MMode mmode, Line *m, Point 
         }
         if(p.startsWith('r')) {
             Point rp;
-            if(Point::Parse(p, xymode, mmode,L("r"), &rp, nullptr).state()==ParseState::Parsed)
+            if(Point::Parse(p, xymode, mmode,L("r"), &rp).state()==ParseState::Parsed)
             {
                 rpoint = rp;
             };

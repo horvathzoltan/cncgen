@@ -93,6 +93,7 @@ INCLUDEPATH += $$HOME/common
 DEPENDPATH += $$HOME/common
 
 SOURCES += \
+        compensate.cpp \
         gcode/comment.cpp \
         gcode/cut.cpp \
         gcode/expression.cpp \
@@ -103,6 +104,28 @@ SOURCES += \
         gcode/tool.cpp \
         gcode/variable.cpp \
         generategcode.cpp \
+        generategcode/commenttogcode.cpp \
+        generategcode/compensation.cpp \
+        generategcode/cuts/circulararccut.cpp \
+        generategcode/cuts/helicalcut.cpp \
+        generategcode/cuts/linearcut.cpp \
+        generategcode/dwell.cpp \
+        generategcode/feedtogcode.cpp \
+        generategcode/gcodecommon.cpp \
+        generategcode/gcodemanager.cpp \
+        generategcode/geometry/arctogcode.cpp \
+        generategcode/geometry/boxtogcode.cpp \
+        generategcode/geometry/holetogcode.cpp \
+        generategcode/geometry/linetogcode.cpp \
+        generategcode/goto.cpp \
+        generategcode/lift.cpp \
+        generategcode/mmodetogcode.cpp \
+        generategcode/spindle.cpp \
+        generategcode/stringtogcode.cpp \
+        generategcode/togcodemodel.cpp \
+        generategcode/tooltogcode.cpp \
+        generategcode/totalstats.cpp \
+        generategcode/xymodetogcode.cpp \
         geometry/arc.cpp \
         geometry/box.cpp \
         geometry/boxtype.cpp \
@@ -128,6 +151,7 @@ SOURCES += \
         work1.cpp
 
 HEADERS += \
+    compensate.h \
     gcode/comment.h \
     gcode/cut.h \
     gcode/expression.h \
@@ -139,6 +163,28 @@ HEADERS += \
     gcode/tool.h \
     gcode/variable.h \
     generategcode.h \
+    generategcode/commenttogcode.h \
+    generategcode/compensation.h \
+    generategcode/cuts/circulararccut.h \
+    generategcode/cuts/helicalcut.h \
+    generategcode/cuts/linearcut.h \
+    generategcode/dwell.h \
+    generategcode/feedtogcode.h \
+    generategcode/gcodecommon.h \
+    generategcode/gcodemanager.h \
+    generategcode/geometry/arctogcode.h \
+    generategcode/geometry/boxtogcode.h \
+    generategcode/geometry/holetogcode.h \
+    generategcode/geometry/linetogcode.h \
+    generategcode/goto.h \
+    generategcode/lift.h \
+    generategcode/mmodetogcode.h \
+    generategcode/spindle.h \
+    generategcode/stringtogcode.h \
+    generategcode/togcodemodel.h \
+    generategcode/tooltogcode.h \
+    generategcode/totalstats.h \
+    generategcode/xymodetogcode.h \
     geometry/arc.h \
     geometry/box.h \
     geometry/boxtype.h \

@@ -39,7 +39,7 @@ struct Line{
     int menet = -1;
     bool no_simi = false;
 
-    static ParseState Parse(const QString& txt, XYMode xymode,MMode mmode, Line *l, Point *offset);
+    static ParseState Parse(const QString& txt, XYMode xymode,MMode mmode, Line *l,const Point& offset);
     QString ToString() const;    
     QList<Line> Divide(const Gap& g, qreal tool_d);
     QString GetComment() const;

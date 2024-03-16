@@ -40,7 +40,7 @@ struct Hole{
     int mode=1;
 
     static ParseState Parse(const QString& txt, XYMode xymode,
-                            MMode mmode, Hole*, Point *offset);
+                            MMode mmode, Hole*, const Point& offset);
     QString ToString() const;
     Gap gap;
 

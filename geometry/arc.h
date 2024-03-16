@@ -42,7 +42,7 @@ struct Arc
     Point rp;
     QString name;
 
-    static auto Parse(const QString& txt, XYMode mode, Arc*, MMode mmode, Point *offset) -> ParseState;
+    static auto Parse(const QString& txt, XYMode mode, Arc*, MMode mmode, const Point& offset) -> ParseState;
     QString ToString() const;
     //auto ToGCode(QString* err) -> QString;
     // todo e7 Arc::Divide

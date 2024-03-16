@@ -306,15 +306,17 @@ QString LineToGCode::CreateLines(const QList<Line>& m2, QString *err, ToGCodeMod
         // qreal last_z = m.p0.z;
         //qreal mov_z = m.p0.z+_safeb;
 
-        qreal lastz[m2.count()];
+        int m2count = m2.count();
+
+        qreal lastz[m2count];
         for(int j=0;j<m2.count();j++){ lastz[j] = m.p0.z;}
 
-        int steps_m[m2.count()];
-        qreal f_m[m2.count()];
-        qreal c_m[m2.count()];
+        int steps_m[m2count];
+        qreal f_m[m2count];
+        qreal c_m[m2count];
 
         int steps_x =0;
-        for(int j=0;j<m2.count();j++){
+        for(int j=0;j<m2count;j++){
             Line mm = m2[j];
 
             Cut cuta=mm.cut;
@@ -346,7 +348,7 @@ QString LineToGCode::CreateLines(const QList<Line>& m2, QString *err, ToGCodeMod
 
         for(int i=0;i<steps_x;i++){
 
-            for(int j=0;j<m2.count();j++){
+            for(int j=0;j<m2count;j++){
                 if(i>steps_m[j]) continue;
                 Line mm = m2[j];
 

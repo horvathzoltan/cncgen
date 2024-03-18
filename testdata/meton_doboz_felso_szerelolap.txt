@@ -30,10 +30,10 @@ c4 = 0.500 #gyors
 c5 = 0.150 #keret
 
 (touch)
-b outline 20,35 size10,40 z$z1 c$c3 g1,0.3,0.3 r0 ns
+b inline 20,35 size10,40 z$z1 c$c3 g1,0.3,0.3 r0 ns
 
 (lvds)
-b outline 155,55 size10,40 z$z1 c$c3 g1,0.3,0.3 r0 ns
+b inline 155,55 size10,40 z$z1 c$c3 g1,0.3,0.3 r0 ns
 
 (pcb)
 h 50,5 d3 jg0.2 z$z1 c$c2 m1

@@ -47,6 +47,7 @@ struct ToGCodeModel
     Point _offset_xyz;
 
     qreal _pdwell;
+    qreal _peckz_divider = 3;
 private:
     QMap<int, Tool> _tools;
     int _selected_tool_ix;

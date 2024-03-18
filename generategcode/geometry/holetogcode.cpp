@@ -195,7 +195,7 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
 
         qreal zz = tmm->_lastGeom._lastHoleP.z-m.cut.z; // zz: mélység
         //qreal r = p.z+safez; // r: visszahúzás z-je
-        qreal q = d_cut.z0/2;  // q: mélység inkrement per peck
+        qreal q = d_cut.z0/tmm->_peckz_divider;  // q: mélység inkrement per peck
 
         g.append(L("(predrill)"));
         GoTo::GoToCutposition(&g, p, d_feed, tmm,tss);

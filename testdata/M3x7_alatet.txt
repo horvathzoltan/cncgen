@@ -1,5 +1,5 @@
-(M3 alatet 6 db)
-(cmd line: -i M3x7_alatet_4db.txt -t)
+(M3 alatet 1 db)
+(cmd line: -i M3x7_alatet.txt -t)
 
 (szerszám beállítás)
 t1 m d2 h19
@@ -58,21 +58,11 @@ o = add($dk,3)
 
 (1.sor)
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
+h $x,$y d$db z$th c$c2 jg$j1 m1 ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1 ns
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
-
-x = add($x,$o)
-
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
-
-x = add($x,$o)
-
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1
+#h $x,$y d$db z$th c$c2 jg$j1 m1 ns
+#h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1 ns
 

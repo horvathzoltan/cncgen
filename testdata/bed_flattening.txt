@@ -1,0 +1,235 @@
+(bed flattening)
+(cmd line: -i bed_flattening.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+xyz
+t1
+s50
+f900
+
+safetop0.00
+safebottom0.00
+overcut0.000
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax1
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 0.05
+c1 = 0.05
+
+
+d0 = 6
+d = mul($d0,0.7)
+d2 = mul($d,2)
+
+w = 380
+h = 220
+x = 0
+y = 0
+
+offset3,3,0
+
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#2
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#3
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#4
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#5
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#6
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#7
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#8
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#9
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#10
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#11
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#12
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#13
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#14
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#15
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#16
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#17
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#18
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#19
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#20
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#21
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#22
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#23
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#24
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#25
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#26
+#x = add($x,$d)
+#y = add($y,$d)
+#w = sub($w,$d2)
+#h = sub($h,$d2)
+#b outline $x,$y size$w,$h z$z1 c$c1 m1
+
+#27
+x = add($x,$d)
+y = add($y,$d)
+w = sub($w,$d2)
+h = sub($h,$d2)
+
+print $x
+print $y
+print $w
+print $h
+
+x2 = add($x, $w)
+l $x,$y $x2,$y z$z1 c$c1 m1

@@ -72,25 +72,24 @@ kx1 = add($kx1,$kw)
 kx2 = sum($kx1,$kl1,$kjg1)
 
 (touch + 5V szalagkábel kötöző)
-l $ky1,$kx1 $ky1,$kx2 z$z1 c$c2
-l $ky2,$kx1 $ky2,$kx2 z$z1 c$c2
+l $ky1,$kx1 $ky1,$kx2 z$z1 c$c2 ns
+l $ky2,$kx1 $ky2,$kx2 z$z1 c$c2 ns
 
 (hdmi szalagkábel kötöző)
-l $ky3,$kx1 $ky3,$kx2 z$z1 c$c2
-l $ky4,$kx1 $ky4,$kx2 z$z1 c$c2
+l $ky3,$kx1 $ky3,$kx2 z$z1 c$c2 ns
+l $ky4,$kx1 $ky4,$kx2 z$z1 c$c2 ns
 
 
 kx1 = add($kx1,$kw)
 kx2 = sum($kx1,$kl1,$kjg1)
 
 (touch + 5V szalagkábel kötöző)
-l $ky1,$kx1 $ky1,$kx2 z$z1 c$c2
-l $ky2,$kx1 $ky2,$kx2 z$z1 c$c2
+l $ky1,$kx1 $ky1,$kx2 z$z1 c$c2 ns
+l $ky2,$kx1 $ky2,$kx2 z$z1 c$c2 ns
 
 (hdmi szalagkábel kötöző)
-l $ky3,$kx1 $ky3,$kx2 z$z1 c$c2
-l $ky4,$kx1 $ky4,$kx2 z$z1 c$c2
-
+l $ky3,$kx1 $ky3,$kx2 z$z1 c$c2 ns
+l $ky4,$kx1 $ky4,$kx2 z$z1 c$c2 ns
 
 
 #(pi3b furatok)

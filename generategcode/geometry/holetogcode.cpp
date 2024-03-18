@@ -200,7 +200,7 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
         g.append(L("(predrill)"));
         GoTo::GoToCutposition(&g, p, d_feed, tmm,tss);
 
-        qreal r = p.z;//+safez; // r: visszahúzás z-je
+        qreal r = p.z + tmm->_safez;//+safez; // r: visszahúzás z-je
         g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(r)+" q"+GCode::r(q));
 
         auto menet = zz/m.cut.z0;

@@ -132,7 +132,7 @@ QStringList CircularArcCut::CreateCut(const Feed& o_feed,const Cut& o_cut, bool 
             //qreal d=GeoMath::ArcLength(pp,p, _lastArc.o);
 
             //dt+=d;
-            auto g0 = GoTo::GoToXYZ(mode, p, feed.feed(), tmm,tss);//, {i, j});
+            auto g0 = GoTo::GoToXYZ(mode, p, feed.feed(), tmm,tss, {i, j});
             g.append(g0+' '+ij2);
 
             bool do_peck = false;
@@ -191,7 +191,7 @@ QStringList CircularArcCut::CreateCut(const Feed& o_feed,const Cut& o_cut, bool 
 
             //qreal d=GeoMath::ArcLength(pp,p, _lastArc.o);
             //dt+=d;
-            auto g0 = GoTo::GoToXYZ(mode, p, feed.feed(), tmm,tss);//, {i, j});
+            auto g0 = GoTo::GoToXYZ(mode, p, feed.feed(), tmm,tss, {i, j});
             g0 += ij2;
             g.Append(g0);
 
@@ -232,7 +232,7 @@ QStringList CircularArcCut::CreateCut(const Feed& o_feed,const Cut& o_cut, bool 
                 g0 = GoTo::GoToZ(GMode::Rapid,{0,0,pu.z}, feed.feed(), tmm,tss);
                 g.Append(g0);
 
-                g0 = GoTo::GoToXYZ(GMode::Rapid, pu, feed.feed(), tmm,tss);
+                g0 = GoTo::GoToXYZ(GMode::Rapid, pu, feed.feed(), tmm,tss,{i, j});
                 g.Append( g0);
 
                 // } else{

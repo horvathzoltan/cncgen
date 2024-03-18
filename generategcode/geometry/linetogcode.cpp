@@ -397,13 +397,13 @@ QString LineToGCode::CreateLines(const QList<Line>& m2, QString *err, ToGCodeMod
                     g.Append(g0);
                 }
 
-                g0 = GoTo::GoToXY(GMode::Rapid, mm.p0, feed.feed(), tmm,tss);
+                g0 = GoTo::GoToXY(GMode::Rapid, mm.p0, feed.feed(), tmm,tss, {});
                 g.Append( g0);
 
                 g0 = GoTo::GoToZ(GMode::Rapid, {mm.p0.x, mm.p0.y, lastz[j] }, feed.feed(),tmm,tss);
                 g.Append( g0);
 
-                g0 = GoTo::GoToXYZ(GMode::Linear, {mm.p1.x, mm.p1.y, zzz }, feed.feed(),tmm,tss);
+                g0 = GoTo::GoToXYZ(GMode::Linear, {mm.p1.x, mm.p1.y, zzz }, feed.feed(),tmm,tss, {});
                 g.Append(g0);
 
                 g0 = GoTo::GoToZ(GMode::Rapid,{0,0,tmm->_movZ}, feed.feed(),tmm,tss);

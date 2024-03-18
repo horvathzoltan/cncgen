@@ -56,6 +56,9 @@ x = div($dk,2)
 y = div($dk,2)
 o = add($dk,3)
 
+print "x: $x"
+print "y: $y"
+
 (1.sor)
 
 h $x,$y d$db z$th c$c2 jg$j1 m1 ns

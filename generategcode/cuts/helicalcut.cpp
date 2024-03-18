@@ -17,8 +17,8 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
     GCodeManager g(QStringLiteral("(helical cut)"));
     QString msg;
 
-    qreal l = path_r*2*M_PI; //fogás hossz
-    Compensation::CompensateModel c = Compensation::Compensate2(l, o_cut, o_feed, tmm);
+    qreal length = path_r*2*M_PI; //fogás hossz
+    Compensation::CompensateModel c = Compensation::Compensate2(length, o_cut, o_feed, tmm);
     Feed feed = o_feed;
     Cut cut = o_cut;
     if(c.isCompensated){
@@ -56,14 +56,14 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
 
     if(isPeca)
     {
-        if(l>t.d*2){
+        if(length>t.d*2){
             /*  if(l<=lpeck){
                 isPeck = true;
                 if(l<=lpeck2){
                     isPeck2 = true;
                 }
             }*/
-            if(l<=lpeck){
+            if(length<=lpeck){
                 isPeck4 = true;
             }
         } else{
@@ -120,9 +120,15 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
             } else{
                 g0 = GoTo::GoToZ(GMode::Circular_ccw, p, feed.feed(), tmm,tss) + " i" + GCode::r(path_r);
             }
-        }
+        }                
 
         g.append(g0);
+
+        tss->_total_length+=length;
+        tss->_total_cut+=length;
+        qreal t0_mins = length/feed.feed();
+        tss->_total_minutes+=t0_mins;
+        tss->_total_minutes+=GoTo::t_muvelet;
 
         bool do_peck = false;
         if(isPeck3){

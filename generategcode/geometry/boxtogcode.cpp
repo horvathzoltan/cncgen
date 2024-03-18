@@ -713,14 +713,14 @@ QString BoxToGCode::CreateBox(const Box &m,QString*err, ToGCodeModel* tmm, Total
                 for (Line &s : segments) {
                     //qreal d = GeoMath::Distance(s.p0,s.p1);
                     //dt+=d;
-                    g0 = GoTo::GoToXY(GMode::Linear, s.p0, m.feed.feed(),tmm,tss);
+                    g0 = GoTo::GoToXY(GMode::Linear, s.p0, m.feed.feed(),tmm,tss, {});
                     g.Append( g0);
-                    g0 = GoTo::GoToXY(GMode::Linear, s.p1, m.feed.feed(),tmm,tss);
+                    g0 = GoTo::GoToXY(GMode::Linear, s.p1, m.feed.feed(),tmm,tss, {});
                     g.Append( g0);
                 }
                 // utolsót összekötni elsővel
                 auto s0 = segments.first();
-                g0 = GoTo::GoToXY(GMode::Linear, s0.p0, m.feed.feed(),tmm,tss);
+                g0 = GoTo::GoToXY(GMode::Linear, s0.p0, m.feed.feed(),tmm,tss, {});
                 g.Append( g0);
 
 

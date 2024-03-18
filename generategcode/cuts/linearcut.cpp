@@ -117,7 +117,7 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
 
         //qreal d = GeoMath::Distance(pd,p);
         //dt+=d;
-        g0 = GoTo::GoToXYZ(GMode::Linear, p, feed.feed(), tmm,tss);
+        g0 = GoTo::GoToXYZ(GMode::Linear, p, feed.feed(), tmm,tss,{});
         g.Append( g0);
 
         g0 =GoTo::GoToZ(GMode::Linear,{0,0,p.z}, feed.feed(), tmm,tss);
@@ -162,7 +162,7 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
 
                 //qreal d = GeoMath::Distance(pd,p);
                 //dt+=d;
-                auto g0 = GoTo::GoToXYZ(GMode::Linear, p, feed.feed(), tmm,tss);
+                auto g0 = GoTo::GoToXYZ(GMode::Linear, p, feed.feed(), tmm,tss, {});
                 g.Append( g0);
 
                 bool do_peck = false;
@@ -222,7 +222,7 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
 
                 //qreal d = GeoMath::Distance(pd,p);
                 //dt+=d;
-                auto g0 = GoTo::GoToXYZ(GMode::Linear, p, feed.feed(), tmm,tss);
+                auto g0 = GoTo::GoToXYZ(GMode::Linear, p, feed.feed(), tmm,tss, {});
                 g.Append( g0);
 
                 //qreal peck_l = qAbs(peck_z-p.z);
@@ -240,14 +240,14 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
                         g0 =GoTo::GoToZ(GMode::Rapid,{0,0,pu.z}, feed.feed(), tmm,tss);
                         g.Append( g0);
 
-                        g0 = GoTo::GoToXYZ(GMode::Rapid, pu, feed.feed(),tmm,tss);
+                        g0 = GoTo::GoToXYZ(GMode::Rapid, pu, feed.feed(),tmm,tss, {});
                         g.Append( g0);
 
                         //mz=pu.z;
 
                     } else{
 
-                        g0 =GoTo::GoToXYZ(GMode::Rapid, pu, feed.feed(), tmm,tss);
+                        g0 =GoTo::GoToXYZ(GMode::Rapid, pu, feed.feed(), tmm,tss, {});
                         g.Append(g0);
 
                         //qreal peck_l = qAbs(pu.z-last_z);
@@ -269,7 +269,7 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
                         p=tmm->_lastGeom._lastLine.p0();
                     }
                     s++;
-                    auto g0 = GoTo::GoToXYZ(GMode::Linear, {p.x, p.y, zz}, feed.feed(), tmm,tss);
+                    auto g0 = GoTo::GoToXYZ(GMode::Linear, {p.x, p.y, zz}, feed.feed(), tmm,tss, {});
                     g.Append(g0);
 
                 }

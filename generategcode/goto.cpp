@@ -24,7 +24,7 @@ void GoTo::GoToCutposition(GCodeManager *g, const Point& p, const Feed& feed,ToG
     g->Append(Lift::Down(feed.feed(), p.z, tmm,tss));
 }
 
-QString GoTo::GoToXYZ(GMode::Mode i, const Point& p, qreal feed,ToGCodeModel* tmm,TotalStats *tss)
+QString GoTo::GoToXYZ(GMode::Mode i, const Point& p, qreal feed,ToGCodeModel* tmm,TotalStats *tss, IJModel ij)
 {
     if(!p.isValid()){
         zInfo(Messages::invalid_point);
@@ -57,7 +57,7 @@ QString GoTo::GoToXYZ(GMode::Mode i, const Point& p, qreal feed,ToGCodeModel* tm
     }
 
 
-    qreal length = GetLength(i, p, LengthMode::XYZ, tmm);
+    qreal length = GetLength(i, p, LengthMode::XYZ, tmm, ij);
 
     tmm->_lastGeom._last_position.set(p);//.x, p.y, p.z);
     tmm->_last_gmode=i;
@@ -84,7 +84,7 @@ QString GoTo::GoToXYZ(GMode::Mode i, const Point& p, qreal feed,ToGCodeModel* tm
     return GMode::ToGCcode(i)+' '+a;
 }
 
-QString GoTo::GoToXY(GMode::Mode i, const Point& p, qreal feed, ToGCodeModel *tmm,TotalStats *tss)
+QString GoTo::GoToXY(GMode::Mode i, const Point& p, qreal feed, ToGCodeModel *tmm,TotalStats *tss, IJModel ij)
 {
     if(!p.isValid()){
         zInfo(Messages::invalid_point);
@@ -123,7 +123,7 @@ QString GoTo::GoToXY(GMode::Mode i, const Point& p, qreal feed, ToGCodeModel *tm
         v=RFEED;
     }
 
-    qreal length = GetLength(i, p, LengthMode::XY,tmm);
+    qreal length = GetLength(i, p, LengthMode::XY,tmm, ij);
 
     tmm->_lastGeom._last_position.setXY(p.x,p.y);
     tmm->_last_gmode=i;
@@ -186,7 +186,7 @@ QString GoTo::GoToZ(GMode::Mode i, const Point& p, qreal feed,ToGCodeModel *tmm,
         v=RFEED;
     }
 
-    qreal length = GetLength(i, p, LengthMode::Z,tmm);
+    qreal length = GetLength(i, p, LengthMode::Z,tmm, {});
 
     tmm->_lastGeom._last_position.setZ(p.z);
     tmm->_last_gmode=i;
@@ -211,7 +211,7 @@ QString GoTo::GoToZ(GMode::Mode i, const Point& p, qreal feed,ToGCodeModel *tmm,
     return GMode::ToGCcode(i)+' '+p.ToStringZ();
 }
 
-qreal GoTo::GetLength(GMode::Mode i, const Point& p, LengthMode lm, ToGCodeModel* tmm){
+qreal GoTo::GetLength(GMode::Mode i, const Point& p, LengthMode lm, ToGCodeModel* tmm, IJModel ij){
     qreal length;
     switch (i){
     case GMode::Mode::Linear:
@@ -232,14 +232,36 @@ qreal GoTo::GetLength(GMode::Mode i, const Point& p, LengthMode lm, ToGCodeModel
         }
         break;
     case GMode::Mode::Circular:
+        switch(lm){
+        case LengthMode::XY:
+        case LengthMode::XYZ:{
+            //auto length0 = tmm->_lastGeom._last_position.DistanceXY(p);
+
+            Point p0 = tmm->_lastGeom._last_position.p();
+            Point o = {p0.x + ij.i, p0.y+ij.j, p0.z};
+            length = GeoMath::ArcLength(p0, p, o);
+            break;
+        }
+        case LengthMode::Z:
+            length = GeoMath::Distance(
+                {0, 0, tmm->_lastGeom._last_position.z()},
+                {0, 0, p.z});
+            break;
+        default: length = 0;
+        }
+        break;
+        break;
     case GMode::Mode::Circular_ccw:
         switch(lm){
-        case LengthMode::XYZ:
-            length = 0;
-            break;
         case LengthMode::XY:
-            length = 0;
+        case LengthMode::XYZ:{
+            //auto length0 = tmm->_lastGeom._last_position.DistanceXY(p);
+
+            Point p0 = tmm->_lastGeom._last_position.p();
+            Point o = {p0.x + ij.i, p0.y+ij.j, p0.z};
+            length = GeoMath::ArcLength(p, p0, o);
             break;
+        }
         case LengthMode::Z:
             length = GeoMath::Distance(
                 {0, 0, tmm->_lastGeom._last_position.z()},
@@ -266,7 +288,7 @@ QString GoTo::TravelXYToGCode(qreal feed, const Point& p,ToGCodeModel *tmm,Total
     g.Append(g1, "", "");
     //g.append(g1);
     //qreal l = GeoMath::Distance(_last_position, p);
-    auto gcode = GoTo::GoToXY(GMode::Rapid, p, feed, tmm,tss);
+    auto gcode = GoTo::GoToXY(GMode::Rapid, p, feed, tmm,tss, {});
     //if(!gcode.isEmpty())gcode+=" (travel)";
     g.Append(gcode, err, QStringLiteral("travel"));
     return g.toString();

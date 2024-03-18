@@ -76,32 +76,50 @@ auto GeoMath::uPolarisSZXY(qreal p0x, qreal p0y, qreal p1x, qreal p1y, qreal szo
 }
 
 // b-nél lévő szög
-qreal GeoMath::uSzog3D(qreal ax, qreal ay, qreal az,
-               qreal bx, qreal by, qreal bz,
-               qreal cx,  qreal cy,  qreal cz)
+ qreal GeoMath::uSzog3D(qreal p0x, qreal p0y, qreal p0z,
+                qreal cx, qreal cy, qreal cz,
+                qreal p1x,  qreal p1y,  qreal p1z)
+
 {
-    qreal abx = bx - ax;
-    qreal aby = by - ay;
-    qreal abz = bz - az;
+    // qreal abx = bx - ax;
+    // qreal aby = by - ay;
+    // qreal abz = bz - az;
 
-    qreal bcx = cx - bx;
-    qreal bcy = cy - by;
-    qreal bcz = cz - bz;
+    // qreal bcx = cx - bx;
+    // qreal bcy = cy - by;
+    // qreal bcz = cz - bz;
 
-    double abVec = sqrt(abx * abx + aby * aby + abz * abz);
-    double bcVec = sqrt(bcx * bcx + bcy * bcy + bcz * bcz);
+    // double abVec = sqrt(abx * abx + aby * aby + abz * abz);
+    // double bcVec = sqrt(bcx * bcx + bcy * bcy + bcz * bcz);
 
-    double abNormx = abx / abVec;
-    double abNormy = aby / abVec;
-    double abNormz = abz / abVec;
+    // double abNormx = abx / abVec;
+    // double abNormy = aby / abVec;
+    // double abNormz = abz / abVec;
 
-    double bcNormx = bcx / bcVec;
-    double bcNormy = bcy / bcVec;
-    double bcNormz = bcz / bcVec;
+    // double bcNormx = bcx / bcVec;
+    // double bcNormy = bcy / bcVec;
+    // double bcNormz = bcz / bcVec;
 
-    double res = abNormx * bcNormx + abNormy * bcNormy + abNormz * bcNormz;
+    // double res = abNormx * bcNormx + abNormy * bcNormy + abNormz * bcNormz;
 
-    return acos(res);
+    // qreal a = acos(res);
+    // return a;
+
+     qreal p0c = sqrt(pow(cx-p0x,2)+pow(cy-p0y,2)); // p0->c (b)
+     qreal p1c = sqrt(pow(cx-p1x,2)+pow(cy-p1y,2)); // p1->c (a)
+     qreal p0p1 = sqrt(pow(p1x-p0x,2)+pow(p1y-p0y,2)); // p0->p1 (c)
+     qreal a = acos((p1c*p1c+p0c*p0c-p0p1*p0p1)/(2*p1c*p0c));
+     return a;
+
+    // z1 = 0;
+    // z2 = 0;
+    // z3 = 0;
+    // float dot_product = (x1-x2)*(x2-x3) + (y1-y2)*(y2-y3)+ (z1-z2)*(z2-z3);
+    // float mod_denom1 = sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) + (z1-z2)*(z1-z2));
+    // float mod_denom2 = sqrt((x2-x3)*(x2-x3) + (y2-y3)*(y2-y3) + (z2-z3)*(z2-z3));
+    // float cosnum = (dot_product/((mod_denom1)*(mod_denom2)));
+    // float cos = acos(cosnum);
+    // return cos;
 }
 
 auto GeoMath::uIvhossz(qreal p0x, qreal p0y, qreal p0z,

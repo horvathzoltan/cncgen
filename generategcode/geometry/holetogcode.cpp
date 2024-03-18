@@ -203,14 +203,17 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
         qreal r = p.z + tmm->_safez;//+safez; // r: visszahúzás z-je
         g.append(L("G98 G83")+" z"+GCode::r(zz)+" r"+GCode::r(r)+" q"+GCode::r(q));
 
-        auto menet = zz/m.cut.z0;
+        auto menet = zz/q;
 
         if(m.feed.feed()>0){
             qreal l0 = m.cut.z0*menet;
             qreal l1 = (p.z+safez+zz*menet*2)-l0;
 
-            qreal t0_mins = l0/m.feed.feed()+l1/1500;
-            tss->_total_minutes+=t0_mins;
+            qreal t0_mins = l0/m.feed.feed();
+            qreal t1_mins = l1/1500;
+            tss->_total_minutes+=t0_mins+t1_mins;
+            tss->_total_cut += zz;
+            tss->_total_length += l0+l1;
         }
 
         tmm->_lastGeom._last_position.setZ(p.z);

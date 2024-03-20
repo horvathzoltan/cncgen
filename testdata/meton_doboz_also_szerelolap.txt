@@ -24,32 +24,34 @@ fmin700
 fratio0.8
 
 z1 = 2
-c1 = 0.025 #furatok
-c2 = 0.050 #letörések
-c3 = 0.075
+c1 = 0.025
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
 c4 = 0.500 #gyors
 c5 = 0.150 #keret
 
+offset1,1,0
+
 (pi3b furatok)
-b corners 36.75,24.20 size49,58 z$z1 c$c1 d2.75 jg0.05 m1
+b corners 36.75,24.20 size49,58 z$z1 c$c2 d2.75 jg0.05 m1
 
 (furatok)
-b corners 5.5,24.5 size223,66.38 z$z1 c$c1 d3 jg0.2 m1
-h 117,24.5 z$z1 c$c1 d3 jg0.2 m1
-h 117,90.88 z$z1 c$c1 d3 jg0.2 m1
+b corners 5.5,24.5 size223,66.38 z$z1 c$c3 d3 jg0.2 m1
+h 117,24.5 z$z1 c$c2 d3 jg0.2 m1
+h 117,90.88 z$z1 c$c2 d3 jg0.2 m1
 
 (tápegység)
-h 178,32 z$z1 c$c1 d3 jg0.2 m1
-h 178,87 z$z1 c$c1 d3 jg0.2 m1
+h 178,32 z$z1 c$c2 d3 jg0.2 m1
+h 178,87 z$z1 c$c2 d3 jg0.2 m1
 
 (táp panel)
-h 122.25,30 z$z1 c$c1 d3 jg0.2 m1
-h 133.75,83.05 z$z1 c$c1 d3 jg0.2 m1
+h 122.25,30 z$z1 c$c2 d3 jg0.2 m1
+h 133.75,83.05 z$z1 c$c2 d3 jg0.2 m1
 
 (támasztó)
-h 61.25,57.69 z$z1 c$c1 d3 jg0 m1
-h 148,57.69 z$z1 c$c1 d3 jg0 m1
-h 208,57.69 z$z1 c$c1 d3 jg0 m1
+h 61.25,57.69 z$z1 c$c2 d3 jg0 m1
+h 148,57.69 z$z1 c$c2 d3 jg0 m1
+h 208,57.69 z$z1 c$c2 d3 jg0 m1
 
 (körvonal)
 b outline 0,0 size234,116 z$z1 c$c5 g3,0.3,0.3 r3

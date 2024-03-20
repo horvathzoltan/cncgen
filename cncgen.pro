@@ -309,11 +309,13 @@ DISTFILES += \
     testdata/uniturn_tap_panel_rogzito.txt \
     testdata/uniturn_tavtarto_5mm.txt \
     testdata/uniturn_tavtarto_5mm_2oldalas.txt \
+    testdata/uniturn_tavtarto_5mm_csapos.txt \
     testdata/uniturn_tavtarto_6mm.txt \
     testdata/uniturn_usb_kengyel.txt \
     testdata/uniturn_usb_kengyel_rogzito.txt \
     testdata/usb.txt \
     testdata/villaskulcs_16.txt \
+    testdata/villaskulcs_19_2.txt \
     testdata/villaskulcs_22.txt \
     testdata/villaskulcs_22_2.txt \
     testdata/villaskulcs_27.txt \

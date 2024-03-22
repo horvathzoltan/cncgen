@@ -1,0 +1,59 @@
+(mestercipo_logger_led.txt)
+(OKW B7005107)
+(cmd line: -i mestercipo_logger_led.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.20
+safebottom0.20
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 3
+
+c3 = 0.150
+c5 = 0.250 #keret
+
+offset1,1,0
+
+x = 72.15
+y = 20
+z = -2.9
+
+h = 5
+d = 3
+j = 0.2
+
+offset1,1,0
+
+h $x,$y,$z z$z1 c$c3 d$d jg$j
+
+y = add($y,$h)
+h $x,$y,$z z$z1 c$c3 d$d jg$j
+
+y = add($y,$h)
+h $x,$y,$z z$z1 c$c3 d$d jg$j
+
+y = add($y,$h)
+h $x,$y,$z z$z1 c$c3 d$d jg$j
+
+
+
+
+
+
+

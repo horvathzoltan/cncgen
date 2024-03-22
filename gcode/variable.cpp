@@ -77,3 +77,8 @@ QString VariableRepository::ToString(const QString& key)
     }
     return L("=???");
 }
+
+void VariableRepository::setValue(const QString &txt, QVariant v)
+{
+    _values.insert(txt, v);
+}

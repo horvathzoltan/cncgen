@@ -20,16 +20,24 @@ auto Tool::Parse(const QString &txt, Tool* tool) -> ParseState
     auto ix = params[0].mid(1).toInt(&isok);
     if(isok && ix>=0 && ix<=6) m.ix = ix;
 
+    QString k = "t"+QString::number(m.ix);
+
     for(int i=1;i<params.length();i++){
         auto&p = params[i];
         if(p.startsWith('d')&&p.length()>1){
             bool isok;
             auto d = p.mid(1).toDouble(&isok);
-            if(isok) m.d = d;
+            if(isok){
+                m.d = d;
+                GCode::_variables.setValue(k+"d",m.d);
+            }
         } else if(p.startsWith('h')){
             bool isok;
             auto h = p.mid(1).toDouble(&isok);
-            if(isok) m.h = h;
+            if(isok){
+                m.h = h;
+                GCode::_variables.setValue(k+"h",m.h);
+            }
         } else if(p==u'd'){
             m.type = Drilling;
         }

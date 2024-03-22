@@ -16,6 +16,8 @@ public:
     QString ToString(const QString& key);
     //qreal movZ(){ return _movZ; }
     //qreal maxZ(){ return _maxZ; }
+
+    void setValue(const QString& txt, QVariant v);
 private:
     QMap<QString,QVariant> _values;
     //QMap<QString,Expression> _expressions;

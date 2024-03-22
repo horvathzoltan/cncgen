@@ -1,0 +1,87 @@
+(okw cover l flat:b4030617)
+(waveshare 10.1 hdmi lcd b)
+(METON terminál)
+(cmd line: -i meton_doboz_felso_szerelolap_3.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.30
+safebottom0.10
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+c1 = 0.025
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
+c4 = 0.200 #gyors
+c5 = 0.100 #keret
+
+# külső körvonal kezdőpontja + szerszámsugár
+offset1.5,1.5,0
+
+kl1 = 1.6
+kjg1 = 0.2
+
+
+kl2 = 6
+kjg2 = 0.2
+ky1 = 68
+ky2 = sum($ky1,$kl2,$kjg2)
+
+kl3 = 10.5
+kjg3 = 0.2
+ky3 = 96
+ky4 = sum($ky3,$kl3,$kjg3)
+
+kw = div(130,3)
+
+kx1 = 115
+
+kx1 = add($kx1,$kw)
+kx2 = sum($kx1,$kl1,$kjg1)
+
+(touch + 5V szalagkábel kötöző)
+l $ky1,$kx1 $ky1,$kx2 z$z1 c$c5 ns
+l $ky2,$kx1 $ky2,$kx2 z$z1 c$c5 ns
+
+(hdmi szalagkábel kötöző)
+l $ky3,$kx1 $ky3,$kx2 z$z1 c$c5 ns
+l $ky4,$kx1 $ky4,$kx2 z$z1 c$c5 ns
+
+kx1 = add($kx1,$kw)
+kx2 = sum($kx1,$kl1,$kjg1)
+
+(touch + 5V szalagkábel kötöző)
+l $ky1,$kx1 $ky1,$kx2 z$z1 c$c5 ns
+l $ky2,$kx1 $ky2,$kx2 z$z1 c$c5 ns
+
+(hdmi szalagkábel kötöző)
+l $ky3,$kx1 $ky3,$kx2 z$z1 c$c5 ns
+l $ky4,$kx1 $ky4,$kx2 z$z1 c$c5 ns
+
+kx1 = add($kx1,$kw)
+kx2 = sum($kx1,$kl1,$kjg1)
+
+(touch + 5V szalagkábel kötöző)
+l $ky1,$kx1 $ky1,$kx2 z$z1 c$c5 ns
+l $ky2,$kx1 $ky2,$kx2 z$z1 c$c5 ns
+
+(hdmi szalagkábel kötöző)
+l $ky3,$kx1 $ky3,$kx2 z$z1 c$c5 ns
+l $ky4,$kx1 $ky4,$kx2 z$z1 c$c5 ns
+

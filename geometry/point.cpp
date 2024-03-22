@@ -53,6 +53,7 @@ ParseState Point::Parse(const QString &txt,
     {
         return st;
     }
+
     st.setState(ParseState::NotParsed);
     if(!p) return st;
 

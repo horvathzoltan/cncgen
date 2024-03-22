@@ -1,5 +1,5 @@
-(Nagisz UWP terminal)
-(cmd line: -i tapdugo.txt -t)
+(AC aljzat fúrósablon, felcsavarozható)
+(cmd line: -i tapdugo_furosablon.txt -t)
 (szerszám beállítás)
 
 t1 m d2 h19

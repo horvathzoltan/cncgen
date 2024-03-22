@@ -1,16 +1,16 @@
 (Mestercipo doboz fedlap)
-(cmd line: -i mestercipo_doboz_felso.txt -t)
+(cmd line: -i mestercipo_doboz_fedlap.txt -t)
 (szerszám beállítás)
 
-t1 m d2 h19
+t1 m d3 h19
 
 yxz
 t1
 s50
-f900
+f1100
 
-safetop0.20
-safebottom0.20
+safetop0.10
+safebottom0.10
 overcut0.300
 
 pre_mill_steps2
@@ -18,28 +18,21 @@ pre_mill_steps2
 #max meredekség polikarbonát 0.05/100mm
 emax0.02
 
-fmax900
+fmax1100
 fmin700
 fratio0.8
 
 z1 = 3.5
 
-c3 = 0.150
-c5 = 0.250 #keret
+c3 = 0.200
+c5 = 0.375 #keret
 
-offset1,1,0
+offset1.5,1.5,0
 
 movz=3
 maxzz=4.7
 
 b inline 34.2,34.7 size149,228.5 z$z1 c$c5 g2,0.5,0.5 jg0.5 ns
-b inline 30.2,195 size5,50 z$z1 c$c3 g1,0.5,0.5 nl1,1,0,1 ns
+b inline 30.2,195 size5,50 z$z1 c$c3 nl1,0,1,0 ng  ns
 
-
-
-
-
-
-
-
-
+b inline 34.2,34.7,-5 size149,228.5 z1 c$c5 g2,0.5,2 jg0.5 ns

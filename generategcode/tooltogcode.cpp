@@ -16,7 +16,7 @@ bool ToolToGCode::ParseTool(const QString& str, QString *gcode, QString *err, To
     QString msg(GCodeCommon::T1+str);
     if(s.state() == ParseState::Parsed )
     {
-        if(gcode)*gcode=ToolToGCode::SetToGCode(m, err, tmm, tss);
+        if(gcode)*gcode=ToolToGCode::SetToGCode(m, err, tmm, tss);      
     }
     StringHelper::Append(&msg, s.ToString(), '\n');
     if(!msg.isEmpty())zInfo(msg);

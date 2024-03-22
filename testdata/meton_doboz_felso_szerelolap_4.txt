@@ -1,0 +1,57 @@
+(okw cover l flat:b4030617)
+(waveshare 10.1 hdmi lcd b)
+(METON terminál)
+(cmd line: -i meton_doboz_felso_szerelolap_4.txt -t)
+(szerszám beállítás)
+
+t1 d d3 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.30
+safebottom0.10
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.95
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 3.10
+c1 = 0.100
+c2 = 0.250 #furatok
+c3 = 0.250 #vonalak
+c4 = 1.000 #gyors
+c5 = 0.375 #keret
+
+# külső körvonal kezdőpontja + szerszámsugár
+offset1.5,1.5,0
+
+(pcb)
+h 50,5 d3 jg0.2 z$z1 c$c5 m1
+h 116.8,5 d3 jg0.2 z$z1 c$c5 m1
+
+(pcb támasztó patent furatai)
+h 54,135 d3 z$z1 c$c5 m1
+h 104,135 d3 z$z1 c$c5 m1
+
+(szerelőlap rögzítő furatok)
+b corners 3,5 size204,254 z$z1 c$c5 d3 jg0.2
+
+(képernyő támasztékok)
+h 61.25,75 d3  z$z1 c$c5 m1
+h 123.75,75 d3  z$z1 c$c5 m1
+
+h 61.25,132.5 d3 z$z1 c$c5 m1
+h 123.75,132.5 d3  z$z1 c$c5 m1
+
+h 61.25,190 d3 z$z1 c$c5 m1
+h 123.75,190 d3 z$z1 c$c5 m1
+

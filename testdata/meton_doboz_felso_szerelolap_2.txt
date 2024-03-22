@@ -1,0 +1,46 @@
+(okw cover l flat:b4030617)
+(waveshare 10.1 hdmi lcd b)
+(METON terminál)
+(cmd line: -i meton_doboz_felso_szerelolap_2.txt -t)
+(szerszám beállítás)
+
+t1 m d3 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.30
+safebottom0.10
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.03
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 2
+c1 = 0.100
+c2 = 0.250 #furatok
+c3 = 0.250 #vonalak
+c4 = 1.000 #gyors
+c5 = 0.375 #keret
+
+# külső körvonal kezdőpontja + szerszámsugár
+t1r = div($t1d,2)
+print "t1r:$t1r"
+offset1.5,1.5,0
+
+(touch)
+b inline 20,35 size10,40 z$z1 c$c3 g1,0.3,0.3 r0 ns
+
+(lvds)
+b inline 155,55 size10,40 z$z1 c$c3 g1,0.3,0.3 r0 ns
+
+(körvonal)
+b outline 0,0 size210,264 z$z1 c$c5 g3,0.3,0.3 r3 ns

@@ -264,17 +264,22 @@ DISTFILES += \
     testdata/linetest.txt \
     testdata/luk.txt \
     testdata/mestercipo_csatlakozo_belezes.txt \
-    testdata/mestercipo_doboz_felso.txt \
+    testdata/mestercipo_doboz_fedlap.txt \
     testdata/mestercipo_doboz_felso_furat.txt \
     testdata/mestercipo_doboz_felso_szerelolap.txt \
     testdata/mestercipo_doboz_hatlap_felso.txt \
     testdata/mestercipo_doboz_hatlap_hp.txt \
     testdata/mestercipo_doboz_hatlap_lenovo.txt \
+    testdata/mestercipo_logger_led.txt \
+    testdata/mestercipo_logger_oldal.txt \
     testdata/mestercipo_tap_szerelolap_1.txt \
     testdata/mestercipo_tap_szerelolap_also.txt \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
     testdata/meton_doboz_also_szerelolap.txt \
     testdata/meton_doboz_felso_szerelolap.txt \
+    testdata/meton_doboz_felso_szerelolap_2.txt \
+    testdata/meton_doboz_felso_szerelolap_3.txt \
+    testdata/meton_doboz_felso_szerelolap_4.txt \
     testdata/meton_kepernyobeulteto.txt \
     testdata/meton_panel_rogzito.txt \
     testdata/ms_kamera_tarto.txt \
@@ -290,9 +295,7 @@ DISTFILES += \
     testdata/tamaszto2.txt \
     testdata/tamaszto3.txt \
     testdata/tap_fesu.txt \
-    testdata/tapdugo.txt \
-    testdata/tapdugo2.txt \
-    testdata/tapdugo3.txt \
+    testdata/tapdugo_furosablon.txt \
     testdata/telefontarto.txt \
     testdata/uniturn_doboz_fedlap_2.txt \
     testdata/uniturn_doboz_hatlap_sablon.txt \

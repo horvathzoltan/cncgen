@@ -87,17 +87,10 @@ const QString GenerateGcode::nameKey = L("_");
 
 void GenerateGcode::Init(){
     _gcodeManager.clear();
-
     _selected_cut ={};
     _toGCodeModel.Reset();
-
     _last_cut3 = {};
-
     _totalStats.Reset();
-
-
-
-
     GCode::_variables.Clear();
 }
 
@@ -152,7 +145,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 
         if(Point::Parse(l, offsetKey).state()!=ParseState::NoData){
             Point ps;
-            auto s1 = Point::Parse(l,  _toGCodeModel._XYMode, _toGCodeModel._MMode, offsetKey, &ps);
+            auto s1 = Point::Parse(l, _toGCodeModel._XYMode, _toGCodeModel._MMode, offsetKey, &ps);
             if(s1.state()==ParseState::Parsed){
                 _toGCodeModel._offset_xyz = ps;
             }

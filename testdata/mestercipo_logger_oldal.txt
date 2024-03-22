@@ -1,0 +1,49 @@
+(OKW B7005107)
+(cmd line: -i mestercipo_logger_oldal.txt -t)
+(szerszám beállítás)
+
+t1 m d2 h19
+
+yxz
+t1
+s50
+f900
+
+safetop0.10
+safebottom0.10
+overcut0.500
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
+
+fmax900
+fmin700
+fratio0.8
+
+z1 = 3
+
+c3 = 0.150
+c5 = 0.250 #keret
+
+offset1,1,0
+
+y = 11.50
+
+h = 5
+d = 3
+j = 0.2
+
+offset1,1,0
+
+y1 = add($y, 1.8)
+
+j = 0.1
+
+b inline 20,$y1 size33.3,11 z$z1 c$c3 ns jg$j g1,0.5,0.3
+
+b inline 55.8,$y size8,3 z$z1 c$c3 ns jg$j
+
+y2 = add($y, 1.5)
+b inline 68.3,$y2 size3.7,2 z$z1 c$c3 ns jg$j

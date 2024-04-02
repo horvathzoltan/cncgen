@@ -2,16 +2,16 @@
 (cmd line: -i mestercipo_doboz_fedlap.txt -t)
 (szerszám beállítás)
 
-t1 m d3 h19
+t1 m d2 h19
 
 yxz
 t1
 s50
-f1100
+f900
 
 safetop0.10
 safebottom0.10
-overcut0.300
+overcut0.200
 
 pre_mill_steps2
 
@@ -24,15 +24,19 @@ fratio0.8
 
 z1 = 3.5
 
-c3 = 0.200
-c5 = 0.375 #keret
+c3 = 0.075
+c5 = 0.150 #keret
 
-offset1.5,1.5,0
+offset1,1,0
 
 movz=3
 maxzz=4.7
 
-b inline 34.2,34.7 size149,228.5 z$z1 c$c5 g2,0.5,0.5 jg0.5 ns
-b inline 30.2,195 size5,50 z$z1 c$c3 nl1,0,1,0 ng  ns
+(waveshare 10.1 hdmi)
+#b inline 34.2,34.7 size149,228.5 z$z1 c$c5 g2,0.5,0.5 jg0.5 ns
 
-b inline 34.2,34.7,-5 size149,228.5 z1 c$c5 g2,0.5,2 jg0.5 ns
+(touch)
+#b inline 30.2,195 size5,50 z$z1 c$c3 nl1,1,0,1 g2,0.5,0.5  ns
+
+(waveshare 10.1 hdmi - keret alján a sorja levágása)
+b inline 34.2,34.7,-3.5 size149,228.5 z2 c2 g2,0.5,2 jg0.5 ns no_comp

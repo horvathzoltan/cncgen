@@ -5,6 +5,9 @@
 
 t1 m d2 h19
 
+movz1.5
+maxz2
+
 yxz
 t1
 s50
@@ -13,6 +16,7 @@ f900
 safetop0.20
 safebottom0.20
 overcut0.300
+
 
 pre_mill_steps2
 
@@ -27,8 +31,6 @@ z1 = 3
 
 c3 = 0.150
 c5 = 0.250 #keret
-
-offset1,1,0
 
 x = 72.15
 y = 20

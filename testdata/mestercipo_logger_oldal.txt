@@ -7,7 +7,7 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f700
 
 safetop0.10
 safebottom0.10
@@ -16,7 +16,7 @@ overcut0.500
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+emax0.8
 
 fmax900
 fmin700
@@ -24,26 +24,31 @@ fratio0.8
 
 z1 = 3
 
-c3 = 0.150
-c5 = 0.250 #keret
+c3 = 0.300
+c5 = 0.500 #keret
 
 offset1,1,0
 
-y = 11.50
+y = 11.50 # panel teteje
 
 h = 5
 d = 3
 j = 0.2
+j1 = 0.25
+j2 = 0.35
 
-offset1,1,0
+tr1 = div($t1d,2)
+offset$tr1,$tr1,0
 
-y1 = add($y, 1.8)
+y1 = add($y, -0.35) #usb alja
 
 j = 0.1
 
-b inline 20,$y1 size33.3,11 z$z1 c$c3 ns jg$j g1,0.5,0.3
+b inline 20,$y1 size33.3,9.3 z$z1 c$c3 ns jg$j2 g1,0.5,0.3
 
-b inline 55.8,$y size8,3 z$z1 c$c3 ns jg$j
+b inline 55.5,$y size8,3 z$z1 c$c3 ns jg$j1
 
-y2 = add($y, 1.5)
-b inline 68.3,$y2 size3.7,2 z$z1 c$c3 ns jg$j
+y2 = add($y, 1.8)
+x2 = sub(68.3,$tr1)
+l2 = add(3.9, $t1d)
+b inline $x2,$y2 size$l2,2 z$z1 c$c3 ns jg$j

@@ -108,12 +108,14 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
         if(l.startsWith('#')) continue;
         if(l.startsWith('/')) continue;
 
+        /*VARIABLE*/
         if(GCode::_variables.Parse(l)){
             zInfo(GCodeCommon::T1+l)
             continue;
         }
 
-        if(l.startsWith(String::key)){ //print
+        /*PRINT*/
+        if(l.startsWith(String::key)){
             if(StringToGcode::ParseString(l, &gcode, &err)){
                 _gcodeManager.Append(gcode, err);
                 continue;
@@ -261,6 +263,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             continue;
         }
 
+        /*FEED*/
         if(Feed::Parse(l).state()!=ParseState::NoData){
             FeedToGCode::ParseFeed(l, &_toGCodeModel);
             // if(, &gcode, &err)){
@@ -269,6 +272,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             continue;
         }
 
+        /*COMMENT*/
         switch(l[0].unicode()){
         case Comment::keyUniCode:
             if(CommentToGCode::ParseComment(l, &gcode, &err)){
@@ -305,6 +309,7 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
                 continue;
             }
             break;
+        /*TOOL*/
         case Tool::keyUniCode:
             if(ToolToGCode::ParseTool(l, &gcode, &err, &_toGCodeModel, &_totalStats)){
                 _gcodeManager.Append(gcode, err);

@@ -3,25 +3,24 @@
 (cmd line: -i mestercipo_logger_led.txt -t)
 (szerszám beállítás)
 
-t1 m d2 h19
+t1 m d3 h19
 
-movz1.5
-maxz2
+movz2
+maxz3
 
 yxz
 t1
 s50
-f900
+f700
 
-safetop0.20
-safebottom0.20
-overcut0.300
-
+safetop0.10
+safebottom0.10
+overcut0.500
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+emax0.8
 
 fmax900
 fmin700
@@ -29,8 +28,8 @@ fratio0.8
 
 z1 = 3
 
-c3 = 0.150
-c5 = 0.250 #keret
+c3 = 0.300
+c5 = 1.000 #keret
 
 x = 72.15
 y = 20
@@ -38,9 +37,10 @@ z = -2.9
 
 h = 5
 d = 3
-j = 0.2
+j = 0.10
 
-offset1,1,0
+tr1 = div($t1d,2)
+offset$tr1,$tr1,0
 
 h $x,$y,$z z$z1 c$c3 d$d jg$j
 
@@ -52,6 +52,7 @@ h $x,$y,$z z$z1 c$c3 d$d jg$j
 
 y = add($y,$h)
 h $x,$y,$z z$z1 c$c3 d$d jg$j
+
 
 
 

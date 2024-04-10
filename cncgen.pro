@@ -276,6 +276,8 @@ DISTFILES += \
     testdata/mestercipo_tap_szerelolap_also.txt \
     testdata/mestercipo_tap_szerelolap_also_2.txt \
     testdata/meton_doboz_also_szerelolap.txt \
+    testdata/meton_doboz_also_szerelolap_furatok.txt \
+    testdata/meton_doboz_also_szerelolap_korvonal.txt \
     testdata/meton_doboz_felso_szerelolap.txt \
     testdata/meton_doboz_felso_szerelolap_2.txt \
     testdata/meton_doboz_felso_szerelolap_3.txt \

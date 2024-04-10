@@ -1,8 +1,8 @@
 (METON terminál)
-(cmd line: -i meton_doboz_also_szerelolap.txt -t)
+(cmd line: -i meton_doboz_also_szerelolap_furatok.txt -t)
 (szerszám beállítás)
 
-t1 m d2 h19
+t1 d d3 h19
 
 xyz
 
@@ -17,26 +17,23 @@ overcut0.300
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+emax2
 
 fmax900
 fmin700
 fratio0.8
 
-z1 = 2
-c1 = 0.025
-c2 = 0.050 #furatok
-c3 = 0.075 #vonalak
-c4 = 0.500 #gyors
-c5 = 0.150 #keret
+z1 = 2.80
+
+c2 = 1.000 #furatok
+
 
 offset1,1,0
 
-(pi3b furatok)
-b corners 36.75,13.70 size49,58 z$z1 c$c2 d2.75 jg0.05 m1
+
 
 (furatok)
-b corners 5.5,14 size223,66.38 z$z1 c$c3 d3 jg0.2 m1
+b corners 5.5,14 size223,66.38 z$z1 c$c2 d3 jg0.2 m1
 h 117,14 z$z1 c$c2 d3 jg0.2 m1
 h 117,80.38 z$z1 c$c2 d3 jg0.2 m1
 
@@ -53,5 +50,4 @@ h 61.25,47.19 z$z1 c$c2 d3 jg0 m1
 h 148,47.19 z$z1 c$c2 d3 jg0 m1
 h 208,47.19 z$z1 c$c2 d3 jg0 m1
 
-(körvonal)
-b outline 0,0 size234,95 z$z1 c$c5 g3,0.3,0.3 r3
+

@@ -9,7 +9,8 @@
 class String
 {
 public:
-    static const QString key;// = QStringLiteral("print");
+    static const QString key;
+    static const QString key_code;
 
     String();
     String(const QString& str);
@@ -17,7 +18,7 @@ public:
     QString _value;
     static auto Parse(const QString &txt, String*m) -> ParseState;
 
-    QString ToString() const;
+    QString ToString(bool isComment = true) const;
 
 /*ISVALID*/
 public:

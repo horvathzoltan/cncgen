@@ -116,7 +116,15 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
 
         /*PRINT*/
         if(l.startsWith(String::key)){
-            if(StringToGcode::ParseString(l, &gcode, &err)){
+            if(StringToGcode::ParseString(l, &gcode, &err, true)){
+                _gcodeManager.Append(gcode, err);
+                continue;
+            }
+        }
+
+        /*CODE*/
+        if(l.startsWith(String::key_code)){
+            if(StringToGcode::ParseString(l, &gcode, &err, false)){
                 _gcodeManager.Append(gcode, err);
                 continue;
             }

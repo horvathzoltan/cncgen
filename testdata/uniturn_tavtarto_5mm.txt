@@ -7,7 +7,7 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f1100
 
 safetop0.20
 safebottom0.20
@@ -18,13 +18,13 @@ pre_mill_steps2
 #max meredekség polikarbonát 0.05/100mm
 emax0.02
 
-fmax900
+fmax1450
 fmin700
 fratio0.8
 
 z1 = 2
-c1 = 0.025
-c2 = 0.050 #furatok
+c1 = 0.0375
+c2 = 0.075 #furatok
 c3 = 0.075 #vonalak
 c4 = 0.500 #gyors
 c5 = 0.150 #keret

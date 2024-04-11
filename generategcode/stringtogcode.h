@@ -7,7 +7,7 @@
 class StringToGcode
 {
 public:
-    static bool ParseString(const QString& str, QString *gcode, QString *err);
+    static bool ParseString(const QString& str, QString *gcode, QString *err, bool isComment);
 };
 
 #endif // STRINGTOGCODE_H

@@ -7,18 +7,18 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f1100
 
-safetop0.250
-safebottom0.250
+safetop0.200
+safebottom0.200
 overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.012
+emax0.02
 
-fmax900
+fmax1450
 fmin600
 fratio0.6
 
@@ -27,14 +27,15 @@ z1 = 2
 (mélység)
 th = 2
 (belső átmérő)
-db = 2.75
+db = 2.5 #2.75
+jdb = 0.05
 (külső átmérő)
 dk = sum(6.2,2,2)
 print "dk: $dk"
 
-c1 = 0.030 #furatok
-c2 = 0.060 #letörések
-c3 = 0.080 #keret
+c1 = 0.0375 #furatok
+c2 = 0.0750 #letörések
+c3 = 0.1000 #keret
 
 (h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
 (h 4,4 d5 z1.2 c0.175 g0,0,0 np)
@@ -45,22 +46,28 @@ o = add($dk,3)
 
 (1.sor)
 
-h $x,$y d$db z$th c$c1 jg0.05 m1
+h $x,$y d$db z$th c$c1 jg$jdb m1 np
 h $x,$y d$dk z$th c$c2 g2,0.5,0.5 np m1
+
+code "M0"
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c1 jg0.05 m1
+h $x,$y d$db z$th c$c1 jg$jdb m1 np
 h $x,$y d$dk z$th c$c2 g2,0.5,0.5 np m1
+
+code "M0"
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c1 jg0.05 m1
+h $x,$y d$db z$th c$c1 jg$jdb m1 np
 h $x,$y d$dk z$th c$c2 g2,0.5,0.5 np m1
+
+code "M0"
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c1 jg0.05 m1
+h $x,$y d$db z$th c$c1 jg$jdb m1 np
 h $x,$y d$dk z$th c$c2 g2,0.5,0.5 np m1
 
 

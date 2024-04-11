@@ -7,6 +7,7 @@
 
 QString String::_lasterr;
 const QString String::key = QStringLiteral("print");
+const QString String::key_code = QStringLiteral("code");
 
 String::String()
 {
@@ -23,7 +24,7 @@ auto String::Parse(const QString &txt, String*m) -> ParseState
 {
     _lasterr.clear();
     if(!m) return ParseState::NoData;
-    if(!txt.startsWith(key)) return ParseState::NoData;
+    if(!txt.startsWith(key) && !txt.startsWith(key_code)) return ParseState::NoData;
 
     int ix = txt.indexOf(' ');
     if(ix==-1) return ParseState::NotParsed;
@@ -39,7 +40,7 @@ auto String::Parse(const QString &txt, String*m) -> ParseState
 //p     0 2  0 2
 //0123456789abcd
 //m1: $ $m1  $m2
-auto String::ToString() const -> QString
+auto String::ToString(bool isComment) const -> QString
 {
     QMap<QString, QString> tokens;
 
@@ -74,5 +75,5 @@ auto String::ToString() const -> QString
         if(isToken) token+=c; else v+=c;
     }
 
-    return "("+v+")";
+    return isComment?"("+v+")":v;
 }

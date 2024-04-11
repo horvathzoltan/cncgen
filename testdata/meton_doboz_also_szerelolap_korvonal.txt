@@ -33,7 +33,7 @@ c5 = 0.150 #keret
 offset1,1,0
 
 (pi3b furatok)
-b corners 36.75,13.70 size49,58 z$z1 c$c2 d2.75 jg0.05 m1
+b corners 36.75,25 size49,58 z$z1 c$c2 d2.75 jg0.05 m1 np
 
 (körvonal)
 b outline 0,0 size234,95 z$z1 c$c5 g3,0.3,0.3 r3

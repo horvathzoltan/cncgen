@@ -6,7 +6,7 @@
 
 #include <helpers/stringhelper.h>
 
-auto StringToGcode::ParseString(const QString& str, QString *gcode, QString *err)-> bool
+auto StringToGcode::ParseString(const QString& str, QString *gcode, QString *err, bool isComment)-> bool
 {
     Q_UNUSED(err)
     String m;
@@ -15,7 +15,7 @@ auto StringToGcode::ParseString(const QString& str, QString *gcode, QString *err
     zInfo(GCodeCommon::T1+str);
     if(s.state() == ParseState::Parsed )
     {
-        auto mm = m.ToString();
+        auto mm = m.ToString(isComment);
         if(gcode)*gcode=mm;//.ToString();
         auto msg1 = GCodeCommon::G1+mm;//.ToString();
         StringHelper::Tabulate(&msg1, GCodeCommon::G2);

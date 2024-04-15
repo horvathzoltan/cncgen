@@ -17,13 +17,12 @@ bool Compensation::Compensate(qreal l, qreal z, qreal *z_out, qreal *f_out, qrea
 
     qreal f2 = f/r;
     if(f2>=mm->_fmin){
-        *z_out=z;
-        *f_out=f2;
-        return true;
-    }
+         *z_out=z;
+         *f_out=f2;
+         return true;
+     }
     // túl lassú lenne le kell csökkenteni a fogást
 
-    //if(_fratio<=0.5) _fratio=0.5;
     qreal rf2 = rf*mm->_fratio;
     *z_out=(z/r)/rf2;
     *f_out=f_in*rf2;

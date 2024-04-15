@@ -279,9 +279,9 @@ DISTFILES += \
     testdata/meton_doboz_also_szerelolap_furatok.txt \
     testdata/meton_doboz_also_szerelolap_korvonal.txt \
     testdata/meton_doboz_felso_szerelolap.txt \
-    testdata/meton_doboz_felso_szerelolap_2.txt \
-    testdata/meton_doboz_felso_szerelolap_3.txt \
     testdata/meton_doboz_felso_szerelolap_4.txt \
+    testdata/meton_doboz_felso_szerelolap_furatok3mm.txt \
+    testdata/meton_doboz_felso_szerelolap_korvonal.txt \
     testdata/meton_kepernyobeulteto.txt \
     testdata/meton_panel_rogzito.txt \
     testdata/ms_kamera_tarto.txt \

@@ -12,6 +12,7 @@ auto KeyWord::ToString(Word v) -> QString
     case Word::add: return nameof(Word::add);
     case Word::mul: return nameof(Word::mul);
     case Word::div: return nameof(Word::div);
+    case Word::overdrill: return nameof(Word::overdrill);
     }
     return QString();
 }
@@ -24,5 +25,6 @@ auto KeyWord::Parse(const QString &p) -> KeyWord::Word
     if(p==nameof(Word::add).toLower()) return Word::add;
     if(p==nameof(Word::mul).toLower()) return Word::mul;
     if(p==nameof(Word::div).toLower()) return Word::div;
+    if(p==nameof(Word::overdrill).toLower()) return Word::overdrill;
     return Word::Undefined;
 }

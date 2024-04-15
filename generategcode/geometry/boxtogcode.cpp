@@ -487,10 +487,10 @@ QString BoxToGCode::CreateBox(const Box &m,QString*err, ToGCodeModel* tmm, Total
     if(tmm->_lastGeom._lastBox.type() == BoxType::Corners){
 
         QVarLengthArray<Hole> holes = {
-            {ba, tmm->_last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, false,false, m.name+":1_ba", true},
-            {ja, tmm->_last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, false,false, m.name+":2_ja", true},
-            {jf, tmm->_last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, false,false, m.name+":3_jf", true},
-            {bf, tmm->_last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, false,false, m.name+":4_bf", true}
+            {ba, tmm->_last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, m._no_predrill,false, m.name+":1_ba", true, m.no_simi},
+            {ja, tmm->_last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, m._no_predrill,false, m.name+":2_ja", true, m.no_simi},
+            {jf, tmm->_last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, m._no_predrill,false, m.name+":3_jf", true, m.no_simi},
+            {bf, tmm->_last_hole_diameter, m.cut, m.feed, {}, m.joinGap, {}, m._no_predrill,false, m.name+":4_bf", true, m.no_simi}
         };
 
         if(tmm->_verbose){

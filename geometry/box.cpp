@@ -33,7 +33,9 @@ Box::Box(const Point &_p0,
          bool _no_compensate,
          int _menet,
          bool ns,
-         qreal _bevelling)
+         qreal _bevelling,
+         bool no_predrill
+         )
 {
     p0=_p0;
     p1=_p1;
@@ -66,6 +68,7 @@ Box::Box(const Point &_p0,
     no_compensate = _no_compensate;
     no_simi = ns;
     bevelling = _bevelling;
+    _no_predrill = no_predrill;
 }
 
 ParseState Box::Parse(const QString &txt){
@@ -98,6 +101,7 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m,const Poin
     bool _no_compensate = false;
     int menet = -1;
     bool _no_simi = false;
+    bool no_predrill = false;
 
     bool nl[]={1,1,1,1};
     bool nr[]={1,1,1,1};
@@ -221,6 +225,11 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m,const Poin
             continue;
         }
 
+        if(p=="np"){
+            no_predrill=true;
+            continue;
+        }
+
         if(p.toLower()=="no_comp"){
             _no_compensate = true;
             continue;
@@ -292,7 +301,8 @@ auto Box::Parse(const QString &txt, XYMode xymode, MMode mmode,Box *m,const Poin
         _no_compensate,
         menet,
         _no_simi,
-        bevelling
+        bevelling,
+        no_predrill
     };
 
     st.setState(ParseState::Parsed);

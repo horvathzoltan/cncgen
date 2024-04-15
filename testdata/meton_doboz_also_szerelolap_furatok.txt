@@ -23,9 +23,10 @@ fmax900
 fmin700
 fratio0.8
 
-z1 = 2.80
+z1 = overdrill(118, $t1d, 2.00);
+print "overdrill: $z1"
 
-c2 = 1.000 #furatok
+c2 = 0.50 #furatok
 
 
 offset1,1,0

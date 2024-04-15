@@ -33,7 +33,8 @@ public:
         bool _no_compensate,
         int _menet,
         bool ns,
-        qreal bevelling
+        qreal bevelling,
+        bool no_predrill
         );
 
     QList<Line> lines;
@@ -56,6 +57,7 @@ public:
     bool no_compensate = false;
     int menet=-1;
     bool no_simi = false;
+    bool _no_predrill=false;
 
     static constexpr ushort keyUniCode= key.unicode();
 

@@ -58,6 +58,7 @@ auto Expression::Calculate() -> QVariant
     case KeyWord::add: return(Function::add(_params));
     case KeyWord::mul: return(Function::mul(_params));
     case KeyWord::div: return(Function::div(_params));
+    case KeyWord::overdrill: return(Function::overdrill(_params));
     default: return {};
     }
     return "?";

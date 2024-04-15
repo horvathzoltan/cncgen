@@ -5,6 +5,8 @@
 #include <QVariant>
 
 #include "gcode/gcode.h"
+#include <QtMath>
+
 
 class Function{
 public:
@@ -80,6 +82,28 @@ public:
         if(qIsNaN(d[0])||qIsNaN(d[1])) return {};
         return d[0]/d[1];
     }
+
+
+    static qreal overdrill2(qreal a, qreal d, qreal h){
+        if(a==0) return 0;
+        if(d==0) return 0;
+        if(h<=0) return 0;
+        qreal aa = qDegreesToRadians(90-(a/2));
+
+        qreal L = ((tan(aa)/2)*d)+h;
+        return L;
+    }
+
+    static QVariant overdrill(const QList<QVariant>& params){
+        if(params.isEmpty()) return {};
+        if(params.length()<3) return {};
+        auto d= ToDoubles(params);
+        if(qIsNaN(d[0])||qIsNaN(d[1])) return {};
+        qreal L = overdrill2(d[0],d[1],d[2]);
+        return QVariant(L);
+    }
+
+
 };
 
 #endif // FUNCTION_H

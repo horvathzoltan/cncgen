@@ -24,7 +24,8 @@ struct Hole{
          bool _np,//=false,
          bool _ng,//=false,
          const QString& _name,//=""
-         int _mode
+         int _mode,
+         bool ns
         );
 
     Point p;
@@ -33,11 +34,12 @@ struct Hole{
     Cut cut={};
     Feed feed={};
     Point rp={};
-    bool np=false;
+    bool _no_predrill=false;
     bool ng=false;
     qreal jointGap=0; // illesztési hézag
     QString name;
     int mode=1;
+    bool _no_simi = false;
 
     static ParseState Parse(const QString& txt, XYMode xymode,
                             MMode mmode, Hole*, const Point& offset);

@@ -115,7 +115,7 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
         pre_mill = true;
     }
     else{
-        if(m.np){
+        if(m._no_predrill){
             pre_drill = false;
             pre_mill =false;
 
@@ -180,7 +180,7 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
 
     qreal safez = tmm->_safez+1;//(_safez!=0)?_safez:1;
 
-    if(pre_drill){
+    if(pre_drill || drillOnly){
 
         qreal d_l = (t.d*M_PI)/2; // a belső átmérőn is vág, kevesebbet
         Compensation::CompensateModel d_c = Compensation::Compensate2(d_l,  m.cut, m.feed, tmm);

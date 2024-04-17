@@ -30,6 +30,7 @@ public:
     static const QString ratioKey;
     static const QString preMillStepsKey;
     static const QString movzKey;
+    static const QString peckzKey;
     static const QString maxzKey;
     static const QString nameKey;
 

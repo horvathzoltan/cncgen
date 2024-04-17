@@ -28,7 +28,7 @@ z1 = 2
 th = 2
 (belső átmérő)
 db = 2.5 #2.75
-jdb = 0.05
+jdb = 0.075
 (külső átmérő)
 dk = sum(6.2,2,2)
 print "dk: $dk"

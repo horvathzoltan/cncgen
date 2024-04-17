@@ -12,20 +12,31 @@
 #include <QtMath>
 #include <gcode/gcode.h>
 
-QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool a, bool aljasimi, bool isPeca,ToGCodeModel* tmm, TotalStats *tss)
+QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool _za, bool _no_simi, bool isPeca,ToGCodeModel* tmm, TotalStats *tss)
 {
     GCodeManager g(QStringLiteral("(helical cut)"));
     QString msg;
 
-    qreal length = path_r*2*M_PI; //fogás hossz
-    Compensation::CompensateModel c = Compensation::Compensate2(length, o_cut, o_feed, tmm);
+    Tool t = tmm->selectedTool();
+    qreal length = t.d+path_r*2*M_PI; //fogás hossz
+
+    bool isDrill = path_r*2<t.d;
+
     Feed feed = o_feed;
     Cut cut = o_cut;
-    if(c.isCompensated){
-        feed.setFeed(c.c_f);
-        cut.z0=c.c_z;
+    bool no_compensate = false;
 
-        c.ToGCode(&g, o_cut, o_feed);
+    if(!no_compensate){
+        Compensation::CompensateModel c = Compensation::Compensate2(length, o_cut, o_feed, tmm);
+
+        if(c.isCompensated){
+            feed.setFeed(c.c_f);
+            cut.z0=c.c_z;
+
+            c.ToGCode(&g, o_cut, o_feed);
+        }
+    } else{
+        zInfo("no_compensate")
     }
 
     Point p = GeoMath::Translation(tmm->_lastGeom._lastHoleP, -path_r, 0, 0);
@@ -34,7 +45,7 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
 
     int steps_0 = cut.steps();
 
-    if(aljasimi){
+    if(!_no_simi){
         steps_0 += GCodeCommon::SIMI;
     }
 
@@ -48,15 +59,21 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
     bool isPeck2 = false;
     bool isPeck3 = true;//false;
     bool isPeck4 = false;
+    bool isPeck5 = true;
 
-    Tool t = tmm->selectedTool();
 
-    auto lpeck = t.d*tmm->dPeck/10;
-    //    auto lpeck2 = t.d*dPeck2/10;
+    auto lpeck = t.d*tmm->dPeck;
+    auto lpeck2 = t.d*tmm->dPeck2;
 
     if(isPeca)
     {
         if(length>t.d*2){
+            if(length<=lpeck && !no_compensate){
+                isPeck = true;
+                if(length<=lpeck2){
+                    isPeck2 = true;
+                }
+            }
             /*  if(l<=lpeck){
                 isPeck = true;
                 if(l<=lpeck2){
@@ -69,20 +86,25 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
         } else{
             isPeck3 = true;
             isPeck4 = true;
-        }
-
-
-        if(isPeck){
-            g.append("(peck)");
-        }
-
-        if(isPeck2){
-            g.append("(peck2)");
-        }
+        }       
     } else {
         g.append("(no_peck)");
         isPeck3 = false;
         isPeck4 = false;
+    }
+
+    if(isDrill && t.type==Tool::Type::Drilling){
+        isPeck3 = true;
+        isPeck4 = true;
+        isPeck5 = false;
+    }
+
+    if(isPeck){
+        g.append("(peck)");
+    }
+
+    if(isPeck2){
+        g.append("(peck2)");
     }
 
     for(int i=0;i<steps_0;i++){
@@ -98,7 +120,7 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
         //qreal lz = pp.z-p.z;
         //qreal l1 = qSqrt(l*l+lz*lz); // út hossz
 
-        if(aljasimi && last_z==p.z){
+        if(!_no_simi && last_z==p.z){
             isPeck3 = false;
             feed.setFeed(tmm->_fmin);
             QString g1;
@@ -112,7 +134,7 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
 
         QString g0;
 
-        if(a){
+        if(_za){
             g0 = GoTo::GoToZ(GMode::Circular, p, feed.feed()/*, {path_r, 0}*/, tmm,tss) + " i" + GCode::r(path_r);
         } else{
             if(i%2==0){
@@ -131,25 +153,26 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
         tss->_total_minutes+=GoTo::t_muvelet;
 
         bool do_peck = false;
-        if(isPeck3){
-            //bool isPeck0 = !(i % (isPeck4?PECKSTEPS_2:PECKSTEPS));
-            bool isPeck0 = (i % (isPeck4?GCodeCommon::PECKSTEPS_2:GCodeCommon::PECKSTEPS))
-                           == (isPeck4?GCodeCommon::PECKSTEPS_2:GCodeCommon::PECKSTEPS)-1;
-            if(i>0 && isPeck0){
+        if(isPeck3 && !no_compensate){
+            bool isPeck0 = (i % (isPeck4?GCodeCommon::PECKSTEPS_2:GCodeCommon::PECKSTEPS)) ==
+                           (isPeck4?GCodeCommon::PECKSTEPS_2:GCodeCommon::PECKSTEPS)-1;
+            if(i>0 && isPeck0){//i>0 &&
                 do_peck = true;
             }
         }
 
         if(do_peck){
-            auto g0 = GoTo::GoToZ(GMode::Rapid, {0,0,tmm->_movZ}, feed.feed(), tmm,tss);
-            g.Append( g0);
+            auto g10 = GoTo::GoToZ(GMode::Rapid, {0,0,tmm->_peckZ}, feed.feed(), tmm,tss);
+            g.Append( g10);
 
-            g0 = "G4 P"+QString::number(GCodeCommon::PECKSTEP_MILLISEC);
-            g.Append( g0);
-            tss->_total_minutes+=TotalStats::MilliSecToMin(GCodeCommon::PECKSTEP_MILLISEC);
+            if(isPeck5){
+                g10 = "G4 P"+QString::number(GCodeCommon::PECKSTEP_MILLISEC);
+                g.Append( g10);
+                tss->_total_minutes+=TotalStats::MilliSecToMin(GCodeCommon::PECKSTEP_MILLISEC);
+            }
 
-            g0 = GoTo::GoToZ(GMode::Rapid, p, feed.feed(), tmm,tss);
-            g.Append( g0);
+            g10 = GoTo::GoToZ(GMode::Rapid, p, feed.feed(), tmm,tss);
+            g.Append( g10);
         }
 
         last_z = p.z;

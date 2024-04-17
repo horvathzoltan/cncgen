@@ -9,7 +9,7 @@ t1 m d2 h19
 yxz
 t1
 s50
-f800
+f700
 
 safetop0.20
 safebottom0.10
@@ -18,7 +18,7 @@ overcut0.300
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+emax0.0125
 
 fmax900
 fmin500
@@ -26,10 +26,10 @@ fratio0.7
 
 z1 = 2
 
-c2 = 0.050 #furatok
-c3 = 0.075 #furatok
+c2 = 0.035 #furatok
+c3 = 0.070 #furatok
 
-c5 = 0.100 #keret
+c5 = 0.170 #keret
 
 # külső körvonal kezdőpontja + szerszámsugár
 offset1,1,0
@@ -48,9 +48,13 @@ kjg1 = 0.2
 kx1 = add($kx1,$kw)
 kx2 = sum($kx1,$kl1,$kjg1)
 
+kl2 = 6
+kjg2 = 0.2
 ky1 = 68
 ky2 = sum($ky1,$kl2,$kjg2)
 
+kl3 = 10.5
+kjg3 = 0.2
 ky3 = 96
 ky4 = sum($ky3,$kl3,$kjg3)
 

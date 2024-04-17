@@ -250,8 +250,7 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
             //SetSelectedFeed(m.feed);
             Cut cut2 = m.cut;
             cut2.z = z2;
-            bool aljasimi = !hasGaps;
-            auto g1=HelicalCut::CreateCut(path_r, m.feed, cut2, helicalMode, aljasimi, false, tmm,tss);
+            auto g1=HelicalCut::CreateCut(path_r, m.feed, cut2, helicalMode, m._no_simi, false, tmm,tss);
             g.append(g1);
         }
 

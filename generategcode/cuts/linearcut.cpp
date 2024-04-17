@@ -175,7 +175,7 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
                 }
 
                 if(do_peck){
-                    auto g0 = GoTo::GoToZ(GMode::Rapid, {0,0,tmm->_movZ}, feed.feed(),tmm,tss);
+                    auto g0 = GoTo::GoToZ(GMode::Rapid, {0,0,tmm->_peckZ}, feed.feed(),tmm,tss);
                     g.Append( g0);
 
                     g0 = "G4 P"+QString::number(GCodeCommon::PECKSTEP_MILLISEC);
@@ -231,7 +231,8 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
                 if(!as)
                 {
                     Point pu = tmm->_lastGeom._lastLine.p0();
-                    pu.z = tmm->_movZ;
+                    // peckhez lementjük - _movZ
+                    pu.z = tmm->_peckZ;
 
                     //qreal mz;
 

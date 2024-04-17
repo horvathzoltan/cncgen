@@ -406,7 +406,7 @@ QString LineToGCode::CreateLines(const QList<Line>& m2, QString *err, ToGCodeMod
                 g0 = GoTo::GoToXYZ(GMode::Linear, {mm.p1.x, mm.p1.y, zzz }, feed.feed(),tmm,tss, {});
                 g.Append(g0);
 
-                g0 = GoTo::GoToZ(GMode::Rapid,{0,0,tmm->_movZ}, feed.feed(),tmm,tss);
+                g0 = GoTo::GoToZ(GMode::Rapid,{0,0,tmm->_peckZ}, feed.feed(),tmm,tss);
                 g.Append( g0);
 
                 lastz[j] = zzz;

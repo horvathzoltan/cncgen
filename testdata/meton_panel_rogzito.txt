@@ -7,32 +7,34 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f700
 
 safetop0.20
-safebottom0.20
+safebottom0.10
 overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+emax0.0125
 
 fmax900
 fmin700
-fratio0.8
+fratio0.7
 
 z1 = 2
 c1 = 0.025
-c2 = 0.050 #furatok
-c3 = 0.075 #vonalak
-c4 = 0.500 #gyors
+c2 = 0.035 #furatok
+c3 = 0.050 #vonalak
+c4 = 0.075 #vonalak
 c5 = 0.150 #keret
 
 gw = 0.6
 gh = 0.4
 
-offset1,1,0
+o1=div($t1d,2)
+offset$o1,$o1,0
+
 (1)
 ph = 2.5
 th = 2 # tartó horony távolsága az alaplaptól
@@ -70,7 +72,7 @@ print "xr2: $xr2"
 xp11 = add($xr1, .3)
 xp12 = sub($xr2, .3)
 (alsó_1)
-l 0,$ph $xp11,$ph z$z1 c$c5 g1,$gw,$gh ns
+l 0,$ph $xp11,$ph z$z1 c$c4 g1,$gw,$gh ns
 
 ph11 = sub($ph,0.3)
 ph12 = add($ph,0.3)
@@ -81,11 +83,11 @@ ph3 = sub($ph, 3.0)
 ph4 = sub($ph, 3.5)
 
 (patent oldalai)
-l $xp1,$ph3 $xr1,$ph2 z$z1 c$c2 ns no_comp
-l $xp2,$ph3 $xr2,$ph2 z$z1 c$c2 ns no_comp
+l $xp1,$ph3 $xr1,$ph2 z$z1 c$c2 ns
+l $xp2,$ph3 $xr2,$ph2 z$z1 c$c2 ns
 
 (patent alja)
-l $xp1,$ph4 $xp2,$ph4 z$z1 c$c2 ns no_comp
+l $xp1,$ph4 $xp2,$ph4 z$z1 c$c4 ns no_comp
 
 xu = $xp12
 
@@ -113,11 +115,11 @@ xp12 = sub($xr2, .3)
 
 #ph11 = sub($ph,0.2)
 #ph12 = add($ph,0.2)
-l $xu,$ph $xp11,$ph z$z1 c$c5 ns g1,$gw,$gh
+l $xu,$ph $xp11,$ph z$z1 c$c4 ns g1,$gw,$gh
 l $xu,$ph11 $xu,$ph12 z$z1 c$c4 ns no_comp
 l $xp11,$ph11 $xp11,$ph12 z$z1 c$c4 ns no_comp
 
-l $xp12,$ph $w,$ph z$z1 c$c5 ns g1,$gw,$gh
+l $xp12,$ph $w,$ph z$z1 c$c4 ns g1,$gw,$gh
 l $xp12,$ph11 $xp12,$ph12 z$z1 c$c4 ns no_comp
 
 ph2 = sub($ph, 0.5)
@@ -125,11 +127,11 @@ ph3 = sub($ph, 3.0)
 ph4 = sub($ph, 3.5)
 
 (patent oldalai)
-l $xp1,$ph3 $xr1,$ph2 z$z1 c$c2 ns no_comp
-l $xp2,$ph3 $xr2,$ph2 z$z1 c$c2 ns no_comp
+l $xp1,$ph3 $xr1,$ph2 z$z1 c$c2 ns
+l $xp2,$ph3 $xr2,$ph2 z$z1 c$c2 ns
 
 (patent alja)
-l $xp1,$ph4 $xp2,$ph4 z$z1 c$c2 ns no_comp
+l $xp1,$ph4 $xp2,$ph4 z$z1 c$c4 ns no_comp
 
 
 (tartó horony)

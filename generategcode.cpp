@@ -39,6 +39,7 @@ const QString GenerateGcode::overcutKey = L("overcut");
 const QString GenerateGcode::ratioKey = L("ratio");
 const QString GenerateGcode::preMillStepsKey = L("pre_mill_steps");
 const QString GenerateGcode::movzKey = L("movz");
+const QString GenerateGcode::peckzKey = L("peckz");
 const QString GenerateGcode::maxzKey = L("maxz");
 
 const QString GenerateGcode::emaxKey = L("emax");
@@ -158,6 +159,8 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             auto s1 = Point::Parse(l, _toGCodeModel._XYMode, _toGCodeModel._MMode, offsetKey, &ps);
             if(s1.state()==ParseState::Parsed){
                 _toGCodeModel._offset_xyz = ps;
+                QString msg = QStringLiteral("(offset:%1,%2,%3)").arg(ps.x).arg(ps.y).arg(ps.z);
+                _gcodeManager.Append(msg, "");
             }
             continue;
         }
@@ -187,6 +190,13 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             qreal r;
             bool isok = GCode::ParseValue(l, movzKey, &r);
             if(isok) _toGCodeModel._movZ = r;
+            continue;
+        }
+
+        if(l.startsWith(peckzKey)){
+            qreal r;
+            bool isok = GCode::ParseValue(l, peckzKey, &r);
+            if(isok) _toGCodeModel._peckZ = r;
             continue;
         }
 

@@ -146,7 +146,7 @@ QStringList CircularArcCut::CreateCut(const Feed& o_feed,const Cut& o_cut, bool 
             }
 
             if(do_peck){
-                auto g0 = GoTo::GoToZ(GMode::Rapid, {0,0,tmm->_movZ}, feed.feed(), tmm,tss);
+                auto g0 = GoTo::GoToZ(GMode::Rapid, {0,0,tmm->_peckZ}, feed.feed(), tmm,tss);
                 g.Append( g0);
 
                 g0 = "G4 P"+QString::number(GCodeCommon::PECKSTEP_MILLISEC);
@@ -226,7 +226,7 @@ QStringList CircularArcCut::CreateCut(const Feed& o_feed,const Cut& o_cut, bool 
             if(i<steps-2)
             {
                 Point pu = tmm->_lastGeom._lastArc.p0();
-                pu.z = tmm->_movZ;
+                pu.z = tmm->_peckZ;
 
                 //if(isPeck2){
                 g0 = GoTo::GoToZ(GMode::Rapid,{0,0,pu.z}, feed.feed(), tmm,tss);

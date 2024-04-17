@@ -25,11 +25,12 @@ struct ToGCodeModel
     bool _isPlot = false;
 
     qreal _emax=0.1/100;
-    qreal _fratio =0.7;
-    qreal _movZ=2;
+    qreal _fratio =0.5;
+    qreal _movZ=6;
+    qreal _peckZ=2;
     qreal _safez=0;
     int _last_tool_ix = -1;
-    qreal _maxZ=4;
+    qreal _maxZ=15;
     Point _safe_place = {0,0,0};
 
     XYMode _XYMode;
@@ -76,9 +77,10 @@ public:
         clearTools();
         selectTool(-1);
         _emax=0.005;
-        _fratio=0.7;
-        _movZ=2;
-        _maxZ=4;
+        _fratio=0.5;
+        _peckZ=2;
+        _movZ=6;
+        _maxZ=15;
         _last_tool_ix=-1;
         _selected_feed3 ={};
         _safez = 0;

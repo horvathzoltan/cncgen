@@ -52,16 +52,20 @@ int Cut::steps()
 }
 
 
-bool Cut::Check(QString *err) const
+Cut::CheckR Cut::Check(QString *err) const
 {
-    if(z0<=0){if(err)*err=L("no cut depth"); return {};}
-    if(z<=0) {if(err)*err=L("no toal cut depth");return false;}
+    if(z0<=0){if(err)*err=L("no cut depth"); return invalid;}
+    if(z<=0) {if(err)*err=L("no toal cut depth");return invalid;}
     if(z0>z) {
-        if(err){
-            *err=L("wrong cut depth: ")+GCode::r(z0)+
-                   " total: "+GCode::r(z);
-        }
-        return false;
+        // if(err){
+        //     *err=L("wrong cut depth: ")+GCode::r(z0)+
+        //            " total: "+GCode::r(z);
+        // }
+        return wrong;
     }
-    return true;
+    return valid;
+}
+
+void Cut::Z_Correction(){
+    if(z0>z) z0=z;
 }

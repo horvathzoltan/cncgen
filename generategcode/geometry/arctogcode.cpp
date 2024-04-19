@@ -76,7 +76,8 @@ QString ArcToGCode::CreateArc(const Arc& m ,QString* err, ToGCodeModel* tmm,Tota
     }
     auto d01 = GeoMath::Distance(m.p0,m.p1);
     /*CUT*/
-    if(!m.cut.Check(err)){
+    auto cutCheckResult = m.cut.Check(err);
+    if(cutCheckResult == Cut::CheckR::invalid){
         return{};
     }
     /*FEED*/

@@ -73,9 +73,11 @@ QString LineToGCode::CreateLine(const Line& m, QString *err, ToGCodeModel *tmm, 
     zInfo(msg);
 
     /*CUT*/
-    if(!m.cut.Check(err)){
+    auto cutCheckResult = m.cut.Check(err);
+    if(cutCheckResult == Cut::CheckR::invalid){
         return{};
     }
+
     /*FEED*/
     if(!m.feed.Check(tmm->_fmin, tmm->_fmax, err)){
         return{};
@@ -141,8 +143,12 @@ QString LineToGCode::CreateLine(const Line& m, QString *err, ToGCodeModel *tmm, 
     zInfo(msg);
     /*CUT*/
     qreal z2 = mgap.isValid()?m.cut.z-mgap.height:m.cut.z;
-
+    // z0 az a fogás
+    if(m.cut.z0>z2){
+     //   z2 = m.cut.z;
+    }
     // a gapig egyet vágunk
+
     if(z2>0){
         Cut cut2 = m.cut;
         cut2.z=z2;
@@ -160,6 +166,7 @@ QString LineToGCode::CreateLine(const Line& m, QString *err, ToGCodeModel *tmm, 
         Point ba1=GeoMath::Translation(tmm->_lastGeom._lastLine.p0(), 0, 0, -z2);
         Point ja1=GeoMath::Translation(tmm->_lastGeom._lastLine.p1(), 0, 0, -z2);
         Cut cut_gap{mgap.height, m.cut.z0};
+
         //auto gap_length = GeoMath::Distance(ba1, ja1);
         QString gap_name = m.name+" gap";//: "+QString::number(gap_length);
 
@@ -202,9 +209,11 @@ QString LineToGCode::CreateLines(const QList<Line>& m2, QString *err, ToGCodeMod
     zInfo(msg);
 
     /*CUT*/
-    if(!m.cut.Check(err)){
+    auto cutCheckResult = m.cut.Check(err);
+    if(cutCheckResult == Cut::CheckR::invalid){
         return{};
     }
+
     /*FEED*/
     if(!m.feed.Check(tmm->_fmin, tmm->_fmax, err)){
         return{};

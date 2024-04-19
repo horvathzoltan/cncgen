@@ -95,7 +95,9 @@ QString BoxToGCode::CreateBox(const Box &m,QString*err, ToGCodeModel* tmm, Total
         }
     }
     /*CUT*/
-    if(!m.cut.Check(err)){
+    /*CUT*/
+    auto cutCheckResult = m.cut.Check(err);
+    if(cutCheckResult == Cut::CheckR::invalid){
         return{};
     }
     /*FEED*/
@@ -751,7 +753,7 @@ QString BoxToGCode::CreateBox(const Box &m,QString*err, ToGCodeModel* tmm, Total
                             *err+=segment.name+": "+e0;
                         }
                         // ki van számolva a gap, de túl kicsi, hiányozni fog
-                        zInfo("segment gcode error");
+                        zInfo("border segment gcode error");
                     }
                     tmm->_lastGeom._lastLine.setP0(px0); // azonnal vissza is állítjuk
                     tmm->_lastGeom._lastLine.setP1(px1);
@@ -777,7 +779,7 @@ QString BoxToGCode::CreateBox(const Box &m,QString*err, ToGCodeModel* tmm, Total
                         *err+=n+": "+e0;
                     }
                     // ki van számolva a gap, de túl kicsi, hiányozni fog
-                    zInfo("segment gcode error");
+                    zInfo("gap segment gcode error");
                 }
                 gaps.clear();
 

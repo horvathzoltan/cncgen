@@ -79,7 +79,8 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
         return {};
     }
     /*CUT*/
-    if(!m.cut.Check(err)){
+    auto cutCheckResult = m.cut.Check(err);
+    if(cutCheckResult == Cut::CheckR::invalid){
         return{};
     }
     /*FEED*/
@@ -244,8 +245,12 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
         //      SetSelectedFeed(m.feed);
         p.x -= path_r; //szerszámpálya kezdő pontja - furat belső szélének érintése
         // ha van gap, csak a gapig megyünk egyébként teljesen
+        /*CUT*/
         qreal z2 = hasGaps?m.cut.z-mgap.height:m.cut.z;
-        // marás a kért átmérőre
+        // z0 az a fogás
+        if(m.cut.z0>z2) z2 = m.cut.z;
+
+        // marás a kért átmérőre        
         if(z2>0){
             //SetSelectedFeed(m.feed);
             Cut cut2 = m.cut;

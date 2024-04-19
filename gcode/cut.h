@@ -36,7 +36,10 @@ public:
 //private:
 //    static QString _lasterr;
     int steps();
-    bool Check(QString *err) const;
+
+    enum CheckR:int{invalid=-1,valid = 0, wrong=1};
+    CheckR Check(QString *err) const;
+    void Z_Correction();
 };
 
 #endif // CUT_H

@@ -45,7 +45,7 @@ ParseState Point::Parse(const QString &txt,
     if(txt.isEmpty()) return st;
 
     if(!key.isEmpty() && !txt.startsWith(key)) return st;
-    auto a = txt.mid(key.length());
+    auto a = txt.mid(key.length()).trimmed();
     if(a.isEmpty()) return st;
 
     bool isValue = (a[0].isNumber()||a[0]=='$'||a[0]=='-'||a[0]=='+');

@@ -8,7 +8,7 @@ t1 m d2 h19
 yxz
 t1
 s50
-f120
+f200
 
 safetop0.10
 safebottom0.10
@@ -16,7 +16,7 @@ overcut0.100
 
 pre_mill_steps2
 
-#max meredekség polikarbonát 0.05/100mm
+#max meredekség nyákélemez 0.05/100mm
 emax0.1
 
 fmax200

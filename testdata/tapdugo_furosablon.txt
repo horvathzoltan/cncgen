@@ -7,10 +7,10 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f800
 
 safetop0.20
-safebottom0.20
+safebottom0.10
 overcut0.300
 
 pre_mill_steps2
@@ -19,15 +19,15 @@ pre_mill_steps2
 emax0.02
 
 fmax900
-fmin700
-fratio0.8
+fmin500
+fratio0.7
 
 z1 = 2
 c1 = 0.025
 c2 = 0.050 #furatok
 c3 = 0.075 #vonalak
 c4 = 0.500 #gyors
-c5 = 0.150 #keret
+c5 = 0.100 #keret
 
 gw = 0.3
 gh = 0.3
@@ -36,7 +36,7 @@ offset17.65,11.75,0
 
 b inline 0,0 size26.7,9.25 jg0.5 z$z1 c$c3 g1,$gw,$gh r5.0 b1 nl1,0,1,1 ns
 b inline 0,8.25 size26.7,10.25 jg0.5 z$z1 c$c3 g1,$gw,$gh r3.5 nl1,1,1,0 ns
-h -6.525,9.49 d3 jg0.2 z$z1 c$c2 ns
-h 33.225,9.49 d3 jg0.2 z$z1 c$c2 ns
+h -6.525,9.49 d3 jg0.2 z$z1 c$c2 np ns
+h 33.225,9.49 d3 jg0.2 z$z1 c$c2 np ns
 
 b outline -16.65,-10.75 size60,40 z$z1 c$c5 g1,$gw,$gh ns

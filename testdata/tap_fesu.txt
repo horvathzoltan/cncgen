@@ -47,6 +47,14 @@ y2 = 12 #  zsugorcső eleje
 y4 = 11
 y3 = 15
 
+# (3.7*3.14-(1.5*2))/2
+w2 = 3.7
+w3 = div($w2,2)
+w3 = add($w3,1)
+w4 = sub($w3,0.3)
+
+
+
 o0 = 7.62
 o1 = 1
 
@@ -61,14 +69,14 @@ offset$o1,2,0
 #l $x0,$y1 $x0,$y2 z$z2 c$c3 ns no_overcut
 
 (oldalsó réz réteg)
-x11 = add($x1,2.5)
-x12 = sub($x1,2.5)
+x11 = add($x1,$w4)
+x12 = sub($x1,$w4)
 l $x11,$y7 $x11,$y3 z$z2 c$c3 ns no_overcut
 l $x12,$y7 $x12,$y3 z$z2 c$c3 ns no_overcut
 
 (vékonyítás)
-x11 = add($x1,2.8)
-x12 = sub($x1,2.8)
+x11 = add($x1,$w3)
+x12 = sub($x1,$w3)
 l $x11,$y2 $x11,$y3 z$z1 c$c3 ns
 l $x12,$y2 $x12,$y3 z$z1 c$c3 ns
 
@@ -82,7 +90,7 @@ l $xs1,$h1 $xs2,$h1 z$z1 c$c4 ns no_comp
 
 #(felső bevágás)
 #l $x1,$y4 $x1,$y3 z$z1 c$c3 ns
-h $x1,$h2 d2 z$z1 c$c2 ns
+#h $x1,$h2 d2 z$z1 c$c2 ns
 #x11 = sub($x1,0.75)
 #x12 = add($x1,0.75)
 #h $x11,$h2 d2 z$z1 c$c2 ns
@@ -99,14 +107,14 @@ l $x0,$y2 $x0,$y3 z$z1 c$c3 ns
 l $x0,$y1 $x0,$y2 z$z2 c$c3 ns no_overcut
 
 (oldalsó réz réteg)
-x11 = add($x1,2.5)
-x12 = sub($x1,2.5)
+x11 = add($x1,$w4)
+x12 = sub($x1,$w4)
 l $x11,$y7 $x11,$y3 z$z2 c$c3 ns no_overcut
 l $x12,$y7 $x12,$y3 z$z2 c$c3 ns no_overcut
 
 (vékonyítás)
-x11 = add($x1,2.8)
-x12 = sub($x1,2.8)
+x11 = add($x1,$w3)
+x12 = sub($x1,$w3)
 l $x11,$y2 $x11,$y3 z$z1 c$c3 ns
 l $x12,$y2 $x12,$y3 z$z1 c$c3 ns
 
@@ -120,7 +128,7 @@ l $xs1,$h1 $xs2,$h1 z$z1 c$c4 ns no_comp
 
 #(felső bevágás)
 #l $x1,$y4 $x1,$y3 z$z1 c$c3 ns
-h $x1,$h2 d2 z$z1 c$c2 ns
+#h $x1,$h2 d2 z$z1 c$c2 ns
 #x11 = sub($x1,0.75)
 #x12 = add($x1,0.75)
 #h $x11,$h2 d2 z$z1 c$c2 ns

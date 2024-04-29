@@ -1,5 +1,5 @@
 (villaskulcs.txt)
-(cmd line: -i villaskulcs_16.txt -t)
+(cmd line: -i villaskulcs_19.txt -t)
 
 (szerszám beállítás)
 t1 m d2 h19
@@ -25,12 +25,11 @@ fratio0.8
 
 z1 = 1.5
 
-c2 = 0.2
 c3 = 0.35
 c5 = 0.5 #keret
 
 #****************************
-l = 16
+l = 19
 #****************************
 
 (nyílás)

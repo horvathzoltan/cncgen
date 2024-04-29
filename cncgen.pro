@@ -282,6 +282,7 @@ DISTFILES += \
     testdata/meton_doboz_felso_szerelolap_4.txt \
     testdata/meton_doboz_felso_szerelolap_furatok3mm.txt \
     testdata/meton_doboz_felso_szerelolap_korvonal.txt \
+    testdata/meton_doboz_hatlap_sablon.txt \
     testdata/meton_kepernyobeulteto.txt \
     testdata/meton_panel_rogzito.txt \
     testdata/ms_kamera_tarto.txt \
@@ -319,8 +320,12 @@ DISTFILES += \
     testdata/uniturn_usb_kengyel.txt \
     testdata/uniturn_usb_kengyel_rogzito.txt \
     testdata/usb.txt \
+    testdata/villaskulcs_10.txt \
+    testdata/villaskulcs_11,8.txt \
+    testdata/villaskulcs_14,8.txt \
     testdata/villaskulcs_16.txt \
-    testdata/villaskulcs_19_2.txt \
+    testdata/villaskulcs_17.txt \
+    testdata/villaskulcs_19.txt \
     testdata/villaskulcs_22.txt \
     testdata/villaskulcs_22_2.txt \
     testdata/villaskulcs_27.txt \

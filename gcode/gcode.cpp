@@ -139,7 +139,7 @@ auto GCode::ParseValueXYZ(const QString &p, qreal *x, qreal*y, qreal *z, XYMode 
     if(x && y && ns.length()>=2){
         //bool isok_a, isok_b, isok_c=false;
         //double a = ns[0].toDouble(&isok_a);
-        double a,b,c;
+        double a=0,b=0,c=0;
         QString aa = ns[0];
         bool isok_a = GCode::ToDouble(aa, &a);
         bool isok_b = GCode::ToDouble(ns[1], &b);

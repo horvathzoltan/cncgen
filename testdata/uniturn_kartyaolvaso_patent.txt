@@ -7,27 +7,31 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f800
 
 safetop0.20
-safebottom0.20
-overcut0.500
+safebottom0.10
+overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.012
+emax0.02
 
 fmax900
-fmin600
-fratio0.8
+fmin500
+fratio0.7
 
 z1 = 2
 z2 = 2
 z3=1.5
 c1 = 0.025 #furatok
 c2 = 0.050 #letörések
-c3 = 0.075 #keret
+c3 = 0.075 #vonalak
+c4 = 0.100 #keret
+
+t1r = div($t1d,2)
+offset $t1r,$t1r,0
 
 (mélység)
 th = 2
@@ -58,23 +62,23 @@ y2 = sub($y, 2);
 (1)
 
 (körvonal)
-b outline 0,0 size6,5 z$z1 c$c3 g1,$gw,$gh nl1,0,1,1
+b outline 0,0 size6,5 z$z1 c$c3 g1,$gw,$gh nl1,0,1,1 ns
 
 (oldalsó bevágás)
-l 0,1.6 0,4.6 z$z2 c$c1
-l 6,1.6 6,4.6 z$z2 c$c1
+l 0,1.6 0,4.6 z$z2 c$c2 ns
+l 6,1.6 6,4.6 z$z2 c$c2 ns
 
 (felső bevágás)
-l 3,9 3,2.5 z$z2 c$c2
+l 3,9 3,2.5 z$z2 c$c3 ns
 
 (felső élletörés b)
-l 7.5,5 5,9 z$z1 c$c2
+l 7.5,5 5,9 z$z1 c$c3 ns
 
 (felső élletörés j)
-l -1.5,5 1,9 z$z1 c$c2
+l -1.5,5 1,9 z$z1 c$c3 ns
 
 (felső él)
-l 5,9.3 1,9.3 z0.8 c$c1
+l 5,9.3 1,9.3 z0.8 c$c2 ns
 
 
 (2)

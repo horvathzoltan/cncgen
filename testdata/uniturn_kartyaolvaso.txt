@@ -7,40 +7,122 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f800
 
 safetop0.200
-safebottom0.200
-overcut0.500
+safebottom0.100
+overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.0045
+emax0.02
 
 fmax900
-fmin600
-fratio0.8
+fmin500
+fratio0.7
 
 z1 = 2
 z_tekercs = 0.700 # tekercs bemélyítés
 
-c1 = 0.025 #furatok
-c2 = 0.050 #letörések
-c3 = 0.075 #keret
-c4 = 0.500 #gyors
+c1 = 0.025
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
+c4 = 0.100 #keret
 
+w = 56
+h = 56
+wa = 20
+ha = 40
+
+t1r = div($t1d,2)
+offset $t1r,$t1r,0
 
 (olvasóhurok rögzítő)
-h 28,31 z$z_tekercs c$c3 d48.5 jg0.5 m1 np
-h 28,31 z$z_tekercs c$c4 d48.5 jg-0.5 m1 np
+xo = div($w,2)
+v = div($h,2)
+yo = add($v,3)
+
+h $xo,$yo z$z_tekercs c$c3 d48.5 jg0.5 np
+h $xo,$yo z$z_tekercs c$c4 d48.5 jg-0.5 no_comp np
+
+(antenna)
+v = div($wa,2)
+xa = sub($xo,$v)
+v = div($ha,2)
+ya = sub($yo,$v)
+d1 = mul($t1d,0.6)
+d12 = mul($d1,2)
+b inline $xa,$ya size$wa,$ha jg0.5 z$z_tekercs c$c3 ng
+b inline $xa,$ya size$wa,$ha z$z_tekercs c$c4 no_comp ng
+
+xa0 = add($xa,$d1)
+ya0 = add($ya,$d1)
+wa0 = sub($wa,$d12)
+ha0 = sub($ha,$d12)
+b inline $xa0,$ya0 size$wa0,$ha0  z$z_tekercs c$c4 no_comp ng
+
+xa0 = add($xa0,$d1)
+ya0 = add($ya0,$d1)
+wa0 = sub($wa0,$d12)
+ha0 = sub($ha0,$d12)
+b inline $xa0,$ya0 size$wa0,$ha0  z$z_tekercs c$c4 no_comp ng
+
+xa0 = add($xa0,$d1)
+ya0 = add($ya0,$d1)
+wa0 = sub($wa0,$d12)
+ha0 = sub($ha0,$d12)
+b inline $xa0,$ya0 size$wa0,$ha0 z$z_tekercs c$c4  no_comp ng
+
+xa0 = add($xa0,$d1)
+ya0 = add($ya0,$d1)
+wa0 = sub($wa0,$d12)
+ha0 = sub($ha0,$d12)
+b inline $xa0,$ya0 size$wa0,$ha0 z$z_tekercs c$c4 no_comp ng
+
+xa0 = add($xa0,$d1)
+ya0 = add($ya0,$d1)
+wa0 = sub($wa0,$d12)
+ha0 = sub($ha0,$d12)
+b inline $xa0,$ya0 size$wa0,$ha0 z$z_tekercs c$c4  no_comp ng
+
+xa0 = add($xa0,$d1)
+ya0 = add($ya0,$d1)
+wa0 = sub($wa0,$d12)
+ha0 = sub($ha0,$d12)
+b inline $xa0,$ya0 size$wa0,$ha0 z$z_tekercs c$c4  no_comp ng
+
+xa0 = add($xa0,$d1)
+ya0 = add($ya0,$d1)
+wa0 = sub($wa0,$d12)
+ha0 = sub($ha0,$d12)
+print "wa:$wa0"
+print "ha:$ha0"
+b inline $xa0,$ya0 size$wa0,$ha0 z$z_tekercs c$c4 no_comp ng
+
+xa0 = add($xa0,$d1)
+ya0 = add($ya0,$d1)
+ha0 = sub($ha0,$d12)
+ya1 = add($ya0,$ha0)
+
+#l $xo,$ya0 $xo,$ya1 z$z_tekercs c$c3 ng
+v = add($ya,$ha)
+ya1 = sub($v,1.3)
+x0 = sub($xo,3)
+x1 = add($xo,3)
+#zf1 = add($z_tekercs,0.7)
+l $x0,$ya1 $x1,$ya1 z$z1 c$c3 ng
 
 (rögzítőfuratok)
-h 5,51, z$z1 c$c1 d3 jg0.2 m1
-h 51,51 z$z1 c$c1 d3 jg0.2 m1
+h 5,51, z$z1 c$c2 d3 jg0.2 np ns
+h 51,51 z$z1 c$c2 d3 jg0.2 np ns
 
 (kábel bevezető)
-l 28,58 28,53 z$z1 c$c3
+y0 = add($h, 2)
+v = add($ya,$ha)
+y1 = sub($v,1)
+
+l $xo,$y0 $xo,$y1 z$z1 c$c3 ns
 
 (led)
 ljg = 0.9
@@ -49,11 +131,11 @@ ly0 = 3.5
 ly1 = add($ly0, $ljg2)
 ly2 = sub($ly0, $ljg2)
 
-l 8,$ly1 16,$ly1 z$z1 c$c1
-l 8,$ly2 16,$ly2 z$z1 c$c4 no_comp
+l 8,$ly1 16,$ly1 z$z1 c$c2 ns
+l 8,$ly2 16,$ly2 z$z1 c$c4 no_comp ns
 
 (beeper forrasztás)
-l 46.5,11.5 55,11.5 z$z_tekercs c$c1
+l 46.5,11.5 55,11.5 z$z_tekercs c$c2
 
 y = 4.3
 ox = 50
@@ -68,16 +150,16 @@ y11 = add($y, 1.85);
 y12 = sub($y, 1.85);
 x11 = add($x,0.25)
 x12 = sub($x,0.25)
-l $x11,$y11 $x11,$y12 z$z1 c$c1
-l $x12,$y11 $x12,$y12 z$z1 c$c4 no_comp
+l $x11,$y11 $x11,$y12 z$z1 c$c2 ns
+l $x12,$y11 $x12,$y12 z$z1 c$c4 no_comp ns
 
 x = add($x, $ox);
 y11 = add($y, 1.85);
 y12 = sub($y, 1.85);
 x11 = add($x,0.25)
 x12 = sub($x,0.25)
-l $x11,$y11 $x11,$y12 z$z1 c$c1
-l $x12,$y11 $x12,$y12 z$z1 c$c4 no_comp
+l $x11,$y11 $x11,$y12 z$z1 c$c2 ns
+l $x12,$y11 $x12,$y12 z$z1 c$c4 no_comp ns
 
 y = add($y, $oy);
 y1 = add($y, $d2);
@@ -87,15 +169,16 @@ y11 = add($y, 1.85);
 y12 = sub($y, 1.85);
 x11 = add($x,0.25)
 x12 = sub($x,0.25)
-l $x11,$y11 $x11,$y12 z$z1 c$c1
-l $x12,$y11 $x12,$y12 z$z1 c$c4 no_comp
+l $x11,$y11 $x11,$y12 z$z1 c$c2 ns
+l $x12,$y11 $x12,$y12 z$z1 c$c4 no_comp ns
 x = add($x, $ox);
 y11 = add($y, 1.85);
 y12 = sub($y, 1.85);
 x11 = add($x,0.25)
 x12 = sub($x,0.25)
-l $x11,$y11 $x11,$y12 z$z1 c$c1
-l $x12,$y11 $x12,$y12 z$z1 c$c4 no_comp
+l $x11,$y11 $x11,$y12 z$z1 c$c2 ns
+l $x12,$y11 $x12,$y12 z$z1 c$c4 no_comp ns
+
 
 (körvonal)
-b outline 0,0 size56,56 z$z1 c$c3 g2,0.3,0.7 r3
+b outline 0,0 size$w,$h z$z1 c$c4 g2,0.3,0.7 r3 ns

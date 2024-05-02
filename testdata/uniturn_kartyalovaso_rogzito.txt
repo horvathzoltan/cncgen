@@ -7,10 +7,10 @@ t1 m d2 h19
 yxz
 t1
 s50
-f900
+f800
 
 safetop0.20
-safebottom0.20
+safebottom0.10
 overcut0.300
 
 pre_mill_steps2
@@ -19,15 +19,19 @@ pre_mill_steps2
 emax0.020
 
 fmax900
-fmin700
-fratio0.8
+fmin500
+fratio0.7
 
 z1 = 2
+
 c1 = 0.025 #furatok
-c2 = 0.050 #letörések
-c3 = 0.075
-c4 = 0.500 #gyors
-c5 = 0.150 #keret
+c2 = 0.050 #furatok
+c3 = 0.075 #vonalak
+c4 = 0.100 #keret
+c5 = 0.250 #gyors
+
+t1r = div($t1d,2)
+offset $t1r,$t1r,0
 
 x1 = 7
 x2 = 32
@@ -40,31 +44,31 @@ gh = 0.3
 
 (1)
 (alsó tartó)
-l $x1,0 $x1,$h1 z$z1 c$c3
+l $x1,0 $x1,$h1 z$z1 c$c3 ns
 
 (alsó tartó illesztés)
 x22 = add($x1, 0.05)
-l $x22,1.8 $x22,7.3 z$z1 c$c4 no_comp
+l $x22,1.8 $x22,7.3 z$z1 c$c5 no_comp
 
 (alsó tartó rugó)
 x4 = add($x1,.7)
 x5 = sub($x1,.7)
-l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
+l $x4,$h1 $x5,$h1 z$z1 c$c5 no_comp
 
 (felső tartó)
-l $x2,0 $x2,2.5 z$z1 c$c3
+l $x2,0 $x2,2.5 z$z1 c$c3 ns
 
 (felső tartó vége)
-l $x2,8.3 $x2,$h1 z$z1 c$c3
+l $x2,8.3 $x2,$h1 z$z1 c$c3 ns
 x22 = sub($x2, 0.1)
-l $x22,8.3 $x22,$h1 z$z1 c$c4 no_comp
+l $x22,8.3 $x22,$h1 z$z1 c$c5 no_comp
 
 (patent alja)
 x4 = add($x3,.2)
-l $x4,2.8 $x3,5 z$z1 c$c3
+l $x4,2.8 $x3,5 z$z1 c$c3 ns
 
 (ferde bevágás)
-l $x3,5 $x2,8.3 z$z1 c$c3
+l $x3,5 $x2,8.3 z$z1 c$c3 ns
 
 (patent oldalai)
 x4 = add($x2,.6)
@@ -75,13 +79,13 @@ l $x4,7.1 $x5,7.1 z$z1 c$c3 no_comp
 (rugó bevágás)
 x4 = add($x2,.6)
 x5 = sub($x2,1)
-l $x4,$h1 $x5,$h1 z$z1 c$c4 no_comp
+l $x4,$h1 $x5,$h1 z$z1 c$c5 no_comp
 
 (tartó átvezető)
 #l 16,6 30,6 z$z1 c$c3
 
 (keret)
-b outline 0,0 size37,15 z$z1 c$c5 g1,$gw,$gh r0 nl1,1,1,1
+b outline 0,0 size37,15 z$z1 c$c4 g1,$gw,$gh r0 nl1,1,1,1 ns
 
 (2)
 #offset0,16,0

@@ -12,7 +12,7 @@
 #include <QtMath>
 #include <gcode/gcode.h>
 
-QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool _za, bool _no_simi, bool isPeca,ToGCodeModel* tmm, TotalStats *tss)
+QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_cut, bool _za, bool _no_simi,ToGCodeModel* tmm, TotalStats *tss)
 {
     GCodeManager g(QStringLiteral("(helical cut)"));
     QString msg;
@@ -59,27 +59,21 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
     bool isPeck2 = false;
     bool isPeck3 = true;//false;
     bool isPeck4 = false;
-    bool isPeck5 = true;
+    //bool isPeck5 = true;
 
 
     auto lpeck = t.d*tmm->dPeck;
     auto lpeck2 = t.d*tmm->dPeck2;
 
-    if(isPeca)
-    {
+    //if(isPeca)
+    //{
         if(length>t.d*2){
             if(length<=lpeck && !no_compensate){
                 isPeck = true;
                 if(length<=lpeck2){
                     isPeck2 = true;
                 }
-            }
-            /*  if(l<=lpeck){
-                isPeck = true;
-                if(l<=lpeck2){
-                    isPeck2 = true;
-                }
-            }*/
+            }         
             if(length<=lpeck){
                 isPeck4 = true;
             }
@@ -87,16 +81,16 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
             isPeck3 = true;
             isPeck4 = true;
         }       
-    } else {
+    /*} else {
         g.append("(no_peck)");
         isPeck3 = false;
         isPeck4 = false;
-    }
+    }*/
 
     if(isDrill && t.type==Tool::Type::Drilling){
         isPeck3 = true;
         isPeck4 = true;
-        isPeck5 = false;
+        //isPeck5 = false;
     }
 
     if(isPeck){
@@ -165,11 +159,11 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
             auto g10 = GoTo::GoToZ(GMode::Rapid, {0,0,tmm->_peckZ}, feed.feed(), tmm,tss);
             g.Append( g10);
 
-            if(isPeck5){
+          //  if(isPeck5){
                 g10 = "G4 P"+QString::number(GCodeCommon::PECKSTEP_MILLISEC);
                 g.Append( g10);
                 tss->_total_minutes+=TotalStats::MilliSecToMin(GCodeCommon::PECKSTEP_MILLISEC);
-            }
+            //}
 
             g10 = GoTo::GoToZ(GMode::Rapid, p, feed.feed(), tmm,tss);
             g.Append( g10);

@@ -12,7 +12,7 @@
 class HelicalCut
 {
 public:
-    static QStringList CreateCut(qreal path_r, const Feed& feed,const Cut& cut, bool a, bool aljasimi, bool isPeck, ToGCodeModel* mm, TotalStats *tss);
+    static QStringList CreateCut(qreal path_r, const Feed& feed,const Cut& cut, bool a, bool aljasimi, ToGCodeModel* mm, TotalStats *tss);
 };
 
 #endif // HELICALCUT_H

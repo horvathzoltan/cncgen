@@ -236,7 +236,7 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
                 // előmarás a kért átmérőig
                 if(path_r-td0>tdr){
                     //SetSelectedFeed(m.feed);
-                    QStringList g1 = HelicalCut::CreateCut(td0, m.feed, m.cut, helicalMode, true, false, tmm, tss); // m.cut.z
+                    QStringList g1 = HelicalCut::CreateCut(td0, m.feed, m.cut, helicalMode, true,  tmm, tss); // m.cut.z
                     g.append(g1);
                 }
             }
@@ -255,7 +255,7 @@ QString HoleToGCode::CreateHole(const Hole &m, QString*err,ToGCodeModel* tmm,Tot
             //SetSelectedFeed(m.feed);
             Cut cut2 = m.cut;
             cut2.z = z2;
-            auto g1=HelicalCut::CreateCut(path_r, m.feed, cut2, helicalMode, m._no_simi, false, tmm,tss);
+            auto g1=HelicalCut::CreateCut(path_r, m.feed, cut2, helicalMode, m._no_simi,  tmm,tss);
             g.append(g1);
         }
 

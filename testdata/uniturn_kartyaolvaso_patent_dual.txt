@@ -1,0 +1,109 @@
+(M3 alatet 6 db)
+(cmd line: -i uniturn_kartyaolvaso_patent_dual.txt -t)
+
+(szerszám beállítás)
+t1 m d2 h19
+
+yxz
+t1
+s50
+f800
+
+safetop0.20
+safebottom0.10
+overcut0.300
+
+pre_mill_steps2
+
+#max meredekség polikarbonát 0.05/100mm
+emax0.02
+
+fmax900
+fmin500
+fratio0.7
+
+z1 = 2
+z2 = 2
+z3=1.5
+c1 = 0.025 #furatok
+c2 = 0.050 #letörések
+c3 = 0.075 #vonalak
+c4 = 0.100 #keret
+
+t1r = div($t1d,2)
+offset $t1r,$t1r,0
+
+(mélység)
+th = 2
+(belső átmérő)
+db = 3
+(külső átmérő)
+dk = sum(7,2,2)
+print "dk: $dk"
+
+(perem átmérő)
+dk2 = sub($dk,1)
+print "dk2: $dk2"
+
+j1 = 0.2
+gw = 0.7
+gh = 0.5
+
+(h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
+(h 4,4 d5 z1.2 c0.175 g0,0,0 np)
+
+x = div($dk,2)
+y = div($dk,2)
+o = add($dk,3)
+
+y1 = add($y, 2);
+y2 = sub($y, 2);
+
+(1)
+
+w = 6
+h = 5 # alja
+h2 = 4 # ennyi van közte
+h3 = 3 # teteje
+
+h7 = sum($h,$h2)
+(körvonal)
+b outline 0,0 size$w,$h7 z$z1 c$c3 g1,$gw,$gh nl1,0,1,1 ns
+
+(oldalsó bevágás)
+#l 0,1.6 0,4.6 z$z2 c$c2 ns
+#l 6,1.6 6,4.6 z$z2 c$c2 ns
+
+h1 = 1.6
+h8 = sum($h1,$h2,$h3)
+l 0,$h1 0,$h8 z$z2 c$c2 ns
+l $w,$h1 $w,$h8 z$z2 c$c2 ns
+
+(felső bevágás)
+h4=sum($h,$h2,$h3,1) #9
+x2 = div($w,2)
+h5 = 2.5
+l $x2,$h4 $x2,$h5 z$z2 c$c3 ns
+
+x3=add($x2,2)
+x4=sub($x2,2)
+
+(felső élletörés b)
+x1 = add($w,1.5)
+l $x1,$h7 $x3,$h4 z$z1 c$c3 ns
+
+(felső élletörés j)
+x1 = sub(0,1.5)
+l $x1,$h7 $x4,$h4 z$z1 c$c3 ns
+
+(felső él)
+h6 = add($h4,0.3)
+x3=add($x2,2)
+x4=sub($x2,2)
+l $x3,$h6 $x4,$h6 z0.8 c$c2 ns
+
+
+(2)
+
+#offset10,0,0
+

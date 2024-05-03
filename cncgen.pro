@@ -307,6 +307,7 @@ DISTFILES += \
     testdata/uniturn_kartyaolvaso.txt \
     testdata/uniturn_kartyaolvaso_alatet.txt \
     testdata/uniturn_kartyaolvaso_patent.txt \
+    testdata/uniturn_kartyaolvaso_patent_dual.txt \
     testdata/uniturn_pizero_bolcso.txt \
     testdata/uniturn_relay_doboz_hatlap.txt \
     testdata/uniturn_relay_felso_szerelolap.txt \

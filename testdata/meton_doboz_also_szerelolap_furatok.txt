@@ -8,20 +8,20 @@ xyz
 
 t1
 s50
-f900
+f800
 
 safetop0.20
-safebottom0.20
+safebottom0.10
 overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax2
+emax 0.5
 
 fmax900
 fmin700
-fratio0.8
+fratio0.7
 
 z1 = overdrill(118, $t1d, 2.00);
 print "overdrill: $z1"
@@ -39,16 +39,19 @@ h 117,14 z$z1 c$c2 d3 jg0.2 m1
 h 117,80.38 z$z1 c$c2 d3 jg0.2 m1
 
 (tápegység)
-h 178,12 z$z1 c$c2 d3 jg0.2 m1
-h 178,67 z$z1 c$c2 d3 jg0.2 m1
+h 197,12 z$z1 c$c2 d3 jg0.2 m1
+h 197,67 z$z1 c$c2 d3 jg0.2 m1
 
 (táp panel)
-h 132.25,19.5 z$z1 c$c2 d3 jg0.2 m1
-h 143.75,72.55 z$z1 c$c2 d3 jg0.2 m1
+h 161.25,19.5 z$z1 c$c2 d3 jg0.2 m1
+h 172.75,72.55 z$z1 c$c2 d3 jg0.2 m1
 
 (támasztó)
-h 61.25,47.19 z$z1 c$c2 d3 jg0 m1
-h 148,47.19 z$z1 c$c2 d3 jg0 m1
-h 208,47.19 z$z1 c$c2 d3 jg0 m1
+#h 61.25,47.19 z$z1 c$c2 d3 jg0 m1
+h 9.25,47.19 z$z1 c$c2 d3 jg0 m1
+h 75.25,47.19 z$z1 c$c2 d3 jg0 m1
+
+h 167,47.19 z$z1 c$c2 d3 jg0 m1
+h 227,47.19 z$z1 c$c2 d3 jg0 m1
 
 

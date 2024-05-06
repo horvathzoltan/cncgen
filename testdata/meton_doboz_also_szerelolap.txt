@@ -2,56 +2,77 @@
 (cmd line: -i meton_doboz_also_szerelolap.txt -t)
 (szerszám beállítás)
 
-t1 m d2 h19
+t1 d d3 h19
+t2 m d2 h19
 
 xyz
 
 t1
 s50
-f900
+f800
 
 safetop0.20
-safebottom0.20
+safebottom0.10
 overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+emax 0.5
 
 fmax900
 fmin700
-fratio0.8
+fratio0.7
+
+z1 = overdrill(118, $t1d, 2.00);
+print "overdrill: $z1"
+
+c2 = 0.50 #furatok
+
+# külső körvonal kezdőpontja + szerszámsugár
+t1r=div($t1d,2)
+offset $t1r,$t1r,0
+
+(furatok)
+(rögzítő furatok)
+b corners 5.5,14 size223,66.38 z$z1 c$c2 d3 jg0.2 m1
+h 117,14 z$z1 c$c2 d3 jg0.2 m1
+h 117,80.38 z$z1 c$c2 d3 jg0.2 m1
+
+(tápegység)
+h 197,12 z$z1 c$c2 d3 jg0.2 m1
+h 197,67 z$z1 c$c2 d3 jg0.2 m1
+
+(táp panel)
+h 161.25,19.5 z$z1 c$c2 d3 jg0.2 m1
+h 172.75,72.55 z$z1 c$c2 d3 jg0.2 m1
+
+(támasztó)
+(pi oldal)
+#h 61.25,47.19 z$z1 c$c2 d3 jg0 m1
+h 9.25,47.19 z$z1 c$c2 d3 jg0 m1
+h 75.25,47.19 z$z1 c$c2 d3 jg0 m1
+(táp oldal)
+h 167,47.19 z$z1 c$c2 d3 jg0 m1
+h 227,47.19 z$z1 c$c2 d3 jg0 m1
+
+(körvonal)
+t2
+
+emax 0.02
+
+fmax900
+fmin500
+fratio0.7
 
 z1 = 2
 c1 = 0.025
 c2 = 0.050 #furatok
 c3 = 0.075 #vonalak
-c4 = 0.500 #gyors
 c5 = 0.150 #keret
 
-offset1,1,0
-
 (pi3b furatok)
-b corners 36.75,13.70 size49,58 z$z1 c$c2 d2.75 jg0.05 m1
-
-(furatok)
-b corners 5.5,14 size223,66.38 z$z1 c$c3 d3 jg0.2 m1
-h 117,14 z$z1 c$c2 d3 jg0.2 m1
-h 117,80.38 z$z1 c$c2 d3 jg0.2 m1
-
-(tápegység)
-h 178,12 z$z1 c$c2 d3 jg0.2 m1
-h 178,67 z$z1 c$c2 d3 jg0.2 m1
-
-(táp panel)
-h 122.25,19.5 z$z1 c$c2 d3 jg0.2 m1
-h 133.75,72.55 z$z1 c$c2 d3 jg0.2 m1
-
-(támasztó)
-h 61.25,47.19 z$z1 c$c2 d3 jg0 m1
-h 148,47.19 z$z1 c$c2 d3 jg0 m1
-h 208,47.19 z$z1 c$c2 d3 jg0 m1
+b corners 17.75,25 size49,58 z$z1 c$c2 d2.75 jg0.05 m1 np ns
 
 (körvonal)
-b outline 0,0 size234,95 z$z1 c$c5 g3,0.3,0.3 r3
+b outline 0,0 size234,95 z$z1 c$c5 g3,0.3,0.3 r3 ns

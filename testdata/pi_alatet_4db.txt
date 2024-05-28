@@ -7,20 +7,30 @@ t1 m d2 h19
 yxz
 t1
 s50
-f1100
+#f1100
 
 safetop0.200
-safebottom0.200
+safebottom0.100
 overcut0.300
 
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+#emax0.02
 
-fmax1450
-fmin600
-fratio0.6
+#fmax1450
+#fmin600
+#fratio0.6
+
+# egyélű paraméterek
+emax 0.05
+fmax900
+fmin500
+fratio0.7
+f800
+pecktime 300
+peckslow 8
+peckfast 4
 
 z1 = 2
 
@@ -33,42 +43,57 @@ jdb = 0.075
 dk = sum(6.2,2,2)
 print "dk: $dk"
 
-c1 = 0.0375 #furatok
-c2 = 0.0750 #letörések
-c3 = 0.1000 #keret
+#c1 = 0.0375 #furatok
+#c2 = 0.0750 #letörések
+#c3 = 0.1000 #keret
+
+c1 = 0.10
+c2 = 0.25 #furatok
+c3 = 0.50 #vonalak
+c5 = 1.000 #keret
+
+pecktime 300
+peckslow 8
+peckfast 4
+
+gw = 0.3
+gh = 0.5
 
 (h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
 (h 4,4 d5 z1.2 c0.175 g0,0,0 np)
 
+
 x = div($dk,2)
 y = div($dk,2)
-o = add($dk,3)
+
+o0 = add($t1d,1)
+o = add($dk,$o0)
 
 (1.sor)
 
-h $x,$y d$db z$th c$c1 jg$jdb m1 np
-h $x,$y d$dk z$th c$c2 g2,0.5,0.5 np m1
+h $x,$y d$db z$th c$c2 jg$jdb np ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np ns
 
-code "M0"
-
-x = add($x,$o)
-
-h $x,$y d$db z$th c$c1 jg$jdb m1 np
-h $x,$y d$dk z$th c$c2 g2,0.5,0.5 np m1
-
-code "M0"
+#code "M0"
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c1 jg$jdb m1 np
-h $x,$y d$dk z$th c$c2 g2,0.5,0.5 np m1
+h $x,$y d$db z$th c$c2 jg$jdb np ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np ns
 
-code "M0"
+#code "M0"
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c1 jg$jdb m1 np
-h $x,$y d$dk z$th c$c2 g2,0.5,0.5 np m1
+h $x,$y d$db z$th c$c2 jg$jdb np ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np ns
+
+#code "M0"
+
+x = add($x,$o)
+
+h $x,$y d$db z$th c$c2 jg$jdb np ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np ns
 
 
 

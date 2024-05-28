@@ -48,6 +48,10 @@ const QString GenerateGcode::fminKey = L("fmin");
 const QString GenerateGcode::fratioKey = L("fratio");
 const QString GenerateGcode::pdwellKey = L("pdwell");
 
+const QString GenerateGcode::peckslow = L("peckslow");
+const QString GenerateGcode::peckfast = L("peckfast");
+const QString GenerateGcode::simi = L("simi");
+const QString GenerateGcode::pecktime = L("pecktime");
 
 const QString GenerateGcode::nameKey = L("_");
 
@@ -200,6 +204,35 @@ auto GenerateGcode::Generate(const QStringList &g) -> QStringList
             continue;
         }
 
+        //
+        if(l.startsWith(peckslow)){
+            int r;
+            bool isok = GCode::ParseValue(l, peckslow, &r);
+            if(isok) _toGCodeModel._peckslow = r;
+            continue;
+        }
+
+        if(l.startsWith(peckfast)){
+            int r;
+            bool isok = GCode::ParseValue(l, peckfast, &r);
+            if(isok) _toGCodeModel._peckfast = r;
+            continue;
+        }
+
+        if(l.startsWith(simi)){
+            int r;
+            bool isok = GCode::ParseValue(l, simi, &r);
+            if(isok) _toGCodeModel._simi = r;
+            continue;
+        }
+
+        if(l.startsWith(pecktime)){
+            int r;
+            bool isok = GCode::ParseValue(l, pecktime, &r);
+            if(isok) _toGCodeModel._pecktime = r;
+            continue;
+        }
+        //
         if(l.startsWith(maxzKey)){
             qreal r;
             bool isok = GCode::ParseValue(l, maxzKey, &r);

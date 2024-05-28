@@ -347,7 +347,7 @@ QString LineToGCode::CreateLines(const QList<Line>& m2, QString *err, ToGCodeMod
 
             int steps_a = cuta.steps();
             if(!m.no_simi){
-                steps_a += GCodeCommon::SIMI;
+                steps_a += tmm->_simi;
             }
 
             steps_m[j]=steps_a;

@@ -49,6 +49,11 @@ struct ToGCodeModel
 
     qreal _pdwell;
     qreal _peckz_divider = 1.5;
+
+    int _peckslow;
+    int _peckfast;
+    int _simi;
+    int _pecktime;
 private:
     QMap<int, Tool> _tools;
     int _selected_tool_ix;
@@ -91,6 +96,11 @@ public:
         _overcut = 0;
         _offset_xyz = {};
         _last_feed3 ={};
+
+        _peckslow = 5;
+        _peckfast = 2;
+        _simi = 5;
+        _pecktime = 500;
     }
 };
 

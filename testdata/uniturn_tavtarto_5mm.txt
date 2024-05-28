@@ -7,7 +7,6 @@ t1 m d2 h19
 yxz
 t1
 s50
-f1100
 
 safetop0.20
 safebottom0.20
@@ -16,19 +15,31 @@ overcut0.300
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.02
+#emax0.02
+#fmax1450
+#fmin700
+#fratio0.8
 
-fmax1450
-fmin700
-fratio0.8
+#z1 = 2
+#c1 = 0.0375
+#c2 = 0.075 #furatok
+#c3 = 0.075 #vonalak
+#c4 = 0.500 #gyors
+#c5 = 0.150 #keret
+
+# egyélű paraméterek
+emax 0.5
+fmax900
+fmin500
+fratio0.7
+f800
 
 z1 = 2
-c1 = 0.0375
-c2 = 0.075 #furatok
-c3 = 0.075 #vonalak
-c4 = 0.500 #gyors
-c5 = 0.150 #keret
-
+c1 = 0.050
+c2 = 0.15 #furatok
+c3 = 0.30 #vonalak
+c4 = 0.45 #vonalak2
+c5 = 0.60 #keret
 gw = 0.3
 gh = 0.3
 

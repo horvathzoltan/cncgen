@@ -46,7 +46,7 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
     int steps_0 = cut.steps();
 
     if(!_no_simi){
-        steps_0 += GCodeCommon::SIMI;
+        steps_0 += tmm->_simi;
     }
 
     msg+= "cut:"+tmm->_lastGeom._lastHoleP.ToString()+"r="+GCode::r(path_r);
@@ -148,8 +148,8 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
 
         bool do_peck = false;
         if(isPeck3 && !no_compensate){
-            bool isPeck0 = (i % (isPeck4?GCodeCommon::PECKSTEPS_2:GCodeCommon::PECKSTEPS)) ==
-                           (isPeck4?GCodeCommon::PECKSTEPS_2:GCodeCommon::PECKSTEPS)-1;
+            bool isPeck0 = (i % (isPeck4?tmm->_peckfast:tmm->_peckslow))
+                           == (isPeck4?tmm->_peckfast:tmm->_peckslow)-1;
             if(i>0 && isPeck0){//i>0 &&
                 do_peck = true;
             }
@@ -160,9 +160,9 @@ QStringList HelicalCut::CreateCut(qreal path_r, const Feed& o_feed,const Cut& o_
             g.Append( g10);
 
           //  if(isPeck5){
-                g10 = "G4 P"+QString::number(GCodeCommon::PECKSTEP_MILLISEC);
+            g10 = "G4 P"+QString::number(tmm->_pecktime);
                 g.Append( g10);
-                tss->_total_minutes+=TotalStats::MilliSecToMin(GCodeCommon::PECKSTEP_MILLISEC);
+            tss->_total_minutes+=TotalStats::MilliSecToMin(tmm->_pecktime);
             //}
 
             g10 = GoTo::GoToZ(GMode::Rapid, p, feed.feed(), tmm,tss);

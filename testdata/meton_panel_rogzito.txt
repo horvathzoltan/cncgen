@@ -7,7 +7,6 @@ t1 m d2 h19
 yxz
 t1
 s50
-f700
 
 safetop0.20
 safebottom0.10
@@ -16,18 +15,35 @@ overcut0.300
 pre_mill_steps2
 
 #max meredekség polikarbonát 0.05/100mm
-emax0.0125
+#emax0.0125
+#fmax900
+#fmin700
+#fratio0.7
+#z1 = 2
+#c1 = 0.025
+#c2 = 0.035 #furatok
+#c3 = 0.050 #vonalak
+#c4 = 0.075 #vonalak
+#c5 = 0.150 #keret
 
+# egyélű paraméterek
+emax 0.5
 fmax900
-fmin700
+fmin500
 fratio0.7
 
+f800
+
 z1 = 2
-c1 = 0.025
-c2 = 0.035 #furatok
-c3 = 0.050 #vonalak
-c4 = 0.075 #vonalak
-c5 = 0.150 #keret
+c1 = 0.07 #0.05
+c2 = 0.20 #0.15 #furatok
+c3 = 0.40 #0.30 #vonalak
+c4 = 0.60 #0.45 #vonalak
+c5 = 0.80 #0.60 #keret
+pecktime 200
+peckslow 8
+peckfast 4
+
 
 gw = 0.6
 gh = 0.4
@@ -115,7 +131,7 @@ xp12 = sub($xr2, .3)
 
 #ph11 = sub($ph,0.2)
 #ph12 = add($ph,0.2)
-l $xu,$ph $xp11,$ph z$z1 c$c4 ns g1,$gw,$gh
+l $xu,$ph $xp11,$ph z$z1 c$c5 ns g1,$gw,$gh
 l $xu,$ph11 $xu,$ph12 z$z1 c$c4 ns no_comp
 l $xp11,$ph11 $xp11,$ph12 z$z1 c$c4 ns no_comp
 
@@ -137,7 +153,7 @@ l $xp1,$ph4 $xp2,$ph4 z$z1 c$c4 ns no_comp
 (tartó horony)
 x11 = add($w2,$wb2)
 x12 = sub($w2,$wb2)
-l $x11,$y11 $x12,$y11 z$z1 c$c3 ns
+l $x11,$y11 $x12,$y11 z$z1 c$c5 ns
 
 
 (keret)

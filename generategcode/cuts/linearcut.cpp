@@ -24,8 +24,12 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
         if(c.isCompensated){
             feed.setFeed(c.c_f);
             cut.z0=c.c_z;
+            //a fűrészség miatt az odavissza menetek végén pont a megengedett kétszereség vágja
 
+            cut.z0 = cut.z0/2;
             c.ToGCode(&g, o_cut, o_feed);
+        } else{
+            cut.z0 = cut.z0/2;
         }
     } else{
         zInfo("no_compensate")
@@ -96,7 +100,7 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
     }
 
     if(!no_simi){
-        steps_0 += GCodeCommon::SIMI;
+        steps_0 += tmm->_simi;
     }
 
     msg+= "cut:"+tmm->_lastGeom._lastLine.toString();
@@ -167,8 +171,8 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
 
                 bool do_peck = false;
                 if(isPeck3 && !no_compensate){
-                    bool isPeck0 = (i % (isPeck4?GCodeCommon::PECKSTEPS_2:GCodeCommon::PECKSTEPS)) ==
-                                   (isPeck4?GCodeCommon::PECKSTEPS_2:GCodeCommon::PECKSTEPS)-1;
+                    bool isPeck0 = (i % (isPeck4?tmm->_peckfast:tmm->_peckslow))
+                                   == (isPeck4?tmm->_peckfast:tmm->_peckslow)-1;
                     if(isPeck0){
                         do_peck = true;
                     }
@@ -178,9 +182,9 @@ QStringList LinearCut::CreateCut(const Feed& o_feed, const Cut& o_cut, bool no_c
                     auto g0 = GoTo::GoToZ(GMode::Rapid, {0,0,tmm->_peckZ}, feed.feed(),tmm,tss);
                     g.Append( g0);
 
-                    g0 = "G4 P"+QString::number(GCodeCommon::PECKSTEP_MILLISEC);
+                    g0 = "G4 P"+QString::number(tmm->_pecktime);
                     g.Append( g0);
-                    tss->_total_minutes+=TotalStats::MilliSecToMin(GCodeCommon::PECKSTEP_MILLISEC);
+                    tss->_total_minutes+=TotalStats::MilliSecToMin(tmm->_pecktime);
 
                     g0 =GoTo::GoToZ(GMode::Rapid, p, feed.feed(),tmm,tss);
                     g.Append( g0);

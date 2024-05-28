@@ -13,11 +13,11 @@ public:
     static const QString T_ERR;
     static const QString T_W;
 
-    static const qreal SIMI;
+    //static const qreal SIMI;
 
-    static const int PECKSTEPS;
-    static const int PECKSTEPS_2;
-    static const qreal PECKSTEP_MILLISEC;
+    //static const int PECKSTEPS;
+    //static const int PECKSTEPS_2;
+    //static const qreal PECKSTEP_MILLISEC;
 };
 
 #endif // GCODECOMMON_H

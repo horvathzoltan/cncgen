@@ -40,6 +40,12 @@ public:
     static const QString fratioKey;
     static const QString pdwellKey;
 
+    static const QString peckslow;
+    static const QString peckfast;
+    static const QString pecktime;
+
+    static const QString simi;
+
     void Init();
     auto Generate(const QStringList& g) -> QStringList;
 

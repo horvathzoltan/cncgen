@@ -233,6 +233,7 @@ DISTFILES += \
     testdata/alatet.txt \
     testdata/bed_flattening.txt \
     testdata/bekapcsolo.txt \
+    testdata/bill_tamaszto.txt \
     testdata/cam_elolap.txt \
     testdata/cam_elolap_bolcso.txt \
     testdata/cam_teteje.txt \
@@ -294,6 +295,7 @@ DISTFILES += \
     testdata/tamaszto2.txt \
     testdata/tamaszto3.txt \
     testdata/tap_fesu.txt \
+    testdata/tap_fesu_12.txt \
     testdata/tapdugo_furosablon.txt \
     testdata/telefontarto.txt \
     testdata/uniturn_doboz_fedlap_2.txt \

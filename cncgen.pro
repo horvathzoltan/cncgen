@@ -239,6 +239,7 @@ DISTFILES += \
     testdata/cam_teteje.txt \
     testdata/ceruzatarto.txt \
     testdata/csatlakozo.txt \
+    testdata/eger.txt \
     testdata/ethernet2.txt \
     testdata/geom1.txt \
     testdata/geom2.txt \

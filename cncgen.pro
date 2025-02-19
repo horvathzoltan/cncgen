@@ -290,6 +290,8 @@ DISTFILES += \
     testdata/pi_bolcso_15.txt \
     testdata/pi_bolcso_15_2.txt \
     testdata/pi_hatlap.txt \
+    testdata/ping1.txt \
+    testdata/ping2.txt \
     testdata/t1.txt \
     testdata/t2.txt \
     testdata/tamaszto.txt \

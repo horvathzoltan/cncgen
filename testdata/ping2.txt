@@ -1,0 +1,112 @@
+(ping1.txt)
+(cmd line: -i ping1.txt -t)
+(plot cmd: -i ping1.txt -t -p)
+
+(szerszám beállítás)
+t1 m d2 h19
+
+yxz
+t1
+s50
+#f700
+
+safetop0.2
+safebottom0.1
+# fúró-maró
+# overcut0.878
+# maró
+overcut0.3
+
+pre_mill_steps2
+
+
+#max meredekség polikarbonát 0.05/100mm
+#emax0.0005 #19:34
+#emax0.001  #8:56
+#emax0.002  #05:23
+#emax0.0025 #04:29
+#emax0.003  #03:30
+#emax0.004  #02:53 maró
+#emax0.0045 #02:43
+#emax0.005  #02:36
+#emax0.007  #02:20
+#emax0.01   #2:13
+
+#fmax900
+#fmin450
+#fratio0.8
+
+# egyélű paraméterek
+emax 0.5
+fmax900
+fmin500
+fratio0.7
+f800
+
+z1 = 3.5
+c1 = 0.050
+c2 = 0.25 #furatok
+c3 = 0.50 #vonalak
+c5 = 1.00 #keret
+
+pecktime 300
+peckslow 8
+peckfast 4
+
+#c = 0.1
+#c2 = 0.05
+j1 = 0.1
+gw = 0.3
+gh = 0.5
+
+(h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
+(h 4,4 d5 z1.2 c0.175 g0,0,0 np)
+
+w2 = 12
+w3 = 90
+w = add($w2,$w3)
+h1 = 15
+
+h2 = 126
+h = sum($h1, $h1, $h2)
+d3 = 3
+d5 = 5
+d10 = 10
+
+hm = div($h,2)
+
+h3 = 65.8
+h4 = div($h3,2)
+
+z2 = sub($z1,1)
+
+
+(felfüggesztés doboz)
+h $w2,$h1 d$d5 z$z1 c$c1 m1
+y2 = add($h1, $h2)
+h $w2,$y2 d$d5 z$z1 c$c1 m1
+
+(felfüggesztés kepernyo)
+y0 = sub($hm, $h4)
+h $w2,$y0 d$d10 z$z2 c$c1 m1
+h $w2,$y0 d$d3 z$z1 c$c1 m1
+
+y1 = add($hm, $h4)
+h $w2,$y1 d$d10 z$z2 c$c1 m1
+h $w2,$y1 d$d3 z$z1 c$c1 m1
+
+pih = 58
+piw0 = 49
+
+
+h5 = div($pih,2)
+y5 = sub($hm, $h5)
+x5 = add($w2, 30)
+(pi4 furatok)
+b corners $x5,$y5 size$piw0,$pih z$z1 c$c2 d2.75 jg0.05 m1 np ns
+
+
+(körvonal)
+b outline 0,0 $w,$h z$z1 c$c5 g1,0.5,0.5
+
+

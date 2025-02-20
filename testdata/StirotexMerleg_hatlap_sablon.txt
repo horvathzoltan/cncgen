@@ -1,6 +1,6 @@
-(M3x6 alatet 4 db)
-(cmd line: -i M3x6_alatet_4db.txt -t)
-(plot cmd: -i M3x6_alatet_4db.txt -t -p)
+(StirotexMerleg_hatlap_sablon)
+(cmd line: -i StirotexMerleg_hatlap_sablon.txt -t)
+(plot cmd: -i StirotexMerleg_hatlap_sablon.txt -t -p)
 
 (szerszám beállítás)
 t1 m d2 h19
@@ -43,7 +43,7 @@ fmin500
 fratio0.7
 f800
 
-#z1 = 2
+z1 = 2
 c1 = 0.050
 c2 = 0.25 #furatok
 c3 = 0.50 #vonalak
@@ -61,38 +61,40 @@ db = 3
 dk = sum(6,2,2)
 print "dk: $dk"
 
-c = 0.1
-c2 = 0.05
+#c = 0.1
+#c2 = 0.05
 j1 = 0.1
-gw = 0.3
-gh = 0.5
+j2 = 0.25
+gw = 0.7
+gh = 0.7
 
-(h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
-(h 4,4 d5 z1.2 c0.175 g0,0,0 np)
+w1 = 87.8
+w2 = 84.8
+h = 31
 
-x = div($dk,2)
-y = div($dk,2)
-o = add($dk,3)
+(ethernet)
+b inline 2.5,11 size16,13.5 z$z1 c$c3 g1,$gw,$gh jg$j1 ns
 
-(1.sor)
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
+rs232
+h 24.5,21 d5.3 z$th c$c3 jg$j2 m1 ns
+h 49.5,21 d5.3 z$th c$c3 jg$j2 m1 ns
+b inline 28,16.3 size18,9.4 z$z1 c$c3 g1,$gw,$gh jg$j1 ns
 
-x = add($x,$o)
+(tápkábel)
+h 75,17.75 d9.5 z$th c$c3 jg$j2 m1 ns
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
 
-x = add($x,$o)
+(körvonal)
+xx = 1.5
+x0 = -1
+x1 = add($x0,$xx)
+l $x0,0  $x1,31 z$z1 c$c5 ns
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
-
-x = add($x,$o)
-
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
+x0 = add($w1,1)
+x1 = sub($x0,$xx)
+l $x0,0  $x1,31 z$z1 c$c5 ns
+b outline 0,0 size$w1,$h z$z1 c$c5 g3,$gw,$gh r1.5 ns nl0,1,0,1 ns
 
 
 

@@ -227,9 +227,13 @@ DISTFILES += \
     testdata/M3_alatet_8db.txt \
     testdata/M3_dupla_alatet_20.txt \
     testdata/M3x10_alatet_5db.txt \
+    testdata/M3x6_alatet_4db.txt \
     testdata/M3x6_alatet_6db.txt \
     testdata/M3x7_alatet.txt \
     testdata/M3x9_alatet_6db.txt \
+    testdata/M5x10_alatet_4db.txt \
+    testdata/StirotexMerleg_hatlap_sablon.txt \
+    testdata/StirotexMerleg_hatlap_sablon2.txt \
     testdata/alatet.txt \
     testdata/bed_flattening.txt \
     testdata/bekapcsolo.txt \

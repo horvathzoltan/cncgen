@@ -1,6 +1,6 @@
-(M3x6 alatet 4 db)
-(cmd line: -i M3x6_alatet_4db.txt -t)
-(plot cmd: -i M3x6_alatet_4db.txt -t -p)
+(M5 alatet 4 db)
+(cmd line: -i M5x10_alatet_4db.txt -t)
+(plot cmd: -i M5x10_alatet_4db.txt -t -p)
 
 (szerszám beállítás)
 t1 m d2 h19
@@ -56,19 +56,17 @@ peckfast 4
 (mélység)
 th = 2
 (belső átmérő)
-db = 3
+db = 5
 (külső átmérő)
-dk = sum(6,2,2)
+dk = sum(10,2,2)
 print "dk: $dk"
 
-c = 0.1
-c2 = 0.05
+#c = 0.1
+#c2 = 0.05
 j1 = 0.1
 gw = 0.3
 gh = 0.5
 
-(h 4,4 d7.5 z1.2 c0.175 g0,0,0 np)
-(h 4,4 d5 z1.2 c0.175 g0,0,0 np)
 
 x = div($dk,2)
 y = div($dk,2)
@@ -76,23 +74,23 @@ o = add($dk,3)
 
 (1.sor)
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
+h $x,$y d$db z$th c$c2 jg$j1 m1 ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1 ns
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
+h $x,$y d$db z$th c$c2 jg$j1 m1 ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1 ns
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
+h $x,$y d$db z$th c$c2 jg$j1 m1 ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1 ns
 
 x = add($x,$o)
 
-h $x,$y d$db z$th c$c2 jg$j1 m1
-h $x,$y d$dk z$th c$c g2,$gw,$gh np m1
+h $x,$y d$db z$th c$c2 jg$j1 m1 ns
+h $x,$y d$dk z$th c$c3 g2,$gw,$gh np m1 ns
 
 
 

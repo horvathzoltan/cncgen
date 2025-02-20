@@ -232,6 +232,7 @@ DISTFILES += \
     testdata/M3x7_alatet.txt \
     testdata/M3x9_alatet_6db.txt \
     testdata/M5x10_alatet_4db.txt \
+    testdata/StirotexMerleg_fedlap_ledek.txt \
     testdata/StirotexMerleg_hatlap_sablon.txt \
     testdata/StirotexMerleg_hatlap_sablon2.txt \
     testdata/alatet.txt \

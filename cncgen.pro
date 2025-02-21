@@ -235,6 +235,7 @@ DISTFILES += \
     testdata/StirotexMerleg_fedlap_ledek.txt \
     testdata/StirotexMerleg_hatlap_sablon.txt \
     testdata/StirotexMerleg_hatlap_sablon2.txt \
+    testdata/StirotexMerleg_led_beulteto.txt \
     testdata/alatet.txt \
     testdata/bed_flattening.txt \
     testdata/bekapcsolo.txt \

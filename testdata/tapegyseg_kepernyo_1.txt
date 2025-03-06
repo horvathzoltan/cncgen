@@ -1,0 +1,120 @@
+(tapegyseg_kepernyo_1)
+(cmd line: -i tapegyseg_kepernyo_1.txt -t)
+(plot cmd: -i tapegyseg_kepernyo_1.txt -t -p)
+
+(szerszám beállítás)
+t1 m d2 h19
+
+xyz
+t1
+s50
+#f700
+
+safetop0.2
+safebottom0.1
+# fúró-maró
+# overcut0.878
+# maró
+overcut0.3
+
+pre_mill_steps2
+
+
+#max meredekség polikarbonát 0.05/100mm
+#emax0.0005 #19:34
+#emax0.001  #8:56
+#emax0.002  #05:23
+#emax0.0025 #04:29
+#emax0.003  #03:30
+#emax0.004  #02:53 maró
+#emax0.0045 #02:43
+#emax0.005  #02:36
+#emax0.007  #02:20
+#emax0.01   #2:13
+
+#fmax900
+#fmin450
+#fratio0.8
+
+# egyélű paraméterek
+emax 0.5
+fmax900
+fmin500
+fratio0.7
+f800
+
+z1 = 2
+c1 = 0.050
+c2 = 0.25 #furatok
+c3 = 0.50 #vonalak
+c5 = 1.00 #keret
+
+pecktime 300
+peckslow 8
+peckfast 4
+
+(mélység)
+th = 2
+(belső átmérő)
+db = 3
+(külső átmérő)
+dk = sum(6,2,2)
+print "dk: $dk"
+
+#c = 0.1
+#c2 = 0.05
+j1 = 0.1
+j2 = 0.25
+gw = 0.7
+gh = 0.7
+
+w1 = 87.8
+w2 = 84.8
+h = 31
+
+
+
+(képernyő perem)
+b inline 1,7 size193,111 z1 c$c3 ng jg0.1 ns r7.02
+
+(képernyő perem2)
+b inline 3,9 size189,107 z1 c$c3 ng jg0.1 ns r5
+b inline 5,10 size185,104 z1 c$c3 ng jg0.1 ns r3 nl0,1,1,1
+b inline 7,10 size181,102 z1 c$c3 ng jg0.1 ns  nl0,1,1,1
+
+(képernyő perem3 bal)
+b inline 9,10 size7,101 z1 c$c3 ng jg0.1 ns
+b inline 11,11 size3,99 z1 c$c3 ng jg0.1 ns
+
+(képernyő perem4 bal)
+b inline 6,10 size11,101.6 z2 c$c3 ng jg0.1 ns
+b inline 8,12 size7,98 z2 c$c3 ng jg0.1 ns
+b inline 10,14 size3,94 z2 c$c3 ng jg0.1 ns
+
+(képernyő perem3 jobb)
+b inline 182.5,10 size3.5,101 z1 c$c3 ng jg0.1 ns
+
+(képernyő kivágás)
+b inline 15.91,10.53 size166.2,100.6 z$z1 c$c5 ng jg0.25 ns
+
+
+(furatok)
+b corners 3,4.5 size172,116 z$z1 c$c1 d3 jg0.1
+
+(pi hatlap)
+#b inline 2,2 size15.9,13.5 z2.7 c0.05 g1,0.5,0.7 jg0.1
+#b inline 22.4,3.5 size13.1,14.00 z2.7 c0.05 g1,0.5,0.7 jg0.85
+#b inline 40.4,3.5 size13.1,14.00 z2.7 c0.05 g1,0.5,0.7 jg0.85
+
+b inline 195,15 size13.5,16.00 z$z1 c$c5 g1,0.5,0.7 jg0.1
+b inline 196,34.6 size14.10,13.1 z$z1 c$c5 g1,0.5,0.7 jg0.85
+b inline 196,52.6 size14.10,13.1 z$z1 c$c5 g1,0.5,0.7 jg0.85
+
+(körvonal)
+b outline 0,0 212,125 z$z1 c$c5 g3,$gw,$gh ns jg0.1
+
+
+
+
+
+

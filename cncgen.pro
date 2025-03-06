@@ -306,6 +306,7 @@ DISTFILES += \
     testdata/tap_fesu.txt \
     testdata/tap_fesu_12.txt \
     testdata/tapdugo_furosablon.txt \
+    testdata/tapegyseg_kepernyo_1.txt \
     testdata/telefontarto.txt \
     testdata/uniturn_doboz_fedlap_2.txt \
     testdata/uniturn_doboz_hatlap_sablon.txt \
